@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
 import Header from '../../components/common/header.component'
 import FooterNavigator from '../../components/common/footer'
-import Icon from 'react-native-vector-icons/Feather';
+import { Feather } from '@expo/vector-icons';
 import { styles } from './style'
 import { NavigationProp, useNavigation } from '@react-navigation/core'
 import { RootStackParamList } from '../../navigation/RootNavigator'
@@ -15,7 +15,7 @@ export default function Settings() {
     const SettingsItem = ({ title, onPress, showArrow = true }: { title: string; onPress: () => void; showArrow?: boolean; }) => (
         <TouchableOpacity style={styles.settingsItem} onPress={onPress}>
             <Text style={styles.settingsText}>{title}</Text>
-            {showArrow && <Icon name="chevron-right" size={18} color="#fff" />}
+            {showArrow && <Feather name="chevron-right" size={18} color="#fff" />}
         </TouchableOpacity>
     );
 
@@ -102,7 +102,7 @@ export default function Settings() {
                             <Text style={styles.settingsText}>Language</Text>
                             <View style={styles.languageRight}>
                                 <Text style={styles.languageValue}>{selectedLanguage}</Text>
-                                <Icon name="chevron-right" size={18} color="#fff" />
+                                <Feather name="chevron-right" size={18} color="#fff" />
                             </View>
                         </TouchableOpacity>
                         <View style={styles.termWrapper}>

@@ -8,7 +8,7 @@ import {
   StatusBar,
 } from 'react-native';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
-import Icon from 'react-native-vector-icons/Feather';
+import { Feather } from '@expo/vector-icons';
 import { styles } from './style';
 import Header from '../../components/common/header.component';
 const ContactFiltersScreen = () => {
@@ -82,7 +82,7 @@ const ContactFiltersScreen = () => {
               <Text style={styles.selectValue}>
                 {item === 'Religion' ? 'Hindu' : item === 'Education' ? 'MCA' : 'New York'}
               </Text>
-              <Icon name="chevron-right" size={20} color="#fff" />
+              <Feather name="chevron-right" size={20} color="#fff" />
             </View>
           </TouchableOpacity>
         ))}

@@ -1,26 +1,27 @@
-const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
+const { getDefaultConfig } = require('expo/metro-config');
 
-/**
- * Metro configuration
- * https://reactnative.dev/docs/metro
- *
- * @type {import('@react-native/metro-config').MetroConfig}
- */
-const config = {
-  transformer: {
-    babelTransformerPath: require.resolve('react-native-svg-transformer'),
+const config = getDefaultConfig(__dirname);
+
+// Add SVG support
+config.transformer.babelTransformerPath = require.resolve('react-native-svg-transformer');
+config.resolver.assetExts = config.resolver.assetExts.filter(ext => ext !== 'svg');
+config.resolver.sourceExts = [...config.resolver.sourceExts, 'svg'];
+
+// Fix for TurboModuleRegistry issues
+config.resolver.resolverMainFields = ['react-native', 'browser', 'main'];
+
+// Fix transformer issues
+config.transformer.getTransformOptions = async () => ({
+  transform: {
+    experimentalImportSupport: false,
+    inlineRequires: false,
   },
-  resolver: {
-    assetExts: [], // we'll fix it below
-    sourceExts: [], // we'll fix it below
-  },
-};
+});
 
-// Now get the default config first
-const defaultConfig = getDefaultConfig(__dirname);
+// Fix for Hermes engine issues
+config.transformer.hermesParser = false;
 
-// Update assetExts and sourceExts properly
-config.resolver.assetExts = defaultConfig.resolver.assetExts.filter(ext => ext !== 'svg');
-config.resolver.sourceExts = [...defaultConfig.resolver.sourceExts, 'svg'];
+// Reset cache aggressively
+config.resetCache = true;
 
-module.exports = mergeConfig(defaultConfig, config);
+module.exports = config;

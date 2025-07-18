@@ -9,7 +9,7 @@ import {
   Platform,
 } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
-import Icon from 'react-native-vector-icons/Feather';
+import { Feather } from '@expo/vector-icons';
 import AI from '../../../assets/images/ai.svg';
 import { useNavigation, NavigationProp, useNavigationState } from '@react-navigation/core';
 import { RootStackParamList } from '../../navigation/RootNavigator';
@@ -89,7 +89,7 @@ const getPathWithDip = (index: number) => {
           {tabItems[activeIndex]?.key === 'AI' ? (
             <AI width={35} height={35} fill="#fff" />
           ) : (
-            <Icon name={tabItems[activeIndex]?.icon} size={30} color="#fff" />
+            <Feather name={tabItems[activeIndex]?.icon as any} size={30} color="#fff" />
           )}
         </View>
       </Animated.View>
@@ -108,7 +108,7 @@ const getPathWithDip = (index: number) => {
               {isActive ? null : item.key === 'AI' ? (
                 <AI width={25} height={25} fill="#aaa" />
               ) : (
-                <Icon name={item.icon} size={25} color="#aaa" />
+                <Feather name={item.icon as any} size={25} color="#aaa" />
               )}
               {!isActive && <Text style={styles.tabLabel}>{item.label}</Text>}
             </TouchableOpacity>

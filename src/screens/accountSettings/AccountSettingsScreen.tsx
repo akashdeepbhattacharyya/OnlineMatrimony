@@ -8,7 +8,7 @@ import {
     Image,
     StatusBar,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Feather';
+import { Feather } from '@expo/vector-icons';
 import Header from '../../components/common/header.component';
 import { useAuth } from '../../context/AuthContext';
 import { NavigationProp, useNavigation } from '@react-navigation/core';
@@ -56,7 +56,7 @@ const AccountSettingsScreen = () => {
                     <TouchableOpacity key={label} style={styles.optionRow} onPress={() => handelOnpress(label)}>
                         <Text style={styles.optionText}>{label}</Text>
                         {label !== 'Logout' && (
-                            <Icon name="chevron-right" size={20} color="#fff" />
+                            <Feather name="chevron-right" size={20} color="#fff" />
                         )}
                     </TouchableOpacity>
                 ))}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
-import Icon from 'react-native-vector-icons/Feather';
+import { Feather } from '@expo/vector-icons';
 
 const faqs = [
   'Is This Site Safe To Use?',
@@ -27,10 +27,12 @@ const FAQCard = () => {
       <FlatList
         data={faqs}
         keyExtractor={(item, index) => index.toString()}
+         nestedScrollEnabled={true} // Add this line
+        scrollEnabled={false} 
         renderItem={({ item }) => (
           <View style={styles.faqItem}>
             <Text style={styles.question}>{item}</Text>
-            <Icon name="chevron-right" size={18} color="#fff" />
+            <Feather name="chevron-right" size={18} color="#fff" />
           </View>
         )}
         ItemSeparatorComponent={() => <View style={styles.separator} />}

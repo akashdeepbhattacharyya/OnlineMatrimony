@@ -1,4 +1,4 @@
-import {createTheme} from '@rneui/themed';
+import {createTheme} from '@rneui/themed';  // ← Uncomment this line
 
 const theme = createTheme({
   lightColors: {

@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Dimensions, ViewStyle } from 'react-native';
-import { ListItem, CheckBox } from '@rneui/themed';
+import { CheckBox } from '@rneui/themed';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import { AntDesign } from '@expo/vector-icons';
 
 const { width } = Dimensions.get('window');
 
@@ -39,6 +39,30 @@ const PartnerPreferenceForm: React.FC<PartnerPreferenceFormProps> = ({
     const inches = Math.round((value - feet) * 12);
     return `${feet}'${inches}"`;
   };
+
+  // Custom Accordion Component
+  const CustomAccordion: React.FC<{
+    title: string;
+    subtitle: string;
+    isExpanded: boolean;
+    onPress: () => void;
+    children: React.ReactNode;
+  }> = ({ title, subtitle, isExpanded, onPress, children }) => (
+    <View style={accordionStyles.container}>
+      <TouchableOpacity style={accordionStyles.header} onPress={onPress}>
+        <View style={accordionStyles.headerContent}>
+          <Text style={accordionStyles.title}>{title}</Text>
+          <Text style={accordionStyles.subtitle}>{subtitle}</Text>
+        </View>
+        <AntDesign name={isExpanded ? 'up' : 'down'} size={20} color="#fff" />
+      </TouchableOpacity>
+      {isExpanded && (
+        <View style={accordionStyles.content}>
+          {children}
+        </View>
+      )}
+    </View>
+  );
 
   return (
     <View style={styles.container}>
@@ -91,97 +115,108 @@ const PartnerPreferenceForm: React.FC<PartnerPreferenceFormProps> = ({
       />
 
       {/* Marital Status */}
-      <ListItem.Accordion
-        containerStyle={{
-          backgroundColor: '#000',
-          padding: 10,
-          margin: 10,
-          borderRadius: 10,
-        }}
-        icon={<AntDesign name={expanded ? 'up' : 'down'} size={20} color="#fff" />}
-        content={
-          <ListItem.Content>
-            <ListItem.Title>Marital Status</ListItem.Title>
-            <ListItem.Subtitle>{values.maritalStatus}</ListItem.Subtitle>
-          </ListItem.Content>
-        }
+      <CustomAccordion
+        title="Marital Status"
+        subtitle={values.maritalStatus}
         isExpanded={expanded}
         onPress={() => setExpanded(!expanded)}
       >
-        {statusOptionsList.map((status) => (
-          <ListItem
-            key={status}
-            containerStyle={{ backgroundColor: 'transparent', padding: 0, margin: 0 }}
+        {statusOptionsList.map((status, index) => (
+          <TouchableOpacity
+            key={`marital-status-${index}-${status}`}
+            onPress={() => setFieldValue('maritalStatus', status)}
+            style={accordionStyles.optionItem}
           >
-            <TouchableOpacity
+            <CheckBox
+              checked={values.maritalStatus === status}
               onPress={() => setFieldValue('maritalStatus', status)}
-              style={styles.checkboxRow}
-            >
-              <CheckBox
-                checked={values.maritalStatus === status}
-                onPress={() => setFieldValue('maritalStatus', status)}
-                iconType="material-community"
-                checkedIcon="checkbox-marked"
-                uncheckedIcon="checkbox-blank-outline"
-                checkedColor="#F85F5F"
-                uncheckedColor="#fff"
-                title={status}
-                textStyle={styles.checkboxLabel}
-                containerStyle={{ padding: 0, margin: 0 }}
-              />
-            </TouchableOpacity>
-          </ListItem>
+              iconType="material-community"
+              checkedIcon="checkbox-marked"
+              uncheckedIcon="checkbox-blank-outline"
+              checkedColor="#F85F5F"
+              uncheckedColor="#fff"
+              title={status}
+              textStyle={accordionStyles.optionText}
+              containerStyle={accordionStyles.checkboxContainer}
+            />
+          </TouchableOpacity>
         ))}
-      </ListItem.Accordion>
+      </CustomAccordion>
 
       {/* Profile Managed By */}
-      <ListItem.Accordion
-        containerStyle={{
-          backgroundColor: '#000',
-          padding: 10,
-          margin: 10,
-          borderRadius: 10,
-        }}
-        icon={<AntDesign name={expandedProfile ? 'up' : 'down'} size={20} color="#fff" />}
-        content={
-          <ListItem.Content>
-            <ListItem.Title>Profile Managed By</ListItem.Title>
-            <ListItem.Subtitle>{values.profileManagedBy}</ListItem.Subtitle>
-          </ListItem.Content>
-        }
+      <CustomAccordion
+        title="Profile Managed By"
+        subtitle={values.profileManagedBy}
         isExpanded={expandedProfile}
         onPress={() => setExpandedProfile(!expandedProfile)}
       >
-        {profileManagedByList.map((option) => (
-          <ListItem
-            key={option}
-            containerStyle={{ backgroundColor: 'transparent', padding: 0, margin: 0 }}
+        {profileManagedByList.map((option, index) => (
+          <TouchableOpacity
+            key={`profile-managed-by-${index}-${option}`}
+            onPress={() => setFieldValue('profileManagedBy', option)}
+            style={accordionStyles.optionItem}
           >
-            <TouchableOpacity
+            <CheckBox
+              checked={values.profileManagedBy === option}
               onPress={() => setFieldValue('profileManagedBy', option)}
-              style={styles.checkboxRow}
-            >
-              <CheckBox
-                checked={values.profileManagedBy === option}
-                onPress={() => setFieldValue('profileManagedBy', option)}
-                iconType="material-community"
-                checkedIcon="checkbox-marked"
-                uncheckedIcon="checkbox-blank-outline"
-                checkedColor="#F85F5F"
-                uncheckedColor="#fff"
-                title={option}
-                textStyle={styles.checkboxLabel}
-                containerStyle={{ padding: 0, margin: 0 }}
-              />
-            </TouchableOpacity>
-          </ListItem>
+              iconType="material-community"
+              checkedIcon="checkbox-marked"
+              uncheckedIcon="checkbox-blank-outline"
+              checkedColor="#F85F5F"
+              uncheckedColor="#fff"
+              title={option}
+              textStyle={accordionStyles.optionText}
+              containerStyle={accordionStyles.checkboxContainer}
+            />
+          </TouchableOpacity>
         ))}
-      </ListItem.Accordion>
-
-      {/* Submit Button */}
-      
+      </CustomAccordion>
     </View>
   );
+};
+
+// Styles for the custom accordion
+const accordionStyles = {
+  container: {
+    backgroundColor: '#000',
+    padding: 10,
+    margin: 10,
+    borderRadius: 10,
+  },
+  header: {
+    flexDirection: 'row' as const,
+    justifyContent: 'space-between' as const,
+    alignItems: 'center' as const,
+    paddingVertical: 10,
+  },
+  headerContent: {
+    flex: 1,
+  },
+  title: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: 'bold' as const,
+  },
+  subtitle: {
+    color: '#ccc',
+    fontSize: 14,
+    marginTop: 2,
+  },
+  content: {
+    paddingTop: 10,
+  },
+  optionItem: {
+    paddingVertical: 5,
+  },
+  optionText: {
+    color: '#fff',
+    fontSize: 14,
+  },
+  checkboxContainer: {
+    padding: 0,
+    margin: 0,
+    backgroundColor: 'transparent',
+  },
 };
 
 export default PartnerPreferenceForm;

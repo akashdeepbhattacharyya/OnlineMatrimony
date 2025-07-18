@@ -10,7 +10,7 @@ import {
     FlatList,
     Dimensions,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Feather';
+import { Feather } from '@expo/vector-icons';
 import { styles } from './style';
 import Header from '../../components/common/header.component';
 const subscriptionData = [
@@ -43,7 +43,7 @@ const SubscriptionScreen = () => {
 
                 {item.features.map((feature: string, idx: number) => (
                     <View style={styles.feature} key={idx}>
-                        <Icon name="check" size={16} color="#fff" />
+                        <Feather name="check" size={16} color="#fff" />
                         <Text style={styles.featureText}>{feature}</Text>
                     </View>
                 ))}

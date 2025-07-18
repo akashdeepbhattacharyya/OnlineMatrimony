@@ -1,4 +1,41 @@
 {
-  "name": "OnlineMatrimony",
-  "displayName": "OnlineMatrimony"
+  "expo": {
+    "name": "OnlineMatrimony",
+    "slug": "online-matrimony",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/img3.png",
+    "userInterfaceStyle": "light",
+    "scheme": "onlinematrimony",
+    "splash": {
+      "image": "./assets/images/img3.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anonymous.onlinematrimony"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/img3.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.anonymous.onlinematrimony"
+    },
+    "web": {
+      "favicon": "./assets/images/img3.png"
+    },
+    "plugins": [
+      "expo-font"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "44870ce9-cfa3-4bd2-a379-254c342ea863"
+      }
+    }
+  }
 }

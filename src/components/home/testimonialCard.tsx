@@ -8,8 +8,8 @@ import {
   FlatList,
   Dimensions
 } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import Feather from 'react-native-vector-icons/Feather';
+import { MaterialIcons, Feather } from '@expo/vector-icons';
+// import Feather from 'react-native-vector-icons/Feather';
 
 const { width } = Dimensions.get('window');
 
@@ -53,7 +53,7 @@ const TestimonialCarousel = () => {
 
   const renderItem = ({ item }: any) => (
     <View style={styles.card}>
-      <Icon name="format-quote" size={48} color="#fff" style={styles.quoteIcon} />
+      <MaterialIcons name="format-quote" size={48} color="#fff" />
       <Text style={styles.message}>{item.tips}</Text>
       <View style={styles.footer}>
         <Image source={item.image} style={styles.avatar} />
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
   },
   quoteIcon: {
     marginBottom: 10,
-    
+
   },
   message: {
     color: '#fff',

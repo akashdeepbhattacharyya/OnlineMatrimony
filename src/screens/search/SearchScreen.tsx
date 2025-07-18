@@ -4,7 +4,9 @@ import ProfileCard from '../../components/search/ProfileCard';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import Header from '../../components/common/header.component';
 import FooterNavigator from '../../components/common/footer';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+// import Icon from 'react-native-vector-icons/MaterialIcons';
+import { MaterialIcons } from '@expo/vector-icons';
+
 
 import { styles } from './style';
 
@@ -135,7 +137,7 @@ export default function SearchScreen() {
                 <Header headerText="Search" />
                 <View style={{ flexDirection: 'row', alignItems: 'center', marginHorizontal: 20, marginVertical: 20 }}>
                     <View style={{ flex: 1, position: 'relative', width: '100%' }}>
-                        <Icon name="search" size={20} color="white" style={{
+                        <MaterialIcons name="search" size={20} color="white" style={{
                             position: 'absolute',
                             left: 10,
                             top: '50%',
@@ -144,7 +146,7 @@ export default function SearchScreen() {
                         }} />
                         <TextInput placeholder="Search" placeholderTextColor="#999" style={styles.searchInput} />
                     </View>
-                    <Icon name="tune" size={30} color="red" />
+                    <MaterialIcons name="tune" size={30} color="red" />
                 </View>
 
 

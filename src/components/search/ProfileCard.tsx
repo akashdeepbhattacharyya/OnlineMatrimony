@@ -1,6 +1,6 @@
 import { Image, StyleSheet, Text, Touchable, TouchableOpacity, View } from 'react-native';
 import React, { useState } from 'react';
-import Icon from 'react-native-vector-icons/Feather';
+import { Feather } from '@expo/vector-icons';
 
 export default function ProfileCard({
     user,
@@ -28,7 +28,7 @@ export default function ProfileCard({
                     <Text style={styles.info}>{user.location}</Text>
                     <View style={styles.verified}>
                         <Text style={styles.verifiedText}>Verified</Text>
-                        <Icon name="check-circle" size={16} color="red" style={{ marginLeft: 5 }} />
+                        <Feather name="check-circle" size={16} color="red" style={{ marginLeft: 5 }} />
                     </View>
                 </View>
             </View>

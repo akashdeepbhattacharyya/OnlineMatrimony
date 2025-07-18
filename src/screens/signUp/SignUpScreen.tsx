@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
     View,
     Text,
@@ -7,22 +7,21 @@ import {
     ScrollView,
     ImageBackground,
     TextInput,
+    Platform,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import Entypo from 'react-native-vector-icons/Entypo';
+import { MaterialIcons, Entypo } from '@expo/vector-icons';
 import Svg, { Path } from 'react-native-svg';
 import { NavigationProp, useNavigation } from '@react-navigation/core';
 import { RootStackParamList } from '../../navigation/RootNavigator';
 import GoogleIcon from '../../../assets/images/google.svg';
 import FacebookIcon from '../../../assets/images/facebook.svg';
-import LinearGradient from 'react-native-linear-gradient';
-import DatePicker from 'react-native-date-picker';
+import { LinearGradient } from 'expo-linear-gradient';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { styles } from './style';
 import { useLoader } from '../../context/LoaderContext';
-import { signUpApi } from '../../api/authApi';
 
 const SignupSchema = Yup.object().shape({
     fullName: Yup.string().required('Full Name is required'),
@@ -35,30 +34,42 @@ const SignupSchema = Yup.object().shape({
     terms: Yup.boolean().oneOf([true], 'You must accept the terms'),
 });
 
+// Mock API function - replace with your actual API
+const signUpApi = async (data: any) => {
+    console.log('SignUp API called with:', data);
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve({ success: true, data });
+        }, 1000);
+    });
+};
+
 export default function SignUpScreen() {
     const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+    const [showDatePicker, setShowDatePicker] = useState(false);
+    const [selectedDate, setSelectedDate] = useState(new Date(2000, 0, 1));
+    
     const initialValues = {
         fullName: '',
         email: '',
         phone: '',
         dob: '',
-        dobDate: new Date(2000, 0, 1),
-        dobPickerOpen: false,
         gender: '',
         terms: false,
-        password: 'P@ss1234', // Default password for testing, should be handled securely in production
+        password: 'P@ss1234',
     };
+    
     const genderOptions = [
         { label: 'Male', value: 'male', icon: 'male', color: '#f55' },
         { label: 'Female', value: 'female', icon: 'female', color: '#ccc' },
         { label: 'Others', value: 'other', icon: 'transgender', color: '#ccc' },
     ];
+    
     const { showLoader, hideLoader } = useLoader();
 
     const handleSignUp = async (values: any) => {
         try {
-
-            // API CALL
+            showLoader();
             const response = await signUpApi({
                 fullName: values.fullName,
                 email: values.email,
@@ -69,16 +80,25 @@ export default function SignUpScreen() {
             });
 
             console.log('Signup success:', response);
-
-            // Navigate to OTP screen on success
-            // navigation.navigate('Otp', {
-            //     data: response,
-            //     page: 'signup',
-            // });
+            navigation.navigate('Otp', {
+                data: response.data,
+                page: 'signup',
+            });
         } catch (err) {
             console.error('Signup error:', err);
         } finally {
             hideLoader();
+        }
+    };
+
+    const handleDateChange = (event: any, date: Date | undefined, setFieldValue: any) => {
+        setShowDatePicker(false);
+        if (date) {
+            setSelectedDate(date);
+            const formatted = `${String(date.getDate()).padStart(2, '0')}/${String(
+                date.getMonth() + 1
+            ).padStart(2, '0')}/${date.getFullYear()}`;
+            setFieldValue('dob', formatted);
         }
     };
 
@@ -122,7 +142,7 @@ export default function SignUpScreen() {
                                         {/* Full Name */}
                                         <Text style={styles.label}>Full Name</Text>
                                         <View style={styles.inputWrapper}>
-                                            <Icon name="person-outline" size={20} color="#888" style={styles.inputIcon} />
+                                            <MaterialIcons name="person-outline" size={20} color="#888" style={styles.inputIcon} />
                                             <TextInput
                                                 placeholder="Enter Your Full Name"
                                                 placeholderTextColor="#aaa"
@@ -139,7 +159,7 @@ export default function SignUpScreen() {
                                         {/* Email */}
                                         <Text style={styles.label}>Email Id</Text>
                                         <View style={styles.inputWrapper}>
-                                            <Icon name="mail-outline" size={20} color="#888" style={styles.inputIcon} />
+                                            <MaterialIcons name="mail-outline" size={20} color="#888" style={styles.inputIcon} />
                                             <TextInput
                                                 placeholder="Enter Your Email"
                                                 placeholderTextColor="#aaa"
@@ -156,7 +176,7 @@ export default function SignUpScreen() {
                                         {/* Phone */}
                                         <Text style={styles.label}>Phone No</Text>
                                         <View style={styles.inputWrapper}>
-                                            <Icon name="call" size={20} color="#888" style={styles.inputIcon} />
+                                            <MaterialIcons name="call" size={20} color="#888" style={styles.inputIcon} />
                                             <TextInput
                                                 placeholder="Enter Your Phone"
                                                 placeholderTextColor="#aaa"
@@ -175,7 +195,7 @@ export default function SignUpScreen() {
                                         <Text style={styles.label}>Date Of Birth</Text>
                                         <TouchableOpacity
                                             style={styles.inputWrapper}
-                                            onPress={() => setFieldValue('dobPickerOpen', true)}
+                                            onPress={() => setShowDatePicker(true)}
                                         >
                                             <Entypo name="cake" color="#888" size={20} style={styles.inputIcon} />
                                             <Text style={[styles.input, { paddingTop: 10 }]}>
@@ -184,22 +204,15 @@ export default function SignUpScreen() {
                                         </TouchableOpacity>
                                         {touched.dob && errors.dob && <Text style={{ color: 'red' }}>{errors.dob}</Text>}
 
-                                        <DatePicker
-                                            modal
-                                            mode="date"
-                                            open={values.dobPickerOpen}
-                                            date={values.dobDate}
-                                            maximumDate={new Date()}
-                                            onConfirm={(date: Date) => {
-                                                const formatted = `${String(date.getDate()).padStart(2, '0')}/${String(
-                                                    date.getMonth() + 1
-                                                ).padStart(2, '0')}/${date.getFullYear()}`;
-                                                setFieldValue('dobDate', date);
-                                                setFieldValue('dob', formatted);
-                                                setFieldValue('dobPickerOpen', false);
-                                            }}
-                                            onCancel={() => setFieldValue('dobPickerOpen', false)}
-                                        />
+                                        {showDatePicker && (
+                                            <DateTimePicker
+                                                value={selectedDate}
+                                                mode="date"
+                                                display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+                                                maximumDate={new Date()}
+                                                onChange={(event, date) => handleDateChange(event, date, setFieldValue)}
+                                            />
+                                        )}
 
                                         {/* Gender */}
                                         <View style={styles.checkboxWrapper}>
@@ -212,13 +225,13 @@ export default function SignUpScreen() {
                                                         onPress={() => setFieldValue('gender', option.value)}
                                                     >
                                                         <View style={[styles.checkbox, isSelected && styles.checked]}>
-                                                            {isSelected && <Icon name="check" size={16} color="#fff" />}
+                                                            {isSelected && <MaterialIcons name="check" size={16} color="#fff" />}
                                                         </View>
                                                         <Text style={[styles.checkboxText, isSelected && { color: option.color }]}>
                                                             {option.label}
                                                         </Text>
-                                                        <Icon
-                                                            name={option.icon}
+                                                        <MaterialIcons
+                                                            name={option.icon as any}
                                                             size={24}
                                                             color={isSelected ? option.color : '#aaa'}
                                                             style={{ marginLeft: 8 }}
@@ -238,7 +251,7 @@ export default function SignUpScreen() {
                                                 onPress={() => setFieldValue('terms', !values.terms)}
                                             >
                                                 <View style={styles.checkbox}>
-                                                    {values.terms && <Icon name="check" size={18} color="#fff" />}
+                                                    {values.terms && <MaterialIcons name="check" size={18} color="#fff" />}
                                                 </View>
                                                 <Text style={styles.checkboxText}>Terms & Condition & Privacy Policy</Text>
                                             </TouchableOpacity>

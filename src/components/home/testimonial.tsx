@@ -7,8 +7,8 @@ import {
     StyleSheet,
     TouchableOpacity,
 } from 'react-native';
-import Video from 'react-native-video';
-import Play from '../../../assets/images/play.svg';
+import { Video } from 'expo-av';
+import { Ionicons } from '@expo/vector-icons';
 import { testimonialData } from '../../interface/home';
 
 const testiMonial: testimonialData[] = [
@@ -51,16 +51,17 @@ const Testimonial = () => {
                 <Video
                     source={{ uri: 'https://www.w3schools.com/html/mov_bbb.mp4' }}
                     style={styles.video}
-                    resizeMode="cover"
-                    paused={false}
-                    muted
+                    shouldPlay={true}
+                    isLooping={false}
+                    isMuted={true}
+                    useNativeControls={false}
                 />
             ) : (
                 <ImageBackground source={item.image} style={styles.image} resizeMode='cover'>
                     <View style={styles.cardContent}>
                         <Text style={styles.name}>{item.tips}</Text>
                         <TouchableOpacity onPress={() => handlePlay(index)} style={styles.playIcon}>
-                            <Play width={50} height={50} fill="white" />
+                            <Ionicons name="play-circle" size={50} color="white" />
                         </TouchableOpacity>
                     </View>
                 </ImageBackground>
@@ -111,7 +112,7 @@ const styles = StyleSheet.create({
     title: {
         color: '#fff',
         fontSize: 16,
-        fontWeight: 700,
+        fontWeight: '700',
         fontFamily: 'Roboto-Medium',
     },
     seeAll: {
@@ -149,7 +150,6 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
         position: 'relative',
     },
-
     playIconContainer: {
         position: 'absolute',
         top: '50%',
@@ -167,13 +167,12 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         marginLeft: 40
     },
-
     name: {
-        fontWeight: 500,
+        fontWeight: '500',
         fontSize: 18,
         color: '#fff',
         fontFamily: 'Roboto-Medium',
-        flex: 1, // Makes the text take remaining space
+        flex: 1,
     },
     playIcon: {
         marginHorizontal: 20,
