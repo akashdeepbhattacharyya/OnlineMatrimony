@@ -82,7 +82,6 @@ export default function PartnerPreferenceScreen() {
                 <ScrollView
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{
-                        backgroundColor: '#2B2B2B',
                         flexGrow: 1,
                     }}
                 >
