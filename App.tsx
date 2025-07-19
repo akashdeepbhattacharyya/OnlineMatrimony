@@ -10,8 +10,8 @@ import * as SplashScreen from 'expo-splash-screen';
 
 import RootNavigator from './src/navigation/RootNavigator';
 import { AuthContextProvider } from './src/context/AuthContext';
-import { ThemeProvider } from '@rneui/themed';
-import { theme } from './src/theme/theme';
+// import { ThemeProvider } from '@rneui/themed';
+// import { theme } from './src/theme/theme';
 import { LoaderProvider } from './src/context/LoaderContext';
 import { LoaderOverlay } from './src/components/ui/LoaderOverlay';
 import { navigationRef } from './src/navigation/navigationRef';
@@ -90,7 +90,7 @@ const App = () => {
   return (
     <SafeAreaProvider>
       <AuthContextProvider>
-        <ThemeProvider theme={theme}>
+        {/* <ThemeProvider theme={theme}> */}
           <LoaderProvider>
             <NavigationContainer
               ref={navigationRef}
@@ -109,7 +109,7 @@ const App = () => {
               <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
             </NavigationContainer>
           </LoaderProvider>
-        </ThemeProvider>
+        {/* </ThemeProvider> */}
       </AuthContextProvider>
     </SafeAreaProvider>
   );

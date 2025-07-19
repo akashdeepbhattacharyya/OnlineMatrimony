@@ -106,7 +106,7 @@ export default function PartnerPreferenceScreen() {
                                     styles={styles}
                                 />
                                 <TouchableOpacity
-                                    onPress={handleSubmit}
+                                    onPress={() => handleSubmit()}
                                     style={{
                                         backgroundColor: '#F85F5F',
                                         marginTop: 20,

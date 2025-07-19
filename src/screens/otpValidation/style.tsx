@@ -14,7 +14,7 @@ export const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        top: 120,
+        top: 100,
         marginHorizontal: 20
     },
     logo: {
@@ -27,20 +27,19 @@ export const styles = StyleSheet.create({
     },
     tagline: {
         fontFamily: 'Roboto-Regular',
-        fontSize: 16,
+        fontSize: 24,
         color: '#fff',
         textAlign: 'center',
-        marginTop: 15,
-        transform: [{ scaleX: 1.7 }, { scaleY: 1.7 }],
+        marginTop: 10,
     },
     inputWrapper: {
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 20,
+        gap: 10,
         width: '100%',
         display: 'flex',
         justifyContent: 'center',
-        marginVertical: 20
+        padding: 20
     },
     inputIcon: {
         marginLeft: 25,
@@ -78,7 +77,7 @@ export const styles = StyleSheet.create({
         paddingVertical: 14,
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 20,
+        // marginTop: 20,
         width: '100%',
         height: 70
     },
