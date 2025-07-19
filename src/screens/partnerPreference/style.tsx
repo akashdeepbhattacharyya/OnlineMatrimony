@@ -4,6 +4,7 @@ import responsive from '../../components/common/responsive';
 export const styles = StyleSheet.create({
     wrapper: {
         flex: 1,
+        backgroundColor: '#1e1e1e',
     },
     container: {
         marginHorizontal: 25,
