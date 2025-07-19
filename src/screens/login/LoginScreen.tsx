@@ -6,6 +6,7 @@ import {
     TextInput,
     ImageBackground,
     TouchableOpacity,
+    ScrollView,
 } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import GoogleIcon from '../../../assets/images/google.svg';
@@ -28,6 +29,7 @@ const LoginScreen = () => {
     };
 
     return (
+        <ScrollView style={{ flex: 1 }}>
         <View style={styles.container}>
             <StatusBar style="light" />
             <View style={{ flex: 1, backgroundColor: 'white' }}>
@@ -107,6 +109,7 @@ const LoginScreen = () => {
                 </ImageBackground>
             </View>
         </View >
+        </ScrollView>
     );
 };
 
@@ -139,18 +142,17 @@ const styles = StyleSheet.create({
     },
     tagline: {
         fontFamily: 'Roboto-Regular',
-        fontSize: 16,
+        fontSize: 24,
         color: '#fff',
         textAlign: 'center',
         marginTop: 15,
-        transform: [{ scaleX: 1.7 }, { scaleY: 1.7 }],
     },
     inputWrapper: {
         flexDirection: 'row',
         backgroundColor: '#fff',
-        borderRadius: 50,
+        borderRadius: 35,
         alignItems: 'center',
-        paddingHorizontal: 15,
+        padding: 15,
         marginBottom: 15,
         height: 70,
         width: '100%',
@@ -158,7 +160,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     inputIcon: {
-        marginLeft: 25,
+        marginLeft: 10,
         paddingRight: 10,
     },
     input: {
@@ -166,9 +168,8 @@ const styles = StyleSheet.create({
         color: '#000000',
         paddingVertical: 10,
         fontSize: 16,
-        paddingLeft: 30,
+        paddingLeft: 10,
         fontFamily: 'Roboto-Regular',
-        transform: [{ scaleX: 1.2 }, { scaleY: 1.2 }],
     },
     checkboxWrapper: {
         width: '100%',

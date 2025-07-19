@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "OnlineMatrimony",
-    "slug": "online-matrimony",
+    "slug": "onlinematrimony",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/img3.png",
@@ -34,8 +34,9 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "44870ce9-cfa3-4bd2-a379-254c342ea863"
+        "projectId": "0cfad855-470b-4db1-8914-69e70917f01f"
       }
-    }
+    },
+    "owner": "onlinematrimony"
   }
 }

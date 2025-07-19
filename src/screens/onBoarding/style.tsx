@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
         fontSize: 48,
         color: '#fff',
         textAlign: 'center',
-        // transform: [{ scaleX: 1.6 }, { scaleY: 1.6 }],
+        transform: [{ scaleX: 1.6 }, { scaleY: 1.6 }],
         marginBottom: 10,
     },
     tagline: {
@@ -30,7 +30,8 @@ export const styles = StyleSheet.create({
         color: '#fff',
         textAlign: 'center',
         marginTop: 15,
-        transform: [{ scaleX: 1.7 }, { scaleY: 1.7 }],
+        paddingHorizontal: 5,
+        transform: [{ scaleX: 1.5 }, { scaleY: 1.5 }],
     },
     otpButton: {
         backgroundColor: '#F74D4D',

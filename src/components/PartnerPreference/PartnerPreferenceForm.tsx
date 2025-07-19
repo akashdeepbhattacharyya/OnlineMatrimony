@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Dimensions, ViewStyle } from 'react-native';
-import { CheckBox } from '@rneui/themed';
+// import { CheckBox } from '@rneui/themed';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import { AntDesign } from '@expo/vector-icons';
 
@@ -127,7 +127,7 @@ const PartnerPreferenceForm: React.FC<PartnerPreferenceFormProps> = ({
             onPress={() => setFieldValue('maritalStatus', status)}
             style={accordionStyles.optionItem}
           >
-            <CheckBox
+            {/* <CheckBox
               checked={values.maritalStatus === status}
               onPress={() => setFieldValue('maritalStatus', status)}
               iconType="material-community"
@@ -138,7 +138,7 @@ const PartnerPreferenceForm: React.FC<PartnerPreferenceFormProps> = ({
               title={status}
               textStyle={accordionStyles.optionText}
               containerStyle={accordionStyles.checkboxContainer}
-            />
+            /> */}
           </TouchableOpacity>
         ))}
       </CustomAccordion>
@@ -156,7 +156,7 @@ const PartnerPreferenceForm: React.FC<PartnerPreferenceFormProps> = ({
             onPress={() => setFieldValue('profileManagedBy', option)}
             style={accordionStyles.optionItem}
           >
-            <CheckBox
+            {/* <CheckBox
               checked={values.profileManagedBy === option}
               onPress={() => setFieldValue('profileManagedBy', option)}
               iconType="material-community"
@@ -167,7 +167,7 @@ const PartnerPreferenceForm: React.FC<PartnerPreferenceFormProps> = ({
               title={option}
               textStyle={accordionStyles.optionText}
               containerStyle={accordionStyles.checkboxContainer}
-            />
+            /> */}
           </TouchableOpacity>
         ))}
       </CustomAccordion>

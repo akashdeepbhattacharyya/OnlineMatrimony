@@ -5,6 +5,8 @@ import { RootStackParamList } from '../../navigation/RootNavigator';
 import Svg, { Path } from 'react-native-svg';
 import { useAuth } from '../../context/AuthContext';
 import { styles } from './style';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { ScrollView } from 'react-native-gesture-handler';
 
 type OtpValidationScreenProps = {
     route: RouteProp<RootStackParamList, 'Otp'>;
@@ -50,6 +52,7 @@ export default function OtpValidationScreen({ route: { params: { data, page } } 
         setResendDisabled(true);
     }
     return (
+        <ScrollView style={{ flex: 1}}>
         <View style={styles.container}>
             <StatusBar translucent barStyle="dark-content" />
             <View style={{ flex: 1, backgroundColor: 'white' }}>
@@ -123,5 +126,6 @@ export default function OtpValidationScreen({ route: { params: { data, page } } 
                 </ImageBackground>
             </View>
         </View >
+        </ScrollView>
     );
 }
