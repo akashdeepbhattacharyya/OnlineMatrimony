@@ -9,28 +9,32 @@ type Props = {
   onPress: () => void;
 } & ViewProps;
 
-export const PrimaryButton = ({ title, disabled, onPress, ...props }: Props) => {
+export const PrimaryButton = ({
+  title,
+  disabled,
+  onPress,
+  ...props
+}: Props) => {
   return (
-    <TouchableOpacity onPress={onPress}>
     <View
-      theme="primary_button"
       width="100%"
+      theme="primary_button"
       backgroundColor="$background"
-      paddingHorizontal="$16"
+      paddingHorizontal="$6"
       paddingVertical="$4.5"
       borderRadius="$10"
       opacity={disabled ? 0.6 : 1}
+      disabled={disabled}
       {...props}
     >
-      
+      <TouchableOpacity onPress={onPress}>
         <XStack justifyContent="center" alignItems="center" gap="$2.5">
           <Text font="headingSemiBold" size="normal" weight="bold">
             {title}
           </Text>
           <ArrowRight width={19} height={15} />
         </XStack>
-      
+      </TouchableOpacity>
     </View>
-    </TouchableOpacity>
   );
 };
