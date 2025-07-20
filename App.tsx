@@ -1,7 +1,11 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, View, useColorScheme } from 'react-native';
-import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
+import {
+  NavigationContainer,
+  DefaultTheme,
+  DarkTheme,
+} from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StatusBar } from 'expo-status-bar';
@@ -10,11 +14,11 @@ import * as SplashScreen from 'expo-splash-screen';
 
 import RootNavigator from './src/navigation/RootNavigator';
 import { AuthContextProvider } from './src/context/AuthContext';
-// import { ThemeProvider } from '@rneui/themed';
-// import { theme } from './src/theme/theme';
 import { LoaderProvider } from './src/context/LoaderContext';
 import { LoaderOverlay } from './src/components/ui/LoaderOverlay';
 import { navigationRef } from './src/navigation/navigationRef';
+import { TamaguiProvider } from 'tamagui';
+import tamaguiConfig from './tamagui/tamagui.config';
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
@@ -33,7 +37,7 @@ const App = () => {
     'Oswald-Medium': require('./assets/fonts/Oswald-Medium.ttf'),
     'Oswald-Regular': require('./assets/fonts/Oswald-Regular.ttf'),
     'Oswald-SemiBold': require('./assets/fonts/Oswald-SemiBold.ttf'),
-    
+
     // Roboto fonts
     'Roboto-Black': require('./assets/fonts/Roboto-Black.ttf'),
     'Roboto-Bold': require('./assets/fonts/Roboto-Bold.ttf'),
@@ -44,7 +48,7 @@ const App = () => {
     'Roboto-Regular': require('./assets/fonts/Roboto-Regular.ttf'),
     'Roboto-SemiBold': require('./assets/fonts/Roboto-SemiBold.ttf'),
     'Roboto-Thin': require('./assets/fonts/Roboto-Thin.ttf'),
-    
+
     // Roboto Condensed fonts
     'Roboto-Condensed-Bold': require('./assets/fonts/Roboto_Condensed-Bold.ttf'),
     'Roboto-Condensed-Regular': require('./assets/fonts/Roboto_Condensed-Regular.ttf'),
@@ -90,7 +94,7 @@ const App = () => {
   return (
     <SafeAreaProvider>
       <AuthContextProvider>
-        {/* <ThemeProvider theme={theme}> */}
+        <TamaguiProvider config={tamaguiConfig}>
           <LoaderProvider>
             <NavigationContainer
               ref={navigationRef}
@@ -109,7 +113,7 @@ const App = () => {
               <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
             </NavigationContainer>
           </LoaderProvider>
-        {/* </ThemeProvider> */}
+        </TamaguiProvider>
       </AuthContextProvider>
     </SafeAreaProvider>
   );
