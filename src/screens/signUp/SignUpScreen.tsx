@@ -156,9 +156,9 @@ export default function SignUpScreen() {
     >
       <ScrollView
         contentContainerStyle={{
-          margin: 0,
           flexGrow: 1,
           justifyContent: 'space-between',
+          marginTop: 250
         }}
       >
         <YStack
@@ -168,7 +168,6 @@ export default function SignUpScreen() {
           alignItems="center"
           padding="$4"
         >
-          <Spacer size="$20" />
           <TitleAndSubtitle marginBottom="$8" />
 
           <XStack
