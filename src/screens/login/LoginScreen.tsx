@@ -7,11 +7,13 @@ import { PrimaryButton } from '../../components/common/PrimaryButton';
 import { TitleAndSubtitle } from '../../components/common/TitleAndSubtitle';
 import { TextField } from '../../components/common/TextField';
 import EmailIcon from '../../../assets/images/icon_email.svg';
-import { CheckBoxWithLabel } from '../../components/common/CheckBoxWithLabel';
+import { CheckBoxButton } from '../../components/common/CheckBoxButton';
 import { Text } from '../../components/common/Text';
 import { Divider } from '../../components/common/Divider';
 import { GoogleButton } from '../../components/common/GoogleButton';
 import { FacebookButton } from '../../components/common/FacebookButton';
+import { SocialMediaButtons } from '@/src/components/common/SocialMediaButtons';
+import { LabelledDivider } from '@/src/components/common/LabelledDivider';
 
 const LoginScreen = () => {
   const [input, setInput] = useState('');
@@ -45,11 +47,17 @@ const LoginScreen = () => {
           icon={<EmailIcon />}
           onChangeText={setInput}
         />
-        <CheckBoxWithLabel
-          label="Terms & Condition & Privacy Policy"
-          isSelected={isChecked}
-          onChange={isChecked => setIsChecked(isChecked)}
-          marginTop="$2"
+        <CheckBoxButton
+          option={{
+            label: 'Terms & Condition & Privacy Policy',
+            value: 'terms',
+          }}
+          selected={isChecked}
+          onChange={() => {
+            setIsChecked(!isChecked);
+          }}
+          paddingHorizontal={'$8'}
+          paddingVertical={'$4'}
         />
         <PrimaryButton
           title="Get OTP"
@@ -57,29 +65,13 @@ const LoginScreen = () => {
           marginTop="$4"
           disabled={!isChecked || input === ''}
         />
-        <XStack
-          gap={'$2'}
-          marginTop="$6"
-          justifyContent="space-between"
-          alignItems="center"
-          paddingHorizontal={'$2'}
-        >
-          <Divider width={'35%'} />
-          <Text size="normal" font="heading" color="$color">
-            Or
-          </Text>
-          <Divider width={'35%'} />
-        </XStack>
+        <LabelledDivider label={`Or`} width={'35%'} marginTop="$4" />
 
-        <XStack
-          gap="$4"
-          marginTop="$6"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <GoogleButton onPress={() => {}} />
-          <FacebookButton onPress={() => {}} />
-        </XStack>
+        <SocialMediaButtons
+          marginTop="$4"
+          onGoogle={() => {}}
+          onFacebook={() => {}}
+        />
         <XStack
           theme={'sign_up_button'}
           marginTop="$6"

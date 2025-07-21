@@ -1,4 +1,4 @@
-import { InputProps, ViewProps, XStack, YStack } from 'tamagui';
+import { type InputProps, XStack } from 'tamagui';
 import { Input } from './Input';
 
 type Props = {
@@ -18,7 +18,7 @@ export const TextField = ({ icon, ...props }: Props) => {
       justifyContent="flex-start"
     >
       {icon}
-      <Input unstyled placeholderTextColor="gray" {...props} />
+      <Input unstyled placeholderTextColor="$placeholder" {...props} />
     </XStack>
   );
 };

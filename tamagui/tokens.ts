@@ -25,6 +25,8 @@ export const tokens = createTokens({
     primary: '#2B2B2B',
     gray: '#A9A9A9',
     gray_dark: '#696969',
+    gray_light: '#D3D3D3',
+    gray_lighter: '#BABABA',
   },
 
   font: {
