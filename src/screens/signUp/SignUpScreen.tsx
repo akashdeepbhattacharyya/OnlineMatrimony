@@ -435,15 +435,15 @@ export default function SignUpScreen() {
                   gap="$2"
                 >
                   <Text size="small" font="heading" color="$color">
-                    Don't have An Account?
+                    {`Already Have An Account?`}
                   </Text>
                   <Text
                     size="normal"
                     font="heading"
                     color="$background"
-                    onPress={() => navigation.navigate('SignUp')}
+                    onPress={() => navigation.navigate('Login')}
                   >
-                    Sign Up
+                    {`Sign In`}
                   </Text>
                 </XStack>
                 {/* <TouchableOpacity
