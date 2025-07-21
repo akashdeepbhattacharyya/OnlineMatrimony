@@ -151,7 +151,6 @@ export default function SignUpScreen() {
         contentContainerStyle={{
           flexGrow: 1,
           justifyContent: 'space-between',
-          marginTop: 250,
         }}
       >
         <YStack
@@ -160,6 +159,8 @@ export default function SignUpScreen() {
           justifyContent="center"
           alignItems="center"
           padding="$4"
+          marginTop={'$20'}
+          marginBottom={'$6'}
         >
           <TitleAndSubtitle marginBottom="$8" />
 
