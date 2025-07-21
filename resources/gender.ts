@@ -1,5 +1,9 @@
-export const genders = ['male', 'female', 'other'] as const;
-export type Gender = (typeof genders)[number];
+export const genders = {
+  male: 'Male',
+  female: 'Female',
+  other: 'Other',
+};
+export type Gender = keyof typeof genders;
 
 export const getGenderIcon = (gender: Gender) => {
   switch (gender) {

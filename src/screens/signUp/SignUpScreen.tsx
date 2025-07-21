@@ -1,20 +1,8 @@
 import React, { useState } from 'react';
-import {
-  View,
-  TouchableOpacity,
-  StatusBar,
-  ScrollView,
-  ImageBackground,
-  TextInput,
-  Platform,
-} from 'react-native';
+import { ScrollView, ImageBackground, Platform } from 'react-native';
 import { MaterialIcons, Entypo } from '@expo/vector-icons';
-import Svg, { Path } from 'react-native-svg';
 import { NavigationProp, useNavigation } from '@react-navigation/core';
 import { RootStackParamList } from '../../navigation/RootNavigator';
-import GoogleIcon from '../../../assets/images/google.svg';
-import FacebookIcon from '../../../assets/images/facebook.svg';
-import { LinearGradient } from 'expo-linear-gradient';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { Formik } from 'formik';
@@ -22,13 +10,9 @@ import * as Yup from 'yup';
 import { styles } from './style';
 import { useLoader } from '../../context/LoaderContext';
 import { CheckBoxButton } from '@/src/components/common/CheckBoxButton';
-import { Divider } from '@/src/components/common/Divider';
-import { FacebookButton } from '@/src/components/common/FacebookButton';
-import { GoogleButton } from '@/src/components/common/GoogleButton';
 import { PrimaryButton } from '@/src/components/common/PrimaryButton';
-import { TextField } from '@/src/components/common/TextField';
 import { TitleAndSubtitle } from '@/src/components/common/TitleAndSubtitle';
-import { YStack, Spacer, XStack, getToken } from 'tamagui';
+import { YStack, XStack, getToken } from 'tamagui';
 import { LabelledTextField } from '@/src/components/common/LabelledTextField';
 import PersonIcon from '@/assets/images/icon_person.svg';
 import EmailIcon from '@/assets/images/icon_email.svg';
@@ -50,7 +34,9 @@ const SignupSchema = Yup.object().shape({
   dob: Yup.string()
     .matches(/^\d{2}\/\d{2}\/\d{4}$/, 'DOB must be in DD/MM/YYYY')
     .required('DOB is required'),
-  gender: Yup.string().required('Gender is required'),
+  gender: Yup.string()
+    .oneOf(Object.keys(genders))
+    .required('Gender is required'),
   terms: Yup.boolean().oneOf([true], 'You must accept the terms'),
 });
 
@@ -69,7 +55,7 @@ export default function SignUpScreen() {
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date(2000, 0, 1));
   const [selectedGender, setSelectedGender] = useState<
-    Option<Gender> | undefined
+    Option<string> | undefined
   >(undefined);
 
   const initialValues = {
@@ -82,15 +68,17 @@ export default function SignUpScreen() {
     password: 'P@ss1234',
   };
 
-  const genderOptions: CheckBoxOption<Gender>[] = genders.reduce(
-    (list: CheckBoxOption<Gender>[], value) => [
+  const sdfd = Object.keys(genders);
+
+  const genderOptions: CheckBoxOption<string>[] = Object.keys(genders).reduce(
+    (list: CheckBoxOption<string>[], value) => [
       ...list,
       {
-        label: value.charAt(0).toUpperCase() + value.slice(1),
+        label: genders[value as keyof typeof genders],
         value,
         icon: (
           <MaterialIcons
-            name={getGenderIcon(value)}
+            name={getGenderIcon(value as Gender)}
             size={40}
             color={
               selectedGender == undefined
@@ -148,6 +136,11 @@ export default function SignUpScreen() {
     }
   };
 
+  const handleGenderChange = (option: Option<string>, setFieldValue: any) => {
+    setFieldValue('gender', option.value);
+    setSelectedGender(option);
+  };
+
   return (
     <ImageBackground
       source={require('@/assets/images/splashScreen.png')}
@@ -158,7 +151,7 @@ export default function SignUpScreen() {
         contentContainerStyle={{
           flexGrow: 1,
           justifyContent: 'space-between',
-          marginTop: 250
+          marginTop: 250,
         }}
       >
         <YStack
@@ -342,7 +335,9 @@ export default function SignUpScreen() {
                   <CheckBoxButtonGroup
                     options={genderOptions}
                     selectedOption={selectedGender}
-                    onChange={setSelectedGender}
+                    onChange={option =>
+                      handleGenderChange(option, setFieldValue)
+                    }
                   />
                 </YStack>
                 {/* <View style={styles.checkboxWrapper}>
