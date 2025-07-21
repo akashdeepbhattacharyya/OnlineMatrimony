@@ -20,10 +20,11 @@ import PhoneIcon from '@/assets/images/icon_phone.svg';
 import { LabelledButton } from '@/src/components/common/LabelledButton';
 import { Text } from '@/src/components/common/Text';
 import { CheckBoxButtonGroup } from '@/src/components/common/CheckBoxButtonGroup';
-import { Gender, genders, getGenderIcon } from '@/resources/gender';
-import { CheckBoxOption, Option } from '@/resources/form';
+import { Gender, genders, getGenderIcon } from '@/src/resources/gender';
+import { CheckBoxOption, Option } from '@/src/resources/form';
 import { SocialMediaButtons } from '@/src/components/common/SocialMediaButtons';
 import { LabelledDivider } from '@/src/components/common/LabelledDivider';
+import { useRegister } from '@/src/hooks/userRegister';
 
 const SignupSchema = Yup.object().shape({
   fullName: Yup.string().required('Full Name is required'),
@@ -57,6 +58,7 @@ export default function SignUpScreen() {
   const [selectedGender, setSelectedGender] = useState<
     Option<string> | undefined
   >(undefined);
+  const { register, loading, error, response } = useRegister();
 
   const initialValues = {
     fullName: '',
@@ -67,8 +69,6 @@ export default function SignUpScreen() {
     terms: false,
     password: 'P@ss1234',
   };
-
-  const sdfd = Object.keys(genders);
 
   const genderOptions: CheckBoxOption<string>[] = Object.keys(genders).reduce(
     (list: CheckBoxOption<string>[], value) => [
@@ -100,18 +100,17 @@ export default function SignUpScreen() {
   const handleSignUp = async (values: any) => {
     try {
       showLoader();
-      const response = await signUpApi({
+      await register({
         fullName: values.fullName,
         email: values.email,
         phone: values.phone,
-        dob: values.dob,
+        dateOfBirth: values.dob,
         gender: values.gender,
         password: values.password,
       });
-
       console.log('Signup success:', response);
       navigation.navigate('Otp', {
-        data: response.data,
+        data: '',
         page: 'signup',
       });
     } catch (err) {
