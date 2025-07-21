@@ -44,7 +44,13 @@ const themes: {
   dark_sign_up_headline_2: {
     background: tokens.color.button_bg_red,
     color: tokens.color.white,
-  }
+  },
+  dark_error_message: {
+    color: tokens.color.button_bg_red,
+  },
+  dark_date_picker: {
+    background: tokens.color.white,
+  },
 };
 
 export default themes;
