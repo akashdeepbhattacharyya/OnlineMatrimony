@@ -1,9 +1,14 @@
 import { tokens } from './tokens';
 import type { TamaguiBaseTheme, Variable } from 'tamagui';
-import { defaultConfig as tamaguiConfig } from '@tamagui/config/v4';
+import { config as tamaguiConfig } from '@tamagui/config/v3';
+
+export type BaseTheme = {
+  placeholder: string | Variable<any>;
+  unselected: string | Variable<any>;
+} & TamaguiBaseTheme;
 
 const themes: {
-  [key: string]: Partial<TamaguiBaseTheme>;
+  [key: string]: Partial<BaseTheme>;
 } = {
   dark: {
     ...tamaguiConfig.themes.dark,
@@ -22,9 +27,12 @@ const themes: {
   dark_input: {
     background: tokens.color.white,
     color: tokens.color.black,
+    placeholder: tokens.color.gray_lighter,
   },
   dark_checkbox: {
     background: tokens.color.white,
+    color: tokens.color.button_bg_red,
+    unselected: tokens.color.gray,
   },
   dark_divider: {
     background: tokens.color.gray_dark,
@@ -33,6 +41,10 @@ const themes: {
     background: tokens.color.button_bg_red,
     color: tokens.color.white,
   },
+  dark_sign_up_headline_2: {
+    background: tokens.color.button_bg_red,
+    color: tokens.color.white,
+  }
 };
 
 export default themes;

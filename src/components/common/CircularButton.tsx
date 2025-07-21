@@ -26,18 +26,5 @@ export const CircularButton = ({
         {icon}
       </View>
     </TouchableOpacity>
-    // <Button
-    //   unstyled
-    //   onPress={onPress}
-    //   backgroundColor={color}
-    //   width={size}
-    //   height={size}
-    //   borderRadius={size / 2}
-    //   alignItems="center"
-    //   justifyContent="center"
-    //   pressStyle={{ opacity: 0.8 }}
-    // >
-    //   {icon}
-    // </Button>
   );
 };
