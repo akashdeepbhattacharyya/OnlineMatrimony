@@ -1,4 +1,11 @@
-import { InputProps, View, ViewProps, XStack, YStack } from 'tamagui';
+import {
+  InputProps,
+  TextProps,
+  View,
+  ViewProps,
+  XStack,
+  YStack,
+} from 'tamagui';
 import { Input } from './Input';
 import { TextField } from './TextField';
 import { Text } from './Text';
@@ -8,13 +15,27 @@ type Props = {
   title: string;
   onPress: () => void;
   icon: React.ReactNode;
+  labelProps?: TextProps;
+  titleProps?: TextProps;
 } & ViewProps;
 
-export const LabelledButton = ({ label, icon, title, ...props }: Props) => {
+export const LabelledButton = ({
+  label,
+  icon,
+  title,
+  labelProps,
+  titleProps,
+  ...props
+}: Props) => {
   return (
     <View theme="input" width={'100%'} {...props}>
       <YStack gap={'$2.5'}>
-        <Text size="normal" font="heading" color={'$background'}>
+        <Text
+          size="normal"
+          font="heading"
+          color={'$background'}
+          {...labelProps}
+        >
           {label}
         </Text>
         <XStack
@@ -27,7 +48,7 @@ export const LabelledButton = ({ label, icon, title, ...props }: Props) => {
           gap="$3"
         >
           {icon}
-          <Text size="normal" font="heading" color={'$placeholder'}>
+          <Text size="normal" font="heading" color={'$color'} {...titleProps}>
             {title}
           </Text>
         </XStack>

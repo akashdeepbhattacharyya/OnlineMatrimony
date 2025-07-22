@@ -6,7 +6,6 @@ import { RootStackParamList } from '../../navigation/RootNavigator';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { Formik } from 'formik';
-import * as Yup from 'yup';
 import { styles } from './style';
 import { useLoader } from '../../context/LoaderContext';
 import { CheckBoxButton } from '@/src/components/common/CheckBoxButton';
@@ -21,35 +20,17 @@ import { LabelledButton } from '@/src/components/common/LabelledButton';
 import { Text } from '@/src/components/common/Text';
 import { CheckBoxButtonGroup } from '@/src/components/common/CheckBoxButtonGroup';
 import { Gender, genders, getGenderIcon } from '@/src/resources/gender';
-import { CheckBoxOption, Option } from '@/src/resources/form';
+import {
+  CheckBoxOption,
+  Option,
+  UserRegistrationFormType,
+} from '@/src/resources/form';
 import { SocialMediaButtons } from '@/src/components/common/SocialMediaButtons';
 import { LabelledDivider } from '@/src/components/common/LabelledDivider';
 import { useUserRegistration } from '@/src/hooks/useUserRegistration';
-
-const SignupSchema = Yup.object().shape({
-  fullName: Yup.string().required('Full Name is required'),
-  email: Yup.string().email('Invalid email').required('Email is required'),
-  phone: Yup.string()
-    .matches(/^\d{10}$/, 'Phone must be 10 digits')
-    .required('Phone is required'),
-  dob: Yup.string()
-    .matches(/^\d{2}\/\d{2}\/\d{4}$/, 'DOB must be in DD/MM/YYYY')
-    .required('DOB is required'),
-  gender: Yup.string()
-    .oneOf(Object.keys(genders))
-    .required('Gender is required'),
-  terms: Yup.boolean().oneOf([true], 'You must accept the terms'),
-});
-
-// Mock API function - replace with your actual API
-const signUpApi = async (data: any) => {
-  console.log('SignUp API called with:', data);
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve({ success: true, data });
-    }, 1000);
-  });
-};
+import { userRegistrationSchema } from '@/src/resources/validations/user-registration';
+import { UserRegistrationRequest } from '@/src/models/Authentication';
+import { formatDate } from '@/src/utils/dateFormatter';
 
 export default function SignUpScreen() {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -64,7 +45,7 @@ export default function SignUpScreen() {
     fullName: '',
     email: '',
     phone: '',
-    dob: '',
+    dateOfBirth: '',
     gender: '',
     terms: false,
     password: 'P@ss1234',
@@ -97,16 +78,18 @@ export default function SignUpScreen() {
 
   const { showLoader, hideLoader } = useLoader();
 
-  const handleSignUp = async (values: any) => {
+  const handleSignUp = async (values: UserRegistrationFormType) => {
     showLoader();
-    await register({
+    const payload: UserRegistrationRequest = {
       fullName: values.fullName,
       email: values.email,
       phone: values.phone,
-      dateOfBirth: values.dob,
-      gender: values.gender,
+      dateOfBirth: formatDate(values.dateOfBirth),
+      gender: values.gender.toUpperCase(),
       password: values.password,
-    });
+    };
+    console.log('Payload: ', payload);
+    await register(payload);
     hideLoader();
 
     if (data) {
@@ -132,7 +115,7 @@ export default function SignUpScreen() {
       const formatted = `${String(date.getDate()).padStart(2, '0')}/${String(
         date.getMonth() + 1,
       ).padStart(2, '0')}/${date.getFullYear()}`;
-      setFieldValue('dob', formatted);
+      setFieldValue('dateOfBirth', formatted);
     }
   };
 
@@ -185,7 +168,7 @@ export default function SignUpScreen() {
 
           <Formik
             initialValues={initialValues}
-            validationSchema={SignupSchema}
+            validationSchema={userRegistrationSchema}
             onSubmit={handleSignUp}
           >
             {({
@@ -250,10 +233,14 @@ export default function SignUpScreen() {
                     label="Date Of Birth"
                     icon={<Entypo name="cake" color="#000000" size={20} />}
                     onPress={() => setShowDatePicker(true)}
-                    title={values.dob || 'DD / MM / YYYY'}
+                    title={values.dateOfBirth || 'DD / MM / YYYY'}
+                    titleProps={{
+                      color:
+                        values.dateOfBirth === '' ? '$placeholder' : '$color',
+                    }}
                   />
-                  {touched.dob && errors.dob && (
-                    <Text theme={'error_message'}>{errors.dob}</Text>
+                  {touched.dateOfBirth && errors.dateOfBirth && (
+                    <Text theme={'error_message'}>{errors.dateOfBirth}</Text>
                   )}
 
                   {showDatePicker && (
