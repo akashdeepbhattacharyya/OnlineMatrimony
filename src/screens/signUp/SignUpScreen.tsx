@@ -24,7 +24,7 @@ import { Gender, genders, getGenderIcon } from '@/src/resources/gender';
 import { CheckBoxOption, Option } from '@/src/resources/form';
 import { SocialMediaButtons } from '@/src/components/common/SocialMediaButtons';
 import { LabelledDivider } from '@/src/components/common/LabelledDivider';
-import { useRegister } from '@/src/hooks/userRegister';
+import { useUserRegistration } from '@/src/hooks/useUserRegistration';
 
 const SignupSchema = Yup.object().shape({
   fullName: Yup.string().required('Full Name is required'),
@@ -58,7 +58,7 @@ export default function SignUpScreen() {
   const [selectedGender, setSelectedGender] = useState<
     Option<string> | undefined
   >(undefined);
-  const { register, loading, error, response } = useRegister();
+  const { register, error, data } = useUserRegistration();
 
   const initialValues = {
     fullName: '',
@@ -98,25 +98,26 @@ export default function SignUpScreen() {
   const { showLoader, hideLoader } = useLoader();
 
   const handleSignUp = async (values: any) => {
-    try {
-      showLoader();
-      await register({
-        fullName: values.fullName,
-        email: values.email,
-        phone: values.phone,
-        dateOfBirth: values.dob,
-        gender: values.gender,
-        password: values.password,
-      });
-      console.log('Signup success:', response);
+    showLoader();
+    await register({
+      fullName: values.fullName,
+      email: values.email,
+      phone: values.phone,
+      dateOfBirth: values.dob,
+      gender: values.gender,
+      password: values.password,
+    });
+    hideLoader();
+
+    if (data) {
+      console.log('Signup success:', data);
+
       navigation.navigate('Otp', {
         data: '',
         page: 'signup',
       });
-    } catch (err) {
-      console.error('Signup error:', err);
-    } finally {
-      hideLoader();
+    } else {
+      console.log('Signup failed', error);
     }
   };
 
