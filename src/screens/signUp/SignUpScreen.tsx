@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { use, useState } from 'react';
 import { ScrollView, ImageBackground, Platform } from 'react-native';
 import { MaterialIcons, Entypo } from '@expo/vector-icons';
 import { NavigationProp, useNavigation } from '@react-navigation/core';
@@ -104,7 +104,7 @@ export default function SignUpScreen() {
         page: 'signup',
       });
     } else {
-      console.log('Signup failed:', error);
+      console.log('Signup failed:', userRegistrationError);
     }
   };
 
