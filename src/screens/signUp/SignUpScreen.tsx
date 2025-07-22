@@ -113,7 +113,7 @@ export default function SignUpScreen() {
       console.log('Signup success:', data);
 
       navigation.navigate('Otp', {
-        data: '',
+        data: data,
         page: 'signup',
       });
     } else {
