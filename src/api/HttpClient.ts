@@ -12,7 +12,7 @@ export class HttpClient implements IHttpClient {
   private async request<T>(
     method: string,
     endpoint: string,
-    body?: any
+    body?: any,
   ): Promise<T> {
     const headers = {
       'Content-Type': 'application/json',

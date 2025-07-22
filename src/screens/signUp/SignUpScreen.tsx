@@ -39,7 +39,11 @@ export default function SignUpScreen() {
   const [selectedGender, setSelectedGender] = useState<
     Option<string> | undefined
   >(undefined);
-  const { register, error, data } = useUserRegistration();
+  const {
+    register,
+    error: userRegistrationError,
+    data,
+  } = useUserRegistration();
 
   const initialValues = {
     fullName: '',
@@ -100,7 +104,7 @@ export default function SignUpScreen() {
         page: 'signup',
       });
     } else {
-      console.log('Signup failed', error);
+      console.log('Signup failed:', error);
     }
   };
 
@@ -298,6 +302,13 @@ export default function SignUpScreen() {
                     <Text theme={'error_message'}>{errors.terms}</Text>
                   )}
                 </YStack>
+                {/* Show Error Message */}
+                {userRegistrationError && (
+                  <Text size="large" theme={'error_message'} textAlign="center">
+                    {userRegistrationError}
+                  </Text>
+                )}
+
                 {/* Submit */}
                 <PrimaryButton
                   title="Continue"

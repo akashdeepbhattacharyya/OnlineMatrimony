@@ -7,7 +7,7 @@ export const userRegistrationSchema = Yup.object().shape({
   phone: Yup.string()
     .matches(/^\d{10}$/, 'Phone must be 10 digits')
     .required('Phone is required'),
-  dob: Yup.string()
+  dateOfBirth: Yup.string()
     .matches(/^\d{2}\/\d{2}\/\d{4}$/, 'DOB must be in DD/MM/YYYY')
     .required('DOB is required'),
   gender: Yup.string()

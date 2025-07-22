@@ -1,25 +1,24 @@
 import { ApiResponse } from '@/src/models/ApiResponse';
 
 export async function handleApiResponse<T>(
-  promise: Promise<Response>,
+  promise: Promise<any>,
 ): Promise<ApiResponse<T>> {
   try {
     const response = await promise;
-    const jsonData = await response.json();
-
-    if (jsonData.status === false) {
+    console.log('API Response:', response);
+    if (response?.status === false) {
       return {
-        errorCode: jsonData.errorCode,
+        errorCode: response.errorCode,
         status: false,
-        statusCode: jsonData.statusCode,
-        message: jsonData.message,
+        statusCode: response.statusCode,
+        message: response.message,
       };
     }
 
     return {
       status: true,
-      data: jsonData,
-      statusCode: jsonData.statusCode || response.status,
+      data: response.data,
+      statusCode: response.statusCode,
     };
   } catch (error: any) {
     return {
