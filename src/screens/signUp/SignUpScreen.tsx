@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { use, useState } from 'react';
 import { ScrollView, ImageBackground, Platform } from 'react-native';
 import { MaterialIcons, Entypo } from '@expo/vector-icons';
 import { NavigationProp, useNavigation } from '@react-navigation/core';
@@ -6,7 +6,6 @@ import { RootStackParamList } from '../../navigation/RootNavigator';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 import { Formik } from 'formik';
-import * as Yup from 'yup';
 import { styles } from './style';
 import { useLoader } from '../../context/LoaderContext';
 import { CheckBoxButton } from '@/src/components/common/CheckBoxButton';
@@ -20,35 +19,18 @@ import PhoneIcon from '@/assets/images/icon_phone.svg';
 import { LabelledButton } from '@/src/components/common/LabelledButton';
 import { Text } from '@/src/components/common/Text';
 import { CheckBoxButtonGroup } from '@/src/components/common/CheckBoxButtonGroup';
-import { Gender, genders, getGenderIcon } from '@/resources/gender';
-import { CheckBoxOption, Option } from '@/resources/form';
+import { Gender, genders, getGenderIcon } from '@/src/resources/gender';
+import {
+  CheckBoxOption,
+  Option,
+  UserRegistrationFormType,
+} from '@/src/resources/form';
 import { SocialMediaButtons } from '@/src/components/common/SocialMediaButtons';
 import { LabelledDivider } from '@/src/components/common/LabelledDivider';
-
-const SignupSchema = Yup.object().shape({
-  fullName: Yup.string().required('Full Name is required'),
-  email: Yup.string().email('Invalid email').required('Email is required'),
-  phone: Yup.string()
-    .matches(/^\d{10}$/, 'Phone must be 10 digits')
-    .required('Phone is required'),
-  dob: Yup.string()
-    .matches(/^\d{2}\/\d{2}\/\d{4}$/, 'DOB must be in DD/MM/YYYY')
-    .required('DOB is required'),
-  gender: Yup.string()
-    .oneOf(Object.keys(genders))
-    .required('Gender is required'),
-  terms: Yup.boolean().oneOf([true], 'You must accept the terms'),
-});
-
-// Mock API function - replace with your actual API
-const signUpApi = async (data: any) => {
-  console.log('SignUp API called with:', data);
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve({ success: true, data });
-    }, 1000);
-  });
-};
+import { useUserRegistration } from '@/src/hooks/useUserRegistration';
+import { userRegistrationSchema } from '@/src/resources/validations/user-registration';
+import { UserRegistrationRequest } from '@/src/models/Authentication';
+import { formatDate } from '@/src/utils/dateFormatter';
 
 export default function SignUpScreen() {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -57,18 +39,21 @@ export default function SignUpScreen() {
   const [selectedGender, setSelectedGender] = useState<
     Option<string> | undefined
   >(undefined);
+  const {
+    register,
+    error: userRegistrationError,
+    data,
+  } = useUserRegistration();
 
   const initialValues = {
     fullName: '',
     email: '',
     phone: '',
-    dob: '',
+    dateOfBirth: '',
     gender: '',
     terms: false,
     password: 'P@ss1234',
   };
-
-  const sdfd = Object.keys(genders);
 
   const genderOptions: CheckBoxOption<string>[] = Object.keys(genders).reduce(
     (list: CheckBoxOption<string>[], value) => [
@@ -97,27 +82,29 @@ export default function SignUpScreen() {
 
   const { showLoader, hideLoader } = useLoader();
 
-  const handleSignUp = async (values: any) => {
-    try {
-      showLoader();
-      const response = await signUpApi({
-        fullName: values.fullName,
-        email: values.email,
-        phone: values.phone,
-        dob: values.dob,
-        gender: values.gender,
-        password: values.password,
-      });
+  const handleSignUp = async (values: UserRegistrationFormType) => {
+    showLoader();
+    const payload: UserRegistrationRequest = {
+      fullName: values.fullName,
+      email: values.email,
+      phone: values.phone,
+      dateOfBirth: formatDate(values.dateOfBirth),
+      gender: values.gender.toUpperCase(),
+      password: values.password,
+    };
+    console.log('Payload: ', payload);
+    await register(payload);
+    hideLoader();
 
-      console.log('Signup success:', response);
+    if (data) {
+      console.log('Signup success:', data);
+
       navigation.navigate('Otp', {
-        data: response.data,
+        data: data,
         page: 'signup',
       });
-    } catch (err) {
-      console.error('Signup error:', err);
-    } finally {
-      hideLoader();
+    } else {
+      console.log('Signup failed:', userRegistrationError);
     }
   };
 
@@ -132,7 +119,7 @@ export default function SignUpScreen() {
       const formatted = `${String(date.getDate()).padStart(2, '0')}/${String(
         date.getMonth() + 1,
       ).padStart(2, '0')}/${date.getFullYear()}`;
-      setFieldValue('dob', formatted);
+      setFieldValue('dateOfBirth', formatted);
     }
   };
 
@@ -185,7 +172,7 @@ export default function SignUpScreen() {
 
           <Formik
             initialValues={initialValues}
-            validationSchema={SignupSchema}
+            validationSchema={userRegistrationSchema}
             onSubmit={handleSignUp}
           >
             {({
@@ -250,10 +237,14 @@ export default function SignUpScreen() {
                     label="Date Of Birth"
                     icon={<Entypo name="cake" color="#000000" size={20} />}
                     onPress={() => setShowDatePicker(true)}
-                    title={values.dob || 'DD / MM / YYYY'}
+                    title={values.dateOfBirth || 'DD / MM / YYYY'}
+                    titleProps={{
+                      color:
+                        values.dateOfBirth === '' ? '$placeholder' : '$color',
+                    }}
                   />
-                  {touched.dob && errors.dob && (
-                    <Text theme={'error_message'}>{errors.dob}</Text>
+                  {touched.dateOfBirth && errors.dateOfBirth && (
+                    <Text theme={'error_message'}>{errors.dateOfBirth}</Text>
                   )}
 
                   {showDatePicker && (
@@ -311,6 +302,13 @@ export default function SignUpScreen() {
                     <Text theme={'error_message'}>{errors.terms}</Text>
                   )}
                 </YStack>
+                {/* Show Error Message */}
+                {userRegistrationError && (
+                  <Text size="large" theme={'error_message'} textAlign="center">
+                    {userRegistrationError}
+                  </Text>
+                )}
+
                 {/* Submit */}
                 <PrimaryButton
                   title="Continue"
