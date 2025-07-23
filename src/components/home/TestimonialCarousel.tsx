@@ -136,7 +136,6 @@ const styles = StyleSheet.create({
     backgroundColor: getToken('$color.gray_20'),
     borderRadius: 20,
     padding: 10,
-    zIndex: 1,
   },
   arrowRight: {
     backgroundColor: getToken('$color.gray_20'),

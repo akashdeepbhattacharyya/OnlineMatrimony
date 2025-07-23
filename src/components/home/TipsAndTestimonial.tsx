@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { Dimensions, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { Video } from 'expo-av';
 import { Tip } from '../../interface/home';
 import { Image, View, XStack, YStack } from 'tamagui';
@@ -7,6 +7,8 @@ import { Text } from '@/src/components/common/Text';
 import PlayIcon from '@/assets/images/icon_play.svg';
 import DottedDivider from '@/assets/images/dotted-divider.svg';
 import { TileHeader } from './TileHeader';
+
+const { width, height } = Dimensions.get('window');
 
 const testiMonial: Tip[] = [
   {
@@ -54,11 +56,11 @@ const TipsAndTestimonial = ({ onSeeAll }: { onSeeAll: () => void }) => {
           useNativeControls={false}
         />
       ) : (
-        <View width={264} height={176} flex={1}>
+        <View width={width * 0.7} height={height * 0.2} flex={1}>
           <Image
             source={item.image}
-            width={264}
-            height={176}
+            width={width * 0.7}
+            height={height * 0.2}
             objectFit="cover"
             borderRadius={25}
             position="absolute"
