@@ -35,6 +35,7 @@ export default function HomeScreen() {
               paddingHorizontal={'$5'}
               height={'100%'}
               justifyContent="center"
+              bottom={'$3'}
             />
           </ImageBackground>
           <TipsAndTestimonial onSeeAll={() => {}} />
