@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import Header from '../../components/common/header.component';
+import Header from '../../components/common/ScreenHeader';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 const notificationsList = [

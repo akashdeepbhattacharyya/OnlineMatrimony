@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { styles } from './style';
-import Header from '../../components/common/header.component';
+import Header from '../../components/common/ScreenHeader';
 
 const HideDeleteProfileScreen = () => {
   return (
