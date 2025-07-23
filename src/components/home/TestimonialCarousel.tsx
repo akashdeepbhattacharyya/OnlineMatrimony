@@ -9,20 +9,21 @@ import { Feather } from '@expo/vector-icons';
 import { View, XStack, YStack, Image, getToken } from 'tamagui';
 import { Text } from '@/src/components/common/Text';
 import TestimonialBlob from '@/assets/images/testimonial.svg';
+import { Testimonial } from '@/src/interface/home';
 
 const { width } = Dimensions.get('window');
 
-const testimonialData = [
+const testimonialData: Testimonial[] = [
   {
     id: '1',
-    tips: `Contrary To Popular Belief, Lorem Ipsum Is Not Simply Random Text. It Has Roots In A Piece Of Classical Latin Literature From 45 BC, Making It Over 2000 Years Old. Richard McClintock, A Latin Professor At Hampden-Sydney College In Virginia, Looked Up One Of The More Obscure Latin Words, Consectetur, From A Lorem Ipsum Passage.`,
+    message: `Contrary To Popular Belief, Lorem Ipsum Is Not Simply Random Text. It Has Roots In A Piece Of Classical Latin Literature From 45 BC, Making It Over 2000 Years Old. Richard McClintock, A Latin Professor At Hampden-Sydney College In Virginia, Looked Up One Of The More Obscure Latin Words, Consectetur, From A Lorem Ipsum Passage.`,
     image: require('../../../assets/images/couple.png'),
     name: 'Bijoy & Nikita',
     title: 'Newly Married Couple',
   },
   {
     id: '2',
-    tips: `Lorem Ipsum has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.`,
+    message: `Lorem Ipsum has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.`,
     image: require('../../../assets/images/couple.png'),
     name: 'Amit & Riya',
     title: 'Happy Couple',
@@ -51,7 +52,7 @@ const TestimonialCarousel = () => {
     scrollToIndex(prevIndex);
   };
 
-  const renderItem = ({ item }: any) => (
+  const renderItem = ({ item }: { item: Testimonial }) => (
     <YStack
       theme={'home_tiles'}
       width={width * 0.7}
@@ -71,7 +72,7 @@ const TestimonialCarousel = () => {
         size={'small'}
         letterSpacing={0.5}
       >
-        {item.tips}
+        {item.message}
       </Text>
       <Image source={item.image} width={70} height={70} borderRadius={35} />
       <YStack alignItems="center" gap={'$1.5'}>

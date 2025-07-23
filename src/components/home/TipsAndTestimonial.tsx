@@ -1,30 +1,30 @@
 import React, { useState } from 'react';
 import { FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { Video } from 'expo-av';
-import { Testimonial } from '../../interface/home';
+import { Tip } from '../../interface/home';
 import { Image, View, XStack, YStack } from 'tamagui';
 import { Text } from '@/src/components/common/Text';
 import PlayIcon from '@/assets/images/icon_play.svg';
 import DottedDivider from '@/assets/images/dotted-divider.svg';
 
-const testiMonial: Testimonial[] = [
+const testiMonial: Tip[] = [
   {
     id: '1',
-    tips: 'Pro Tips for Amazing First Impressions',
+    title: 'Pro Tips for Amazing First Impressions',
     image: require('../../../assets/images/backgrounImg.png'),
     play: true,
     thumbnail: require('../../../assets/images/backgrounImg.png'),
   },
   {
     id: '2',
-    tips: 'Pro Tips for Amazing First Impressions',
+    title: 'Pro Tips for Amazing First Impressions',
     image: require('../../../assets/images/backgrounImg.png'),
     play: true,
     thumbnail: require('../../../assets/images/backgrounImg.png'),
   },
   {
     id: '3',
-    tips: 'Pro Tips for Amazing First Impressions',
+    title: 'Pro Tips for Amazing First Impressions',
     image: require('../../../assets/images/backgrounImg.png'),
     play: true,
     thumbnail: require('../../../assets/images/backgrounImg.png'),
@@ -41,13 +41,7 @@ const TipsAndTestimonial = () => {
     setIsPlaying(updatedPlaying);
   };
 
-  const renderItem = ({
-    item,
-    index,
-  }: {
-    item: Testimonial;
-    index: number;
-  }) => (
+  const renderItem = ({ item, index }: { item: Tip; index: number }) => (
     <View borderRadius={'$10'} padding={'$1'} marginRight={'$3'}>
       {isPlaying[index] ? (
         <Video
@@ -83,7 +77,7 @@ const TipsAndTestimonial = () => {
               gap={'$2'}
             >
               <Text font="headingBold" size="small">
-                {item.tips}
+                {item.title}
               </Text>
 
               <TouchableOpacity onPress={() => handlePlay(index)}>
