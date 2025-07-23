@@ -85,7 +85,7 @@ const TestimonialCarousel = () => {
   );
 
   return (
-    <View theme={'home_tiles'} marginBottom={200}>
+    <View theme={'home_tiles'}>
       <View paddingHorizontal={'$9'}>
         <FlatList
           ref={flatListRef}

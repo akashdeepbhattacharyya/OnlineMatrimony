@@ -1,6 +1,11 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, FlatList } from 'react-native';
+import { FlatList } from 'react-native';
 import { Feather } from '@expo/vector-icons';
+import { getToken, View, XStack, YStack } from 'tamagui';
+import { Text } from '@/src/components/common/Text';
+import DottedDivider from '@/assets/images/dotted-divider.svg';
+import { Divider } from '../common/Divider';
+import { TileHeader } from './TileHeader';
 
 const faqs = [
   'Is This Site Safe To Use?',
@@ -9,84 +14,50 @@ const faqs = [
   'How Do I Create A Good Profile?',
 ];
 
-const FAQCard = () => {
+const FAQCard = ({ onSeeAll }: { onSeeAll: () => void }) => {
   return (
-    <View style={styles.card}>
-      {/* Header */}
-      <View style={styles.header}>
-        <Text style={styles.title}>Frequently Ask Questions</Text>
-        <TouchableOpacity>
-          <Text style={styles.seeAll}>See All</Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* Dotted Line */}
-      <View style={styles.dottedLine} />
-
-      {/* FAQ List */}
-      <FlatList
-        data={faqs}
-        keyExtractor={(item, index) => index.toString()}
-         nestedScrollEnabled={true} // Add this line
-        scrollEnabled={false} 
-        renderItem={({ item }) => (
-          <View style={styles.faqItem}>
-            <Text style={styles.question}>{item}</Text>
-            <Feather name="chevron-right" size={18} color="#fff" />
-          </View>
-        )}
-        ItemSeparatorComponent={() => <View style={styles.separator} />}
-      />
+    <View theme={'home_tiles'} padding={'$4.5'} marginBottom={'$13'}>
+      <YStack
+        gap={'$3'}
+        backgroundColor={'$background'}
+        padding={'$4'}
+        borderRadius={'$8'}
+      >
+        <TileHeader title={`Frequently Asked Questions`} onSeeAll={onSeeAll} />
+        <DottedDivider width={'100%'} />
+        <FlatList
+          data={faqs}
+          keyExtractor={(item, index) => index.toString()}
+          nestedScrollEnabled={true} // Add this line
+          scrollEnabled={false}
+          renderItem={({ item }) => <FAQRow title={item} />}
+        />
+      </YStack>
     </View>
   );
 };
 
-export default FAQCard;
+const FAQRow = ({ title }: { title: string }) => {
+  return (
+    <YStack>
+      <XStack
+        justifyContent="space-between"
+        alignItems="center"
+        paddingVertical={'$2'}
+        paddingTop={'$3.5'}
+      >
+        <Text font="heading" size="small">
+          {title}
+        </Text>
+        <Feather
+          name="chevron-right"
+          size={18}
+          color={getToken('$color.gray')}
+        />
+      </XStack>
+      <Divider width={'100%'} />
+    </YStack>
+  );
+};
 
-const styles = StyleSheet.create({
-  card: {
-    backgroundColor: '#1e1e1e',
-    borderRadius: 20,
-    padding: 15,
-    marginHorizontal: 20,
-    marginTop: 10,
-    marginBottom: 90,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  title: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  seeAll: {
-    color: '#F85F5F',
-    fontSize: 14,
-    fontWeight: '500',
-  },
-  dottedLine: {
-    borderBottomColor: '#aaa',
-    borderBottomWidth: 1,
-    borderStyle: 'dotted',
-    marginVertical: 10,
-  },
-  faqItem: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 12,
-  },
-  question: {
-    color: '#fff',
-    fontSize: 14,
-    flex: 1,
-  },
-  separator: {
-    height: 1,
-    backgroundColor: '#444',
-    
-  },
-});
+export default FAQCard;

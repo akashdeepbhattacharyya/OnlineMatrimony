@@ -6,6 +6,7 @@ import { Image, View, XStack, YStack } from 'tamagui';
 import { Text } from '@/src/components/common/Text';
 import PlayIcon from '@/assets/images/icon_play.svg';
 import DottedDivider from '@/assets/images/dotted-divider.svg';
+import { TileHeader } from './TileHeader';
 
 const testiMonial: Tip[] = [
   {
@@ -31,7 +32,7 @@ const testiMonial: Tip[] = [
   },
 ];
 
-const TipsAndTestimonial = () => {
+const TipsAndTestimonial = ({ onSeeAll }: { onSeeAll: () => void }) => {
   const [isPlaying, setIsPlaying] = useState<boolean[]>(
     new Array(testiMonial.length).fill(false),
   );
@@ -98,17 +99,7 @@ const TipsAndTestimonial = () => {
         padding={'$4'}
         borderRadius={'$8'}
       >
-        <XStack justifyContent="space-between" alignItems="center">
-          <Text font="headingBold" size="normal">
-            {`Tips & Testimonial`}
-          </Text>
-          {/* TODO: Uncomment when needed */}
-          {/* <TouchableOpacity>
-            <Text font="heading" size="normal" color={'$buttonTitle'}>
-              {`See All`}
-            </Text>
-          </TouchableOpacity> */}
-        </XStack>
+        <TileHeader title={`Tips & Testimonials`} onSeeAll={onSeeAll} />
         <DottedDivider width={'100%'} />
         <FlatList
           data={testiMonial}
