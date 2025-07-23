@@ -27,6 +27,7 @@ export const tokens = createTokens({
     gray_dark: '#696969',
     gray_light: '#D3D3D3',
     gray_lighter: '#BABABA',
+    gray_20: '#333333',
     black_60: '#00000099',
   },
 

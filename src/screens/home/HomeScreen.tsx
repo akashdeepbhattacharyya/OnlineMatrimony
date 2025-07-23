@@ -13,7 +13,7 @@ import Header from '../../components/common/ScreenHeader';
 import { ScrollView } from 'react-native-gesture-handler';
 import TipsAndTestimonial from '../../components/home/TipsAndTestimonial';
 import FAQCard from '../../components/home/faqCard';
-import TestimonialCard from '../../components/home/testimonialCard';
+import TestimonialCarousel from '../../components/home/TestimonialCarousel';
 import FooterNavigator from '../../components/common/footer';
 import { SafeAreaScreen as Screen } from '@/src/components/layouts/SafeAreaScreen';
 import { TitleAndSubtitle } from '@/src/components/common/TitleAndSubtitle';
@@ -47,8 +47,8 @@ export default function HomeScreen() {
             />
           </ImageBackground>
           <TipsAndTestimonial />
-          <TestimonialCard />
-          <FAQCard />
+          <TestimonialCarousel />
+          {/* <FAQCard /> */}
         </YStack>
       </ScrollView>
     </Screen>
