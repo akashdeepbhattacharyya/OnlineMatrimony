@@ -9,7 +9,7 @@ import {
 import { Formik } from 'formik';
 
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import Header from '../../components/common/header.component';
+import Header from '../../components/common/ScreenHeader';
 import { styles } from './style';
 import { ScrollView } from 'react-native-gesture-handler';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';

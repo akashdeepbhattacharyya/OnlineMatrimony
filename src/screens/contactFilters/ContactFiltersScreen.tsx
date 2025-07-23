@@ -10,7 +10,7 @@ import {
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import { Feather } from '@expo/vector-icons';
 import { styles } from './style';
-import Header from '../../components/common/header.component';
+import Header from '../../components/common/ScreenHeader';
 const ContactFiltersScreen = () => {
   const [ageRange, setAgeRange] = useState([25, 50]);
   const [heightRange, setHeightRange] = useState([4.5, 7.0]);

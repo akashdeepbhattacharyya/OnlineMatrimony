@@ -5,6 +5,7 @@ import { config as tamaguiConfig } from '@tamagui/config/v3';
 export type BaseTheme = {
   placeholder: string | Variable<any>;
   unselected: string | Variable<any>;
+  buttonTitle: string | Variable<any>;
 } & TamaguiBaseTheme;
 
 const themes: {
@@ -50,6 +51,13 @@ const themes: {
   },
   dark_date_picker: {
     background: tokens.color.white,
+  },
+  dark_home_tiles: {
+    background: tokens.color.black_60,
+    color: tokens.color.white,
+    buttonTitle: tokens.color.button_bg_red,
+    borderColor: tokens.color.white,
+    shadowColor: tokens.color.black,
   },
 };
 

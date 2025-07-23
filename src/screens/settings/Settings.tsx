@@ -1,7 +1,7 @@
 import { ScrollView, StatusBar, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
-import Header from '../../components/common/header.component'
+import Header from '../../components/common/ScreenHeader'
 import FooterNavigator from '../../components/common/footer'
 import { Feather } from '@expo/vector-icons';
 import { styles } from './style'

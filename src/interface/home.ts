@@ -11,7 +11,7 @@ export interface matchesData {
   image: ImageSourcePropType; // Replace with actual image URL
   highlight: boolean;
 }
-export interface testimonialData {
+export interface Testimonial {
   id: string;
   tips: string;
   play: boolean;

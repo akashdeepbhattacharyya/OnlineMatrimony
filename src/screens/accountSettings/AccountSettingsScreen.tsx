@@ -9,7 +9,7 @@ import {
   StatusBar,
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import Header from '../../components/common/header.component';
+import Header from '../../components/common/ScreenHeader';
 import { useAuth } from '../../context/AuthContext';
 import { NavigationProp, useNavigation } from '@react-navigation/core';
 import { RootStackParamList } from '../../navigation/RootNavigator';
