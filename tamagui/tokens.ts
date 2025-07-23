@@ -21,6 +21,7 @@ export const tokens = createTokens({
     ...tamaguiConfig.tokens.color,
     white: '#ffffff',
     black: '#000000',
+    black_60: '#00000099',
     button_bg_red: '#F85F5F',
     primary: '#2B2B2B',
     gray: '#A9A9A9',
@@ -28,12 +29,12 @@ export const tokens = createTokens({
     gray_light: '#D3D3D3',
     gray_lighter: '#BABABA',
     gray_20: '#333333',
-    black_60: '#00000099',
   },
 
   font: {
     ...fontConfig,
     heading: 'Roboto-Regular',
+    headingLight: 'Roboto-Light',
     headingBold: 'Roboto-Bold',
     headingSemiBold: 'Roboto-SemiBold',
     headingExtraBold: 'Roboto-ExtraBold',

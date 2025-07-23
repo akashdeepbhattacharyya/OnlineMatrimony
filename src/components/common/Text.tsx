@@ -9,6 +9,9 @@ export const Text = styled(TamaText, {
       heading: {
         fontFamily: "$heading",
       },
+      headingLight: {
+        fontFamily: "$headingLight",
+      },
       headingBold: {
         fontFamily: "$headingBold",
       },

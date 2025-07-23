@@ -65,6 +65,10 @@ export const fontConfig = {
     ...defaultFontConfig,
     family: 'Roboto-Regular',
   },
+  headingLight: {
+    ...defaultFontConfig,
+    family: 'Roboto-Light',
+  },
   headingBold: {
     ...defaultFontConfig,
     family: 'Roboto-Bold',
