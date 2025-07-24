@@ -3,7 +3,7 @@ import { ScrollView, TouchableOpacity } from 'react-native';
 import { YStack, Image, View, getToken } from 'tamagui';
 import { dummyUserProfileWithPicture } from '@/src/models/User';
 import { ProfilePicture } from '@/src/components/profile/ProfilePicture';
-import { BasicInformation } from '@/src/components/profile/BasicInformation';
+import { ConnectionsInformation } from '@/src/components/profile/ConnectionsInformation';
 import { PersonalInformation } from '@/src/components/profile/PersonalInformation';
 import { OtherInformation } from '@/src/components/profile/OtherInformation';
 import { Documents } from '@/src/components/profile/Documents';
@@ -12,6 +12,7 @@ import { AboutYourSelf } from '@/src/components/profile/AboutYourSelf';
 import LinearGradient from 'react-native-linear-gradient';
 import BackIcon from '@/assets/images/icon-back.svg';
 import { useNavigation } from '@react-navigation/native';
+import { NameAndEmail } from '@/src/components/profile/NameAndEmail';
 
 export default function Profile() {
   const navigation = useNavigation();
@@ -60,7 +61,8 @@ export default function Profile() {
           profilePicture={dummyUserProfileWithPicture.profilePicture}
           marginTop={'$5'}
         />
-        <BasicInformation
+        <NameAndEmail userProfile={dummyUserProfileWithPicture} marginTop={'$3'} />
+        <ConnectionsInformation
           userProfile={dummyUserProfileWithPicture}
           marginTop={'$3'}
         />
@@ -77,7 +79,6 @@ export default function Profile() {
           <AboutYourSelf userProfile={dummyUserProfileWithPicture} />
         </YStack>
       </ScrollView>
-      {/* </YStack> */}
     </Screen>
   );
 }
