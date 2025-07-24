@@ -1,6 +1,6 @@
 import { NoSafeAreaScreen as Screen } from '@/src/components/layouts/NoSafeAreaScreen';
 import { ScrollView } from 'react-native';
-import { YStack } from 'tamagui';
+import { YStack, Image, View, getToken } from 'tamagui';
 import { dummyUserProfileWithPicture } from '@/src/models/User';
 import { ProfilePicture } from '@/src/components/profile/ProfilePicture';
 import { BasicInformation } from '@/src/components/profile/BasicInformation';
@@ -9,10 +9,32 @@ import { OtherInformation } from '@/src/components/profile/OtherInformation';
 import { Documents } from '@/src/components/profile/Documents';
 import { ProfessionalInformation } from '@/src/components/profile/ProfessionalInformation';
 import { AboutYourSelf } from '@/src/components/profile/AboutYourSelf';
+import LinearGradient from 'react-native-linear-gradient';
 
 export default function Profile() {
   return (
     <Screen theme="dark">
+      <Image
+        source={require('@/assets/images/splashScreen.png')}
+        position="absolute"
+        objectFit="cover"
+      />
+      <LinearGradient
+        colors={[
+          getToken('$color.primary'),
+          getToken('$color.red_80'),
+          getToken('$color.primary'),
+        ]}
+        style={{
+          flex: 1,
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+        }}
+        locations={[0, 0.6, 1]}
+      />
       <ScrollView
         contentContainerStyle={{
           flexGrow: 1,

@@ -79,3 +79,21 @@ export type User = {
     updatedAt: [number, number, number, number, number, number];
   };
 };
+
+export const dummyUser: User = {
+  id: 1,
+  email: 'john.doe@example.com',
+  phone: '123-456-7890',
+  isVerified: true,
+  isActive: true,
+  createdAt: [2020, 1, 1, 12, 0, 0],
+  lastLogin: [2023, 1, 1, 12, 0, 0, 0],
+  profile: {
+    id: 1,
+    fullName: 'John Doe',
+    gender: 'male',
+    country: 'USA',
+    createdAt: [2020, 1, 1, 12, 0, 0],
+    updatedAt: [2023, 1, 1, 12, 0, 0],
+  },
+};

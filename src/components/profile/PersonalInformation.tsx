@@ -3,6 +3,7 @@ import { YStack, XStack, getToken, ViewProps } from 'tamagui';
 import { ProfileItem } from './ProfileItem';
 import { Text } from '@/src/components/common/Text';
 import DottedDivider from '@/assets/images/dotted-divider.svg';
+import { ProfileTileHeader } from './ProfileTileHeader';
 
 type Props = {
   userProfile: UserProfile;
@@ -14,15 +15,12 @@ export const PersonalInformation = ({ userProfile, ...props }: Props) => {
       theme={'profile_tile'}
       width={'100%'}
       gap={'$4'}
-      backgroundColor={"$background"}
+      backgroundColor={'$background'}
       padding="$4"
       borderRadius="$8"
       {...props}
     >
-      <Text font="heading" size="normal">
-        {`Personal Information`}
-      </Text>
-      <DottedDivider width={'100%'} />
+      <ProfileTileHeader title="Personal Information" />
       <ProfileItem
         title="Full Name"
         subtitle={userProfile.personalInformation.fullName}

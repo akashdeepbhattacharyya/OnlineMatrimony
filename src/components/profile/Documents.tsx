@@ -1,8 +1,7 @@
 import { UserProfile } from '@/src/models/User';
-import { YStack, XStack, getToken, ViewProps } from 'tamagui';
+import { YStack, ViewProps } from 'tamagui';
 import { ProfileItem } from './ProfileItem';
-import { Text } from '@/src/components/common/Text';
-import DottedDivider from '@/assets/images/dotted-divider.svg';
+import { ProfileTileHeader } from './ProfileTileHeader';
 
 type Props = {
   userProfile: UserProfile;
@@ -19,10 +18,7 @@ export const Documents = ({ userProfile, ...props }: Props) => {
       borderRadius="$8"
       {...props}
     >
-      <Text font="heading" size="normal">
-        {`Documents`}
-      </Text>
-      <DottedDivider width={'100%'} />
+      <ProfileTileHeader title="Documents" />
       <ProfileItem title="ID Proof" subtitle={userProfile.documents?.idProof} />
       <ProfileItem
         title="Address Proof"

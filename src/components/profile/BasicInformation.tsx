@@ -18,31 +18,35 @@ export const BasicInformation = ({ userProfile, ...props }: Props) => {
         </Text>
       </YStack>
       <XStack gap={'$10'} justifyContent="center">
-        <YStack alignItems="center" gap={'$2'}>
-          <Text font="heading" size="extra_large">
-            {userProfile.acceptedCount}
-          </Text>
-          <Text font="headingLight" size="extra_small">
-            {`Accepted`}
-          </Text>
-        </YStack>
-        <YStack alignItems="center" gap={'$2'}>
-          <Text font="heading" size="extra_large">
-            {userProfile.receivedCount}
-          </Text>
-          <Text font="headingLight" size="extra_small">
-            {`Received`}
-          </Text>
-        </YStack>
-        <YStack alignItems="center" gap={'$2'}>
-          <Text font="heading" size="extra_large">
-            {userProfile.sentCount}
-          </Text>
-          <Text font="headingLight" size="extra_small">
-            {`Sent`}
-          </Text>
-        </YStack>
+        <BasicInformationCountRow
+          count={userProfile.acceptedCount}
+          label="Accepted"
+        />
+        <BasicInformationCountRow
+          count={userProfile.receivedCount}
+          label="Received"
+        />
+        <BasicInformationCountRow count={userProfile.sentCount} label="Sent" />
       </XStack>
+    </YStack>
+  );
+};
+
+const BasicInformationCountRow = ({
+  count,
+  label,
+}: {
+  count: number;
+  label: string;
+}) => {
+  return (
+    <YStack alignItems="center" gap={'$2'}>
+      <Text font="headingBold" size="extra_large">
+        {count}
+      </Text>
+      <Text font="headingLight" size="extra_small">
+        {label}
+      </Text>
     </YStack>
   );
 };
