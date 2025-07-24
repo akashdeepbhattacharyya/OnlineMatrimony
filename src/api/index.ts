@@ -3,7 +3,7 @@ import { ApiService } from './ApiService';
 import { AuthRepository } from '@/src/services/repositories/AuthRepository';
 
 // Create shared instances
-const httpClient = new HttpClient('https://matrimony-api-wgvt.onrender.com/api/v1');
+const httpClient = new HttpClient(process.env.API_BASE_URL || '');
 const apiService = new ApiService(httpClient);
 
 export const authRepository = new AuthRepository(apiService);

@@ -27,7 +27,7 @@ import {
 } from '@/src/resources/form';
 import { SocialMediaButtons } from '@/src/components/common/SocialMediaButtons';
 import { LabelledDivider } from '@/src/components/common/LabelledDivider';
-import { useUserRegistration } from '@/src/hooks/useUserRegistration';
+import { useUserAuth } from '@/src/hooks/useUserAuth';
 import { userRegistrationSchema } from '@/src/resources/validations/user-registration';
 import { UserRegistrationRequest } from '@/src/models/Authentication';
 import { formatDate } from '@/src/utils/dateFormatter';
@@ -39,11 +39,7 @@ export default function SignUpScreen() {
   const [selectedGender, setSelectedGender] = useState<
     Option<string> | undefined
   >(undefined);
-  const {
-    register,
-    error: userRegistrationError,
-    data,
-  } = useUserRegistration();
+  const { register, error: userRegistrationError, data } = useUserAuth();
 
   const initialValues = {
     fullName: '',
@@ -93,15 +89,15 @@ export default function SignUpScreen() {
       password: values.password,
     };
     console.log('Payload: ', payload);
-    await register(payload);
+    const val = await register(payload);
     hideLoader();
 
-    if (data) {
-      console.log('Signup success:', data);
+    if (val) {
+      console.log('Signup success:', val);
 
       navigation.navigate('Otp', {
-        data: data,
-        page: 'signup',
+        data: payload.email as string,
+        page: 'REGISTRATION',
       });
     } else {
       console.log('Signup failed:', userRegistrationError);
@@ -180,6 +176,8 @@ export default function SignUpScreen() {
               handleBlur,
               handleSubmit,
               setFieldValue,
+              isSubmitting,
+              isValid,
               values,
               touched,
               errors,
@@ -314,7 +312,7 @@ export default function SignUpScreen() {
                   title="Continue"
                   onPress={() => handleSubmit()}
                   marginTop="$2"
-                  //   disabled={!isChecked || input === ''}
+                  disabled={isSubmitting || !isValid}
                 />
                 <LabelledDivider
                   label={`Or Sign Up With`}

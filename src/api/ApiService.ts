@@ -21,7 +21,9 @@ export class ApiService implements IApiService {
 
   resendOTP(data: ResendOTPRequest): Promise<Response> {
     return this.httpClient.post<Response>(
-      `/auth/resend-otp?${new URLSearchParams(data as any).toString()}`,
+      `/auth/resend-otp?${new URLSearchParams(
+        data as ResendOTPRequest,
+      ).toString()}`,
     );
   }
 

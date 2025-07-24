@@ -53,3 +53,29 @@ export type LoginRequest = {
   password: string;
   rememberMe: boolean;
 };
+
+export type LoginResponse = {
+  accessToken: string;
+  refreshToken: string;
+  tokenType: string;
+  expiresIn: number;
+  user: User;
+};
+
+export type User = {
+  id: number;
+  email: string;
+  phone: string;
+  isVerified: boolean;
+  isActive: boolean;
+  createdAt: [number, number, number, number, number, number];
+  lastLogin: [number, number, number, number, number, number, number];
+  profile: {
+    id: number;
+    fullName: string;
+    gender: string;
+    country: string;
+    createdAt: [number, number, number, number, number, number];
+    updatedAt: [number, number, number, number, number, number];
+  };
+};

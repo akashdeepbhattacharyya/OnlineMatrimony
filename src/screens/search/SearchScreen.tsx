@@ -10,8 +10,6 @@ import React, { useState } from 'react';
 import ProfileCard from '../../components/search/ProfileCard';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import Header from '../../components/common/ScreenHeader';
-import FooterNavigator from '../../components/common/footer';
-// import Icon from 'react-native-vector-icons/MaterialIcons';
 import { MaterialIcons } from '@expo/vector-icons';
 
 import { styles } from './style';

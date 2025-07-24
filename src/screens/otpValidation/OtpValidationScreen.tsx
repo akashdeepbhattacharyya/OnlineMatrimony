@@ -8,11 +8,13 @@ import {
 import { YStack, Spacer, XStack, View } from 'tamagui';
 
 import { RootStackParamList } from '../../navigation/RootNavigator';
-import { useAuth } from '../../context/AuthContext';
 import { styles } from './style';
 import { PrimaryButton } from '@/src/components/common/PrimaryButton';
 import { TitleAndSubtitle } from '@/src/components/common/TitleAndSubtitle';
 import { Text } from '@/src/components/common/Text';
+import { useUserAuth } from '@/src/hooks/useUserAuth';
+import { useLoader } from '@/src/context/LoaderContext';
+import { isEmailOrPhone } from '@/src/utils/utils';
 
 type OtpValidationScreenProps = {
   route: RouteProp<RootStackParamList, 'Otp'>;
@@ -27,7 +29,8 @@ export default function OtpValidationScreen({
   const [timer, setTimer] = useState(30);
   const [resendDisabled, setResendDisabled] = useState(true);
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const { login } = useAuth();
+  const { showLoader, hideLoader } = useLoader();
+  const { resendOtp, error, submitOtp } = useUserAuth();
   useEffect(() => {
     const countdown = setInterval(() => {
       if (timer > 0) {
@@ -42,11 +45,22 @@ export default function OtpValidationScreen({
   }, [timer]);
   const inputRefs = useRef<Array<TextInput | null>>([]);
 
-  const handleGetOtp = () => {
-    if (page === 'Login') {
-      login({ id: '', name: '', email: '' }, 'dddd');
-    } else if (page === 'signup') {
-      navigation.navigate('ProfileSelection');
+  const handleGetOtp = async () => {
+    showLoader();
+    console.log(data, input.join(''));
+
+    const value = await submitOtp({
+      email: data,
+      otp: input.join(''),
+      purpose: page,
+    });
+    hideLoader();
+    if (value) {
+      navigation.navigate(
+        page === 'REGISTRATION' ? 'ProfileSelection' : 'Home',
+      );
+    } else {
+      console.log('OTP submission failed:', error);
     }
   };
   const handleOtpChange = (value: string, index: number) => {
@@ -57,10 +71,18 @@ export default function OtpValidationScreen({
       inputRefs.current[index + 1]?.focus();
     }
   };
-  const handleResendOtp = () => {
+  const handleResendOtp = async () => {
+    showLoader();
+    const val = await resendOtp(data, page);
     setTimer(30);
     setResendDisabled(true);
+    hideLoader();
+    if (val) {
+      setInput(['', '', '', '', '', '']);
+      inputRefs.current[0]?.focus();
+    }
   };
+
   return (
     <ImageBackground
       source={require('@/assets/images/splashScreen.png')}
@@ -87,7 +109,11 @@ export default function OtpValidationScreen({
           textAlign="center"
           paddingHorizontal={'$5'}
         >
-          {`We Will Send You A One Time Password On This Mobile Number +91 - 12989200823`}
+          {`We Will Send You A One Time Password On This ${
+            isEmailOrPhone(data) === 'email'
+              ? 'Email ' + data
+              : 'Mobile Number ' + data
+          }`}
         </Text>
 
         <View style={styles.inputWrapper}>
@@ -113,7 +139,11 @@ export default function OtpValidationScreen({
             />
           ))}
         </View>
-
+        {error && (
+          <Text size="large" theme={'error_message'} textAlign="center">
+            {error}
+          </Text>
+        )}
         <Text font="heading" size="normal">
           {`00:${timer < 10 ? `0${timer}` : timer}`}
         </Text>

@@ -5,7 +5,7 @@ export async function handleApiResponse<T>(
 ): Promise<ApiResponse<T>> {
   try {
     const response = await promise;
-    console.log('API Response:', response);
+    console.log('API Response:', typeof response?.status);
     if (response?.status === false) {
       return {
         errorCode: response.errorCode,

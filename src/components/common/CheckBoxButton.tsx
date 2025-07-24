@@ -3,7 +3,7 @@ import { View, ViewProps, XStack } from 'tamagui';
 import { useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { Text } from './Text';
-import { CheckBoxOption } from '@/resources/form';
+import { CheckBoxOption } from '@/src/resources/form';
 
 type Props<T> = {
   testID?: string;

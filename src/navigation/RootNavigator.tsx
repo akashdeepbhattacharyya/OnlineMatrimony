@@ -9,7 +9,7 @@ export type RootStackParamList = {
   Login: undefined;
   SignUp: undefined;
   Onboarding: undefined;
-  Otp: { data: String, page: String };
+  Otp: { data: string, page: 'LOGIN' | 'REGISTRATION' };
   ProfileSelection: undefined;
   Settings: undefined;
   Search: undefined;
