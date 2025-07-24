@@ -2,8 +2,7 @@ import { useState } from 'react';
 import { authRepository } from '@/src/api';
 import {
   LoginRequest,
-  loginResponse,
-  Response,
+  LoginResponse,
   UserRegistrationRequest,
   VerifyOTPRequest,
 } from '@/src/models/Authentication';
@@ -11,7 +10,7 @@ import {
 export const useUserAuth = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | undefined>();
-  const [data, setData] = useState<string | loginResponse | undefined>();
+  const [data, setData] = useState<string | LoginResponse | undefined>();
 
   const register = async (
     payload: UserRegistrationRequest,
@@ -50,7 +49,7 @@ export const useUserAuth = () => {
     setData(undefined);
 
     try {
-      const response = await authRepository.resendOtp(contact, purpose);
+      const response = await authRepository.resendOtp({ contact, purpose });
       console.log('Resend OTP response:', response);
 
       if (response.status) {
@@ -100,7 +99,7 @@ export const useUserAuth = () => {
 
   const login = async (
     payload: LoginRequest,
-  ): Promise<loginResponse | null> => {
+  ): Promise<LoginResponse | null> => {
     setLoading(true);
     setError(undefined);
     setData(undefined);

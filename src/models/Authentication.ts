@@ -54,15 +54,7 @@ export type LoginRequest = {
   rememberMe: boolean;
 };
 
-export type Response<T> = {
-  message: string;
-  statusCode: number;
-  data: T;
-  status: boolean;
-  errorDescription: string;
-};
-
-export type loginResponse = {
+export type LoginResponse = {
   accessToken: string;
   refreshToken: string;
   tokenType: string;

@@ -15,3 +15,9 @@ export type UserRegistrationFormType = {
   dateOfBirth: string;
   gender: string;
 };
+
+export type LoginFormType = {
+  emailOrPhone: string;
+  password: string;
+  rememberMe: boolean;
+};

@@ -1,7 +1,7 @@
 import {
   LoginRequest,
-  loginResponse,
-  Response,
+  LoginResponse,
+  ResendOTPRequest,
   UserRegistrationRequest,
   VerifyOTPRequest,
 } from '@/src/models/Authentication';
@@ -15,17 +15,14 @@ export class AuthRepository {
   async register(data: UserRegistrationRequest): Promise<ApiResponse<string>> {
     return handleApiResponse(this.apiService.registerUser(data));
   }
-  async resendOtp(
-    contact: string,
-    purpose: string,
-  ): Promise<ApiResponse<string>> {
-    return handleApiResponse(this.apiService.resendOTP({ contact, purpose }));
+  async resendOtp(data: ResendOTPRequest): Promise<ApiResponse<string>> {
+    return handleApiResponse(this.apiService.resendOTP(data));
   }
 
   async verifyOtp(data: VerifyOTPRequest): Promise<ApiResponse<string>> {
     return handleApiResponse(this.apiService.verifyOTP(data));
   }
-  async login(data: LoginRequest): Promise<ApiResponse<loginResponse>> {
+  async login(data: LoginRequest): Promise<ApiResponse<LoginResponse>> {
     return handleApiResponse(this.apiService.login(data));
   }
 }

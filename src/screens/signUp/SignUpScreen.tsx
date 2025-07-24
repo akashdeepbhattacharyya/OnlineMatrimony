@@ -27,7 +27,7 @@ import {
 } from '@/src/resources/form';
 import { SocialMediaButtons } from '@/src/components/common/SocialMediaButtons';
 import { LabelledDivider } from '@/src/components/common/LabelledDivider';
-import { useUserAuth } from '@/src/hooks/useUserRegistration';
+import { useUserAuth } from '@/src/hooks/useUserAuth';
 import { userRegistrationSchema } from '@/src/resources/validations/user-registration';
 import { UserRegistrationRequest } from '@/src/models/Authentication';
 import { formatDate } from '@/src/utils/dateFormatter';
@@ -39,11 +39,7 @@ export default function SignUpScreen() {
   const [selectedGender, setSelectedGender] = useState<
     Option<string> | undefined
   >(undefined);
-  const {
-    register,
-    error: userRegistrationError,
-    data,
-  } = useUserAuth();
+  const { register, error: userRegistrationError, data } = useUserAuth();
 
   const initialValues = {
     fullName: '',
@@ -69,8 +65,8 @@ export default function SignUpScreen() {
               selectedGender == undefined
                 ? getToken('$color.white')
                 : selectedGender?.value == value
-                  ? getToken('$color.button_bg_red')
-                  : getToken('$color.gray')
+                ? getToken('$color.button_bg_red')
+                : getToken('$color.gray')
             }
             style={{ marginLeft: 8 }}
           />
@@ -180,6 +176,8 @@ export default function SignUpScreen() {
               handleBlur,
               handleSubmit,
               setFieldValue,
+              isSubmitting,
+              isValid,
               values,
               touched,
               errors,
@@ -314,7 +312,7 @@ export default function SignUpScreen() {
                   title="Continue"
                   onPress={() => handleSubmit()}
                   marginTop="$2"
-                //   disabled={!isChecked || input === ''}
+                  disabled={isSubmitting || !isValid}
                 />
                 <LabelledDivider
                   label={`Or Sign Up With`}
@@ -322,7 +320,7 @@ export default function SignUpScreen() {
                   marginTop="$2"
                 />
 
-                <SocialMediaButtons onGoogle={() => { }} onFacebook={() => { }} />
+                <SocialMediaButtons onGoogle={() => {}} onFacebook={() => {}} />
                 <XStack
                   theme={'sign_up_button'}
                   justifyContent="center"

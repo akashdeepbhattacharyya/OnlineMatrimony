@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, ImageBackground } from 'react-native';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../../navigation/RootNavigator';
@@ -12,11 +12,12 @@ import { Text } from '../../components/common/Text';
 import { SocialMediaButtons } from '@/src/components/common/SocialMediaButtons';
 import { LabelledDivider } from '@/src/components/common/LabelledDivider';
 import { Formik } from 'formik';
-import { validationSchema } from '@/src/resources/validations/user-registration';
-import { useUserAuth } from '@/src/hooks/useUserRegistration';
+import { loginSchema } from '@/src/resources/validations/login';
+import { useUserAuth } from '@/src/hooks/useUserAuth';
 import { useLoader } from '@/src/context/LoaderContext';
-import { loginResponse, Response } from '@/src/models/Authentication';
+import { LoginResponse } from '@/src/models/Authentication';
 import { useAuth } from '@/src/context/AuthContext';
+import { LoginFormType } from '@/src/resources/form';
 
 const LoginScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -27,21 +28,22 @@ const LoginScreen = () => {
     password: 'P@ss1234',
     rememberMe: false,
   };
-  const {
-    login: loginUser,
-    error: userRegistrationError,
-    data,
-  } = useUserAuth();
+  const { login: loginUser, error: loginError } = useUserAuth();
   const { showLoader, hideLoader } = useLoader();
 
-
-  const handleLogin = async (values: typeof initialValues) => {
+  const handleLogin = async (values: LoginFormType) => {
     console.log('Login values:', values);
     // Handle login logic here
     showLoader();
-    const val: loginResponse | null = await loginUser(values)
+    const val: LoginResponse | null = await loginUser(values);
     if (val) {
       login(val.user, val.accessToken);
+      navigation.navigate('Otp', {
+        data: values.emailOrPhone,
+        page: 'LOGIN',
+      });
+    } else {
+      console.log('Login failed:', loginError);
     }
     hideLoader();
   };
@@ -54,7 +56,7 @@ const LoginScreen = () => {
     >
       <Formik
         initialValues={initialValues}
-        validationSchema={validationSchema}
+        validationSchema={loginSchema}
         onSubmit={handleLogin}
       >
         {({
@@ -75,34 +77,38 @@ const LoginScreen = () => {
             alignItems="center"
             padding="$4"
           >
-
             <Spacer size="$20" />
             <TitleAndSubtitle marginBottom="$11" />
-            <TextField
-              placeholder="Enter your Email Id / Mobile No."
-              icon={<EmailIcon />}
-              onChangeText={handleChange('emailOrPhone')}
-              onBlur={handleBlur('emailOrPhone')}
-              value={values.emailOrPhone}
-            // onChangeText={setInput}
-            />
-            {touched.emailOrPhone && errors.emailOrPhone && (
-              <Text theme={'error_message'}>{errors.emailOrPhone}</Text>
-            )}
-            <CheckBoxButton
-              option={{
-                label: 'Terms & Condition & Privacy Policy',
-                value: 'terms',
-              }}
-              // selected={isChecked}
-              selected={values.rememberMe}
-              onChange={() => setFieldValue('rememberMe', !values.rememberMe)}
-              paddingHorizontal={'$8'}
-              paddingVertical={'$4'}
-            />
-            {touched.rememberMe && errors.rememberMe && (
-              <Text theme={'error_message'}>{errors.rememberMe}</Text>
-            )}
+            <YStack width={'100%'} gap={'$2'}>
+              <TextField
+                placeholder="Enter your Email Id / Mobile No."
+                icon={<EmailIcon />}
+                onChangeText={handleChange('emailOrPhone')}
+                onBlur={handleBlur('emailOrPhone')}
+                value={values.emailOrPhone}
+              />
+              {touched.emailOrPhone && errors.emailOrPhone && (
+                <Text theme={'error_message'}>{errors.emailOrPhone}</Text>
+              )}
+            </YStack>
+
+            <YStack gap={'$2'} paddingVertical={'$4'}>
+              <CheckBoxButton
+                option={{
+                  label: 'Terms & Condition & Privacy Policy',
+                  value: 'terms',
+                }}
+                selected={values.rememberMe}
+                onChange={() => setFieldValue('rememberMe', !values.rememberMe)}
+                paddingHorizontal={'$8'}
+              />
+              {touched.rememberMe && errors.rememberMe && (
+                <Text theme={'error_message'} paddingHorizontal={'$8'}>
+                  {errors.rememberMe}
+                </Text>
+              )}
+            </YStack>
+
             <PrimaryButton
               title="Get OTP"
               onPress={() => handleSubmit()}
@@ -113,8 +119,8 @@ const LoginScreen = () => {
 
             <SocialMediaButtons
               marginTop="$4"
-              onGoogle={() => { }}
-              onFacebook={() => { }}
+              onGoogle={() => {}}
+              onFacebook={() => {}}
             />
             <XStack
               theme={'sign_up_button'}
@@ -138,7 +144,7 @@ const LoginScreen = () => {
           </YStack>
         )}
       </Formik>
-    </ImageBackground >
+    </ImageBackground>
   );
 };
 
