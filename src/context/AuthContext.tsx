@@ -1,11 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { User } from '../models/Authentication';
 
-type User = {
-  id: string;
-  name: string;
-  email: string;
-};
 
 type AuthContextType = {
   user: User | null;
@@ -38,7 +34,7 @@ export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({ c
         setIsLoading(false);
       }
     };
-    
+
     loadUser();
   }, []);
 

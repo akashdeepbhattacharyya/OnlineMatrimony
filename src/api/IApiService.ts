@@ -29,7 +29,7 @@ export interface IApiService {
    * @param data - The resend OTP request payload.
    * @returns A promise resolving to a response containing a string message or token.
    */
-  resendOTP(data: ResendOTPRequest): Promise<Response>;
+  resendOTP(data: ResendOTPRequest, purpose?: string): Promise<Response>;
 
   /**
    * Logs in a user with the provided credentials.

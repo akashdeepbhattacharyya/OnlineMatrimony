@@ -23,3 +23,33 @@ export const signUpApi = async (payload: {
 
   return res.json();
 };
+
+export const resendOtpApi = async ({
+  contact,
+  purpose = 'REGISTRATION',
+}: {
+  contact: string;
+  purpose?: string;
+}) => {
+  console.log('API_BASE_URL:', API_BASE_URL); // Debugging: base URL
+  console.log('Contact:', contact); // Debugging: email or phone
+
+  const res = await fetch(
+    `${API_BASE_URL}/auth/resend-otp?contact=${encodeURIComponent(contact)}&purpose=${purpose}`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+
+  console.log('Resend OTP response:', res);
+
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData?.message || 'Failed to resend OTP');
+  }
+
+  return res.json();
+};

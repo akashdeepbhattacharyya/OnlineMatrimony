@@ -15,3 +15,30 @@ export const userRegistrationSchema = Yup.object().shape({
     .required('Gender is required'),
   terms: Yup.boolean().oneOf([true], 'You must accept the terms'),
 });
+
+
+const isValidPhone = (value: string) => {
+  const phoneRegex = /^[0-9]{10}$/; // You can customize this
+  return phoneRegex.test(value);
+};
+
+const isValidEmail = (value: string) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(value);
+};
+
+export const validationSchema = Yup.object({
+  emailOrPhone: Yup.string()
+    .required('Email or phone number is required')
+    .test(
+      'is-email-or-phone',
+      'Enter a valid email address or phone number',
+      function (value) {
+        if (!value) return false;
+        return isValidEmail(value) || isValidPhone(value);
+      }
+    ),
+    rememberMe: Yup.boolean()
+      .required('Remember me is required')
+      .oneOf([true], 'You must accept the terms'),
+});
