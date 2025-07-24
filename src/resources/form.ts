@@ -21,3 +21,11 @@ export type LoginFormType = {
   password: string;
   terms: boolean;
 };
+
+export type UpdateProfileFormType = {
+  fullName: string;
+  email: string;
+  phone: string;
+  dateOfBirth: string;
+  gender: string;
+};

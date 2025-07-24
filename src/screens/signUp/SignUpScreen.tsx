@@ -31,6 +31,7 @@ import { useUserAuth } from '@/src/hooks/useUserAuth';
 import { userRegistrationSchema } from '@/src/resources/validations/user-registration';
 import { UserRegistrationRequest } from '@/src/models/Authentication';
 import { formatDate } from '@/src/utils/dateFormatter';
+import DOBIcon from '@/assets/images/icon-dob.svg';
 
 export default function SignUpScreen() {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -233,7 +234,7 @@ export default function SignUpScreen() {
                 <YStack gap={'$2'}>
                   <LabelledButton
                     label="Date Of Birth"
-                    icon={<Entypo name="cake" color="#000000" size={20} />}
+                    icon={<DOBIcon />}
                     onPress={() => setShowDatePicker(true)}
                     title={values.dateOfBirth || 'DD / MM / YYYY'}
                     titleProps={{

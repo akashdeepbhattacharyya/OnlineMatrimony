@@ -1,6 +1,6 @@
 import { NoSafeAreaScreen as Screen } from '@/src/components/layouts/NoSafeAreaScreen';
 import { ScrollView, TouchableOpacity } from 'react-native';
-import { YStack, Image, View, getToken, XStack } from 'tamagui';
+import { YStack, Image, View, getToken } from 'tamagui';
 import { dummyUserProfileWithPicture } from '@/src/models/User';
 import { ProfilePicture } from '@/src/components/profile/ProfilePicture';
 import { ConnectionsInformation } from '@/src/components/profile/ConnectionsInformation';
@@ -11,20 +11,32 @@ import { ProfessionalInformation } from '@/src/components/profile/ProfessionalIn
 import { AboutYourSelf } from '@/src/components/profile/AboutYourSelf';
 import LinearGradient from 'react-native-linear-gradient';
 import BackIcon from '@/assets/images/icon-back.svg';
-import EditIcon from '@/assets/images/icon-edit.svg';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+import { UpdateProfilePicture } from '@/src/components/profile/update/UpdateProfilePicture';
 import { NameAndEmail } from '@/src/components/profile/NameAndEmail';
-import { RootStackParamList } from '@/src/navigation/RootNavigator';
+import { Form, Formik, useFormik } from 'formik';
+import { UpdatePersonalInformation } from '@/src/components/profile/update/UpdatePersonalInformation';
+import { UpdateProfileFormType } from '@/src/resources/form';
+import { PrimaryButton } from '@/src/components/common/PrimaryButton';
+import { formatDate } from '@/src/utils/dateFormatter';
 
-export default function Profile() {
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+export default function UpdateProfile() {
+  const navigation = useNavigation();
 
   const onBackPress = () => {
     navigation.goBack();
   };
 
-  const onEditPress = () => {
-    navigation.navigate('UpdateProfile');
+  const initialValues: UpdateProfileFormType = {
+    fullName: dummyUserProfileWithPicture.name,
+    email: dummyUserProfileWithPicture.email,
+    dateOfBirth: formatDate(dummyUserProfileWithPicture.personalInformation.dateOfBirth, 'yyyy-MM-dd', 'dd/MM/yyyy'),
+    gender: dummyUserProfileWithPicture.gender,
+    phone: dummyUserProfileWithPicture.phoneNumber || '', // Ensure phone is a string
+  };
+
+  const onUpdate = (values: UpdateProfileFormType) => {
+    console.log('Updated values:', values);
   };
 
   return (
@@ -50,19 +62,11 @@ export default function Profile() {
         }}
         locations={[0, 0.6, 1]}
       />
-      <XStack
-        marginTop={'$10'}
-        paddingHorizontal={'$4'}
-        paddingVertical={'$2'}
-        justifyContent="space-between"
-      >
+      <View marginTop={'$10'} paddingHorizontal={'$4'} paddingVertical={'$2'}>
         <TouchableOpacity onPress={onBackPress}>
           <BackIcon />
         </TouchableOpacity>
-        <TouchableOpacity onPress={onEditPress}>
-          <EditIcon />
-        </TouchableOpacity>
-      </XStack>
+      </View>
       <ScrollView
         contentContainerStyle={{
           flexGrow: 1,
@@ -71,15 +75,37 @@ export default function Profile() {
         }}
         showsVerticalScrollIndicator={false}
       >
-        <ProfilePicture
+        <UpdateProfilePicture
           profilePicture={dummyUserProfileWithPicture.profilePicture}
-          marginTop={'$5'}
+          onPress={() => {}}
         />
         <NameAndEmail
           userProfile={dummyUserProfileWithPicture}
-          marginTop={'$3'}
+          marginTop={'$1'}
         />
-        <ConnectionsInformation
+        <Formik<UpdateProfileFormType>
+          initialValues={initialValues}
+          // validationSchema={userRegistrationSchema}
+          onSubmit={onUpdate}
+        >
+          {({ handleSubmit, isSubmitting, isValid }) => (
+            <YStack marginTop={'$4.5'} width="100%" marginBottom={'$10'}>
+              <YStack gap={'$3'}>
+                <UpdatePersonalInformation
+                  userProfile={dummyUserProfileWithPicture}
+                />
+              </YStack>
+              <PrimaryButton
+                title="Continue"
+                onPress={() => handleSubmit()}
+                marginTop="$2"
+                disabled={isSubmitting || !isValid}
+              />
+            </YStack>
+          )}
+        </Formik>
+
+        {/* <ConnectionsInformation
           userProfile={dummyUserProfileWithPicture}
           marginTop={'$3'}
         />
@@ -93,8 +119,8 @@ export default function Profile() {
           <OtherInformation userProfile={dummyUserProfileWithPicture} />
           <Documents userProfile={dummyUserProfileWithPicture} />
           <ProfessionalInformation userProfile={dummyUserProfileWithPicture} />
-          <AboutYourSelf userProfile={dummyUserProfileWithPicture} />
-        </YStack>
+          <AboutYourSelf userProfile={dummyUserProfileWithPicture} /> */}
+        {/* </YStack> */}
       </ScrollView>
     </Screen>
   );
