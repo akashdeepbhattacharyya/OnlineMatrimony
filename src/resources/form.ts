@@ -19,5 +19,5 @@ export type UserRegistrationFormType = {
 export type LoginFormType = {
   emailOrPhone: string;
   password: string;
-  rememberMe: boolean;
+  terms: boolean;
 };

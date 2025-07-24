@@ -12,7 +12,6 @@ export const loginSchema = Yup.object({
         return isValidEmail(value) || isValidPhone(value);
       },
     ),
-  rememberMe: Yup.boolean()
-    .required('Remember me is required')
-    .oneOf([true], 'You must accept the terms'),
+
+  terms: Yup.boolean().oneOf([true], 'You must accept the terms'),
 });

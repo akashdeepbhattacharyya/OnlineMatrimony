@@ -26,7 +26,7 @@ const LoginScreen = () => {
   const initialValues = {
     emailOrPhone: '',
     password: 'P@ss1234',
-    rememberMe: false,
+    terms: false,
   };
   const { login: loginUser, error: loginError } = useUserAuth();
   const { showLoader, hideLoader } = useLoader();
@@ -35,7 +35,11 @@ const LoginScreen = () => {
     console.log('Login values:', values);
     // Handle login logic here
     showLoader();
-    const val: LoginResponse | null = await loginUser(values);
+    const val: LoginResponse | null = await loginUser({
+      emailOrPhone: values.emailOrPhone,
+      password: values.password,
+      rememberMe: true,
+    });
     if (val) {
       login(val.user, val.accessToken);
       navigation.navigate('Otp', {
@@ -98,13 +102,13 @@ const LoginScreen = () => {
                   label: 'Terms & Condition & Privacy Policy',
                   value: 'terms',
                 }}
-                selected={values.rememberMe}
-                onChange={() => setFieldValue('rememberMe', !values.rememberMe)}
+                selected={values.terms}
+                onChange={() => setFieldValue('terms', !values.terms)}
                 paddingHorizontal={'$8'}
               />
-              {touched.rememberMe && errors.rememberMe && (
+              {touched.terms && errors.terms && (
                 <Text theme={'error_message'} paddingHorizontal={'$8'}>
-                  {errors.rememberMe}
+                  {errors.terms}
                 </Text>
               )}
             </YStack>
