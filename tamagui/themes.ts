@@ -6,6 +6,8 @@ export type BaseTheme = {
   placeholder: string | Variable<any>;
   unselected: string | Variable<any>;
   buttonTitle: string | Variable<any>;
+  title: string | Variable<any>;
+  subtitle: string | Variable<any>;
 } & TamaguiBaseTheme;
 
 const themes: {
@@ -58,6 +60,13 @@ const themes: {
     buttonTitle: tokens.color.button_bg_red,
     borderColor: tokens.color.white,
     shadowColor: tokens.color.black,
+  },
+  dark_profile_item: {
+    title: tokens.color.gray_lighter,
+    subtitle: tokens.color.white,
+  },
+  dark_profile_tile: {
+    background: tokens.color.black_60,
   },
 };
 

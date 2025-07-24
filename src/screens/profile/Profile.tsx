@@ -1,0 +1,83 @@
+import { NoSafeAreaScreen as Screen } from '@/src/components/layouts/NoSafeAreaScreen';
+import { ScrollView, TouchableOpacity } from 'react-native';
+import { YStack, Image, View, getToken } from 'tamagui';
+import { dummyUserProfileWithPicture } from '@/src/models/User';
+import { ProfilePicture } from '@/src/components/profile/ProfilePicture';
+import { BasicInformation } from '@/src/components/profile/BasicInformation';
+import { PersonalInformation } from '@/src/components/profile/PersonalInformation';
+import { OtherInformation } from '@/src/components/profile/OtherInformation';
+import { Documents } from '@/src/components/profile/Documents';
+import { ProfessionalInformation } from '@/src/components/profile/ProfessionalInformation';
+import { AboutYourSelf } from '@/src/components/profile/AboutYourSelf';
+import LinearGradient from 'react-native-linear-gradient';
+import BackIcon from '@/assets/images/icon-back.svg';
+import { useNavigation } from '@react-navigation/native';
+
+export default function Profile() {
+  const navigation = useNavigation();
+
+  const onBackPress = () => {
+    navigation.goBack();
+  };
+
+  return (
+    <Screen theme="dark">
+      <Image
+        source={require('@/assets/images/splashScreen.png')}
+        position="absolute"
+        objectFit="cover"
+      />
+      <LinearGradient
+        colors={[
+          getToken('$color.primary'),
+          getToken('$color.red_80'),
+          getToken('$color.primary'),
+        ]}
+        style={{
+          flex: 1,
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+        }}
+        locations={[0, 0.6, 1]}
+      />
+      <View marginTop={'$10'} paddingHorizontal={'$4'} paddingVertical={'$2'}>
+        <TouchableOpacity onPress={onBackPress}>
+          <BackIcon />
+        </TouchableOpacity>
+      </View>
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+          alignItems: 'center',
+          paddingHorizontal: 20,
+        }}
+        showsVerticalScrollIndicator={false}
+      >
+        <ProfilePicture
+          profilePicture={dummyUserProfileWithPicture.profilePicture}
+          marginTop={'$5'}
+        />
+        <BasicInformation
+          userProfile={dummyUserProfileWithPicture}
+          marginTop={'$3'}
+        />
+        <YStack
+          gap={'$3'}
+          width={'100%'}
+          marginTop={'$4.5'}
+          marginBottom={'$5'}
+        >
+          <PersonalInformation userProfile={dummyUserProfileWithPicture} />
+          <OtherInformation userProfile={dummyUserProfileWithPicture} />
+          <Documents userProfile={dummyUserProfileWithPicture} />
+          <ProfessionalInformation userProfile={dummyUserProfileWithPicture} />
+          <AboutYourSelf userProfile={dummyUserProfileWithPicture} />
+        </YStack>
+      </ScrollView>
+      {/* </YStack> */}
+    </Screen>
+  );
+}
