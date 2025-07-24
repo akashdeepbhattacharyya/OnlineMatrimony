@@ -1,5 +1,5 @@
 import { NoSafeAreaScreen as Screen } from '@/src/components/layouts/NoSafeAreaScreen';
-import { ScrollView } from 'react-native';
+import { ScrollView, TouchableOpacity } from 'react-native';
 import { YStack, Image, View, getToken } from 'tamagui';
 import { dummyUserProfileWithPicture } from '@/src/models/User';
 import { ProfilePicture } from '@/src/components/profile/ProfilePicture';
@@ -10,8 +10,16 @@ import { Documents } from '@/src/components/profile/Documents';
 import { ProfessionalInformation } from '@/src/components/profile/ProfessionalInformation';
 import { AboutYourSelf } from '@/src/components/profile/AboutYourSelf';
 import LinearGradient from 'react-native-linear-gradient';
+import BackIcon from '@/assets/images/icon-back.svg';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Profile() {
+  const navigation = useNavigation();
+
+  const onBackPress = () => {
+    navigation.goBack();
+  };
+
   return (
     <Screen theme="dark">
       <Image
@@ -35,6 +43,11 @@ export default function Profile() {
         }}
         locations={[0, 0.6, 1]}
       />
+      <View marginTop={'$10'} paddingHorizontal={'$4'} paddingVertical={'$2'}>
+        <TouchableOpacity onPress={onBackPress}>
+          <BackIcon />
+        </TouchableOpacity>
+      </View>
       <ScrollView
         contentContainerStyle={{
           flexGrow: 1,
@@ -45,7 +58,7 @@ export default function Profile() {
       >
         <ProfilePicture
           profilePicture={dummyUserProfileWithPicture.profilePicture}
-          marginTop={'$10'}
+          marginTop={'$5'}
         />
         <BasicInformation
           userProfile={dummyUserProfileWithPicture}
@@ -64,6 +77,7 @@ export default function Profile() {
           <AboutYourSelf userProfile={dummyUserProfileWithPicture} />
         </YStack>
       </ScrollView>
+      {/* </YStack> */}
     </Screen>
   );
 }
