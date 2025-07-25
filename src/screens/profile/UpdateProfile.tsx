@@ -14,6 +14,7 @@ import { PrimaryButton } from '@/src/components/common/PrimaryButton';
 import { formatDate } from '@/src/utils/dateFormatter';
 import { updateProfileSchema } from '@/src/resources/validations/update-profile';
 import { UpdateAboutYourSelf } from '@/src/components/profile/update/UpdateAboutSelf';
+import { ProfileBackground } from '@/src/components/profile/ProfileBackground';
 
 export default function UpdateProfile() {
   const navigation = useNavigation();
@@ -36,33 +37,13 @@ export default function UpdateProfile() {
     aboutMe: dummyUserProfileWithPicture.aboutMe,
   };
 
-  const onUpdate = (values: UpdateProfileFormType) => {
+  const onUpdate = async (values: UpdateProfileFormType) => {
     console.log('Updated values:', values);
   };
 
   return (
     <Screen theme="dark">
-      <Image
-        source={require('@/assets/images/splashScreen.png')}
-        position="absolute"
-        objectFit="cover"
-      />
-      <LinearGradient
-        colors={[
-          getToken('$color.primary'),
-          getToken('$color.red_80'),
-          getToken('$color.primary'),
-        ]}
-        style={{
-          flex: 1,
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-        }}
-        locations={[0, 0.6, 1]}
-      />
+      <ProfileBackground image={require('@/assets/images/splashScreen.png')} />
       <View marginTop={'$10'} paddingHorizontal={'$4'} paddingVertical={'$2'}>
         <TouchableOpacity onPress={onBackPress}>
           <BackIcon />

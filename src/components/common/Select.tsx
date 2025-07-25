@@ -81,7 +81,7 @@ export function SelectC({
         <XStack
           flex={1}
           alignItems="center"
-          gap={'$2.5'}
+          gap={'$4.5'}
           paddingHorizontal="$3"
           paddingVertical="$1"
         >

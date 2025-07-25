@@ -15,6 +15,7 @@ import EditIcon from '@/assets/images/icon-edit.svg';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { NameAndEmail } from '@/src/components/profile/NameAndEmail';
 import { RootStackParamList } from '@/src/navigation/RootNavigator';
+import { ProfileBackground } from '@/src/components/profile/ProfileBackground';
 
 export default function Profile() {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -29,27 +30,7 @@ export default function Profile() {
 
   return (
     <Screen theme="dark">
-      <Image
-        source={require('@/assets/images/splashScreen.png')}
-        position="absolute"
-        objectFit="cover"
-      />
-      <LinearGradient
-        colors={[
-          getToken('$color.primary'),
-          getToken('$color.red_80'),
-          getToken('$color.primary'),
-        ]}
-        style={{
-          flex: 1,
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-        }}
-        locations={[0, 0.6, 1]}
-      />
+      <ProfileBackground image={require('@/assets/images/splashScreen.png')} />
       <XStack
         marginTop={'$10'}
         paddingHorizontal={'$4'}

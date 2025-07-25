@@ -45,7 +45,7 @@ export const LabelledButton = ({
           borderRadius={'$10'}
           alignItems="center"
           justifyContent="flex-start"
-          gap="$3"
+          gap="$3.5"
         >
           {icon}
           <Text size="normal" font="heading" color={'$color'} {...titleProps}>

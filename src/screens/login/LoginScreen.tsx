@@ -1,4 +1,3 @@
-import React from 'react';
 import { StyleSheet, ImageBackground } from 'react-native';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../../navigation/RootNavigator';

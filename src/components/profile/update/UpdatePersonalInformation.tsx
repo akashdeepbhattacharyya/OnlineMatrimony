@@ -26,6 +26,9 @@ import {
 } from '@/src/resources/update-profile';
 import { useState } from 'react';
 import { LabelledSelect } from '../../common/LabelledSelect';
+import StateIcon from '@/assets/images/icon-state.svg';
+import CityIcon from '@/assets/images/icon-city.svg';
+import PinIcon from '@/assets/images/icon-pin.svg';
 
 type Props = {
   userProfile: UserProfile;
@@ -187,6 +190,7 @@ export const UpdatePersonalInformation = ({ userProfile, ...props }: Props) => {
             </View>
           )}
         </YStack>
+        
         {/* Gender */}
         <YStack gap={'$2'}>
           <YStack>
@@ -217,9 +221,7 @@ export const UpdatePersonalInformation = ({ userProfile, ...props }: Props) => {
             }}
             options={stateOptions}
             placeholder="Select Your State"
-            icon={
-              <MaterialIcons name="location-on" size={24} color="#000000" />
-            }
+            icon={<StateIcon />}
             initialValue={stateOptions.find(
               option => option.value === values.state,
             )}
@@ -240,13 +242,7 @@ export const UpdatePersonalInformation = ({ userProfile, ...props }: Props) => {
             }}
             options={cityOptions(values.state as State)}
             placeholder="Select Your City"
-            icon={
-              <MaterialIcons
-                name="location-on"
-                size={24}
-                color={getToken('$color.black')}
-              />
-            }
+            icon={<CityIcon />}
             initialValue={cityOptions(values.state as State).find(
               option => option.value === values.city,
             )}
@@ -263,13 +259,7 @@ export const UpdatePersonalInformation = ({ userProfile, ...props }: Props) => {
           <LabelledTextField
             label="Pincode"
             placeholder="Enter Your Pincode"
-            icon={
-              <MaterialIcons
-                name="location-on"
-                size={24}
-                color={getToken('$color.black')}
-              />
-            }
+            icon={<PinIcon />}
             onChangeText={handleChange('pincode')}
             onBlur={handleBlur('pincode')}
             value={values.pincode}

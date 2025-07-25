@@ -28,11 +28,10 @@ export const UpdateAboutYourSelf = ({ userProfile, ...props }: Props) => {
       <ProfileTileHeader title="About Yourself" />
       <TextArea
         theme="text_area"
-        padding="$2"
+        padding="$4"
         font='heading'
         size="normal"
-        borderRadius="$0"
-        borderWidth="$0"
+        borderRadius="$8"
         verticalAlign="top"
         onChangeText={handleChange('aboutMe')}
         onBlur={handleBlur('aboutMe')}

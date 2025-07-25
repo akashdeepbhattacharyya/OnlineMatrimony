@@ -1,4 +1,3 @@
-import React from 'react';
 import { ImageSourcePropType } from 'react-native';
 import { View, Image, YStack, ViewProps } from 'tamagui';
 import OuterCircle from '@/assets/images/profile-image-circle-outer.svg';
