@@ -2,24 +2,18 @@ import { NoSafeAreaScreen as Screen } from '@/src/components/layouts/NoSafeAreaS
 import { ScrollView, TouchableOpacity } from 'react-native';
 import { YStack, Image, View, getToken } from 'tamagui';
 import { dummyUserProfileWithPicture } from '@/src/models/User';
-import { ProfilePicture } from '@/src/components/profile/ProfilePicture';
-import { ConnectionsInformation } from '@/src/components/profile/ConnectionsInformation';
-import { PersonalInformation } from '@/src/components/profile/PersonalInformation';
-import { OtherInformation } from '@/src/components/profile/OtherInformation';
-import { Documents } from '@/src/components/profile/Documents';
-import { ProfessionalInformation } from '@/src/components/profile/ProfessionalInformation';
-import { AboutYourSelf } from '@/src/components/profile/AboutYourSelf';
 import LinearGradient from 'react-native-linear-gradient';
 import BackIcon from '@/assets/images/icon-back.svg';
 import { useNavigation } from '@react-navigation/native';
 import { UpdateProfilePicture } from '@/src/components/profile/update/UpdateProfilePicture';
 import { NameAndEmail } from '@/src/components/profile/NameAndEmail';
-import { Form, Formik, useFormik } from 'formik';
+import { Formik } from 'formik';
 import { UpdatePersonalInformation } from '@/src/components/profile/update/UpdatePersonalInformation';
 import { UpdateProfileFormType } from '@/src/resources/form';
 import { PrimaryButton } from '@/src/components/common/PrimaryButton';
 import { formatDate } from '@/src/utils/dateFormatter';
 import { updateProfileSchema } from '@/src/resources/validations/update-profile';
+import { UpdateAboutYourSelf } from '@/src/components/profile/update/UpdateAboutSelf';
 
 export default function UpdateProfile() {
   const navigation = useNavigation();
@@ -101,7 +95,11 @@ export default function UpdateProfile() {
                 <UpdatePersonalInformation
                   userProfile={dummyUserProfileWithPicture}
                 />
+                <UpdateAboutYourSelf
+                  userProfile={dummyUserProfileWithPicture}
+                />
               </YStack>
+
               <PrimaryButton
                 title="Save"
                 onPress={() => handleSubmit()}
@@ -111,23 +109,6 @@ export default function UpdateProfile() {
             </YStack>
           )}
         </Formik>
-
-        {/* <ConnectionsInformation
-          userProfile={dummyUserProfileWithPicture}
-          marginTop={'$3'}
-        />
-        <YStack
-          gap={'$3'}
-          width={'100%'}
-          marginTop={'$4.5'}
-          marginBottom={'$5'}
-        >
-          <PersonalInformation userProfile={dummyUserProfileWithPicture} />
-          <OtherInformation userProfile={dummyUserProfileWithPicture} />
-          <Documents userProfile={dummyUserProfileWithPicture} />
-          <ProfessionalInformation userProfile={dummyUserProfileWithPicture} />
-          <AboutYourSelf userProfile={dummyUserProfileWithPicture} /> */}
-        {/* </YStack> */}
       </ScrollView>
     </Screen>
   );

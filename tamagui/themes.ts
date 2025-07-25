@@ -81,6 +81,11 @@ const themes: {
     background: tokens.color.primary,
     color: tokens.color.white,
   },
+  dark_text_area: {
+    background: tokens.color.white,
+    colorFocus: tokens.color.black,
+    color: tokens.color.gray_lighter,
+  },
 };
 
 export default themes;
