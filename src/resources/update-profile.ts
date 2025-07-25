@@ -173,6 +173,7 @@ export const cities = {
   howrah: 'Howrah',
   durgapur: 'Durgapur',
   siliguri: 'Siliguri',
+  kavaratti: 'Kavaratti',
   other: 'Other',
 };
 export type City = keyof typeof cities;
@@ -222,7 +223,6 @@ export const states = {
   mizoram: 'Mizoram',
   nagaland: 'Nagaland',
   odisha: 'Odisha',
-  other: 'Other',
   punjab: 'Punjab',
   rajasthan: 'Rajasthan',
   sikkim: 'Sikkim',
@@ -235,7 +235,7 @@ export const states = {
 };
 export type State = keyof typeof states;
 
-export const stateCityMapping = {
+export const stateCityMapping: Record<State, City[]> = {
   andamanNicobar: ['portBlair', 'other'],
   andhraPradesh: ['visakhapatnam', 'vijayawada', 'guntur', 'nellore', 'other'],
   arunachalPradesh: ['itanagar', 'naharlagun', 'other'],

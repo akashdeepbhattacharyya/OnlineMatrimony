@@ -4,17 +4,18 @@ import { Option } from '@/src/resources/form';
 import {
   Adapt,
   getToken,
-  H1,
   Select,
-  Separator,
   Sheet,
   Theme,
   View,
   XStack,
+  YStack,
 } from 'tamagui';
 import CheckIcon from '@/assets/images/check.svg';
 import ChevronDownIcon from '@/assets/images/chevron-down.svg';
 import { TouchableOpacity } from 'react-native';
+import { Text } from './Text';
+import { Divider } from './Divider';
 
 type Props = {
   options: Option[];
@@ -26,8 +27,8 @@ type Props = {
   placeholder?: string;
   triggerProps?: ViewProps;
   contentFullScreen?: boolean;
-  // renderSelectedValue?: (value?: string) => ReactNode;
   disabled?: boolean;
+  icon?: ReactNode;
 } & SelectProps;
 
 export function SelectC({
@@ -40,8 +41,8 @@ export function SelectC({
   triggerProps,
   initialValue,
   contentFullScreen = false,
-  // renderSelectedValue,
   disabled,
+  icon,
   ...props
 }: Props) {
   const [value, setValue] = useState(initialValue?.value);
@@ -57,46 +58,51 @@ export function SelectC({
     }
   }, [options]);
 
-  // function labelBy(value?: string): string {
-  //   return options.find(option => option.value === value)?.label || '';
-  // }
-
-  // const selectValueContent = () => {
-  //   return renderSelectedValue && value ? (
-  //     renderSelectedValue(value)
-  //   ) : (
-  //     <Select.Value
-  //       flex={1}
-  //       fontSize="$nm"
-  //       paddingVertical="$2"
-  //       placeholder={placeholder || 'Select an option'}
-  //     >
-  //       {labelBy(value)}
-  //     </Select.Value>
-  //   );
-  // };
+  function labelBy(value?: string): string {
+    return options.find(option => option.value === value)?.label || '';
+  }
 
   return (
     <Select
       value={value ? value : ''}
       onValueChange={onValueChange}
       disablePreventBodyScroll
-      // {...props}
+      {...props}
     >
       <Select.Trigger
         aria-disabled={disabled}
         disabled={disabled}
-        theme="input"
-        borderColor="$borderColor"
+        theme="select"
+        backgroundColor={getToken('$color.white')}
         testID={triggerTestID}
-        // {...triggerProps}
+        borderRadius={'$10'}
+        {...triggerProps}
       >
-        <XStack flex={1} alignItems="center">
-          {/* {selectValueContent()} */}
+        <XStack
+          flex={1}
+          alignItems="center"
+          gap={'$2.5'}
+          paddingHorizontal="$3"
+          paddingVertical="$1"
+        >
+          {<Select.Icon>{icon}</Select.Icon>}
+          <Select.Value
+            flex={1}
+            fontSize="$nm"
+            backgroundColor={getToken('$color.white')}
+            fontFamily="$heading"
+            color={
+              labelBy(value)
+                ? getToken('$color.black')
+                : getToken('$color.gray')
+            }
+          >
+            {labelBy(value) || placeholder || 'Select an option'}
+          </Select.Value>
           <ChevronDownIcon />
         </XStack>
       </Select.Trigger>
-      {/* <Adapt platform="touch">
+      <Adapt platform="touch">
         <Sheet
           modal
           snapPointsMode="fit"
@@ -115,24 +121,33 @@ export function SelectC({
             opacity={0.5}
           />
           <Sheet.Frame
-            padding="$4"
-            borderTopLeftRadius="$12"
-            borderTopRightRadius="$12"
+            theme={'select'}
+            padding="$2"
+            borderTopLeftRadius="$8"
+            borderTopRightRadius="$8"
             marginTop="$20"
             elevation={6}
             backgroundColor="$background"
           >
-            <Sheet.ScrollView marginTop="$4" marginBottom="$20">
-              <Adapt.Contents backgroundColor="green" />
+            <Sheet.ScrollView marginBottom="$20">
+              <Adapt.Contents />
             </Sheet.ScrollView>
           </Sheet.Frame>
         </Sheet>
-      </Adapt> */}
-      {/* <Select.Content zIndex={200000}>
+      </Adapt>
+      <Select.Content zIndex={200000}>
         <Select.Viewport>
-          <H1 marginVertical="$3" paddingHorizontal="$3.5">
-            {title}
-          </H1>
+          <YStack marginBottom={'$2'}>
+            <Text
+              font="heading"
+              size="medium"
+              padding="$3.5"
+              color={getToken('$color.white')}
+            >
+              {title}
+            </Text>
+            <Divider width={'91%'} marginHorizontal="$4" />
+          </YStack>
           <Select.Group testID={testID} aria-selected={!!value}>
             {options.map((item, i) => {
               return (
@@ -144,48 +159,51 @@ export function SelectC({
                       index={i}
                       value={item.value}
                       padding={0}
-                      marginVertical="$2"
-                      borderRadius="$5"
+                      marginVertical="$1"
+                      backgroundColor={getToken('$color.primary')}
                     >
                       <Theme
-                        name={item.value === value ? 'selectedItem' : null}
+                        name={
+                          item.value === value
+                            ? 'selected_item'
+                            : 'unselected_item'
+                        }
                       >
                         <XStack
                           flex={1}
-                          backgroundColor="$background"
                           alignItems="center"
                           justifyContent="space-between"
-                          paddingVertical="$3"
                           paddingHorizontal="$4"
                         >
                           <Select.ItemText
                             fontFamily="$heading"
-                            fontSize="$xl"
-                            color="$color.primary"
+                            fontSize="$sm"
+                            color={
+                              item.value === value
+                                ? getToken('$color.button_bg_red')
+                                : getToken('$color.white')
+                            }
                           >
                             {item.label}
                           </Select.ItemText>
                           {item.value === value && (
                             <CheckIcon
-                              // style={{
-                              //   color: getToken("$color.primary_light"),
-                              // }}
                               color={getToken('$color.button_bg_red')}
                             />
                           )}
                         </XStack>
                       </Theme>
                     </Select.Item>
-                    {i < options.length - 1 && <Separator />}
                   </View>
                 </TouchableOpacity>
               );
             })}
           </Select.Group>
         </Select.Viewport>
-      </Select.Content> */}
+      </Select.Content>
     </Select>
   );
 }
 
 export { SelectC as Select };
+export type { Props as SelectProps };

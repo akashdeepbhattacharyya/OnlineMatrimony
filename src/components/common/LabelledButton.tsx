@@ -41,7 +41,7 @@ export const LabelledButton = ({
         <XStack
           backgroundColor={'$background'}
           paddingHorizontal={'$6'}
-          paddingVertical={'$4'}
+          paddingVertical={'$4.5'}
           borderRadius={'$10'}
           alignItems="center"
           justifyContent="flex-start"

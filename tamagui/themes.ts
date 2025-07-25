@@ -68,6 +68,19 @@ const themes: {
   dark_profile_tile: {
     background: tokens.color.black_60,
   },
+  dark_select: {
+    background: tokens.color.primary,
+    color: tokens.color.black,
+    placeholder: tokens.color.gray_lighter,
+  },
+  dark_select_selected_item: {
+    background: tokens.color.primary,
+    color: tokens.color.button_bg_red,
+  },
+  dark_select_unselected_item: {
+    background: tokens.color.primary,
+    color: tokens.color.white,
+  },
 };
 
 export default themes;

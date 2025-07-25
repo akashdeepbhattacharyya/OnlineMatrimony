@@ -10,17 +10,22 @@ import {
 } from '@/src/resources/form';
 import { Text } from '@/src/components/common/Text';
 import PersonIcon from '@/assets/images/icon_person.svg';
-import { Entypo, MaterialIcons } from '@expo/vector-icons';
-import React from 'react';
+import { MaterialIcons } from '@expo/vector-icons';
 import { Platform } from 'react-native';
 import { CheckBoxButtonGroup } from '../../common/CheckBoxButtonGroup';
 import { LabelledButton } from '../../common/LabelledButton';
 import { genders, getGenderIcon, Gender } from '@/src/resources/gender';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import PhoneIcon from '@/assets/images/icon_phone.svg';
 import DOBIcon from '@/assets/images/icon-dob.svg';
-import { Select } from '../../common/Select';
-import { State, states } from '@/src/resources/update-profile';
+import {
+  cities,
+  City,
+  State,
+  stateCityMapping,
+  states,
+} from '@/src/resources/update-profile';
+import { useState } from 'react';
+import { LabelledSelect } from '../../common/LabelledSelect';
 
 type Props = {
   userProfile: UserProfile;
@@ -30,8 +35,8 @@ export const UpdatePersonalInformation = ({ userProfile, ...props }: Props) => {
   const { values, errors, touched, handleChange, handleBlur, setFieldValue } =
     useFormikContext<UpdateProfileFormType>();
 
-  const [showDatePicker, setShowDatePicker] = React.useState(false);
-  const [selectedDate, setSelectedDate] = React.useState(new Date());
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
   const genderOptions: CheckBoxOption<string>[] = Object.keys(genders).reduce(
     (list: CheckBoxOption<string>[], value) => [
@@ -69,7 +74,21 @@ export const UpdatePersonalInformation = ({ userProfile, ...props }: Props) => {
     [],
   );
 
-  const [selectedGender, setSelectedGender] = React.useState<
+  const cityOptions = (state: State): Option<City>[] => {
+    if (!state) return [];
+    return stateCityMapping[state].reduce(
+      (list: Option<City>[], value) => [
+        ...list,
+        {
+          label: cities[value as keyof typeof cities],
+          value: value as City,
+        },
+      ],
+      [],
+    );
+  };
+
+  const [selectedGender, setSelectedGender] = useState<
     CheckBoxOption<string> | undefined
   >({
     label: genders[values.gender as keyof typeof genders],
@@ -187,34 +206,70 @@ export const UpdatePersonalInformation = ({ userProfile, ...props }: Props) => {
 
         {/* State */}
         <YStack gap={'$2'}>
-          {/* <LabelledTextField
+          <LabelledSelect
             label="State"
-            placeholder="Enter Your State"
-            icon={<Entypo name="location" size={24} color="#999" />}
-            onChangeText={handleChange('state')}
-            onBlur={handleBlur('state')}
-            value={values.state}
-          /> */}
-          <Select
             title="Select State"
             value={values.state}
-            onChange={value => setFieldValue('state', value)}
+            onChange={value => {
+              setFieldValue('state', value);
+              setFieldValue('city', '');
+              setFieldValue('pincode', '');
+            }}
             options={stateOptions}
             placeholder="Select Your State"
-            // icon={<Entypo name="location" size={24} color="#999" />}
-            // onBlur={handleBlur('state')}
+            icon={
+              <MaterialIcons name="location-on" size={24} color="#000000" />
+            }
+            initialValue={stateOptions.find(
+              option => option.value === values.state,
+            )}
           />
+
           {touched.state && errors.state && (
             <Text theme={'error_message'}>{errors.state}</Text>
           )}
         </YStack>
         {/* City */}
+        <YStack gap={'$2'}>
+          <LabelledSelect
+            label="City"
+            title="Select City"
+            value={values.city}
+            onChange={value => {
+              setFieldValue('city', value), setFieldValue('pincode', '');
+            }}
+            options={cityOptions(values.state as State)}
+            placeholder="Select Your City"
+            icon={
+              <MaterialIcons
+                name="location-on"
+                size={24}
+                color={getToken('$color.black')}
+              />
+            }
+            initialValue={cityOptions(values.state as State).find(
+              option => option.value === values.city,
+            )}
+            disabled={!values.state}
+          />
+
+          {touched.city && errors.city && (
+            <Text theme={'error_message'}>{errors.city}</Text>
+          )}
+        </YStack>
+
         {/* Pincode */}
         <YStack gap={'$2'}>
           <LabelledTextField
             label="Pincode"
             placeholder="Enter Your Pincode"
-            icon={<Entypo name="location-pin" size={24} color="#999" />}
+            icon={
+              <MaterialIcons
+                name="location-on"
+                size={24}
+                color={getToken('$color.black')}
+              />
+            }
             onChangeText={handleChange('pincode')}
             onBlur={handleBlur('pincode')}
             value={values.pincode}
