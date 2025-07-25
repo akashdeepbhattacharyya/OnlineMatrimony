@@ -86,6 +86,22 @@ const themes: {
     colorFocus: tokens.color.black,
     color: tokens.color.gray_lighter,
   },
+  dark_image_picker: {
+    background: tokens.color.primary,
+  },
+  dark_image_picker_close_button: {
+    color: tokens.color.primary,
+  },
+  dark_image_picker_photo_library_button: {
+    background: tokens.color.button_bg_red,
+    borderColor: tokens.color.button_bg_red,
+    color: tokens.color.white,
+  },
+  dark_image_picker_take_photo_button: {
+    background: tokens.color.transparent,
+    borderColor: tokens.color.white,
+    color: tokens.color.white,
+  },
 };
 
 export default themes;

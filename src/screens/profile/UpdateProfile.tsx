@@ -15,9 +15,13 @@ import { formatDate } from '@/src/utils/dateFormatter';
 import { updateProfileSchema } from '@/src/resources/validations/update-profile';
 import { UpdateAboutYourSelf } from '@/src/components/profile/update/UpdateAboutSelf';
 import { ProfileBackground } from '@/src/components/profile/ProfileBackground';
+import { useState } from 'react';
+import { ImagePicker } from '@/src/components/common/ImagePicker';
 
 export default function UpdateProfile() {
   const navigation = useNavigation();
+  const [openImagePicker, setOpenImagePicker] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   const onBackPress = () => {
     navigation.goBack();
@@ -41,9 +45,21 @@ export default function UpdateProfile() {
     console.log('Updated values:', values);
   };
 
+  const handleImageSelect = (uri: string) => {
+    setSelectedImage(uri);
+    setOpenImagePicker(false);
+    console.log('Selected image:', uri);
+  };
+
   return (
     <Screen theme="dark">
-      <ProfileBackground image={require('@/assets/images/splashScreen.png')} />
+      <ProfileBackground
+        image={
+          selectedImage
+            ? { uri: selectedImage }
+            : require('@/assets/images/splashScreen.png')
+        }
+      />
       <View marginTop={'$10'} paddingHorizontal={'$4'} paddingVertical={'$2'}>
         <TouchableOpacity onPress={onBackPress}>
           <BackIcon />
@@ -59,7 +75,9 @@ export default function UpdateProfile() {
       >
         <UpdateProfilePicture
           profilePicture={dummyUserProfileWithPicture.profilePicture}
-          onPress={() => {console.log('Update profile picture pressed');}}
+          onPress={() => {
+            setOpenImagePicker(true);
+          }}
         />
         <NameAndEmail
           userProfile={dummyUserProfileWithPicture}
@@ -91,6 +109,13 @@ export default function UpdateProfile() {
           )}
         </Formik>
       </ScrollView>
+
+      <ImagePicker
+        open={openImagePicker}
+        onOpenChange={setOpenImagePicker}
+        onSelectImage={handleImageSelect}
+        onError={error => console.error('Image Picker Error:', error)}
+      />
     </Screen>
   );
 }

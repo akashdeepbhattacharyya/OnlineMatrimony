@@ -1,5 +1,4 @@
 import { ImageBackground } from 'react-native';
-import React from 'react';
 import { styles } from './style';
 import Header from '../../components/common/ScreenHeader';
 import { ScrollView } from 'react-native-gesture-handler';

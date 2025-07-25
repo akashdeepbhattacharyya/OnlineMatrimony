@@ -1,4 +1,3 @@
-import React from 'react';
 import { Option } from '@/resources/form';
 import { CheckBoxButton } from './CheckBoxButton';
 import { View, type ViewProps } from 'tamagui';

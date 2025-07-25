@@ -1,4 +1,3 @@
-import React from 'react';
 import { View, Text, TouchableOpacity, Dimensions, ViewStyle } from 'react-native';
 // import { CheckBox } from '@rneui/themed';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';

@@ -1,4 +1,3 @@
-import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import Back from '../../../assets/images/back.svg';
 import { useNavigation } from '@react-navigation/native';
