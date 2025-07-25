@@ -20,7 +20,7 @@ export const AboutYourSelf = ({ userProfile, ...props }: Props) => {
     >
       <ProfileTileHeader title="About Yourself" />
       <Text font="heading" size="normal">
-        {userProfile.aboutSelf}
+        {userProfile.aboutMe || 'No information provided.'}
       </Text>
     </YStack>
   );

@@ -19,6 +19,7 @@ import { UpdatePersonalInformation } from '@/src/components/profile/update/Updat
 import { UpdateProfileFormType } from '@/src/resources/form';
 import { PrimaryButton } from '@/src/components/common/PrimaryButton';
 import { formatDate } from '@/src/utils/dateFormatter';
+import { updateProfileSchema } from '@/src/resources/validations/update-profile';
 
 export default function UpdateProfile() {
   const navigation = useNavigation();
@@ -28,11 +29,17 @@ export default function UpdateProfile() {
   };
 
   const initialValues: UpdateProfileFormType = {
-    fullName: dummyUserProfileWithPicture.name,
-    email: dummyUserProfileWithPicture.email,
-    dateOfBirth: formatDate(dummyUserProfileWithPicture.personalInformation.dateOfBirth, 'yyyy-MM-dd', 'dd/MM/yyyy'),
+    fullName: dummyUserProfileWithPicture.fullName,
+    dateOfBirth: formatDate(
+      dummyUserProfileWithPicture.dateOfBirth,
+      'yyyy-MM-dd',
+      'dd/MM/yyyy',
+    ),
     gender: dummyUserProfileWithPicture.gender,
-    phone: dummyUserProfileWithPicture.phoneNumber || '', // Ensure phone is a string
+    city: dummyUserProfileWithPicture.city,
+    state: dummyUserProfileWithPicture.state,
+    pincode: dummyUserProfileWithPicture.pincode,
+    aboutMe: dummyUserProfileWithPicture.aboutMe,
   };
 
   const onUpdate = (values: UpdateProfileFormType) => {
@@ -85,7 +92,7 @@ export default function UpdateProfile() {
         />
         <Formik<UpdateProfileFormType>
           initialValues={initialValues}
-          // validationSchema={userRegistrationSchema}
+          validationSchema={updateProfileSchema}
           onSubmit={onUpdate}
         >
           {({ handleSubmit, isSubmitting, isValid }) => (
@@ -96,9 +103,9 @@ export default function UpdateProfile() {
                 />
               </YStack>
               <PrimaryButton
-                title="Continue"
+                title="Save"
                 onPress={() => handleSubmit()}
-                marginTop="$2"
+                marginTop="$9"
                 disabled={isSubmitting || !isValid}
               />
             </YStack>

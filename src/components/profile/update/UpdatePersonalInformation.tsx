@@ -3,7 +3,11 @@ import { YStack, ViewProps, getToken, View } from 'tamagui';
 import { ProfileTileHeader } from '../ProfileTileHeader';
 import { LabelledTextField } from '../../common/LabelledTextField';
 import { useFormikContext } from 'formik';
-import { CheckBoxOption, UpdateProfileFormType } from '@/src/resources/form';
+import {
+  CheckBoxOption,
+  Option,
+  UpdateProfileFormType,
+} from '@/src/resources/form';
 import { Text } from '@/src/components/common/Text';
 import PersonIcon from '@/assets/images/icon_person.svg';
 import { Entypo, MaterialIcons } from '@expo/vector-icons';
@@ -15,6 +19,8 @@ import { genders, getGenderIcon, Gender } from '@/src/resources/gender';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import PhoneIcon from '@/assets/images/icon_phone.svg';
 import DOBIcon from '@/assets/images/icon-dob.svg';
+import { Select } from '../../common/Select';
+import { State, states } from '@/src/resources/update-profile';
 
 type Props = {
   userProfile: UserProfile;
@@ -51,6 +57,18 @@ export const UpdatePersonalInformation = ({ userProfile, ...props }: Props) => {
     ],
     [],
   );
+
+  const stateOptions: Option<State>[] = Object.keys(states).reduce(
+    (list: Option<State>[], value) => [
+      ...list,
+      {
+        label: states[value as keyof typeof states],
+        value: value as State,
+      },
+    ],
+    [],
+  );
+
   const [selectedGender, setSelectedGender] = React.useState<
     CheckBoxOption<string> | undefined
   >({
@@ -113,22 +131,6 @@ export const UpdatePersonalInformation = ({ userProfile, ...props }: Props) => {
           )}
         </YStack>
 
-        {/* Phone */}
-        <YStack gap={'$2'}>
-          <LabelledTextField
-            label="Phone No."
-            placeholder="Enter Your Phone No."
-            icon={<PhoneIcon />}
-            onChangeText={handleChange('phone')}
-            onBlur={handleBlur('phone')}
-            value={values.phone}
-            keyboardType="number-pad"
-          />
-          {touched.phone && errors.phone && (
-            <Text theme={'error_message'}>{errors.phone}</Text>
-          )}
-        </YStack>
-
         {/* DOB Date Picker */}
         <YStack gap={'$2'}>
           <LabelledButton
@@ -180,6 +182,46 @@ export const UpdatePersonalInformation = ({ userProfile, ...props }: Props) => {
           </YStack>
           {touched.gender && errors.gender && (
             <Text theme={'error_message'}>{errors.gender}</Text>
+          )}
+        </YStack>
+
+        {/* State */}
+        <YStack gap={'$2'}>
+          {/* <LabelledTextField
+            label="State"
+            placeholder="Enter Your State"
+            icon={<Entypo name="location" size={24} color="#999" />}
+            onChangeText={handleChange('state')}
+            onBlur={handleBlur('state')}
+            value={values.state}
+          /> */}
+          <Select
+            title="Select State"
+            value={values.state}
+            onChange={value => setFieldValue('state', value)}
+            options={stateOptions}
+            placeholder="Select Your State"
+            // icon={<Entypo name="location" size={24} color="#999" />}
+            // onBlur={handleBlur('state')}
+          />
+          {touched.state && errors.state && (
+            <Text theme={'error_message'}>{errors.state}</Text>
+          )}
+        </YStack>
+        {/* City */}
+        {/* Pincode */}
+        <YStack gap={'$2'}>
+          <LabelledTextField
+            label="Pincode"
+            placeholder="Enter Your Pincode"
+            icon={<Entypo name="location-pin" size={24} color="#999" />}
+            onChangeText={handleChange('pincode')}
+            onBlur={handleBlur('pincode')}
+            value={values.pincode}
+            keyboardType="numeric"
+          />
+          {touched.pincode && errors.pincode && (
+            <Text theme={'error_message'}>{errors.pincode}</Text>
           )}
         </YStack>
       </YStack>

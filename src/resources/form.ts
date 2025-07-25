@@ -1,3 +1,5 @@
+import { Gender } from './gender';
+
 export type Option<T = string> = {
   label: string;
   value: T;
@@ -24,8 +26,14 @@ export type LoginFormType = {
 
 export type UpdateProfileFormType = {
   fullName: string;
-  email: string;
-  phone: string;
   dateOfBirth: string;
-  gender: string;
+  gender: Gender;
+  // height?: number;
+  // weight?: number;
+  // maritalStatus?: string;
+  // religion?: string;
+  state?: string;
+  city?: string;
+  pincode?: string;
+  aboutMe?: string;
 };

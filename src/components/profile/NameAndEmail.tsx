@@ -10,7 +10,7 @@ export const NameAndEmail = ({ userProfile, ...props }: Props) => {
   return (
     <YStack alignItems="center" {...props}>
       <Text font="heading" size="large" marginTop="$3">
-        {userProfile.personalInformation.fullName}
+        {userProfile.fullName}
       </Text>
       <Text font="headingLight" size="small" marginTop="$1">
         {userProfile.email}

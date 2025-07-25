@@ -2,6 +2,7 @@ import { UserProfile } from '@/src/models/User';
 import { YStack, ViewProps } from 'tamagui';
 import { ProfileItem } from './ProfileItem';
 import { ProfileTileHeader } from './ProfileTileHeader';
+import { castes, diets, educations, maritalStatus, motherTongues, religions } from '@/src/resources/update-profile';
 
 type Props = {
   userProfile: UserProfile;
@@ -19,34 +20,31 @@ export const OtherInformation = ({ userProfile, ...props }: Props) => {
       {...props}
     >
       <ProfileTileHeader title="Other Information" />
-      <ProfileItem title="Diet" subtitle={userProfile.otherInformation.diet} />
-      <ProfileItem
-        title="Height"
-        subtitle={userProfile.otherInformation.height}
-      />
+      <ProfileItem title="Diet" subtitle={diets[userProfile.diet as keyof typeof diets]} />
+      <ProfileItem title="Height" subtitle={userProfile.height} />
       <ProfileItem
         title="Weight"
-        subtitle={userProfile.otherInformation.weight}
+        subtitle={userProfile.weight}
       />
       <ProfileItem
         title="Religion"
-        subtitle={userProfile.otherInformation.religion}
+        subtitle={religions[userProfile.religion as keyof typeof religions]}
       />
       <ProfileItem
         title="Caste"
-        subtitle={userProfile.otherInformation.caste}
+        subtitle={castes[userProfile.caste as keyof typeof castes]}
       />
       <ProfileItem
         title="Languages"
-        subtitle={userProfile.otherInformation.language?.join(', ')}
+        subtitle={motherTongues[userProfile.motherTongue as keyof typeof motherTongues]}
       />
       <ProfileItem
         title="Marital Status"
-        subtitle={userProfile.otherInformation.maritalStatus}
+        subtitle={maritalStatus[userProfile.maritalStatus as keyof typeof maritalStatus]}
       />
       <ProfileItem
         title="Highest Education"
-        subtitle={userProfile.otherInformation.highestEducation}
+        subtitle={educations[userProfile.education as keyof typeof educations]}
       />
     </YStack>
   );

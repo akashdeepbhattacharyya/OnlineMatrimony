@@ -4,6 +4,8 @@ import { ProfileItem } from './ProfileItem';
 import { Text } from '@/src/components/common/Text';
 import DottedDivider from '@/assets/images/dotted-divider.svg';
 import { ProfileTileHeader } from './ProfileTileHeader';
+import { genders } from '@/src/resources/gender';
+import { cities, states } from '@/src/resources/update-profile';
 
 type Props = {
   userProfile: UserProfile;
@@ -21,22 +23,23 @@ export const PersonalInformation = ({ userProfile, ...props }: Props) => {
       {...props}
     >
       <ProfileTileHeader title="Personal Information" />
-      <ProfileItem
-        title="Full Name"
-        subtitle={userProfile.personalInformation.fullName}
-      />
-      <ProfileItem
-        title="Date of Birth"
-        subtitle={userProfile.personalInformation.dateOfBirth}
-      />
+      <ProfileItem title="Full Name" subtitle={userProfile.fullName} />
+      <ProfileItem title="Date of Birth" subtitle={userProfile.dateOfBirth} />
       <ProfileItem
         title="Gender"
-        subtitle={
-          userProfile.gender.charAt(0).toUpperCase() +
-          userProfile.gender.slice(1)
-        }
+        subtitle={genders[userProfile.gender as keyof typeof genders]}
       />
-      <ProfileItem title="Address" subtitle={userProfile.address} />
+      <ProfileItem
+        title="Address"
+        subtitle={[
+          cities[userProfile.city as keyof typeof cities],
+          states[userProfile.state as keyof typeof states],
+          userProfile.country,
+          userProfile.pincode,
+        ]
+          .filter(Boolean)
+          .join(', ')}
+      />
       <ProfileItem title="Phone" subtitle={userProfile.phoneNumber} />
     </YStack>
   );
