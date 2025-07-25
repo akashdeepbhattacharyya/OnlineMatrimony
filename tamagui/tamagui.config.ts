@@ -37,10 +37,4 @@ declare module 'tamagui' {
   }
 }
 
-// declare global {
-//   // Augment the existing TamaguiCustomConfig interface
-//   // eslint-disable-next-line @typescript-eslint/no-empty-interface
-//   interface TamaguiCustomConfig extends AppConfig {}
-// }
-
 export default config;

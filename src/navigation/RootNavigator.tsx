@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useMemo } from 'react';
+import { Suspense, lazy, useMemo } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useAuth } from '../context/AuthContext';
 import { ActivityIndicator, View, StyleSheet } from 'react-native';

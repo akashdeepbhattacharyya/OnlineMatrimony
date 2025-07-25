@@ -1,6 +1,6 @@
-import React, { use, useState } from 'react';
+import { useState } from 'react';
 import { ScrollView, ImageBackground, Platform } from 'react-native';
-import { MaterialIcons, Entypo } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 import { NavigationProp, useNavigation } from '@react-navigation/core';
 import { RootStackParamList } from '../../navigation/RootNavigator';
 import DateTimePicker from '@react-native-community/datetimepicker';
