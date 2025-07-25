@@ -82,5 +82,5 @@ export const dummyUserProfile: UserProfile = {
 };
 export const dummyUserProfileWithPicture: UserProfile = {
   ...dummyUserProfile,
-  profilePicture: require('@/assets/images/Avatar.png'), // Assuming you have a local image asset
+  profilePicture: { uri: 'https://ui-avatars.com/api/?name=Akash+Deep' }, // Assuming you have a local image asset
 };

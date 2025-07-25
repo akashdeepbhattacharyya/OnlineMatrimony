@@ -21,8 +21,6 @@ export const useUserAuth = () => {
 
     try {
       const response = await authRepository.register(payload);
-      console.log('Register response:', response);
-
       if (response.status) {
         const contact = payload.email || payload.phone || '';
         setData(contact);
@@ -50,8 +48,6 @@ export const useUserAuth = () => {
 
     try {
       const response = await authRepository.resendOtp({ contact, purpose });
-      console.log('Resend OTP response:', response);
-
       if (response.status) {
         const result = response.data;
         setData(result);
@@ -78,8 +74,6 @@ export const useUserAuth = () => {
 
     try {
       const response = await authRepository.verifyOtp(otpPayload);
-      console.log('Verify OTP response:', response);
-
       if (response.status) {
         const result = response.data;
         setData(result);
@@ -106,8 +100,6 @@ export const useUserAuth = () => {
 
     try {
       const response = await authRepository.login(payload);
-      console.log('Login response:', response);
-
       if (response.status) {
         const result = response.data;
         setData(result);

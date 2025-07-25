@@ -1,9 +1,10 @@
 import { ViewProps, XStack, YStack } from 'tamagui';
 import { Text } from '@/src/components/common/Text';
 import { UserProfile } from '@/src/models/User';
+import { User } from '@/src/models/Authentication';
 
 type Props = {
-  userProfile: UserProfile;
+  userProfile: User;
 } & ViewProps;
 
 export const ConnectionsInformation = ({ userProfile, ...props }: Props) => {
