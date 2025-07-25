@@ -1,4 +1,4 @@
-import { ImageSourcePropType } from 'react-native';
+import { ImageSourcePropType, TouchableOpacity } from 'react-native';
 import { ProfilePicture } from '../ProfilePicture';
 import { View, ViewProps } from 'tamagui';
 import CameraIcon from '@/assets/images/icon-camera.svg';
@@ -14,13 +14,15 @@ export const UpdateProfilePicture = ({
   ...props
 }: Props) => {
   return (
-    <View alignItems='center' {...props}>
+    <View alignItems="center" {...props}>
       <ProfilePicture
         profilePicture={profilePicture}
         onPress={onPress}
         position="absolute"
       />
-      <CameraIcon style={{ marginTop: 80, marginLeft: 80 }} />
+      <TouchableOpacity role="button" onPress={onPress}>
+        <CameraIcon style={{ marginTop: 80, marginLeft: 80 }} />
+      </TouchableOpacity>
     </View>
   );
 };

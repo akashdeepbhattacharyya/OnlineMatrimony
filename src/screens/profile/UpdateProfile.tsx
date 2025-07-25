@@ -59,7 +59,7 @@ export default function UpdateProfile() {
       >
         <UpdateProfilePicture
           profilePicture={dummyUserProfileWithPicture.profilePicture}
-          onPress={() => {}}
+          onPress={() => {console.log('Update profile picture pressed');}}
         />
         <NameAndEmail
           userProfile={dummyUserProfileWithPicture}
