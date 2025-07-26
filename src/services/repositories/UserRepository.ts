@@ -1,7 +1,7 @@
 import { IApiService } from '@/src/api/IApiService';
 import { ApiResponse } from '@/src/models/ApiResponse';
 import { handleApiResponse } from '@/src/utils/handleApiResponse';
-import { UpdateUserProfileRequest } from '@/src/models/User';
+import { UpdateUserProfileRequest, User } from '@/src/models/User';
 
 export class UserRepository {
   constructor(private apiService: IApiService) {}
@@ -26,7 +26,7 @@ export class UserRepository {
     return handleApiResponse(this.apiService.updateProfile(data));
   }
 
-  async getProfile(): Promise<ApiResponse<string>> {
+  async getProfile(): Promise<ApiResponse<User>> {
     return handleApiResponse(this.apiService.getProfile());
   }
 }

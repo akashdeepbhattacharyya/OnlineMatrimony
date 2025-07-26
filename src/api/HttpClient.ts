@@ -1,3 +1,4 @@
+import { useTokenCallBack } from '../services/repositories/store/hook';
 import { IHttpClient, RequestConfig } from './IHttpClient';
 
 export class HttpClient implements IHttpClient {
@@ -21,10 +22,14 @@ export class HttpClient implements IHttpClient {
     const isFormData =
       typeof FormData !== 'undefined' && body instanceof FormData;
 
+    const token = useTokenCallBack();
     const headers: Record<string, string> = {
       ...this.defaultHeaders,
       ...config.headers,
     };
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
 
     // Only set JSON content-type if it's NOT FormData and not already provided
     if (!isFormData && !headers['Content-Type']) {

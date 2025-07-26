@@ -93,18 +93,22 @@ export const UpdatePersonalInformation = ({ userProfile, ...props }: Props) => {
 
   const [selectedGender, setSelectedGender] = useState<
     CheckBoxOption<string> | undefined
-  >({
-    label: genders[values.gender as keyof typeof genders],
-    value: values.gender,
-    icon: (
-      <MaterialIcons
-        name={getGenderIcon(values.gender as Gender)}
-        size={40}
-        color={getToken('$color.button_bg_red')}
-        style={{ marginLeft: 8 }}
-      />
-    ),
-  });
+  >(
+    values.gender
+      ? {
+          label: genders[values.gender as keyof typeof genders],
+          value: values.gender,
+          icon: (
+            <MaterialIcons
+              name={getGenderIcon(values.gender as Gender)}
+              size={40}
+              color={getToken('$color.button_bg_red')}
+              style={{ marginLeft: 8 }}
+            />
+          ),
+        }
+      : undefined,
+  );
 
   const handleGenderChange = (
     option: CheckBoxOption<string>,
@@ -190,7 +194,7 @@ export const UpdatePersonalInformation = ({ userProfile, ...props }: Props) => {
             </View>
           )}
         </YStack>
-        
+
         {/* Gender */}
         <YStack gap={'$2'}>
           <YStack>

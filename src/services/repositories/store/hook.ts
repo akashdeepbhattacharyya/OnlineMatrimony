@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { TypedUseSelectorHook, useSelector, useDispatch } from 'react-redux';
 import type { RootState, AppDispatch } from './store';
 import AsyncStorage from '@react-native-async-storage/async-storage';

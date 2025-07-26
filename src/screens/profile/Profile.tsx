@@ -15,13 +15,13 @@ import { NameAndEmail } from '@/src/components/profile/NameAndEmail';
 import { RootStackParamList } from '@/src/navigation/RootNavigator';
 import { ProfileBackground } from '@/src/components/profile/ProfileBackground';
 import { useLoader } from '@/src/context/LoaderContext';
-import { accountStateItem, fetchUserProfile } from '@/src/slices/userSlice';
-import { useAppDispatch, useAppSelector } from '@/src/store/hook';
+import { accountStateItem, fetchUserProfile } from '@/src/services/repositories/slices/userSlice';
+import { useAppDispatch, useAppSelector } from '@/src/services/repositories/store/hook';
 import { useEffect, useMemo } from 'react';
 
 export default function Profile() {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const { UserProfile } = useAppSelector(accountStateItem);
+  const { userData: userProfile } = useAppSelector(accountStateItem);
   const { showLoader, hideLoader } = useLoader();
   const dispatch = useAppDispatch();
 
@@ -31,33 +31,34 @@ export default function Profile() {
 
   const onEditPress = () => {
     navigation.navigate('UpdateProfile', {
-      data: UserProfile.profile,
+      data: userData.profile,
     });
   };
 
   useEffect(() => {
     showLoader();
-    dispatch(fetchUserProfile({}));
+    dispatch(fetchUserProfile());
     hideLoader();
   }, []);
+
   const userData = useMemo(() => {
-    console.log('UserProfile', UserProfile);
-    // if (!!!UserProfile.profile.profilePicture) {
-    //   return {
-    //     ...UserProfile,
-    //     profile: {
-    //       ...UserProfile.profile,
-    //       profilePicture: {
-    //         uri: `https://ui-avatars.com/api/?name=${UserProfile.profile.fullName}`,
-    //       },
-    //     },
-    //   };
-    // }
+    console.log('UserProfile', userProfile);
+    if (!!!userProfile.profile.profilePicture) {
+      return {
+        ...userProfile,
+        profile: {
+          ...userProfile.profile,
+          profilePicture: {
+            uri: `https://ui-avatars.com/api/?name=${userProfile.profile.fullName}`,
+          },
+        },
+      };
+    }
 
     return {
-      ...UserProfile,
+      ...userProfile,
     };
-  }, [UserProfile]);
+  }, [userProfile]);
 
   return (
     <Screen theme="dark">

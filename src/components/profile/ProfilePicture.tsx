@@ -23,7 +23,6 @@ export const ProfilePicture = ({ profilePicture, ...props }: Props) => {
         overflow="hidden"
         justifyContent="center"
         alignItems="center"
-        backgroundColor={'blue'}
         marginTop={14.5}
         marginLeft={2}
       >
