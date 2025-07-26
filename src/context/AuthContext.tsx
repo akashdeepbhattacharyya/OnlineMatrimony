@@ -1,6 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { User } from '../models/Authentication';
+import { User } from '../models/User';
+import { useAppDispatch } from '../store/hook';
+import { setUser as setUserAction } from '../slices/userSlice';
 
 type AuthContextType = {
   user: User | null;
@@ -16,6 +18,7 @@ export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const loadUser = async () => {
@@ -25,6 +28,7 @@ export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
         if (storedUser) {
           const parsedUser = JSON.parse(storedUser);
           setUser(parsedUser);
+          dispatch(setUserAction({ UserProfile: parsedUser, token: '' }));
         }
       } catch (error) {
         console.error('Error loading user from storage:', error);
@@ -42,6 +46,8 @@ export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
   const login = async (userData: User, token: string) => {
     try {
       setUser(userData);
+      dispatch(setUserAction({ UserProfile: userData, token }));
+
       await AsyncStorage.setItem('user', JSON.stringify(userData));
       await AsyncStorage.setItem('authToken', token);
     } catch (error) {

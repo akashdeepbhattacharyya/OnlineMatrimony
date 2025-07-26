@@ -41,17 +41,18 @@ export default function Profile() {
     hideLoader();
   }, []);
   const userData = useMemo(() => {
-    if (!!!UserProfile.profile.profilePicture) {
-      return {
-        ...UserProfile,
-        profile: {
-          ...UserProfile.profile,
-          profilePicture: {
-            uri: `https://ui-avatars.com/api/?name=${UserProfile.profile.fullName}`,
-          },
-        },
-      };
-    }
+    console.log('UserProfile', UserProfile);
+    // if (!!!UserProfile.profile.profilePicture) {
+    //   return {
+    //     ...UserProfile,
+    //     profile: {
+    //       ...UserProfile.profile,
+    //       profilePicture: {
+    //         uri: `https://ui-avatars.com/api/?name=${UserProfile.profile.fullName}`,
+    //       },
+    //     },
+    //   };
+    // }
 
     return {
       ...UserProfile,
