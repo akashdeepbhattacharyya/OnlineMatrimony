@@ -1,7 +1,6 @@
 import { NoSafeAreaScreen as Screen } from '@/src/components/layouts/NoSafeAreaScreen';
 import { ScrollView, TouchableOpacity } from 'react-native';
-import { YStack, Image, View, getToken, XStack } from 'tamagui';
-import { dummyUserProfileWithPicture } from '@/src/models/User';
+import { YStack, XStack } from 'tamagui';
 import { ProfilePicture } from '@/src/components/profile/ProfilePicture';
 import { ConnectionsInformation } from '@/src/components/profile/ConnectionsInformation';
 import { PersonalInformation } from '@/src/components/profile/PersonalInformation';
@@ -9,28 +8,59 @@ import { OtherInformation } from '@/src/components/profile/OtherInformation';
 import { Documents } from '@/src/components/profile/Documents';
 import { ProfessionalInformation } from '@/src/components/profile/ProfessionalInformation';
 import { AboutYourSelf } from '@/src/components/profile/AboutYourSelf';
-import LinearGradient from 'react-native-linear-gradient';
 import BackIcon from '@/assets/images/icon-back.svg';
 import EditIcon from '@/assets/images/icon-edit.svg';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { NameAndEmail } from '@/src/components/profile/NameAndEmail';
 import { RootStackParamList } from '@/src/navigation/RootNavigator';
 import { ProfileBackground } from '@/src/components/profile/ProfileBackground';
+import { useLoader } from '@/src/context/LoaderContext';
+import { accountStateItem, fetchUserProfile } from '@/src/slices/userSlice';
+import { useAppDispatch, useAppSelector } from '@/src/store/hook';
+import { useEffect, useMemo } from 'react';
 
 export default function Profile() {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const { UserProfile } = useAppSelector(accountStateItem);
+  const { showLoader, hideLoader } = useLoader();
+  const dispatch = useAppDispatch();
 
   const onBackPress = () => {
     navigation.goBack();
   };
 
   const onEditPress = () => {
-    navigation.navigate('UpdateProfile');
+    navigation.navigate('UpdateProfile', {
+      data: UserProfile.profile,
+    });
   };
+
+  useEffect(() => {
+    showLoader();
+    dispatch(fetchUserProfile({}));
+    hideLoader();
+  }, []);
+  const userData = useMemo(() => {
+    if (!!!UserProfile.profile.profilePicture) {
+      return {
+        ...UserProfile,
+        profile: {
+          ...UserProfile.profile,
+          profilePicture: {
+            uri: `https://ui-avatars.com/api/?name=${UserProfile.profile.fullName}`,
+          },
+        },
+      };
+    }
+
+    return {
+      ...UserProfile,
+    };
+  }, [UserProfile]);
 
   return (
     <Screen theme="dark">
-      <ProfileBackground image={require('@/assets/images/splashScreen.png')} />
+      <ProfileBackground image={userData.profile.profilePicture} />
       <XStack
         marginTop={'$10'}
         paddingHorizontal={'$4'}
@@ -53,15 +83,12 @@ export default function Profile() {
         showsVerticalScrollIndicator={false}
       >
         <ProfilePicture
-          profilePicture={dummyUserProfileWithPicture.profilePicture}
+          profilePicture={userData.profile.profilePicture}
           marginTop={'$5'}
         />
-        <NameAndEmail
-          userProfile={dummyUserProfileWithPicture}
-          marginTop={'$3'}
-        />
+        <NameAndEmail userProfile={userData.profile} marginTop={'$3'} />
         <ConnectionsInformation
-          userProfile={dummyUserProfileWithPicture}
+          userProfile={userData.profile}
           marginTop={'$3'}
         />
         <YStack
@@ -70,11 +97,11 @@ export default function Profile() {
           marginTop={'$4.5'}
           marginBottom={'$5'}
         >
-          <PersonalInformation userProfile={dummyUserProfileWithPicture} />
-          <OtherInformation userProfile={dummyUserProfileWithPicture} />
-          <Documents userProfile={dummyUserProfileWithPicture} />
-          <ProfessionalInformation userProfile={dummyUserProfileWithPicture} />
-          <AboutYourSelf userProfile={dummyUserProfileWithPicture} />
+          <PersonalInformation userProfile={userData.profile} />
+          <OtherInformation userProfile={userData.profile} />
+          <Documents userProfile={userData.profile} />
+          <ProfessionalInformation userProfile={userData.profile} />
+          <AboutYourSelf userProfile={userData.profile} />
         </YStack>
       </ScrollView>
     </Screen>

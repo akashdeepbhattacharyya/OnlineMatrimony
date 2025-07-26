@@ -11,14 +11,14 @@ export const ConnectionsInformation = ({ userProfile, ...props }: Props) => {
     <YStack gap={'$4'} {...props}>
       <XStack gap={'$10'} justifyContent="center">
         <ConnectionsRow
-          count={userProfile.acceptedCount}
+          count={700}
           label="Accepted"
         />
         <ConnectionsRow
-          count={userProfile.receivedCount}
+          count={1000}
           label="Received"
         />
-        <ConnectionsRow count={userProfile.sentCount} label="Sent" />
+        <ConnectionsRow count={2000} label="Sent" />
       </XStack>
     </YStack>
   );

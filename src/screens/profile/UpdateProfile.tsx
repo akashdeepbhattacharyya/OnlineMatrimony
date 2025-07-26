@@ -1,65 +1,89 @@
 import { NoSafeAreaScreen as Screen } from '@/src/components/layouts/NoSafeAreaScreen';
-import { ScrollView, TouchableOpacity } from 'react-native';
-import { YStack, Image, View, getToken } from 'tamagui';
-import { dummyUserProfileWithPicture } from '@/src/models/User';
-import LinearGradient from 'react-native-linear-gradient';
+import {
+  ImageSourcePropType,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
+import { YStack, View } from 'tamagui';
 import BackIcon from '@/assets/images/icon-back.svg';
-import { useNavigation } from '@react-navigation/native';
+import { RouteProp, useNavigation } from '@react-navigation/native';
 import { UpdateProfilePicture } from '@/src/components/profile/update/UpdateProfilePicture';
 import { NameAndEmail } from '@/src/components/profile/NameAndEmail';
 import { Formik } from 'formik';
 import { UpdatePersonalInformation } from '@/src/components/profile/update/UpdatePersonalInformation';
-import { UpdateProfileFormType } from '@/src/resources/form';
+import { UpdateUserProfileFormType } from '@/src/resources/form';
 import { PrimaryButton } from '@/src/components/common/PrimaryButton';
 import { formatDate } from '@/src/utils/dateFormatter';
-import { updateProfileSchema } from '@/src/resources/validations/update-profile';
+import { updateUserProfileSchema } from '@/src/resources/validations/update-profile';
 import { UpdateAboutYourSelf } from '@/src/components/profile/update/UpdateAboutSelf';
 import { ProfileBackground } from '@/src/components/profile/ProfileBackground';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ImagePicker } from '@/src/components/common/ImagePicker';
+import { userRepository } from '@/src/api';
+import { useLoader } from '@/src/context/LoaderContext';
+import { RootStackParamList } from '@/src/navigation/RootNavigator';
+import { convertToPayload } from '@/src/utils/utils';
 
-export default function UpdateProfile() {
+type Props = {
+  route: RouteProp<RootStackParamList, 'UpdateProfile'>;
+};
+
+export default function UpdateProfile({
+  route: {
+    params: { data: userProfile },
+  },
+}: Props) {
   const navigation = useNavigation();
   const [openImagePicker, setOpenImagePicker] = useState(false);
-  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [selectedImage, setSelectedImage] =
+    useState<ImageSourcePropType | null>(null);
+  const { showLoader, hideLoader } = useLoader();
+
+  useEffect(() => {
+    if (userProfile.profilePicture) {
+      setSelectedImage(userProfile.profilePicture);
+    }
+  }, [userProfile.profilePicture]);
 
   const onBackPress = () => {
     navigation.goBack();
   };
 
-  const initialValues: UpdateProfileFormType = {
-    fullName: dummyUserProfileWithPicture.fullName,
+  const initialValues: UpdateUserProfileFormType = {
+    fullName: userProfile.fullName,
     dateOfBirth: formatDate(
-      dummyUserProfileWithPicture.dateOfBirth,
+      userProfile.dateOfBirth,
       'yyyy-MM-dd',
       'dd/MM/yyyy',
     ),
-    gender: dummyUserProfileWithPicture.gender,
-    city: dummyUserProfileWithPicture.city,
-    state: dummyUserProfileWithPicture.state,
-    pincode: dummyUserProfileWithPicture.pincode,
-    aboutMe: dummyUserProfileWithPicture.aboutMe,
+    gender: userProfile.gender,
+    city: userProfile.city,
+    state: userProfile.state,
+    pincode: userProfile.pincode,
+    aboutMe: userProfile.aboutMe,
   };
 
-  const onUpdate = async (values: UpdateProfileFormType) => {
+  const onUpdate = async (values: UpdateUserProfileFormType) => {
     console.log('Updated values:', values);
+    showLoader();
+    await userRepository.updateProfile(convertToPayload(values));
+    hideLoader();
   };
 
-  const handleImageSelect = (uri: string) => {
-    setSelectedImage(uri);
+  const handleImageSelect = async (uri: string) => {
     setOpenImagePicker(false);
+    setSelectedImage({ uri });
     console.log('Selected image:', uri);
+    try {
+      await userRepository.updateProfilePicture(uri);
+    } catch (error) {
+      console.error('Upload error:', error);
+    }
   };
 
   return (
     <Screen theme="dark">
-      <ProfileBackground
-        image={
-          selectedImage
-            ? { uri: selectedImage }
-            : require('@/assets/images/splashScreen.png')
-        }
-      />
+      <ProfileBackground image={userProfile.profilePicture} />
       <View marginTop={'$10'} paddingHorizontal={'$4'} paddingVertical={'$2'}>
         <TouchableOpacity onPress={onBackPress}>
           <BackIcon />
@@ -74,29 +98,22 @@ export default function UpdateProfile() {
         showsVerticalScrollIndicator={false}
       >
         <UpdateProfilePicture
-          profilePicture={dummyUserProfileWithPicture.profilePicture}
+          profilePicture={userProfile.profilePicture}
           onPress={() => {
             setOpenImagePicker(true);
           }}
         />
-        <NameAndEmail
-          userProfile={dummyUserProfileWithPicture}
-          marginTop={'$1'}
-        />
-        <Formik<UpdateProfileFormType>
+        <NameAndEmail userProfile={userProfile} marginTop={'$1'} />
+        <Formik<UpdateUserProfileFormType>
           initialValues={initialValues}
-          validationSchema={updateProfileSchema}
+          validationSchema={updateUserProfileSchema}
           onSubmit={onUpdate}
         >
           {({ handleSubmit, isSubmitting, isValid }) => (
             <YStack marginTop={'$4.5'} width="100%" marginBottom={'$10'}>
               <YStack gap={'$3'}>
-                <UpdatePersonalInformation
-                  userProfile={dummyUserProfileWithPicture}
-                />
-                <UpdateAboutYourSelf
-                  userProfile={dummyUserProfileWithPicture}
-                />
+                <UpdatePersonalInformation userProfile={userProfile} />
+                <UpdateAboutYourSelf userProfile={userProfile} />
               </YStack>
 
               <PrimaryButton

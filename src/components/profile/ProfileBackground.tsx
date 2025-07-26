@@ -4,7 +4,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { ImageSourcePropType } from 'react-native';
 
 type Props = {
-  image: ImageSourcePropType;
+  image?: ImageSourcePropType;
 };
 
 export const ProfileBackground = ({ image }: Props) => {

@@ -54,7 +54,6 @@ export type UserProfile = {
   aboutMe?: string; // Optional field for a brief description about the user
   profilePicture?: ImageSourcePropType; // Optional field for profile picture
 } & PersonalInformation &
-  MatchInformation &
   OtherInformation &
   Documents &
   ProfessionalInformation;
@@ -62,9 +61,6 @@ export type UserProfile = {
 export const dummyUserProfile: UserProfile = {
   fullName: 'John Doe',
   email: 'john.doe@example.com',
-  acceptedCount: 700,
-  receivedCount: 1000,
-  sentCount: 500,
   gender: 'male',
   state: 'westBengal',
   city: 'kolkata',
@@ -88,7 +84,56 @@ export const dummyUserProfile: UserProfile = {
     'I am a software engineer with a passion for technology and innovation. I enjoy traveling and exploring new cultures.',
 };
 
-export const dummyUserProfileWithPicture: UserProfile = {
-  ...dummyUserProfile,
-  profilePicture: require('@/assets/images/Avatar.png'), // Assuming you have a local image asset
+// export const dummyUserProfileWithPicture: UserProfile = {
+//   ...dummyUserProfile,
+//   profilePicture: require('@/assets/images/Avatar.png'), // Assuming you have a local image asset
+// };
+
+export type User = {
+  id: number;
+  email: string;
+  phone: string;
+  isVerified: boolean;
+  isActive: boolean;
+  createdAt: [number, number, number, number, number, number];
+  lastLogin: [number, number, number, number, number, number, number];
+  profile: UserProfile;
+} & MatchInformation;
+
+export const dummyUser: User = {
+  id: 1,
+  email: 'john.doe@example.com',
+  phone: '123-456-7890',
+  isVerified: true,
+  isActive: true,
+  createdAt: [2020, 1, 1, 12, 0, 0],
+  lastLogin: [2023, 1, 1, 12, 0, 0, 0],
+  acceptedCount: 700,
+  receivedCount: 1000,
+  sentCount: 500,
+  profile: dummyUserProfile,
+};
+
+export type UpdateUserProfileRequest = {
+  fullName?: string;
+  email?: string;
+  phoneNumber?: string;
+  dateOfBirth?: string;
+  gender?: string;
+  city?: string;
+  state?: string;
+  country?: string;
+  pincode?: string;
+  aboutMe?: string;
+  diet?: string;
+  height?: number;
+  weight?: number;
+  religion?: string;
+  caste?: string;
+  motherTongue?: string;
+  maritalStatus?: string;
+  education?: string;
+  occupation?: string;
+  annualIncome?: string;
+  profilePicture?: ImageSourcePropType;
 };

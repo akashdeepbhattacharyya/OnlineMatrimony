@@ -6,7 +6,7 @@ import { useFormikContext } from 'formik';
 import {
   CheckBoxOption,
   Option,
-  UpdateProfileFormType,
+  UpdateUserProfileFormType,
 } from '@/src/resources/form';
 import { Text } from '@/src/components/common/Text';
 import PersonIcon from '@/assets/images/icon_person.svg';
@@ -36,7 +36,7 @@ type Props = {
 
 export const UpdatePersonalInformation = ({ userProfile, ...props }: Props) => {
   const { values, errors, touched, handleChange, handleBlur, setFieldValue } =
-    useFormikContext<UpdateProfileFormType>();
+    useFormikContext<UpdateUserProfileFormType>();
 
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());

@@ -1,9 +1,9 @@
 import * as Yup from 'yup';
 import { genders } from '../gender';
 import { cities, maritalStatus, religions, stateCityMapping, states } from '../update-profile';
-import { UpdateProfileFormType } from '../form';
+import { UpdateUserProfileFormType } from '../form';
 
-export const updateProfileSchema = Yup.object<UpdateProfileFormType>({
+export const updateUserProfileSchema = Yup.object<UpdateUserProfileFormType>({
   fullName: Yup.string().required('Full Name is required'),
   dateOfBirth: Yup.string()
     .matches(/^\d{2}\/\d{2}\/\d{4}$/, 'DOB must be in DD/MM/YYYY')

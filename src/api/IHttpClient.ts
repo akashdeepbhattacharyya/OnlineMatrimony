@@ -1,3 +1,10 @@
+export type RequestConfig = {
+  headers?: Record<string, string>;
+  params?: Record<string, string | number | boolean>;
+  signal?: AbortSignal;
+  rawResponse?: boolean;
+};
+
 /**
  * Interface representing an HTTP client for making network requests.
  *
@@ -11,7 +18,11 @@ export interface IHttpClient {
    * @param params Optional query parameters as a key-value map.
    * @returns A promise resolving to the response data of type T.
    */
-  get<T>(url: string, params?: Record<string, any>): Promise<T>;
+  get<T>(
+    url: string,
+    params?: Record<string, any>,
+    config?: RequestConfig,
+  ): Promise<T>;
 
   /**
    * Sends a POST request to the specified URL with an optional request body.
@@ -20,7 +31,7 @@ export interface IHttpClient {
    * @param body Optional request payload.
    * @returns A promise resolving to the response data of type T.
    */
-  post<T>(url: string, body?: any): Promise<T>;
+  post<T>(url: string, body?: any, config?: RequestConfig): Promise<T>;
 
   /**
    * Sends a PUT request to the specified URL with an optional request body.

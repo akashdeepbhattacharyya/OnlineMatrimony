@@ -2,7 +2,7 @@ import { UserProfile } from '@/src/models/User';
 import { YStack, ViewProps } from 'tamagui';
 import { Text } from '@/src/components/common/Text';
 import { ProfileTileHeader } from '../ProfileTileHeader';
-import { UpdateProfileFormType } from '@/src/resources/form';
+import { UpdateUserProfileFormType } from '@/src/resources/form';
 import { useFormikContext } from 'formik';
 import { LabelledTextArea } from '../../common/LabelledTextArea';
 import { TextArea } from '../../common/TextArea';
@@ -13,7 +13,7 @@ type Props = {
 
 export const UpdateAboutYourSelf = ({ userProfile, ...props }: Props) => {
   const { values, errors, touched, handleChange, handleBlur, setFieldValue } =
-    useFormikContext<UpdateProfileFormType>();
+    useFormikContext<UpdateUserProfileFormType>();
 
   return (
     <YStack

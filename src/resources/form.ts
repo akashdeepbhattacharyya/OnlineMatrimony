@@ -24,10 +24,10 @@ export type LoginFormType = {
   terms: boolean;
 };
 
-export type UpdateProfileFormType = {
+export type UpdateUserProfileFormType = {
   fullName: string;
   dateOfBirth: string;
-  gender: Gender;
+  gender?: Gender;
   // height?: number;
   // weight?: number;
   // maritalStatus?: string;
@@ -35,5 +35,6 @@ export type UpdateProfileFormType = {
   state?: string;
   city?: string;
   pincode?: string;
+  country?: string;
   aboutMe?: string;
 };
