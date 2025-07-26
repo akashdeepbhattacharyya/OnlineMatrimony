@@ -1,3 +1,6 @@
+import { ImageSourcePropType } from 'react-native';
+import { UserProfile } from './User';
+
 /**
  * Represents the payload required for user registration.
  *
@@ -70,30 +73,40 @@ export type User = {
   isActive: boolean;
   createdAt: [number, number, number, number, number, number];
   lastLogin: [number, number, number, number, number, number, number];
+  acceptedCount: number; // Optional field for accepted connections count
+  receivedCount: number; // Optional field for received connections count
+  sentCount: number; // Optional field for sent connections count
   profile: {
     id: number;
     fullName: string;
     gender: string;
+    age?: string;
     country: string;
+    city?: string;
+    aboutMe?: string;
+    terms: boolean;
+    dateOfBirth: string; // ISO date string
     createdAt: [number, number, number, number, number, number];
     updatedAt: [number, number, number, number, number, number];
+    address: string; // Optional field for address
+    profilePicture?: ImageSourcePropType | undefined; // Optional field for profile picture URL
   };
 };
 
-export const dummyUser: User = {
-  id: 1,
-  email: 'john.doe@example.com',
-  phone: '123-456-7890',
-  isVerified: true,
-  isActive: true,
-  createdAt: [2020, 1, 1, 12, 0, 0],
-  lastLogin: [2023, 1, 1, 12, 0, 0, 0],
-  profile: {
-    id: 1,
-    fullName: 'John Doe',
-    gender: 'male',
-    country: 'USA',
-    createdAt: [2020, 1, 1, 12, 0, 0],
-    updatedAt: [2023, 1, 1, 12, 0, 0],
-  },
-};
+// export const dummyUser: User = {
+//   id: 1,
+//   email: 'john.doe@example.com',
+//   phone: '123-456-7890',
+//   isVerified: true,
+//   isActive: true,
+//   createdAt: [2020, 1, 1, 12, 0, 0],
+//   lastLogin: [2023, 1, 1, 12, 0, 0, 0],
+//   profile: {
+//     id: 1,
+//     fullName: 'John Doe',
+//     gender: 'male',
+//     country: 'USA',
+//     createdAt: [2020, 1, 1, 12, 0, 0],
+//     updatedAt: [2023, 1, 1, 12, 0, 0],
+//   },
+// };

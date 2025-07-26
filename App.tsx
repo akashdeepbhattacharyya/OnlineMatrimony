@@ -19,13 +19,14 @@ import { LoaderOverlay } from './src/components/ui/LoaderOverlay';
 import { navigationRef } from './src/navigation/navigationRef';
 import { TamaguiProvider } from 'tamagui';
 import tamaguiConfig from './tamagui/tamagui.config';
+import { Provider } from 'react-redux';
+import { store } from './src/store/store';
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
 
 const App = () => {
   const colorScheme = useColorScheme();
-  const [isLoading, setIsLoading] = useState(true);
   const [currentRoute, setCurrentRoute] = useState('');
 
   // Load fonts
@@ -57,20 +58,7 @@ const App = () => {
     'Roboto-Condensed-SemiBold': require('./assets/fonts/Roboto_Condensed-SemiBold.ttf'),
   });
 
-  useEffect(() => {
-    const prepareApp = async () => {
-      try {
-        const token = await AsyncStorage.getItem('authToken');
-        console.log('Auth Token:', token);
-      } catch (error) {
-        console.error('App startup error:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
 
-    prepareApp();
-  }, []);
 
   useEffect(() => {
     if (fontsLoaded || fontError) {
@@ -82,39 +70,37 @@ const App = () => {
     return null;
   }
 
-  if (isLoading) {
-    return (
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-        <ActivityIndicator size="large" />
-        <StatusBar style="auto" />
-      </View>
-    );
-  }
-
   return (
     <SafeAreaProvider>
-      <AuthContextProvider>
-        <TamaguiProvider config={tamaguiConfig}>
-          <LoaderProvider>
-            <NavigationContainer
-              ref={navigationRef}
-              onReady={() => {
-                const route = navigationRef.getCurrentRoute()?.name ?? '';
-                setCurrentRoute(route);
-              }}
-              onStateChange={() => {
-                const route = navigationRef.getCurrentRoute()?.name ?? '';
-                setCurrentRoute(route);
-              }}
-              theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
-            >
-              <RootNavigator currentRoute={currentRoute} />
-              <LoaderOverlay />
-              <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
-            </NavigationContainer>
-          </LoaderProvider>
-        </TamaguiProvider>
-      </AuthContextProvider>
+      <Provider store={store}>
+
+        <AuthContextProvider>
+
+          <TamaguiProvider config={tamaguiConfig}>
+
+            <LoaderProvider>
+              <NavigationContainer
+                ref={navigationRef}
+                onReady={() => {
+                  const route = navigationRef.getCurrentRoute()?.name ?? '';
+                  setCurrentRoute(route);
+                }}
+                onStateChange={() => {
+                  const route = navigationRef.getCurrentRoute()?.name ?? '';
+                  setCurrentRoute(route);
+                }}
+                theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+              >
+                <RootNavigator currentRoute={currentRoute} />
+                <LoaderOverlay />
+                <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
+              </NavigationContainer>
+            </LoaderProvider>
+          </TamaguiProvider>
+
+        </AuthContextProvider>
+      </Provider>
+
     </SafeAreaProvider>
   );
 };

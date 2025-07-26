@@ -4,6 +4,7 @@ import { tokens } from './tokens';
 import themes from './themes';
 import { fontConfig } from './font';
 import animations from './animations';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const config = createTamagui({
   ...defaultConfig,
@@ -25,6 +26,9 @@ const config = createTamagui({
     Text: {
       color: 'white',
     },
+  },
+  components: {
+    LinearGradient,
   },
 });
 
