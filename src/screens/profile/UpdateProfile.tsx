@@ -36,7 +36,7 @@ export default function UpdateProfile({
   const navigation = useNavigation();
   const [openImagePicker, setOpenImagePicker] = useState(false);
   const [selectedImage, setSelectedImage] =
-    useState<ImageSourcePropType | null>(null);
+    useState<ImageSourcePropType | undefined>(undefined);
   const { showLoader, hideLoader } = useLoader();
 
   useEffect(() => {
@@ -83,7 +83,7 @@ export default function UpdateProfile({
 
   return (
     <Screen theme="dark">
-      <ProfileBackground image={userProfile.profilePicture} />
+      <ProfileBackground image={selectedImage} />
       <View marginTop={'$10'} paddingHorizontal={'$4'} paddingVertical={'$2'}>
         <TouchableOpacity onPress={onBackPress}>
           <BackIcon />
@@ -98,7 +98,7 @@ export default function UpdateProfile({
         showsVerticalScrollIndicator={false}
       >
         <UpdateProfilePicture
-          profilePicture={userProfile.profilePicture}
+          profilePicture={selectedImage}
           onPress={() => {
             setOpenImagePicker(true);
           }}
