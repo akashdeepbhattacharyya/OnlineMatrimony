@@ -1,6 +1,6 @@
-import React, { use, useState } from 'react';
+import { useState } from 'react';
 import { ScrollView, ImageBackground, Platform } from 'react-native';
-import { MaterialIcons, Entypo } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 import { NavigationProp, useNavigation } from '@react-navigation/core';
 import { RootStackParamList } from '../../navigation/RootNavigator';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -31,6 +31,7 @@ import { useUserAuth } from '@/src/hooks/useUserAuth';
 import { userRegistrationSchema } from '@/src/resources/validations/user-registration';
 import { UserRegistrationRequest } from '@/src/models/Authentication';
 import { formatDate } from '@/src/utils/dateFormatter';
+import DOBIcon from '@/assets/images/icon-dob.svg';
 
 export default function SignUpScreen() {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -233,7 +234,7 @@ export default function SignUpScreen() {
                 <YStack gap={'$2'}>
                   <LabelledButton
                     label="Date Of Birth"
-                    icon={<Entypo name="cake" color="#000000" size={20} />}
+                    icon={<DOBIcon />}
                     onPress={() => setShowDatePicker(true)}
                     title={values.dateOfBirth || 'DD / MM / YYYY'}
                     titleProps={{

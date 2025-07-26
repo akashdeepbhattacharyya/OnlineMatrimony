@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ImageBackground, TextInput } from 'react-native';
 import {
   NavigationProp,

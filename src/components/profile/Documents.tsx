@@ -19,11 +19,8 @@ export const Documents = ({ userProfile, ...props }: Props) => {
       {...props}
     >
       <ProfileTileHeader title="Documents" />
-      <ProfileItem title="ID Proof" subtitle={userProfile.documents?.idProof} />
-      <ProfileItem
-        title="Address Proof"
-        subtitle={userProfile.documents?.addressProof}
-      />
+      <ProfileItem title="ID Proof" subtitle={userProfile.idProof} />
+      <ProfileItem title="Address Proof" subtitle={userProfile.addressProof} />
     </YStack>
   );
 };

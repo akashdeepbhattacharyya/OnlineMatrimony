@@ -1,15 +1,16 @@
-import React, { Suspense, lazy, useMemo } from 'react';
+import { Suspense, lazy, useMemo } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useAuth } from '../context/AuthContext';
 import { ActivityIndicator, View, StyleSheet } from 'react-native';
 import FooterNavigator from '../components/common/footer';
+import { UserProfile } from '../models/User';
 
 export type RootStackParamList = {
   Home: undefined;
   Login: undefined;
   SignUp: undefined;
   Onboarding: undefined;
-  Otp: { data: string, page: 'LOGIN' | 'REGISTRATION' };
+  Otp: { data: string; page: 'LOGIN' | 'REGISTRATION' };
   ProfileSelection: undefined;
   Settings: undefined;
   Search: undefined;
@@ -20,6 +21,7 @@ export type RootStackParamList = {
   HideDeleteProfile: undefined;
   Subscription: undefined;
   Profile: undefined;
+  UpdateProfile: { data: UserProfile };
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -55,6 +57,7 @@ const SubscriptionScreen = lazy(
   () => import('../screens/subscription/SubscriptionScreen'),
 );
 const Profile = lazy(() => import('@/src/screens/profile/Profile'));
+const UpdateProfile = lazy(() => import('@/src/screens/profile/UpdateProfile'));
 
 const Loading = () => (
   <View style={styles.loadingContainer}>
@@ -125,6 +128,7 @@ const RootNavigator = ({ currentRoute }: RootNavigatorProps) => {
                 component={ProfileSelection}
               />
               <Stack.Screen name="Profile" component={Profile} />
+              <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
             </>
           ) : (
             <>

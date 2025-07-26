@@ -1,13 +1,8 @@
-import {
-  createAsyncThunk,
-  createSelector,
-  createSlice,
-  PayloadAction,
-} from '@reduxjs/toolkit';
-import { UserProfile } from '../models/User';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../store/store';
-import { User } from '../models/Authentication';
-import { getProfile } from '../api/UserService';
+import { User } from '../models/User';
+import { userRepository } from '../api';
+import { ApiResponse } from '../models/ApiResponse';
 
 type UserState = {
   UserProfile: User;
@@ -22,9 +17,9 @@ const initialState: UserState = {
 
 export const fetchUserProfile = createAsyncThunk<any, any>(
   `${sliceName}/accountfetch`,
- async (params, ThunkAPI) => {
+  async (params, ThunkAPI) => {
     try {
-      const response = await getProfile();
+      const response = await userRepository.getProfile();
       if (isAPIResponseFailure(response)) {
         return ThunkAPI.rejectWithValue(response);
       }
@@ -68,5 +63,5 @@ export const { setUser } = userSlice.actions;
 export default userSlice.reducer;
 export const accountStateItem = (state: RootState) => state.user;
 
-export const isAPIResponseFailure = (response: Response): boolean =>
-  response.status < 200 || response.status >= 300;
+export const isAPIResponseFailure = (response: ApiResponse<any>): boolean =>
+  response.statusCode < 200 || response.statusCode >= 300;

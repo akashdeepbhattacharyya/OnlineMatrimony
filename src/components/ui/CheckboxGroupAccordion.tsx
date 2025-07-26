@@ -1,4 +1,3 @@
-import React from 'react';
 import { TouchableOpacity } from 'react-native';
 // import { ListItem, CheckBox } from '@rneui/themed';
 // import AntDesign from 'react-native-vector-icons/AntDesign';

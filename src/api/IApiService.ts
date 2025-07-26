@@ -5,6 +5,7 @@ import {
   UserRegistrationRequest,
   VerifyOTPRequest,
 } from '../models/Authentication';
+import { UpdateUserProfileRequest } from '../models/User';
 
 /**
  * Interface representing the API service for user authentication and registration.
@@ -37,4 +38,10 @@ export interface IApiService {
    * @returns A promise resolving to a response containing a string message or token.
    */
   login(data: LoginRequest): Promise<Response>;
+
+  updateProfilePicture(data: FormData): Promise<Response>;
+
+  updateProfile(data: UpdateUserProfileRequest): Promise<Response>;
+
+  getProfile(): Promise<Response>;
 }

@@ -1,14 +1,15 @@
-/**
- * Interface representing an HTTP client for making network requests.
- *
- * @template T The type of the response data.
- */
 export type RequestConfig = {
   headers?: Record<string, string>;
   params?: Record<string, string | number | boolean>;
   signal?: AbortSignal;
   rawResponse?: boolean;
 };
+
+/**
+ * Interface representing an HTTP client for making network requests.
+ *
+ * @template T The type of the response data.
+ */
 export interface IHttpClient {
   /**
    * Sends a GET request to the specified URL with optional query parameters.

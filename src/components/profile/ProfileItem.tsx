@@ -3,7 +3,7 @@ import { YStack } from 'tamagui';
 
 type Props = {
   title: string;
-  subtitle?: string;
+  subtitle?: string | number;
 };
 
 export const ProfileItem = ({ title, subtitle }: Props) => {

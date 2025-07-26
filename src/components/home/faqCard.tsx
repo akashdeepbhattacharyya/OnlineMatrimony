@@ -1,4 +1,3 @@
-import React from 'react';
 import { FlatList } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { getToken, View, XStack, YStack } from 'tamagui';
