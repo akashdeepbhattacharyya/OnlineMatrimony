@@ -41,10 +41,7 @@ const LoginScreen = () => {
     });
     if (val) {
       login(val.user, val.accessToken);
-      navigation.navigate('Otp', {
-        data: values.emailOrPhone,
-        page: 'LOGIN',
-      });
+      console.log('Login successful:', val);
     } else {
       console.log('Login failed:', loginError);
     }
