@@ -19,8 +19,6 @@ export type PersonalInformation = {
   state?: State; // Optional field for address
   pincode?: string; // Optional field for postal code
   country?: string; // Optional field for country
-  email?: string; // Optional field for email
-  phoneNumber?: string; // Optional field for phone number
 };
 
 export type MatchInformation = {
@@ -52,7 +50,7 @@ export type ProfessionalInformation = {
 
 export type UserProfile = {
   aboutMe?: string; // Optional field for a brief description about the user
-  profilePicture?: ImageSourcePropType; // Optional field for profile picture
+  primaryPhotoUrl?: string; // Optional field for profile picture
 } & PersonalInformation &
   OtherInformation &
   Documents &
@@ -93,10 +91,6 @@ export type User = {
   id: number;
   email: string;
   phone: string;
-  isVerified: boolean;
-  isActive: boolean;
-  createdAt: [number, number, number, number, number, number];
-  lastLogin: [number, number, number, number, number, number, number];
   profile: UserProfile;
 } & MatchInformation;
 

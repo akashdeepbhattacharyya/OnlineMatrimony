@@ -7,11 +7,7 @@ import { useFormikContext } from 'formik';
 import { LabelledTextArea } from '../../common/LabelledTextArea';
 import { TextArea } from '../../common/TextArea';
 
-type Props = {
-  userProfile: UserProfile;
-} & ViewProps;
-
-export const UpdateAboutYourSelf = ({ userProfile, ...props }: Props) => {
+export const UpdateAboutYourSelf = ({ ...props }: ViewProps) => {
   const { values, errors, touched, handleChange, handleBlur, setFieldValue } =
     useFormikContext<UpdateUserProfileFormType>();
 

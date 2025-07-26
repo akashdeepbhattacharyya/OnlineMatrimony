@@ -1,4 +1,3 @@
-import { UserProfile } from '@/src/models/User';
 import { YStack, ViewProps, getToken, View } from 'tamagui';
 import { ProfileTileHeader } from '../ProfileTileHeader';
 import { LabelledTextField } from '../../common/LabelledTextField';
@@ -30,11 +29,7 @@ import StateIcon from '@/assets/images/icon-state.svg';
 import CityIcon from '@/assets/images/icon-city.svg';
 import PinIcon from '@/assets/images/icon-pin.svg';
 
-type Props = {
-  userProfile: UserProfile;
-} & ViewProps;
-
-export const UpdatePersonalInformation = ({ userProfile, ...props }: Props) => {
+export const UpdatePersonalInformation = ({ ...props }: ViewProps) => {
   const { values, errors, touched, handleChange, handleBlur, setFieldValue } =
     useFormikContext<UpdateUserProfileFormType>();
 
@@ -49,7 +44,7 @@ export const UpdatePersonalInformation = ({ userProfile, ...props }: Props) => {
         value,
         icon: (
           <MaterialIcons
-            name={getGenderIcon(value as Gender)}
+            name={getGenderIcon(value as Gender) as any}
             size={40}
             color={
               selectedGender == undefined
@@ -100,7 +95,7 @@ export const UpdatePersonalInformation = ({ userProfile, ...props }: Props) => {
           value: values.gender,
           icon: (
             <MaterialIcons
-              name={getGenderIcon(values.gender as Gender)}
+              name={getGenderIcon(values.gender as Gender) as any}
               size={40}
               color={getToken('$color.button_bg_red')}
               style={{ marginLeft: 8 }}

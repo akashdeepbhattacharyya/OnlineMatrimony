@@ -1,16 +1,23 @@
 import { getToken, Image } from 'tamagui';
-
 import LinearGradient from 'react-native-linear-gradient';
-import { ImageSourcePropType } from 'react-native';
+import { User } from '@/src/models/User';
 
 type Props = {
-  image?: ImageSourcePropType;
+  userData: User;
 };
 
-export const ProfileBackground = ({ image }: Props) => {
+export const ProfileBackground = ({ userData }: Props) => {
   return (
     <>
-      <Image source={image} position="absolute" objectFit="cover" />
+      <Image
+        source={{
+          uri:
+            userData.profile.primaryPhotoUrl ||
+            `https://ui-avatars.com/api/?name=${userData.profile.fullName}`,
+        }}
+        position="absolute"
+        objectFit="cover"
+      />
       <LinearGradient
         colors={[
           getToken('$color.primary'),

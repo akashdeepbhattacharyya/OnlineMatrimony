@@ -2,21 +2,22 @@ import { ImageSourcePropType, TouchableOpacity } from 'react-native';
 import { ProfilePicture } from '../ProfilePicture';
 import { View, ViewProps } from 'tamagui';
 import CameraIcon from '@/assets/images/icon-camera.svg';
+import { User } from '@/src/models/User';
 
 type Props = {
-  profilePicture?: ImageSourcePropType;
+  userData: User;
   onPress: () => void;
 } & ViewProps;
 
 export const UpdateProfilePicture = ({
-  profilePicture,
+  userData,
   onPress,
   ...props
 }: Props) => {
   return (
     <View alignItems="center" {...props}>
       <ProfilePicture
-        profilePicture={profilePicture}
+        userData={userData}
         onPress={onPress}
         position="absolute"
       />

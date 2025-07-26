@@ -1,17 +1,15 @@
-import { UserProfile } from '@/src/models/User';
-import { YStack, XStack, getToken, ViewProps } from 'tamagui';
+import { User } from '@/src/models/User';
+import { YStack, ViewProps } from 'tamagui';
 import { ProfileItem } from './ProfileItem';
-import { Text } from '@/src/components/common/Text';
-import DottedDivider from '@/assets/images/dotted-divider.svg';
 import { ProfileTileHeader } from './ProfileTileHeader';
 import { genders } from '@/src/resources/gender';
 import { cities, states } from '@/src/resources/update-profile';
 
 type Props = {
-  userProfile: UserProfile;
+  userData: User;
 } & ViewProps;
 
-export const PersonalInformation = ({ userProfile, ...props }: Props) => {
+export const PersonalInformation = ({ userData, ...props }: Props) => {
   return (
     <YStack
       theme={'profile_tile'}
@@ -23,24 +21,29 @@ export const PersonalInformation = ({ userProfile, ...props }: Props) => {
       {...props}
     >
       <ProfileTileHeader title="Personal Information" />
-      <ProfileItem title="Full Name" subtitle={userProfile.fullName} />
-      <ProfileItem title="Date of Birth" subtitle={userProfile.dateOfBirth} />
+      <ProfileItem title="Full Name" subtitle={userData.profile.fullName} />
+      <ProfileItem
+        title="Date of Birth"
+        subtitle={userData.profile.dateOfBirth || 'N/A'}
+      />
       <ProfileItem
         title="Gender"
-        subtitle={genders[userProfile.gender as keyof typeof genders]}
+        subtitle={
+          genders[userData.profile.gender as keyof typeof genders]
+        }
       />
       <ProfileItem
         title="Address"
         subtitle={[
-          cities[userProfile.city as keyof typeof cities],
-          states[userProfile.state as keyof typeof states],
-          userProfile.country,
-          userProfile.pincode,
+          cities[userData.profile.city as keyof typeof cities],
+          states[userData.profile.state as keyof typeof states],
+          userData.profile.country,
+          userData.profile.pincode,
         ]
           .filter(Boolean)
           .join(', ')}
       />
-      <ProfileItem title="Phone" subtitle={userProfile.phoneNumber} />
+      <ProfileItem title="Phone" subtitle={userData.phone || 'N/A'} />
     </YStack>
   );
 };

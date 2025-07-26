@@ -3,7 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { useAuth } from '../context/AuthContext';
 import { ActivityIndicator, View, StyleSheet } from 'react-native';
 import FooterNavigator from '../components/common/footer';
-import { UserProfile } from '../models/User';
+import { User } from '../models/User';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -21,7 +21,7 @@ export type RootStackParamList = {
   HideDeleteProfile: undefined;
   Subscription: undefined;
   Profile: undefined;
-  UpdateProfile: { data: UserProfile };
+  UpdateProfile: { data: User };
 };
 
 const Stack = createStackNavigator<RootStackParamList>();

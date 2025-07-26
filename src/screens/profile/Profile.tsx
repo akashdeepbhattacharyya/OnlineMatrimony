@@ -21,7 +21,7 @@ import { useEffect, useMemo } from 'react';
 
 export default function Profile() {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const { userData: userProfile } = useAppSelector(accountStateItem);
+  const { userData } = useAppSelector(accountStateItem);
   const { showLoader, hideLoader } = useLoader();
   const dispatch = useAppDispatch();
 
@@ -31,7 +31,7 @@ export default function Profile() {
 
   const onEditPress = () => {
     navigation.navigate('UpdateProfile', {
-      data: userData.profile,
+      data: userData,
     });
   };
 
@@ -41,28 +41,26 @@ export default function Profile() {
     hideLoader();
   }, []);
 
-  const userData = useMemo(() => {
-    console.log('UserProfile', userProfile);
-    if (!!!userProfile.profile.profilePicture) {
-      return {
-        ...userProfile,
-        profile: {
-          ...userProfile.profile,
-          profilePicture: {
-            uri: `https://ui-avatars.com/api/?name=${userProfile.profile.fullName}`,
-          },
-        },
-      };
-    }
+  // const userData = useMemo(() => {
+  //   console.log('UserProfile', userProfile);
+  //   if (!!!userProfile.profile.primaryPhotoUrl) {
+  //     return {
+  //       ...userProfile,
+  //       profile: {
+  //         ...userProfile.profile,
+  //         primaryPhotoUrl: `https://ui-avatars.com/api/?name=${userProfile.profile.fullName}`,
+  //       },
+  //     };
+  //   }
 
-    return {
-      ...userProfile,
-    };
-  }, [userProfile]);
+  //   return {
+  //     ...userProfile,
+  //   };
+  // }, [userProfile]);
 
   return (
     <Screen theme="dark">
-      <ProfileBackground image={userData.profile.profilePicture} />
+      <ProfileBackground userData={userData} />
       <XStack
         marginTop={'$10'}
         paddingHorizontal={'$4'}
@@ -85,10 +83,10 @@ export default function Profile() {
         showsVerticalScrollIndicator={false}
       >
         <ProfilePicture
-          profilePicture={userData.profile.profilePicture}
+          userData={userData}
           marginTop={'$5'}
         />
-        <NameAndEmail userProfile={userData.profile} marginTop={'$3'} />
+        <NameAndEmail userData={userData} marginTop={'$3'} />
         <ConnectionsInformation
           userProfile={userData.profile}
           marginTop={'$3'}
@@ -99,10 +97,10 @@ export default function Profile() {
           marginTop={'$4.5'}
           marginBottom={'$5'}
         >
-          <PersonalInformation userProfile={userData.profile} />
-          <OtherInformation userProfile={userData.profile} />
-          <Documents userProfile={userData.profile} />
-          <ProfessionalInformation userProfile={userData.profile} />
+          <PersonalInformation userData={userData} />
+          {/* <OtherInformation userData={userData} />
+          <Documents userData={userData} />
+          <ProfessionalInformation userData={userData} /> */}
           <AboutYourSelf userProfile={userData.profile} />
         </YStack>
       </ScrollView>

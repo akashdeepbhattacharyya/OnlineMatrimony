@@ -30,37 +30,37 @@ type Props = {
 
 export default function UpdateProfile({
   route: {
-    params: { data: userProfile },
+    params: { data: userData },
   },
 }: Props) {
   const navigation = useNavigation();
   const [openImagePicker, setOpenImagePicker] = useState(false);
-  const [selectedImage, setSelectedImage] =
-    useState<ImageSourcePropType | undefined>(undefined);
+  const [photoUri, setPhotoUri] = useState<string | undefined>(undefined);
   const { showLoader, hideLoader } = useLoader();
 
   useEffect(() => {
-    if (userProfile.profilePicture) {
-      setSelectedImage(userProfile.profilePicture);
+    if (userData.profile.primaryPhotoUrl) {
+      setPhotoUri(userData.profile.primaryPhotoUrl);
     }
-  }, [userProfile.profilePicture]);
+  }, [userData.profile.primaryPhotoUrl]);
 
   const onBackPress = () => {
     navigation.goBack();
   };
 
   const initialValues: UpdateUserProfileFormType = {
-    fullName: userProfile.fullName,
-    dateOfBirth: formatDate(
-      userProfile.dateOfBirth,
-      'yyyy-MM-dd',
-      'dd/MM/yyyy',
-    ),
-    gender: userProfile.gender,
-    city: userProfile.city,
-    state: userProfile.state,
-    pincode: userProfile.pincode,
-    aboutMe: userProfile.aboutMe,
+    fullName: userData.profile.fullName,
+    // dateOfBirth: formatDate(
+    //   userData.profile.dateOfBirth,
+    //   'yyyy-MM-dd',
+    //   'dd/MM/yyyy',
+    // ),
+    dateOfBirth: '',
+    gender: userData.profile.gender,
+    city: userData.profile.city,
+    state: userData.profile.state,
+    pincode: userData.profile.pincode,
+    aboutMe: userData.profile.aboutMe,
   };
 
   const onUpdate = async (values: UpdateUserProfileFormType) => {
@@ -72,7 +72,7 @@ export default function UpdateProfile({
 
   const handleImageSelect = async (uri: string) => {
     setOpenImagePicker(false);
-    setSelectedImage({ uri });
+    setPhotoUri(uri);
     console.log('Selected image:', uri);
     try {
       await userRepository.updateProfilePicture(uri);
@@ -83,7 +83,7 @@ export default function UpdateProfile({
 
   return (
     <Screen theme="dark">
-      <ProfileBackground image={selectedImage} />
+      <ProfileBackground userData={userData} />
       <View marginTop={'$10'} paddingHorizontal={'$4'} paddingVertical={'$2'}>
         <TouchableOpacity onPress={onBackPress}>
           <BackIcon />
@@ -98,12 +98,12 @@ export default function UpdateProfile({
         showsVerticalScrollIndicator={false}
       >
         <UpdateProfilePicture
-          profilePicture={selectedImage}
+          userData={userData}
           onPress={() => {
             setOpenImagePicker(true);
           }}
         />
-        <NameAndEmail userProfile={userProfile} marginTop={'$1'} />
+        <NameAndEmail userData={userData} marginTop={'$1'} />
         <Formik<UpdateUserProfileFormType>
           initialValues={initialValues}
           validationSchema={updateUserProfileSchema}
@@ -112,8 +112,8 @@ export default function UpdateProfile({
           {({ handleSubmit, isSubmitting, isValid }) => (
             <YStack marginTop={'$4.5'} width="100%" marginBottom={'$10'}>
               <YStack gap={'$3'}>
-                <UpdatePersonalInformation userProfile={userProfile} />
-                <UpdateAboutYourSelf userProfile={userProfile} />
+                <UpdatePersonalInformation />
+                <UpdateAboutYourSelf />
               </YStack>
 
               <PrimaryButton

@@ -24,7 +24,7 @@ const LoginScreen = () => {
 
   const initialValues = {
     emailOrPhone: '',
-    password: 'P@ss1234',
+    password: 'Boxer@1998',
     terms: false,
   };
   const { login: loginUser, error: loginError } = useUserAuth();

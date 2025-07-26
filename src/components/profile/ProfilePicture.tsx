@@ -2,12 +2,13 @@ import { ImageSourcePropType } from 'react-native';
 import { View, Image, YStack, ViewProps } from 'tamagui';
 import OuterCircle from '@/assets/images/profile-image-circle-outer.svg';
 import InnerCircle from '@/assets/images/profile-image-circle-inner.svg';
+import { User } from '@/src/models/User';
 
 type Props = {
-  profilePicture?: ImageSourcePropType;
+  userData: User;
 } & ViewProps;
 
-export const ProfilePicture = ({ profilePicture, ...props }: Props) => {
+export const ProfilePicture = ({ userData, ...props }: Props) => {
   return (
     <YStack alignItems="center" {...props}>
       <YStack position="absolute">
@@ -26,9 +27,15 @@ export const ProfilePicture = ({ profilePicture, ...props }: Props) => {
         marginTop={14.5}
         marginLeft={2}
       >
-        {profilePicture && (
-          <Image source={profilePicture} width={94} height={94} />
-        )}
+        <Image
+          source={{
+            uri:
+              userData.profile.primaryPhotoUrl ||
+              `https://ui-avatars.com/api/?name=${userData.profile.fullName}`,
+          }}
+          width={94}
+          height={94}
+        />
       </View>
     </YStack>
   );
