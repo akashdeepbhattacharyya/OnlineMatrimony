@@ -58,8 +58,6 @@ const App = () => {
     'Roboto-Condensed-SemiBold': require('./assets/fonts/Roboto_Condensed-SemiBold.ttf'),
   });
 
-
-
   useEffect(() => {
     if (fontsLoaded || fontError) {
       SplashScreen.hideAsync();
@@ -73,11 +71,8 @@ const App = () => {
   return (
     <SafeAreaProvider>
       <Provider store={store}>
-
         <AuthContextProvider>
-
           <TamaguiProvider config={tamaguiConfig}>
-
             <LoaderProvider>
               <NavigationContainer
                 ref={navigationRef}
@@ -97,10 +92,8 @@ const App = () => {
               </NavigationContainer>
             </LoaderProvider>
           </TamaguiProvider>
-
         </AuthContextProvider>
       </Provider>
-
     </SafeAreaProvider>
   );
 };
