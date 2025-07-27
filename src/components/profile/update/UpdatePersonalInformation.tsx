@@ -28,6 +28,7 @@ import { LabelledSelect } from '../../common/LabelledSelect';
 import StateIcon from '@/assets/images/icon-state.svg';
 import CityIcon from '@/assets/images/icon-city.svg';
 import PinIcon from '@/assets/images/icon-pin.svg';
+import { formatDate } from '@/src/utils/dateFormatter';
 
 export const UpdatePersonalInformation = ({ ...props }: ViewProps) => {
   const { values, errors, touched, handleChange, handleBlur, setFieldValue } =
@@ -120,7 +121,7 @@ export const UpdatePersonalInformation = ({ ...props }: ViewProps) => {
   ) => {
     if (date) {
       setSelectedDate(date);
-      setFieldValue('dateOfBirth', date.toLocaleDateString());
+      setFieldValue('dateOfBirth', formatDate(date));
     }
     setShowDatePicker(false);
   };
