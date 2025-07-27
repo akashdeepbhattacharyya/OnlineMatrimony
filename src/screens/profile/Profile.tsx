@@ -33,6 +33,12 @@ export default function Profile() {
   const dispatch = useAppDispatch();
   const userRepository = useUserRepository();
 
+  const profilePictureUri = useMemo(() => {
+    return userData.profile.primaryPhotoUrl
+      ? userData.profile.primaryPhotoUrl
+      : `https://ui-avatars.com/api/?name=${userData.profile.fullName}&size=512`;
+  }, [userData.profile.primaryPhotoUrl, userData.profile.fullName]);
+
   const onBackPress = () => {
     navigation.goBack();
   };
@@ -51,7 +57,7 @@ export default function Profile() {
 
   return (
     <Screen theme="dark">
-      <ProfileBackground userData={userData} />
+      <ProfileBackground uri={profilePictureUri} />
       <XStack
         marginTop={'$10'}
         paddingHorizontal={'$4'}
@@ -73,7 +79,7 @@ export default function Profile() {
         }}
         showsVerticalScrollIndicator={false}
       >
-        <ProfilePicture userData={userData} marginTop={'$5'} />
+        <ProfilePicture uri={profilePictureUri} marginTop={'$5'} />
         <NameAndEmail userData={userData} marginTop={'$3'} />
         <ConnectionsInformation
           userProfile={userData.profile}

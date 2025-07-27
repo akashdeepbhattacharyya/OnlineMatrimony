@@ -1,14 +1,11 @@
-import { UserProfile } from '@/src/models/User';
 import { YStack, ViewProps } from 'tamagui';
-import { Text } from '@/src/components/common/Text';
 import { ProfileTileHeader } from '../ProfileTileHeader';
 import { UpdateUserProfileFormType } from '@/src/resources/form';
 import { useFormikContext } from 'formik';
-import { LabelledTextArea } from '../../common/LabelledTextArea';
 import { TextArea } from '../../common/TextArea';
 
 export const UpdateAboutYourSelf = ({ ...props }: ViewProps) => {
-  const { values, errors, touched, handleChange, handleBlur, setFieldValue } =
+  const { values, handleChange, handleBlur } =
     useFormikContext<UpdateUserProfileFormType>();
 
   return (
@@ -24,8 +21,9 @@ export const UpdateAboutYourSelf = ({ ...props }: ViewProps) => {
       <ProfileTileHeader title="About Yourself" />
       <TextArea
         theme="text_area"
+        placeholder="Tell us about yourself"
         padding="$4"
-        font='heading'
+        font="heading"
         size="normal"
         borderRadius="$8"
         verticalAlign="top"

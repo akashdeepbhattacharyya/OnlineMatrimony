@@ -44,8 +44,12 @@ export default function UpdateProfile({
   useEffect(() => {
     if (userData.profile.primaryPhotoUrl) {
       setPhotoUri(userData.profile.primaryPhotoUrl);
+    } else {
+      setPhotoUri(
+        `https://ui-avatars.com/api/?name=${userData.profile.fullName}&size=512`,
+      );
     }
-  }, [userData.profile.primaryPhotoUrl]);
+  }, [userData.profile.primaryPhotoUrl, userData.profile.fullName]);
 
   const onBackPress = () => {
     navigation.goBack();
@@ -105,7 +109,7 @@ export default function UpdateProfile({
 
   return (
     <Screen theme="dark">
-      <ProfileBackground userData={userData} />
+      <ProfileBackground uri={photoUri} />
       <View marginTop={'$10'} paddingHorizontal={'$4'} paddingVertical={'$2'}>
         <TouchableOpacity onPress={onBackPress}>
           <BackIcon />
@@ -116,11 +120,12 @@ export default function UpdateProfile({
           flexGrow: 1,
           alignItems: 'center',
           paddingHorizontal: 20,
+          marginTop: 20,
         }}
         showsVerticalScrollIndicator={false}
       >
         <UpdateProfilePicture
-          userData={userData}
+          uri={photoUri}
           onPress={() => {
             setOpenImagePicker(true);
           }}

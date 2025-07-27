@@ -3,21 +3,13 @@ import LinearGradient from 'react-native-linear-gradient';
 import { User } from '@/src/models/User';
 
 type Props = {
-  userData: User;
+  uri?: string;
 };
 
-export const ProfileBackground = ({ userData }: Props) => {
+export const ProfileBackground = ({ uri }: Props) => {
   return (
     <>
-      <Image
-        source={{
-          uri:
-            userData.profile.primaryPhotoUrl ||
-            `https://ui-avatars.com/api/?name=${userData.profile.fullName}`,
-        }}
-        position="absolute"
-        objectFit="cover"
-      />
+      <Image source={{ uri }} position="absolute" objectFit="cover" />
       <LinearGradient
         colors={[
           getToken('$color.primary'),
