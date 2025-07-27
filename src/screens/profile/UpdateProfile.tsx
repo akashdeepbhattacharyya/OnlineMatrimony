@@ -13,7 +13,7 @@ import { Formik } from 'formik';
 import { UpdatePersonalInformation } from '@/src/components/profile/update/UpdatePersonalInformation';
 import { UpdateUserProfileFormType } from '@/src/resources/form';
 import { PrimaryButton } from '@/src/components/common/PrimaryButton';
-import { formatDate } from '@/src/utils/dateFormatter';
+import { formatDateString } from '@/src/utils/dateFormatter';
 import { updateUserProfileSchema } from '@/src/resources/validations/update-profile';
 import { UpdateAboutYourSelf } from '@/src/components/profile/update/UpdateAboutSelf';
 import { ProfileBackground } from '@/src/components/profile/ProfileBackground';

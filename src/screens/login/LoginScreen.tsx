@@ -17,14 +17,15 @@ import { useLoader } from '@/src/context/LoaderContext';
 import { LoginResponse } from '@/src/models/Authentication';
 import { useAuth } from '@/src/context/AuthContext';
 import { LoginFormType } from '@/src/resources/form';
+import { MaterialIcons } from '@expo/vector-icons';
 
 const LoginScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const { saveUser, saveToken } = useAuth();
 
   const initialValues = {
-    emailOrPhone: __DEV__ ? process.env.PHONE_NO : '',
-    password: 'Boxer@1998',
+    emailOrPhone: __DEV__ ? process.env.LOGIN_PHONE_NO : '',
+    password: __DEV__ ? process.env.LOGIN_PASSWORD : '',
     terms: __DEV__ ? true : false,
   };
   const { login: loginUser, error: loginError } = useUserAuth();
@@ -32,22 +33,21 @@ const LoginScreen = () => {
 
   const handleLogin = async (values: LoginFormType) => {
     console.log('Login values:', values);
-    // Handle login logic here
     showLoader();
-    const val: LoginResponse | null = await loginUser({
+    const response = await loginUser({
       emailOrPhone: values.emailOrPhone,
       password: values.password,
       rememberMe: true,
     });
-    if (val) {
+    if (response) {
       saveToken({
-        accessToken: val.accessToken,
-        refreshToken: val.refreshToken,
-        tokenType: val.tokenType,
-        expiresIn: val.expiresIn,
+        accessToken: response.accessToken,
+        refreshToken: response.refreshToken,
+        tokenType: response.tokenType,
+        expiresIn: response.expiresIn,
       });
-      saveUser(val.user);
-      console.log('Login successful:', val);
+      saveUser(response.user);
+      console.log('Login successful:', response);
     } else {
       console.log('Login failed:', loginError);
     }
@@ -85,6 +85,8 @@ const LoginScreen = () => {
           >
             <Spacer size="$20" />
             <TitleAndSubtitle marginBottom="$11" />
+
+            {/* Email or Phone */}
             <YStack width={'100%'} gap={'$2'}>
               <TextField
                 placeholder="Enter your Email Id / Mobile No."
@@ -95,6 +97,21 @@ const LoginScreen = () => {
               />
               {touched.emailOrPhone && errors.emailOrPhone && (
                 <Text theme={'error_message'}>{errors.emailOrPhone}</Text>
+              )}
+            </YStack>
+
+            {/* Password */}
+            <YStack width={'100%'} gap={'$2'} marginTop="$4">
+              <TextField
+                placeholder="Enter your Password"
+                icon={<MaterialIcons name="lock" size={24} />}
+                secureTextEntry
+                onChangeText={handleChange('password')}
+                onBlur={handleBlur('password')}
+                value={values.password}
+              />
+              {touched.password && errors.password && (
+                <Text theme={'error_message'}>{errors.password}</Text>
               )}
             </YStack>
 

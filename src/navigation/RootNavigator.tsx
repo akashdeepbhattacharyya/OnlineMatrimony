@@ -10,8 +10,8 @@ export type RootStackParamList = {
   Login: undefined;
   SignUp: undefined;
   Onboarding: undefined;
-  Otp: { data: string; page: 'LOGIN' | 'REGISTRATION' };
-  ProfileSelection: undefined;
+  Otp: { data: { email: string; password: string } };
+  ProfileSelection: { data: { email: string; password: string } };
   Settings: undefined;
   Search: undefined;
   PartnerPreference: undefined;
@@ -122,10 +122,6 @@ const RootNavigator = ({ currentRoute }: RootNavigatorProps) => {
               <Stack.Screen
                 name="Subscription"
                 component={SubscriptionScreen}
-              />
-              <Stack.Screen
-                name="ProfileSelection"
-                component={ProfileSelection}
               />
               <Stack.Screen name="Profile" component={Profile} />
               <Stack.Screen name="UpdateProfile" component={UpdateProfile} />

@@ -1,6 +1,6 @@
 import { UpdateUserProfileRequest } from '../models/User';
 import { UpdateUserProfileFormType } from '../resources/form';
-import { formatDate } from './dateFormatter';
+import { formatDateString } from './dateFormatter';
 
 export const isValidPhone = (value: string) => {
   const phoneRegex = /^[0-9]{10}$/; // You can customize this
@@ -32,7 +32,7 @@ export const convertToPayload = (
 ): UpdateUserProfileRequest => {
   return {
     fullName: form.fullName,
-    dateOfBirth: formatDate(form.dateOfBirth),
+    dateOfBirth: formatDateString(form.dateOfBirth),
     gender: form.gender,
     state: form.state,
     city: form.city,

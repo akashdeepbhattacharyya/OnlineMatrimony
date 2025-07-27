@@ -22,7 +22,9 @@ type OtpValidationScreenProps = {
 
 export default function OtpValidationScreen({
   route: {
-    params: { data, page },
+    params: {
+      data: { email, password },
+    },
   },
 }: OtpValidationScreenProps) {
   const [input, setInput] = useState<string[]>(['', '', '', '', '', '']);
@@ -31,6 +33,7 @@ export default function OtpValidationScreen({
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const { showLoader, hideLoader } = useLoader();
   const { resendOtp, error, submitOtp } = useUserAuth();
+
   useEffect(() => {
     const countdown = setInterval(() => {
       if (timer > 0) {
@@ -45,24 +48,25 @@ export default function OtpValidationScreen({
   }, [timer]);
   const inputRefs = useRef<Array<TextInput | null>>([]);
 
-  const handleGetOtp = async () => {
+  const handleSubmitOtp = async () => {
     showLoader();
-    console.log(data, input.join(''));
+    console.log(email, input.join(''));
 
     const value = await submitOtp({
-      email: data,
+      email,
       otp: input.join(''),
-      purpose: page,
+      purpose: 'REGISTRATION',
     });
     hideLoader();
     if (value) {
-      navigation.navigate(
-        page === 'REGISTRATION' ? 'ProfileSelection' : 'Home',
-      );
+      navigation.navigate('ProfileSelection', {
+        data: { email, password },
+      });
     } else {
       console.log('OTP submission failed:', error);
     }
   };
+
   const handleOtpChange = (value: string, index: number) => {
     const newOtp = [...input];
     newOtp[index] = value;
@@ -71,9 +75,10 @@ export default function OtpValidationScreen({
       inputRefs.current[index + 1]?.focus();
     }
   };
+
   const handleResendOtp = async () => {
     showLoader();
-    const val = await resendOtp(data, page);
+    const val = await resendOtp(email, 'REGISTRATION');
     setTimer(30);
     setResendDisabled(true);
     hideLoader();
@@ -109,11 +114,7 @@ export default function OtpValidationScreen({
           textAlign="center"
           paddingHorizontal={'$5'}
         >
-          {`We Will Send You A One Time Password On This ${
-            isEmailOrPhone(data) === 'email'
-              ? 'Email ' + data
-              : 'Mobile Number ' + data
-          }`}
+          {`We Will Send You A One Time Password On This Email ${email}`}
         </Text>
 
         <View style={styles.inputWrapper}>
@@ -170,7 +171,7 @@ export default function OtpValidationScreen({
 
         <PrimaryButton
           title="Submit And Login"
-          onPress={handleGetOtp}
+          onPress={handleSubmitOtp}
           marginTop="$6"
         />
       </YStack>

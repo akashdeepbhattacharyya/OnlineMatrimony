@@ -1,4 +1,4 @@
-import { Option } from '@/resources/form';
+import { Option } from '@/src/resources/form';
 import { CheckBoxButton } from './CheckBoxButton';
 import { View, type ViewProps } from 'tamagui';
 
