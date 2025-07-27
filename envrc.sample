@@ -1,0 +1,12 @@
+export DEV_BASE_URL=
+export LOCAL_BASE_URL=
+export LOGIN_PHONE_NO=
+export LOGIN_PASSWORD=
+export SIGNUP_PHONE_NO=
+export SIGNUP_FULL_NAME=
+export SIGNUP_EMAIL=
+export SIGNUP_DOB=
+export SIGNUP_GENDER=
+export SIGNUP_TERMS=
+export SIGNUP_PASSWORD=
+export APP_VARIANT=local || development
