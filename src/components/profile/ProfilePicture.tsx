@@ -9,6 +9,7 @@ type Props = {
 } & ViewProps;
 
 export const ProfilePicture = ({ userData, ...props }: Props) => {
+  console.log('ProfilePicture userData:', userData);
   return (
     <YStack alignItems="center" {...props}>
       <YStack position="absolute">

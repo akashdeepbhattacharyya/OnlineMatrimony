@@ -19,10 +19,11 @@ import { UpdateAboutYourSelf } from '@/src/components/profile/update/UpdateAbout
 import { ProfileBackground } from '@/src/components/profile/ProfileBackground';
 import { useEffect, useState } from 'react';
 import { ImagePicker } from '@/src/components/common/ImagePicker';
-import { userRepository } from '@/src/api';
 import { useLoader } from '@/src/context/LoaderContext';
 import { RootStackParamList } from '@/src/navigation/RootNavigator';
 import { convertToPayload } from '@/src/utils/utils';
+import { useUserRepository } from '@/src/api/repositories/useUserRepository';
+import { useAuth } from '@/src/context/AuthContext';
 
 type Props = {
   route: RouteProp<RootStackParamList, 'UpdateProfile'>;
@@ -37,6 +38,8 @@ export default function UpdateProfile({
   const [openImagePicker, setOpenImagePicker] = useState(false);
   const [photoUri, setPhotoUri] = useState<string | undefined>(undefined);
   const { showLoader, hideLoader } = useLoader();
+  const userRepository = useUserRepository();
+  const { saveUser } = useAuth();
 
   useEffect(() => {
     if (userData.profile.primaryPhotoUrl) {
@@ -66,7 +69,16 @@ export default function UpdateProfile({
   const onUpdate = async (values: UpdateUserProfileFormType) => {
     console.log('Updated values:', values);
     showLoader();
-    await userRepository.updateProfile(convertToPayload(values));
+    const response = await userRepository.updateProfile(
+      convertToPayload(values),
+    );
+    if (response.status) {
+      console.log('Profile updated successfully:', response.data);
+      saveUser(response.data);
+      navigation.goBack();
+    } else {
+      console.error('Failed to update profile:', response.errorCode);
+    }
     hideLoader();
   };
 
@@ -75,7 +87,17 @@ export default function UpdateProfile({
     setPhotoUri(uri);
     console.log('Selected image:', uri);
     try {
-      await userRepository.updateProfilePicture(uri);
+      const response = await userRepository.updateProfilePicture(uri);
+      if (response.status) {
+        console.log('Profile picture updated successfully:', response);
+        saveUser({
+          ...userData,
+          profile: {
+            ...userData.profile,
+            primaryPhotoUrl: response.data,
+          },
+        });
+      }
     } catch (error) {
       console.error('Upload error:', error);
     }

@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../store/store';
 import { User } from '../../../models/User';
-import { userRepository } from '../../../api';
+import { ApiResponse } from '@/src/models/ApiResponse';
 
 type UserState = {
   userData: User;
@@ -13,18 +13,21 @@ const initialState: UserState = {
 
 export const fetchUserProfile = createAsyncThunk(
   `user/userProfile`,
-  async (_params, thunkAPI) => {
+  async (
+    { getProfile }: { getProfile: () => Promise<ApiResponse<User>> },
+    thunkAPI,
+  ) => {
     try {
-      const response = await userRepository.getProfile();
+      const response = await getProfile();
+      console.log('fetchUserProfile response:', response);
       if (response.status === false) {
         return thunkAPI.rejectWithValue(response);
       }
       return response.data;
     } catch (e) {
       console.error(e);
-    } finally {
+      return thunkAPI.rejectWithValue({ status: false, data: undefined });
     }
-    return [];
   },
 );
 
@@ -34,15 +37,13 @@ const userSlice = createSlice({
   reducers: {
     setUser(state, action: PayloadAction<UserState>) {
       const { userData } = action.payload;
-      console.log(userData);
       state.userData = userData;
     },
   },
   extraReducers: builder => {
-    builder.addCase(fetchUserProfile.fulfilled, (_state, action) => {
+    builder.addCase(fetchUserProfile.fulfilled, (state, action) => {
       const { payload } = action;
-      console.log(payload);
-      // state.userData = payload;
+      state.userData = payload;
     });
   },
 });

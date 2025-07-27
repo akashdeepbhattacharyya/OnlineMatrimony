@@ -1,16 +1,17 @@
 import { useState } from 'react';
-import { authRepository } from '@/src/api';
 import {
   LoginRequest,
   LoginResponse,
   UserRegistrationRequest,
   VerifyOTPRequest,
 } from '@/src/models/Authentication';
+import { useAuthRepository } from '../api/repositories/useAuthRepository';
 
 export const useUserAuth = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | undefined>();
   const [data, setData] = useState<string | LoginResponse | undefined>();
+  const authRepository = useAuthRepository();
 
   const register = async (
     payload: UserRegistrationRequest,

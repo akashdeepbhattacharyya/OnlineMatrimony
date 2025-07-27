@@ -1,4 +1,4 @@
-import { User } from "./User";
+import { User } from './User';
 
 /**
  * Represents the payload required for user registration.
@@ -57,10 +57,12 @@ export type LoginRequest = {
 };
 
 export type LoginResponse = {
+  user: User;
+} & Token;
+
+export type Token = {
   accessToken: string;
   refreshToken: string;
   tokenType: string;
   expiresIn: number;
-  user: User;
 };
-

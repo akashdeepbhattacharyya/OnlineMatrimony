@@ -1,6 +1,6 @@
 import { Suspense, lazy, useMemo } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '@/src/context/AuthContext';
 import { ActivityIndicator, View, StyleSheet } from 'react-native';
 import FooterNavigator from '../components/common/footer';
 import { User } from '../models/User';

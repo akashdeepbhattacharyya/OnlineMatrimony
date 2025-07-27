@@ -15,15 +15,23 @@ import { NameAndEmail } from '@/src/components/profile/NameAndEmail';
 import { RootStackParamList } from '@/src/navigation/RootNavigator';
 import { ProfileBackground } from '@/src/components/profile/ProfileBackground';
 import { useLoader } from '@/src/context/LoaderContext';
-import { accountStateItem, fetchUserProfile } from '@/src/services/repositories/slices/userSlice';
-import { useAppDispatch, useAppSelector } from '@/src/services/repositories/store/hook';
+import {
+  accountStateItem,
+  fetchUserProfile,
+} from '@/src/services/repositories/slices/userSlice';
+import {
+  useAppDispatch,
+  useAppSelector,
+} from '@/src/services/repositories/store/hook';
 import { useEffect, useMemo } from 'react';
+import { useUserRepository } from '@/src/api/repositories/useUserRepository';
 
 export default function Profile() {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const { userData } = useAppSelector(accountStateItem);
   const { showLoader, hideLoader } = useLoader();
   const dispatch = useAppDispatch();
+  const userRepository = useUserRepository();
 
   const onBackPress = () => {
     navigation.goBack();
@@ -37,26 +45,9 @@ export default function Profile() {
 
   useEffect(() => {
     showLoader();
-    dispatch(fetchUserProfile());
+    dispatch(fetchUserProfile({ getProfile: userRepository.getProfile }));
     hideLoader();
   }, []);
-
-  // const userData = useMemo(() => {
-  //   console.log('UserProfile', userProfile);
-  //   if (!!!userProfile.profile.primaryPhotoUrl) {
-  //     return {
-  //       ...userProfile,
-  //       profile: {
-  //         ...userProfile.profile,
-  //         primaryPhotoUrl: `https://ui-avatars.com/api/?name=${userProfile.profile.fullName}`,
-  //       },
-  //     };
-  //   }
-
-  //   return {
-  //     ...userProfile,
-  //   };
-  // }, [userProfile]);
 
   return (
     <Screen theme="dark">
@@ -82,10 +73,7 @@ export default function Profile() {
         }}
         showsVerticalScrollIndicator={false}
       >
-        <ProfilePicture
-          userData={userData}
-          marginTop={'$5'}
-        />
+        <ProfilePicture userData={userData} marginTop={'$5'} />
         <NameAndEmail userData={userData} marginTop={'$3'} />
         <ConnectionsInformation
           userProfile={userData.profile}

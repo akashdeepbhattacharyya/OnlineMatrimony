@@ -1,13 +1,12 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, View, useColorScheme } from 'react-native';
+import { useColorScheme } from 'react-native';
 import {
   NavigationContainer,
   DefaultTheme,
   DarkTheme,
 } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StatusBar } from 'expo-status-bar';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';

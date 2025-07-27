@@ -20,12 +20,12 @@ import { LoginFormType } from '@/src/resources/form';
 
 const LoginScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const { login } = useAuth();
+  const { saveUser, saveToken } = useAuth();
 
   const initialValues = {
-    emailOrPhone: '',
+    emailOrPhone: __DEV__ ? process.env.PHONE_NO : '',
     password: 'Boxer@1998',
-    terms: false,
+    terms: __DEV__ ? true : false,
   };
   const { login: loginUser, error: loginError } = useUserAuth();
   const { showLoader, hideLoader } = useLoader();
@@ -40,7 +40,13 @@ const LoginScreen = () => {
       rememberMe: true,
     });
     if (val) {
-      login(val.user, val.accessToken);
+      saveToken({
+        accessToken: val.accessToken,
+        refreshToken: val.refreshToken,
+        tokenType: val.tokenType,
+        expiresIn: val.expiresIn,
+      });
+      saveUser(val.user);
       console.log('Login successful:', val);
     } else {
       console.log('Login failed:', loginError);

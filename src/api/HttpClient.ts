@@ -1,10 +1,11 @@
-import { useTokenCallBack } from '../services/repositories/store/hook';
 import { IHttpClient, RequestConfig } from './IHttpClient';
 
 export class HttpClient implements IHttpClient {
+  
   constructor(
     private baseUrl: string,
     private defaultHeaders: Record<string, string> = {},
+    private authToken?: string,
   ) {}
 
   private makeUrl(url: string, params?: Record<string, any>) {
@@ -22,13 +23,12 @@ export class HttpClient implements IHttpClient {
     const isFormData =
       typeof FormData !== 'undefined' && body instanceof FormData;
 
-    const token = useTokenCallBack();
     const headers: Record<string, string> = {
       ...this.defaultHeaders,
       ...config.headers,
     };
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
+    if (this.authToken) {
+      headers['Authorization'] = `Bearer ${this.authToken}`;
     }
 
     // Only set JSON content-type if it's NOT FormData and not already provided
