@@ -8,10 +8,22 @@ export const userRegistrationSchema = Yup.object().shape({
     .matches(/^\d{10}$/, 'Phone must be 10 digits')
     .required('Phone is required'),
   dateOfBirth: Yup.string()
-    .matches(/^\d{2}\/\d{2}\/\d{4}$/, 'DOB must be in DD/MM/YYYY')
     .required('DOB is required'),
   gender: Yup.string()
     .oneOf(Object.keys(genders))
     .required('Gender is required'),
+  password: Yup.string()
+    .min(8, 'Password must be at least 8 characters')
+    .matches(/[a-z]/, 'Password must contain at least one lowercase letter')
+    .matches(/[A-Z]/, 'Password must contain at least one uppercase letter')
+    .matches(/\d/, 'Password must contain at least one number')
+    .matches(
+      /[@$!%*?&]/,
+      'Password must contain at least one special character',
+    )
+    .required('Password is required'),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref('password'), undefined], 'Passwords must match')
+    .required('Confirm Password is required'),
   terms: Yup.boolean().oneOf([true], 'You must accept the terms'),
 });

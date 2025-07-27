@@ -5,11 +5,10 @@ import { Text } from './Text';
 
 type Props = {
   label: string;
-  icon?: React.ReactNode;
-  multiline?: boolean;
+  icon: React.ReactNode;
 } & InputProps;
 
-export const LabelledTextField = ({ label, icon, multiline, ...props }: Props) => {
+export const LabelledTextField = ({ label, icon, ...props }: Props) => {
   return (
     <YStack width={'100%'} theme="input" gap={'$2.5'}>
       <Text size="normal" font="heading" color={'$background'}>

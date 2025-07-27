@@ -1,13 +1,12 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, View, useColorScheme } from 'react-native';
+import { useColorScheme } from 'react-native';
 import {
   NavigationContainer,
   DefaultTheme,
   DarkTheme,
 } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StatusBar } from 'expo-status-bar';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
@@ -20,7 +19,7 @@ import { navigationRef } from './src/navigation/navigationRef';
 import { TamaguiProvider } from 'tamagui';
 import tamaguiConfig from './tamagui/tamagui.config';
 import { Provider } from 'react-redux';
-import { store } from './src/store/store';
+import { store } from './src/services/repositories/store/store';
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
@@ -58,8 +57,6 @@ const App = () => {
     'Roboto-Condensed-SemiBold': require('./assets/fonts/Roboto_Condensed-SemiBold.ttf'),
   });
 
-
-
   useEffect(() => {
     if (fontsLoaded || fontError) {
       SplashScreen.hideAsync();
@@ -73,11 +70,8 @@ const App = () => {
   return (
     <SafeAreaProvider>
       <Provider store={store}>
-
         <AuthContextProvider>
-
           <TamaguiProvider config={tamaguiConfig}>
-
             <LoaderProvider>
               <NavigationContainer
                 ref={navigationRef}
@@ -97,10 +91,8 @@ const App = () => {
               </NavigationContainer>
             </LoaderProvider>
           </TamaguiProvider>
-
         </AuthContextProvider>
       </Provider>
-
     </SafeAreaProvider>
   );
 };

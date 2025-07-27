@@ -1,3 +1,5 @@
+import { Gender } from './gender';
+
 export type Option<T = string> = {
   label: string;
   value: T;
@@ -10,21 +12,29 @@ export type CheckBoxOption<T = string> = {
 export type UserRegistrationFormType = {
   fullName: string;
   email: string;
-  password?: string;
+  password: string;
   phone: string;
   dateOfBirth: string;
   gender: string;
-  address?: string;
-  city?: string;
-  county?: string;
-  terms: boolean;
-  aboutMe?: string;
-  age?: string;
-  country?: string;
 };
 
 export type LoginFormType = {
   emailOrPhone: string;
   password: string;
   terms: boolean;
+};
+
+export type UpdateUserProfileFormType = {
+  fullName: string;
+  dateOfBirth: string;
+  gender?: Gender;
+  // height?: number;
+  // weight?: number;
+  // maritalStatus?: string;
+  // religion?: string;
+  state?: string;
+  city?: string;
+  pincode?: string;
+  country?: string;
+  aboutMe?: string;
 };

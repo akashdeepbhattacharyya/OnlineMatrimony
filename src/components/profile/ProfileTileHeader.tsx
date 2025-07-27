@@ -9,7 +9,7 @@ type Props = {
 export const ProfileTileHeader = ({ title, ...props }: Props) => {
   return (
     <YStack gap={"$3"} {...props}>
-      <Text font="heading" size="normal">
+      <Text font="headingBold" size="normal">
         {title}
       </Text>
       <DottedDivider width={'100%'} />

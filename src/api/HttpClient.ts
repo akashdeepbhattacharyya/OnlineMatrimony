@@ -1,9 +1,11 @@
 import { IHttpClient, RequestConfig } from './IHttpClient';
 
 export class HttpClient implements IHttpClient {
+  
   constructor(
     private baseUrl: string,
     private defaultHeaders: Record<string, string> = {},
+    private authToken?: string,
   ) {}
 
   private makeUrl(url: string, params?: Record<string, any>) {
@@ -25,6 +27,9 @@ export class HttpClient implements IHttpClient {
       ...this.defaultHeaders,
       ...config.headers,
     };
+    if (this.authToken) {
+      headers['Authorization'] = `Bearer ${this.authToken}`;
+    }
 
     // Only set JSON content-type if it's NOT FormData and not already provided
     if (!isFormData && !headers['Content-Type']) {

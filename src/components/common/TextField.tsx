@@ -2,7 +2,7 @@ import { type InputProps, XStack } from 'tamagui';
 import { Input } from './Input';
 
 type Props = {
-  icon?: React.ReactNode;
+  icon: React.ReactNode;
 } & InputProps;
 
 export const TextField = ({ icon, ...props }: Props) => {
@@ -17,7 +17,7 @@ export const TextField = ({ icon, ...props }: Props) => {
       alignItems="center"
       justifyContent="flex-start"
     >
-      {icon && icon}
+      {icon}
       <Input unstyled placeholderTextColor="$placeholder" {...props} />
     </XStack>
   );

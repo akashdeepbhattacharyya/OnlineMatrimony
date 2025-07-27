@@ -4,7 +4,6 @@ import { tokens } from './tokens';
 import themes from './themes';
 import { fontConfig } from './font';
 import animations from './animations';
-import { LinearGradient } from 'expo-linear-gradient';
 
 const config = createTamagui({
   ...defaultConfig,
@@ -27,9 +26,6 @@ const config = createTamagui({
       color: 'white',
     },
   },
-  components: {
-    LinearGradient,
-  },
 });
 
 type AppConfig = typeof config;
@@ -40,11 +36,5 @@ declare module 'tamagui' {
     groupNames(): 'a' | 'b' | 'c';
   }
 }
-
-// declare global {
-//   // Augment the existing TamaguiCustomConfig interface
-//   // eslint-disable-next-line @typescript-eslint/no-empty-interface
-//   interface TamaguiCustomConfig extends AppConfig {}
-// }
 
 export default config;

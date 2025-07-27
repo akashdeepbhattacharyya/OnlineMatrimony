@@ -1,14 +1,18 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { User } from '../models/Authentication';
-import { useAppDispatch } from '../store/hook';
-import { setUser as setUserAction } from '../slices/userSlice'
-import { UserProfile } from '../models/User';
+import { User } from '../models/User';
+import { useAppDispatch } from '../services/repositories/store/hook';
+import { setUser as setUserAction } from '../services/repositories/slices/userSlice';
+import { Token } from '../models/Authentication';
 
 type AuthContextType = {
-  user: User | null;
-  login: (userData: User, token: string) => Promise<void>;
-  logout: () => Promise<void>;
+  user: User | undefined;
+  token: Token | undefined;
+  saveUser: (userData: User) => Promise<void>;
+  clearUser: () => Promise<void>;
+  saveToken: (token: Token) => Promise<void>;
+  clearToken: () => Promise<void>;
+  clearSession: () => Promise<void>;
   isLoading: boolean;
 };
 
@@ -17,7 +21,8 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | undefined>(undefined);
+  const [token, setToken] = useState<Token | undefined>(undefined);
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useAppDispatch();
 
@@ -29,47 +34,100 @@ export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
         if (storedUser) {
           const parsedUser = JSON.parse(storedUser);
           setUser(parsedUser);
-          dispatch(setUserAction({ UserProfile: parsedUser, token: '' }));
+          dispatch(setUserAction({ userData: parsedUser }));
         }
       } catch (error) {
         console.error('Error loading user from storage:', error);
         // Clear corrupted data
         await AsyncStorage.removeItem('user');
-        await AsyncStorage.removeItem('authToken');
       } finally {
         setIsLoading(false);
       }
     };
 
+    const loadToken = async () => {
+      try {
+        const storedToken = await AsyncStorage.getItem('token');
+        if (storedToken) {
+          const parsedToken = JSON.parse(storedToken);
+          setToken(parsedToken);
+        }
+      } catch (error) {
+        console.error('Error loading token from storage:', error);
+        // Clear corrupted data
+        await AsyncStorage.removeItem('token');
+      }
+    };
+
     loadUser();
+    loadToken();
   }, []);
 
-  const login = async (userData: User, token: string) => {
+  const saveUser = async (userData: User) => {
     try {
       setUser(userData);
-      dispatch(setUserAction({ UserProfile: userData, token }));
-
+      dispatch(setUserAction({ userData: userData }));
       await AsyncStorage.setItem('user', JSON.stringify(userData));
-      await AsyncStorage.setItem('authToken', token);
     } catch (error) {
       console.error('Error saving user to storage:', error);
       throw error;
     }
   };
 
-  const logout = async () => {
+  const clearUser = async () => {
     try {
-      setUser(null);
+      setUser(undefined);
       await AsyncStorage.removeItem('user');
-      await AsyncStorage.removeItem('authToken');
+      await clearToken();
     } catch (error) {
       console.error('Error removing user from storage:', error);
       throw error;
     }
   };
 
+  const saveToken = async (token: Token) => {
+    try {
+      setToken(token);
+      await AsyncStorage.setItem('token', JSON.stringify(token));
+    } catch (error) {
+      console.error('Error saving token to storage:', error);
+      throw error;
+    }
+  };
+
+  const clearToken = async () => {
+    try {
+      setToken(undefined);
+      await AsyncStorage.removeItem('token');
+    } catch (error) {
+      console.error('Error clearing token from storage:', error);
+      throw error;
+    }
+  };
+
+  const clearSession = async () => {
+    try {
+      await clearUser();
+      await clearToken();
+    } catch (error) {
+      console.error('Error clearing session:', error);
+      throw error;
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ user, login, logout, isLoading }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        token,
+        saveUser,
+        clearUser,
+        saveToken,
+        clearToken,
+        clearSession,
+        isLoading,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

@@ -1,61 +1,168 @@
-import { Image, StatusBar, Text, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import { StatusBar, TouchableOpacity, View, Image } from 'react-native';
+import React, { useState } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import DotedLine from '../../../assets/images/dotedLine.svg';
-import { NavigationProp, useNavigation } from '@react-navigation/core';
+import {
+  NavigationProp,
+  RouteProp,
+  useNavigation,
+} from '@react-navigation/core';
 import { RootStackParamList } from '../../navigation/RootNavigator';
 import { styles } from './style';
+import { NoSafeAreaScreen as Screen } from '@/src/components/layouts/NoSafeAreaScreen';
+import { TitleAndSubtitle } from '@/src/components/common/TitleAndSubtitle';
+import { Text } from '@/src/components/common/Text';
+import BrideGroomBlob from '@/assets/images/bride-groom.svg';
+import { YStack } from 'tamagui';
+import { useLoader } from '@/src/context/LoaderContext';
+import { LoginResponse } from '@/src/models/Authentication';
+import { LoginFormType } from '@/src/resources/form';
+import { useAuth } from '@/src/context/AuthContext';
+import { useUserAuth } from '@/src/hooks/useUserAuth';
 
-export default function ProfileSelection() {
-    const [profile, setProfile] = useState('Bride');
-    const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-    const handelProfile = (profile: string) => {
-        setProfile(profile);
-        navigation.navigate('Login');
+type Props = {
+  route: RouteProp<RootStackParamList, 'ProfileSelection'>;
+};
+
+export default function ProfileSelection({
+  route: {
+    params: {
+      data: { email, password },
+    },
+  },
+}: Props) {
+  const { showLoader, hideLoader } = useLoader();
+  const { saveUser, saveToken } = useAuth();
+
+  const { login: loginUser, error: loginError } = useUserAuth();
+
+  const handleLogin = async () => {
+    console.log('Login values:', { email, password });
+    showLoader();
+    const response = await loginUser({
+      emailOrPhone: email,
+      password: password,
+      rememberMe: true,
+    });
+    if (response) {
+      saveToken({
+        accessToken: response.accessToken,
+        refreshToken: response.refreshToken,
+        tokenType: response.tokenType,
+        expiresIn: response.expiresIn,
+      });
+      saveUser(response.user);
+      console.log('Login successful:', response);
+    } else {
+      console.log('Login failed:', loginError);
     }
-    return (
-        <SafeAreaProvider style={styles.container}>
-            <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
-            <View style={styles.content}>
-                <View style={{ marginVertical: 80 }}>
-                    <Text style={styles.logo}>LOGO</Text>
-                    <Text style={styles.tagline}>BRINGING HEARTS TOGETHER</Text>
-                </View>
-                <View style={{ flexDirection: 'column', alignItems: 'center' }} >
-                    <Text style={styles.textWrapper}>Who am I</Text>
-                    <View style={styles.optionsContainer}>
-                        <DotedLine width={307} height={163} style={styles.dotedLine} />
-                        <View style={styles.brideContainer}>
-                            <TouchableOpacity style={[styles.brideCircle, profile === 'Bride' ? styles.activeColor : styles.deActiveColor]} onPress={() => { handelProfile('Bride') }} >
-                                <Image
-                                    source={require('../../../assets/images/Bride.png')}
-                                    style={styles.icon}
-                                    resizeMode="contain"
-                                />
-                            </TouchableOpacity>
-                            <View style={{ flexDirection: 'row', alignItems: 'center', display: 'flex', marginTop: 10, gap: 10, justifyContent: 'flex-end' }} >
-                                <View style={[profile === 'Bride' && styles.active, profile === 'Bride' && styles.activeColor]} />
-                                <Text style={styles.brideLabel}> Bride</Text>
-                            </View>
-                        </View>
-                        <View style={styles.groomContainer}>
-                            <View style={{ flexDirection: 'row', alignItems: 'center', display: 'flex', marginBottom: 10, gap: 10, justifyContent: 'center' }} >
-                                <View style={[profile === 'Groom' && styles.active, profile === 'Groom' && styles.activeColor]} />
-                                <Text style={styles.brideLabel}> Groom</Text>
-                            </View>
-                            <TouchableOpacity style={[styles.groomCircle, profile === 'Groom' ? styles.activeColor : styles.deActiveColor]} onPress={() => { handelProfile('Groom') }}>
-                                <Image
-                                    source={require('../../../assets/images/Groom.png')} // Replace with your groom dress image
-                                    style={styles.icon}
-                                    resizeMode="contain"
-                                />
-                                <Text style={styles.groomLabel}>Groom</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </View>
-                </View>
-            </View>
-        </SafeAreaProvider>
-    )
-}
+    hideLoader();
+  };
 
+  return (
+    <Screen theme="dark" alignItems="center" justifyContent="center">
+      <TitleAndSubtitle />
+
+      <YStack alignItems="center" marginTop={'$10'}>
+        <Text font="heading" size="extra_large">{`Who am I`}</Text>
+        <TouchableOpacity onPress={() => handleLogin()}>
+          <BrideGroomBlob />
+        </TouchableOpacity>
+      </YStack>
+    </Screen>
+    // <SafeAreaProvider style={styles.container}>
+    //   <StatusBar
+    //     translucent
+    //     backgroundColor="transparent"
+    //     barStyle="light-content"
+    //   />
+    //   <View style={styles.content}>
+    //     <View style={{ marginVertical: 80 }}>
+    //       <Text style={styles.logo}>LOGO</Text>
+    //       <Text style={styles.tagline}>BRINGING HEARTS TOGETHER</Text>
+    //     </View>
+    //     <View style={{ flexDirection: 'column', alignItems: 'center' }}>
+    //       <Text style={styles.textWrapper}>Who am I</Text>
+    //       <View style={styles.optionsContainer}>
+    //         <DotedLine width={307} height={163} style={styles.dotedLine} />
+    //         <View style={styles.brideContainer}>
+    //           <TouchableOpacity
+    //             style={[
+    //               styles.brideCircle,
+    //               profile === 'Bride'
+    //                 ? styles.activeColor
+    //                 : styles.deActiveColor,
+    //             ]}
+    //             onPress={() => {
+    //               handelProfile('Bride');
+    //             }}
+    //           >
+    //             <Image
+    //               source={require('../../../assets/images/Bride.png')}
+    //               style={styles.icon}
+    //               resizeMode="contain"
+    //             />
+    //           </TouchableOpacity>
+    //           <View
+    //             style={{
+    //               flexDirection: 'row',
+    //               alignItems: 'center',
+    //               display: 'flex',
+    //               marginTop: 10,
+    //               gap: 10,
+    //               justifyContent: 'flex-end',
+    //             }}
+    //           >
+    //             <View
+    //               style={[
+    //                 profile === 'Bride' && styles.active,
+    //                 profile === 'Bride' && styles.activeColor,
+    //               ]}
+    //             />
+    //             <Text style={styles.brideLabel}> Bride</Text>
+    //           </View>
+    //         </View>
+    //         <View style={styles.groomContainer}>
+    //           <View
+    //             style={{
+    //               flexDirection: 'row',
+    //               alignItems: 'center',
+    //               display: 'flex',
+    //               marginBottom: 10,
+    //               gap: 10,
+    //               justifyContent: 'center',
+    //             }}
+    //           >
+    //             <View
+    //               style={[
+    //                 profile === 'Groom' && styles.active,
+    //                 profile === 'Groom' && styles.activeColor,
+    //               ]}
+    //             />
+    //             <Text style={styles.brideLabel}> Groom</Text>
+    //           </View>
+    //           <TouchableOpacity
+    //             style={[
+    //               styles.groomCircle,
+    //               profile === 'Groom'
+    //                 ? styles.activeColor
+    //                 : styles.deActiveColor,
+    //             ]}
+    //             onPress={() => {
+    //               handelProfile('Groom');
+    //             }}
+    //           >
+    //             <Image
+    //               source={require('../../../assets/images/Groom.png')} // Replace with your groom dress image
+    //               style={styles.icon}
+    //               resizeMode="contain"
+    //             />
+    //             <Text style={styles.groomLabel}>Groom</Text>
+    //           </TouchableOpacity>
+    //         </View>
+    //       </View>
+    //     </View>
+    //   </View>
+    // </SafeAreaProvider>
+  );
+}

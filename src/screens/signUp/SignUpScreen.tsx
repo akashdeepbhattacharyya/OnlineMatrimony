@@ -1,6 +1,6 @@
-import React, { use, useState } from 'react';
+import { useState } from 'react';
 import { ScrollView, ImageBackground, Platform } from 'react-native';
-import { MaterialIcons, Entypo } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 import { NavigationProp, useNavigation } from '@react-navigation/core';
 import { RootStackParamList } from '../../navigation/RootNavigator';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -30,7 +30,8 @@ import { LabelledDivider } from '@/src/components/common/LabelledDivider';
 import { useUserAuth } from '@/src/hooks/useUserAuth';
 import { userRegistrationSchema } from '@/src/resources/validations/user-registration';
 import { UserRegistrationRequest } from '@/src/models/Authentication';
-import { formatDate } from '@/src/utils/dateFormatter';
+import { formatDate, formatDateString } from '@/src/utils/dateFormatter';
+import DOBIcon from '@/assets/images/icon-dob.svg';
 
 export default function SignUpScreen() {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -38,19 +39,20 @@ export default function SignUpScreen() {
   const [selectedDate, setSelectedDate] = useState(new Date(2000, 0, 1));
   const [selectedGender, setSelectedGender] = useState<
     Option<string> | undefined
-  >(undefined);
+  >(__DEV__ ? process.env.SIGNUP_GENDER : undefined);
   const { register, error: userRegistrationError, data } = useUserAuth();
 
   const initialValues = {
-    fullName: '',
-    email: '',
-    phone: '',
-    dateOfBirth: '',
-    gender: '',
-    terms: false,
-    password: 'P@ss1234',
+    fullName: __DEV__ ? process.env.SIGNUP_FULL_NAME : '',
+    email: __DEV__ ? process.env.SIGNUP_EMAIL : '',
+    phone: __DEV__ ? process.env.SIGNUP_PHONE_NO : '',
+    dateOfBirth: __DEV__ ? process.env.SIGNUP_DOB : '',
+    gender: __DEV__ ? process.env.SIGNUP_GENDER : '',
+    terms: __DEV__ ? process.env.SIGNUP_TERMS : false,
+    password: __DEV__ ? process.env.SIGNUP_PASSWORD : '',
+    confirmPassword: __DEV__ ? process.env.SIGNUP_PASSWORD : '',
   };
-
+  
   const genderOptions: CheckBoxOption<string>[] = Object.keys(genders).reduce(
     (list: CheckBoxOption<string>[], value) => [
       ...list,
@@ -59,7 +61,7 @@ export default function SignUpScreen() {
         value,
         icon: (
           <MaterialIcons
-            name={getGenderIcon(value as Gender)}
+            name={getGenderIcon(value as Gender) as any}
             size={40}
             color={
               selectedGender == undefined
@@ -84,8 +86,8 @@ export default function SignUpScreen() {
       fullName: values.fullName,
       email: values.email,
       phone: values.phone,
-      dateOfBirth: formatDate(values.dateOfBirth),
-      gender: values.gender.toUpperCase(),
+      dateOfBirth: values.dateOfBirth,
+      gender: values.gender,
       password: values.password,
     };
     console.log('Payload: ', payload);
@@ -96,8 +98,10 @@ export default function SignUpScreen() {
       console.log('Signup success:', val);
 
       navigation.navigate('Otp', {
-        data: payload.email as string,
-        page: 'REGISTRATION',
+        data: {
+          email: values.email,
+          password: values.password,
+        },
       });
     } else {
       console.log('Signup failed:', userRegistrationError);
@@ -112,9 +116,7 @@ export default function SignUpScreen() {
     setShowDatePicker(false);
     if (date) {
       setSelectedDate(date);
-      const formatted = `${String(date.getDate()).padStart(2, '0')}/${String(
-        date.getMonth() + 1,
-      ).padStart(2, '0')}/${date.getFullYear()}`;
+      const formatted = formatDate(date);
       setFieldValue('dateOfBirth', formatted);
     }
   };
@@ -233,9 +235,11 @@ export default function SignUpScreen() {
                 <YStack gap={'$2'}>
                   <LabelledButton
                     label="Date Of Birth"
-                    icon={<Entypo name="cake" color="#000000" size={20} />}
+                    icon={<DOBIcon />}
                     onPress={() => setShowDatePicker(true)}
-                    title={values.dateOfBirth || 'DD / MM / YYYY'}
+                    title={
+                      formatDateString(values.dateOfBirth) || 'DD / MM / YYYY'
+                    }
                     titleProps={{
                       color:
                         values.dateOfBirth === '' ? '$placeholder' : '$color',
@@ -267,6 +271,41 @@ export default function SignUpScreen() {
                     </View>
                   )}
                 </YStack>
+
+                {/* Password */}
+                <YStack gap={'$2'}>
+                  <LabelledTextField
+                    label="Password"
+                    placeholder="Enter Your Password"
+                    icon={<MaterialIcons name="lock" size={24} />}
+                    onChangeText={handleChange('password')}
+                    onBlur={handleBlur('password')}
+                    value={values.password}
+                    secureTextEntry
+                  />
+                  {touched.password && errors.password && (
+                    <Text theme={'error_message'}>{errors.password}</Text>
+                  )}
+                </YStack>
+
+                {/* Confirm Password */}
+                <YStack gap={'$2'}>
+                  <LabelledTextField
+                    label="Confirm Password"
+                    placeholder="Confirm Your Password"
+                    icon={<MaterialIcons name="lock" size={24} />}
+                    onChangeText={handleChange('confirmPassword')}
+                    onBlur={handleBlur('confirmPassword')}
+                    value={values.confirmPassword}
+                    secureTextEntry
+                  />
+                  {touched.confirmPassword && errors.confirmPassword && (
+                    <Text theme={'error_message'}>
+                      {errors.confirmPassword}
+                    </Text>
+                  )}
+                </YStack>
+
                 {/* Gender */}
                 <YStack gap={'$2'}>
                   <YStack>

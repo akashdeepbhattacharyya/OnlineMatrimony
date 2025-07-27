@@ -2,6 +2,7 @@ import { UserProfile } from '@/src/models/User';
 import { YStack, ViewProps } from 'tamagui';
 import { ProfileItem } from './ProfileItem';
 import { ProfileTileHeader } from './ProfileTileHeader';
+import { occupations } from '@/src/resources/update-profile';
 
 type Props = {
   userProfile: UserProfile;
@@ -21,12 +22,11 @@ export const ProfessionalInformation = ({ userProfile, ...props }: Props) => {
       <ProfileTileHeader title="Professional Information" />
       <ProfileItem
         title="Occupation"
-        subtitle={userProfile.professionalInformation?.occupation}
+        subtitle={
+          occupations[userProfile.occupation as keyof typeof occupations]
+        }
       />
-      <ProfileItem
-        title="Annual Income"
-        subtitle={userProfile.professionalInformation?.annualIncome}
-      />
+      <ProfileItem title="Annual Income" subtitle={userProfile.annualIncome} />
     </YStack>
   );
 };

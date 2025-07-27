@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   View,
   Text,
@@ -10,7 +9,7 @@ import {
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import Header from '../../components/common/ScreenHeader';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '@/src/context/AuthContext';
 import { NavigationProp, useNavigation } from '@react-navigation/core';
 import { RootStackParamList } from '../../navigation/RootNavigator';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
@@ -22,7 +21,7 @@ const options = [
 ];
 
 const AccountSettingsScreen = () => {
-  const { logout } = useAuth();
+  const { clearSession } = useAuth();
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
   const handelOnpress = (label: string) => {
@@ -37,7 +36,7 @@ const AccountSettingsScreen = () => {
         navigation.navigate('Subscription');
         break;
       case 'Logout':
-        logout();
+        clearSession();
         break;
       default:
         console.log(`${label} pressed`);
