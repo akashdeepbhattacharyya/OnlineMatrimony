@@ -83,8 +83,7 @@ const LoginScreen = () => {
             alignItems="center"
             padding="$4"
           >
-            <Spacer size="$20" />
-            <TitleAndSubtitle marginBottom="$11" />
+            <TitleAndSubtitle marginTop="$15" marginBottom="$11" />
 
             {/* Email or Phone */}
             <YStack width={'100%'} gap={'$2'}>
