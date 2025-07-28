@@ -49,15 +49,16 @@ module.exports = {
         projectId: '0cfad855-470b-4db1-8914-69e70917f01f',
       },
       keys: {
-        local: {
-          apiBaseUrl: process.env.LOCAL_BASE_URL,
-        },
-        dev: {
-          apiBaseUrl: process.env.DEV_BASE_URL,
-        },
-        prod: {
-          apiBaseUrl: process.env.PROD_BASE_URL,
-        },
+        API_BASE_URL: process.env.API_BASE_URL,
+        // local: {
+        //   apiBaseUrl: process.env.LOCAL_BASE_URL,
+        // },
+        // dev: {
+        //   apiBaseUrl: process.env.DEV_BASE_URL,
+        // },
+        // prod: {
+        //   apiBaseUrl: process.env.PROD_BASE_URL,
+        // },
       },
     },
     owner: 'onlinematrimony',
