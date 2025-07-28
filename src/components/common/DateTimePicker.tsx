@@ -55,7 +55,7 @@ export const DateTimePicker = ({
   };
 
   return (
-    <View theme={'dark'} backgroundColor={'aqua'} {...props}>
+    <View theme={'dark'} {...props}>
       <DateTimePickerModal
         testID={testID}
         maximumDate={maxDate}

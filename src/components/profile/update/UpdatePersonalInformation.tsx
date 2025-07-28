@@ -245,7 +245,11 @@ export const UpdatePersonalInformation = ({ ...props }: ViewProps) => {
           setShowDatePicker(false);
         }}
         onCancel={() => setShowDatePicker(false)}
-        selectedDate={parseDate(values.dateOfBirth)}
+        selectedDate={
+          values.dateOfBirth && typeof values.dateOfBirth === 'string'
+            ? parseDate(values.dateOfBirth)
+            : undefined
+        }
       />
     </YStack>
   );

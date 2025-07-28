@@ -335,7 +335,11 @@ export default function SignUpScreen() {
                     setShowDatePicker(false);
                   }}
                   onCancel={() => setShowDatePicker(false)}
-                  selectedDate={parseDate(values.dateOfBirth)}
+                  selectedDate={
+                    values.dateOfBirth
+                      ? parseDate(values.dateOfBirth)
+                      : undefined
+                  }
                 />
                 {/* Submit */}
                 <PrimaryButton
