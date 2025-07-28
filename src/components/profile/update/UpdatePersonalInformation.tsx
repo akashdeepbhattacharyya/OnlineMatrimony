@@ -214,6 +214,7 @@ export const UpdatePersonalInformation = ({ ...props }: ViewProps) => {
             initialValue={cityOptions(values.state as State).find(
               option => option.value === values.city,
             )}
+            disabled={!values.state} // Disable if state is not selected
           />
 
           {touched.city && errors.city && (
