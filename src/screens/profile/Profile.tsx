@@ -34,10 +34,10 @@ export default function Profile() {
   const userRepository = useUserRepository();
 
   const profilePictureUri = useMemo(() => {
-    return userData.profile.primaryPhotoUrl
-      ? userData.profile.primaryPhotoUrl
-      : `https://ui-avatars.com/api/?name=${userData.profile.fullName}&size=512`;
-  }, [userData.profile.primaryPhotoUrl, userData.profile.fullName]);
+    return userData?.profile?.primaryPhotoUrl
+      ? userData?.profile?.primaryPhotoUrl
+      : `https://ui-avatars.com/api/?name=${userData?.profile?.fullName}&size=512`;
+  }, [userData?.profile?.primaryPhotoUrl, userData?.profile?.fullName]);
 
   const onBackPress = () => {
     navigation.goBack();

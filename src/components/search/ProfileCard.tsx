@@ -13,6 +13,7 @@ export default function ProfileCard({
     isSelected: boolean,
     onSelect: () => void
 }) {
+    console.log(user);
     return (
         <TouchableOpacity style={[styles.card, isSelected && styles.highlightCard]} onPress={onSelect}>
             <View style={{
@@ -22,7 +23,7 @@ export default function ProfileCard({
             }}>
                 <Image source={user.photo} style={styles.image} resizeMode='cover' />
                 <View style={styles.details}>
-                    <Text style={styles.name}>{user.name}</Text>
+                    <Text style={styles.name}>{user.fullName}</Text>
                     <Text style={styles.info}>{`${user.age} Yrs Old, Height - ${user.height}`}</Text>
                     <Text style={styles.info}>{user.religionLabel}</Text>
                     <Text style={styles.info}>{user.location}</Text>

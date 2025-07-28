@@ -4,18 +4,30 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ProfileCard from '../../components/search/ProfileCard';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import Header from '../../components/common/ScreenHeader';
 import { MaterialIcons } from '@expo/vector-icons';
 
 import { styles } from './style';
+import { SheetC } from '@/src/components/common/Sheet';
+import PersonalInfoScreen from '@/src/components/PersonalInfo/PersonalInfo';
+import { useLoader } from '@/src/context/LoaderContext';
+import { useAppDispatch, useAppSelector } from '@/src/services/repositories/store/hook';
+import { fetchSearchData, searchStateItem } from '@/src/services/repositories/slices/matchSlice';
+import { useMatchRepository } from '@/src/api/repositories/useMatchRepository';
 
 export default function SearchScreen() {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(0);
+  const [isOpenSearch, setIsOpenSearch] = useState(false);
+  const { showLoader, hideLoader } = useLoader();
+  const dispatch = useAppDispatch();
+  const userRepository = useMatchRepository();
+  const { searchData } = useAppSelector(searchStateItem);;
   const users = [
     {
       id: '1',
@@ -129,6 +141,19 @@ export default function SearchScreen() {
       religionLabel: 'Indian, Islam',
     },
   ];
+  useEffect(() => {
+    const getData = async () => {
+      showLoader();
+      await dispatch(fetchSearchData({ getSearches: userRepository.getSearches }));
+      hideLoader();
+    }
+    getData();
+  }, []);
+  console.log('searchData', searchData);
+
+  const handelSearch = () => {
+    setIsOpenSearch(!isOpenSearch);
+  }
   return (
     <SafeAreaProvider>
       <SafeAreaView shouldRasterizeIOS={true} style={styles.container}>
@@ -166,11 +191,13 @@ export default function SearchScreen() {
               style={styles.searchInput}
             />
           </View>
-          <MaterialIcons name="tune" size={30} color="red" />
+          <TouchableOpacity onPress={handelSearch} >
+            <MaterialIcons name="tune" size={30} color="red" />
+          </TouchableOpacity>
         </View>
 
         <FlatList
-          data={users}
+          data={searchData.content}
           style={{ marginBottom: 90 }}
           keyExtractor={item => item.id}
           renderItem={({ item, index }) => (
@@ -182,6 +209,10 @@ export default function SearchScreen() {
             />
           )}
         />
+        <SheetC open={isOpenSearch} onOpenChange={setIsOpenSearch}>
+          <PersonalInfoScreen />
+          <TouchableOpacity onPress={() => setIsOpenSearch(!isOpenSearch)}><Text>Close</Text></TouchableOpacity>
+        </SheetC>
       </SafeAreaView>
     </SafeAreaProvider>
   );

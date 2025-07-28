@@ -41,14 +41,14 @@ export default function UpdateProfile({
   const { saveUser } = useAuth();
 
   useEffect(() => {
-    if (userData.profile.primaryPhotoUrl) {
-      setPhotoUri(userData.profile.primaryPhotoUrl);
+    if (userData?.profile?.primaryPhotoUrl) {
+      setPhotoUri(userData?.profile?.primaryPhotoUrl);
     } else {
       setPhotoUri(
-        `https://ui-avatars.com/api/?name=${userData.profile.fullName}&size=512`,
+        `https://ui-avatars.com/api/?name=${userData?.profile?.fullName}&size=512`,
       );
     }
-  }, [userData.profile.primaryPhotoUrl, userData.profile.fullName]);
+  }, [userData?.profile?.primaryPhotoUrl, userData?.profile?.fullName]);
 
   const onBackPress = () => {
     navigation.goBack();

@@ -1,12 +1,13 @@
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import Back from '../../../assets/images/back.svg';
-import { useNavigation } from '@react-navigation/native';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { View, ViewProps, XStack, Image } from 'tamagui';
 import { Text } from './Text';
 import NotificationIcon from '@/assets/images/icon_notification.svg';
 import { accountStateItem } from '@/src/services/repositories/slices/userSlice';
 import { useAppSelector } from '@/src/services/repositories/store/hook';
 import { ProfilePicture } from '../profile/ProfilePicture';
+import { RootStackParamList } from '@/src/navigation/RootNavigator';
 
 type Props = {
   headerText?: string;
@@ -22,13 +23,15 @@ const Header = ({
   onNotificationPress,
   ...props
 }: Props) => {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const { userData } = useAppSelector(accountStateItem);
 
   const handelBack = () => {
     navigation.goBack();
   };
-
+  const handleProfilePress = () => {
+    navigation.navigate('Profile');
+  };
   return (
     <XStack
       justifyContent="center"
@@ -54,11 +57,11 @@ const Header = ({
         {headerText}
       </Text>
       <XStack alignItems="center" justifyContent="center" gap={'$3.5'}>
-        <TouchableOpacity onPress={onProfiilePress}>
+        <TouchableOpacity onPress={handleProfilePress}>
           <ProfilePicture
             uri={
-              userData.profile.primaryPhotoUrl ||
-              `https://ui-avatars.com/api/?name=${userData.profile.fullName}&size=512`
+              userData?.profile?.primaryPhotoUrl ||
+              `https://ui-avatars.com/api/?name=${userData?.profile?.fullName || ''}&size=512`
             }
             outerCircleSize={38}
             innerCircleSize={32}

@@ -14,13 +14,11 @@ import { RootStackParamList } from '@/src/navigation/RootNavigator';
 export default function HomeScreen() {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
 
-  const handleProfilePress = () => {
-    navigation.navigate('Profile');
-  };
+
 
   return (
     <Screen>
-      <Header onProfiilePress={handleProfilePress} />
+      <Header />
       <ScrollView
         contentContainerStyle={{ flexGrow: 1 }}
         showsVerticalScrollIndicator={false}
