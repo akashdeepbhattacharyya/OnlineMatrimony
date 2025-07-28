@@ -23,9 +23,15 @@ const themes: {
     background: tokens.color.button_bg_red,
     color: tokens.color.black,
   },
+  dark_secondary_button: {
+    background: tokens.color.transparent,
+    color: tokens.color.white,
+    borderColor: tokens.color.white,
+  },
   dark_primary_button: {
     background: tokens.color.button_bg_red,
     color: tokens.color.white,
+    borderColor: tokens.color.button_bg_red,
   },
   dark_input: {
     background: tokens.color.white,

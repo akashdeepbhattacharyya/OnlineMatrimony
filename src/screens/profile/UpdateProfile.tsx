@@ -57,12 +57,7 @@ export default function UpdateProfile({
 
   const initialValues: UpdateUserProfileFormType = {
     fullName: userData.profile.fullName,
-    // dateOfBirth: formatDate(
-    //   userData.profile.dateOfBirth,
-    //   'yyyy-MM-dd',
-    //   'dd/MM/yyyy',
-    // ),
-    dateOfBirth: '',
+    dateOfBirth: userData.profile.dateOfBirth,
     gender: userData.profile.gender,
     city: userData.profile.city,
     state: userData.profile.state,

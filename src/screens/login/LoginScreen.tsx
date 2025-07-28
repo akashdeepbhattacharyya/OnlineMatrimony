@@ -133,7 +133,7 @@ const LoginScreen = () => {
             </YStack>
 
             <PrimaryButton
-              title="Get OTP"
+              title="Continue"
               onPress={() => handleSubmit()}
               marginTop="$4"
               disabled={isSubmitting || !isValid}

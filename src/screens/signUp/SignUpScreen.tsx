@@ -3,8 +3,6 @@ import { ScrollView, ImageBackground, Platform } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { NavigationProp, useNavigation } from '@react-navigation/core';
 import { RootStackParamList } from '../../navigation/RootNavigator';
-import DateTimePicker from '@react-native-community/datetimepicker';
-
 import { Formik } from 'formik';
 import { styles } from './style';
 import { useLoader } from '../../context/LoaderContext';
@@ -30,8 +28,13 @@ import { LabelledDivider } from '@/src/components/common/LabelledDivider';
 import { useUserAuth } from '@/src/hooks/useUserAuth';
 import { userRegistrationSchema } from '@/src/resources/validations/user-registration';
 import { UserRegistrationRequest } from '@/src/models/Authentication';
-import { formatDate, formatDateString } from '@/src/utils/dateFormatter';
+import {
+  formatDate,
+  formatDateString,
+  parseDate,
+} from '@/src/utils/dateFormatter';
 import DOBIcon from '@/assets/images/icon-dob.svg';
+import { DateTimePicker } from '@/src/components/common/DateTimePicker';
 
 export default function SignUpScreen() {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -52,7 +55,7 @@ export default function SignUpScreen() {
     password: __DEV__ ? process.env.SIGNUP_PASSWORD : '',
     confirmPassword: __DEV__ ? process.env.SIGNUP_PASSWORD : '',
   };
-  
+
   const genderOptions: CheckBoxOption<string>[] = Object.keys(genders).reduce(
     (list: CheckBoxOption<string>[], value) => [
       ...list,
@@ -248,28 +251,6 @@ export default function SignUpScreen() {
                   {touched.dateOfBirth && errors.dateOfBirth && (
                     <Text theme={'error_message'}>{errors.dateOfBirth}</Text>
                   )}
-
-                  {showDatePicker && (
-                    <View
-                      theme="date_picker"
-                      backgroundColor={'$background'}
-                      alignItems="center"
-                      padding={'$4'}
-                      borderRadius={'$10'}
-                      marginTop={'$2'}
-                    >
-                      <DateTimePicker
-                        value={selectedDate}
-                        mode="date"
-                        display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-                        maximumDate={new Date()}
-                        onChange={(event, date) =>
-                          handleDateChange(event, date, setFieldValue)
-                        }
-                        style={{ backgroundColor: getToken('$color.white') }}
-                      />
-                    </View>
-                  )}
                 </YStack>
 
                 {/* Password */}
@@ -346,6 +327,16 @@ export default function SignUpScreen() {
                   </Text>
                 )}
 
+                <DateTimePicker
+                  isVisible={showDatePicker}
+                  mode="date"
+                  onConfirm={date => {
+                    setFieldValue('dateOfBirth', formatDate(date));
+                    setShowDatePicker(false);
+                  }}
+                  onCancel={() => setShowDatePicker(false)}
+                  selectedDate={parseDate(values.dateOfBirth)}
+                />
                 {/* Submit */}
                 <PrimaryButton
                   title="Continue"

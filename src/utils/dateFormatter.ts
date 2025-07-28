@@ -22,3 +22,10 @@ export function formatDate(
 ): string {
   return format(date, formatString);
 }
+
+export function parseDate(
+  dateString: string,
+  formatString: string = 'yyyy-MM-dd',
+): Date {
+  return parse(dateString, formatString, new Date());
+}
