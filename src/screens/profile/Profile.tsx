@@ -1,5 +1,5 @@
-import { NoSafeAreaScreen as Screen } from '@/src/components/layouts/NoSafeAreaScreen';
-import { ScrollView, TouchableOpacity } from 'react-native';
+import { SafeAreaScreen as Screen } from '@/src/components/layouts/SafeAreaScreen';
+import { Platform, ScrollView, TouchableOpacity } from 'react-native';
 import { YStack, XStack } from 'tamagui';
 import { ProfilePicture } from '@/src/components/profile/ProfilePicture';
 import { ConnectionsInformation } from '@/src/components/profile/ConnectionsInformation';
@@ -59,7 +59,7 @@ export default function Profile() {
     <Screen theme="dark">
       <ProfileBackground uri={profilePictureUri} />
       <XStack
-        marginTop={'$10'}
+        marginTop={Platform.OS === 'android' ? '$4' : '$2'}
         paddingHorizontal={'$4'}
         paddingVertical={'$2'}
         justifyContent="space-between"
