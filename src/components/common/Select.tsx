@@ -74,6 +74,7 @@ export function SelectC({
         disabled={disabled}
         theme="select"
         backgroundColor={getToken('$color.white')}
+        opacity={1}
         testID={triggerTestID}
         borderRadius={'$10'}
         {...triggerProps}

@@ -18,7 +18,6 @@ export type PersonalInformation = {
   city?: City; // Optional field
   state?: State; // Optional field for address
   pincode?: string; // Optional field for postal code
-  country?: string; // Optional field for country
 };
 
 export type MatchInformation = {
@@ -69,7 +68,6 @@ export type UpdateUserProfileRequest = {
   gender?: string;
   city?: string;
   state?: string;
-  country?: string;
   pincode?: string;
   aboutMe?: string;
   diet?: string;

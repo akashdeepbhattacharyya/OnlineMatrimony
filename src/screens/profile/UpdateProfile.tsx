@@ -1,6 +1,6 @@
-import { NoSafeAreaScreen as Screen } from '@/src/components/layouts/NoSafeAreaScreen';
+import { SafeAreaScreen as Screen } from '@/src/components/layouts/SafeAreaScreen';
 import {
-  ImageSourcePropType,
+  Platform,
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
@@ -13,7 +13,6 @@ import { Formik } from 'formik';
 import { UpdatePersonalInformation } from '@/src/components/profile/update/UpdatePersonalInformation';
 import { UpdateUserProfileFormType } from '@/src/resources/form';
 import { PrimaryButton } from '@/src/components/common/PrimaryButton';
-import { formatDateString } from '@/src/utils/dateFormatter';
 import { updateUserProfileSchema } from '@/src/resources/validations/update-profile';
 import { UpdateAboutYourSelf } from '@/src/components/profile/update/UpdateAboutSelf';
 import { ProfileBackground } from '@/src/components/profile/ProfileBackground';
@@ -57,12 +56,7 @@ export default function UpdateProfile({
 
   const initialValues: UpdateUserProfileFormType = {
     fullName: userData.profile.fullName,
-    // dateOfBirth: formatDate(
-    //   userData.profile.dateOfBirth,
-    //   'yyyy-MM-dd',
-    //   'dd/MM/yyyy',
-    // ),
-    dateOfBirth: '',
+    dateOfBirth: userData.profile.dateOfBirth,
     gender: userData.profile.gender,
     city: userData.profile.city,
     state: userData.profile.state,
@@ -110,7 +104,11 @@ export default function UpdateProfile({
   return (
     <Screen theme="dark">
       <ProfileBackground uri={photoUri} />
-      <View marginTop={'$10'} paddingHorizontal={'$4'} paddingVertical={'$2'}>
+      <View
+        marginTop={Platform.OS === 'android' ? '$4' : '$2'}
+        paddingHorizontal={'$4'}
+        paddingVertical={'$2'}
+      >
         <TouchableOpacity onPress={onBackPress}>
           <BackIcon />
         </TouchableOpacity>

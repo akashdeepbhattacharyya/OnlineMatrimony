@@ -32,12 +32,11 @@ export const convertToPayload = (
 ): UpdateUserProfileRequest => {
   return {
     fullName: form.fullName,
-    dateOfBirth: formatDateString(form.dateOfBirth),
+    dateOfBirth: form.dateOfBirth,
     gender: form.gender,
     state: form.state,
     city: form.city,
     pincode: form.pincode,
-    country: form.country,
     aboutMe: form.aboutMe,
   };
 };

@@ -1,4 +1,4 @@
-import { YStack, ViewProps, getToken, View } from 'tamagui';
+import { YStack, ViewProps, getToken } from 'tamagui';
 import { ProfileTileHeader } from '../ProfileTileHeader';
 import { LabelledTextField } from '../../common/LabelledTextField';
 import { useFormikContext } from 'formik';
@@ -10,11 +10,9 @@ import {
 import { Text } from '@/src/components/common/Text';
 import PersonIcon from '@/assets/images/icon_person.svg';
 import { MaterialIcons } from '@expo/vector-icons';
-import { Platform } from 'react-native';
 import { CheckBoxButtonGroup } from '../../common/CheckBoxButtonGroup';
 import { LabelledButton } from '../../common/LabelledButton';
 import { genders, getGenderIcon, Gender } from '@/src/resources/gender';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import DOBIcon from '@/assets/images/icon-dob.svg';
 import {
   cities,
@@ -28,14 +26,18 @@ import { LabelledSelect } from '../../common/LabelledSelect';
 import StateIcon from '@/assets/images/icon-state.svg';
 import CityIcon from '@/assets/images/icon-city.svg';
 import PinIcon from '@/assets/images/icon-pin.svg';
-import { formatDate } from '@/src/utils/dateFormatter';
+import {
+  formatDate,
+  formatDateString,
+  parseDate,
+} from '@/src/utils/dateFormatter';
+import { DateTimePicker } from '../../common/DateTimePicker';
 
 export const UpdatePersonalInformation = ({ ...props }: ViewProps) => {
   const { values, errors, touched, handleChange, handleBlur, setFieldValue } =
     useFormikContext<UpdateUserProfileFormType>();
 
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(new Date());
 
   const genderOptions: CheckBoxOption<string>[] = Object.keys(genders).reduce(
     (list: CheckBoxOption<string>[], value) => [
@@ -114,18 +116,6 @@ export const UpdatePersonalInformation = ({ ...props }: ViewProps) => {
     setFieldValue('gender', option.value);
   };
 
-  const handleDateChange = (
-    event: any,
-    date: Date | undefined,
-    setFieldValue: any,
-  ) => {
-    if (date) {
-      setSelectedDate(date);
-      setFieldValue('dateOfBirth', formatDate(date));
-    }
-    setShowDatePicker(false);
-  };
-
   return (
     <YStack
       theme={'profile_tile'}
@@ -153,41 +143,19 @@ export const UpdatePersonalInformation = ({ ...props }: ViewProps) => {
           )}
         </YStack>
 
-        {/* DOB Date Picker */}
+        {/* DOB */}
         <YStack gap={'$2'}>
           <LabelledButton
             label="Date Of Birth"
             icon={<DOBIcon />}
             onPress={() => setShowDatePicker(true)}
-            title={values.dateOfBirth || 'DD / MM / YYYY'}
+            title={formatDateString(values.dateOfBirth) || 'DD / MM / YYYY'}
             titleProps={{
               color: values.dateOfBirth === '' ? '$placeholder' : '$color',
             }}
           />
           {touched.dateOfBirth && errors.dateOfBirth && (
             <Text theme={'error_message'}>{errors.dateOfBirth}</Text>
-          )}
-
-          {showDatePicker && (
-            <View
-              theme="date_picker"
-              backgroundColor={'$background'}
-              alignItems="center"
-              padding={'$4'}
-              borderRadius={'$10'}
-              marginTop={'$2'}
-            >
-              <DateTimePicker
-                value={selectedDate}
-                mode="date"
-                display={Platform.OS === 'ios' ? 'spinner' : 'default'}
-                maximumDate={new Date()}
-                onChange={(event, date) =>
-                  handleDateChange(event, date, setFieldValue)
-                }
-                style={{ backgroundColor: getToken('$color.white') }}
-              />
-            </View>
           )}
         </YStack>
 
@@ -246,7 +214,7 @@ export const UpdatePersonalInformation = ({ ...props }: ViewProps) => {
             initialValue={cityOptions(values.state as State).find(
               option => option.value === values.city,
             )}
-            disabled={!values.state}
+            disabled={!values.state} // Disable if state is not selected
           />
 
           {touched.city && errors.city && (
@@ -270,6 +238,20 @@ export const UpdatePersonalInformation = ({ ...props }: ViewProps) => {
           )}
         </YStack>
       </YStack>
+      <DateTimePicker
+        isVisible={showDatePicker}
+        mode="date"
+        onConfirm={date => {
+          setFieldValue('dateOfBirth', formatDate(date));
+          setShowDatePicker(false);
+        }}
+        onCancel={() => setShowDatePicker(false)}
+        selectedDate={
+          values.dateOfBirth && typeof values.dateOfBirth === 'string'
+            ? parseDate(values.dateOfBirth)
+            : undefined
+        }
+      />
     </YStack>
   );
 };
