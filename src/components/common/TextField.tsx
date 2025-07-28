@@ -18,7 +18,12 @@ export const TextField = ({ icon, ...props }: Props) => {
       justifyContent="flex-start"
     >
       {icon}
-      <Input unstyled placeholderTextColor="$placeholder" {...props} />
+      <Input
+        unstyled
+        placeholderTextColor="$placeholder"
+        color={'$color'}
+        {...props}
+      />
     </XStack>
   );
 };
