@@ -36,7 +36,7 @@ export const PersonalInformation = ({ userData, ...props }: Props) => {
           [
             cities[userData.profile.city as keyof typeof cities],
             states[userData.profile.state as keyof typeof states],
-            userData.profile.country,
+            `India`,
           ]
             .filter(Boolean)
             .join(', ') +

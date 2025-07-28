@@ -37,7 +37,6 @@ export const convertToPayload = (
     state: form.state,
     city: form.city,
     pincode: form.pincode,
-    country: form.city && form.country && form.pincode ? 'INDIA' : undefined,
     aboutMe: form.aboutMe,
   };
 };
