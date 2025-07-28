@@ -8,12 +8,18 @@ import { parse, format } from 'date-fns';
  * @returns The formatted date string.
  */
 export function formatDateString(
-  dateString: string,
+  dateString?: string,
   inputFormat = 'yyyy-MM-dd',
   outputFormat = 'dd/MM/yyyy',
 ): string {
-  let newDate = parse(dateString, inputFormat, new Date());
-  return format(newDate, outputFormat);
+  if (typeof dateString !== 'string' || !dateString.trim()) return '';
+  try {
+    const newDate = parse(dateString, inputFormat, new Date());
+    return format(newDate, outputFormat);
+  } catch (e) {
+    console.warn('Invalid dateString in formatDateString:', dateString, e);
+    return '';
+  }
 }
 
 export function formatDate(

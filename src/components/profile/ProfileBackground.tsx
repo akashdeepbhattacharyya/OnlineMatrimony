@@ -1,5 +1,5 @@
 import { getToken, Image } from 'tamagui';
-import LinearGradient from 'react-native-linear-gradient';
+import { LinearGradient } from 'expo-linear-gradient';
 import { User } from '@/src/models/User';
 
 type Props = {
