@@ -38,8 +38,7 @@ export const UpdatePersonalInformation = ({ ...props }: ViewProps) => {
     useFormikContext<UpdateUserProfileFormType>();
 
   const [showDatePicker, setShowDatePicker] = useState(false);
-
-  const genderOptions: CheckBoxOption<string>[] = Object.keys(genders).reduce(
+  const genderOptions: CheckBoxOption<string>[] = genders ? Object.keys(genders).reduce(
     (list: CheckBoxOption<string>[], value) => [
       ...list,
       {
@@ -53,8 +52,8 @@ export const UpdatePersonalInformation = ({ ...props }: ViewProps) => {
               selectedGender == undefined
                 ? getToken('$color.white')
                 : selectedGender?.value == value
-                ? getToken('$color.button_bg_red')
-                : getToken('$color.gray')
+                  ? getToken('$color.button_bg_red')
+                  : getToken('$color.gray')
             }
             style={{ marginLeft: 8 }}
           />
@@ -62,9 +61,9 @@ export const UpdatePersonalInformation = ({ ...props }: ViewProps) => {
       },
     ],
     [],
-  );
+  ) : [];
 
-  const stateOptions: Option<State>[] = Object.keys(states).reduce(
+  const stateOptions: Option<State>[] = states ? Object.keys(states).reduce(
     (list: Option<State>[], value) => [
       ...list,
       {
@@ -73,11 +72,11 @@ export const UpdatePersonalInformation = ({ ...props }: ViewProps) => {
       },
     ],
     [],
-  );
+  ) : [];
 
   const cityOptions = (state: State): Option<City>[] => {
     if (!state) return [];
-    return stateCityMapping[state].reduce(
+    return stateCityMapping[state] ? stateCityMapping[state].reduce(
       (list: Option<City>[], value) => [
         ...list,
         {
@@ -86,7 +85,7 @@ export const UpdatePersonalInformation = ({ ...props }: ViewProps) => {
         },
       ],
       [],
-    );
+    ) : [];
   };
 
   const [selectedGender, setSelectedGender] = useState<
@@ -94,17 +93,17 @@ export const UpdatePersonalInformation = ({ ...props }: ViewProps) => {
   >(
     values.gender
       ? {
-          label: genders[values.gender as keyof typeof genders],
-          value: values.gender,
-          icon: (
-            <MaterialIcons
-              name={getGenderIcon(values.gender as Gender) as any}
-              size={40}
-              color={getToken('$color.button_bg_red')}
-              style={{ marginLeft: 8 }}
-            />
-          ),
-        }
+        label: genders[values.gender as keyof typeof genders],
+        value: values.gender,
+        icon: (
+          <MaterialIcons
+            name={getGenderIcon(values.gender as Gender) as any}
+            size={40}
+            color={getToken('$color.button_bg_red')}
+            style={{ marginLeft: 8 }}
+          />
+        ),
+      }
       : undefined,
   );
 
