@@ -1,4 +1,4 @@
-import { YStack, ViewProps, getToken, View } from 'tamagui';
+import { YStack, ViewProps, getToken } from 'tamagui';
 import { ProfileTileHeader } from '../ProfileTileHeader';
 import { LabelledTextField } from '../../common/LabelledTextField';
 import { useFormikContext } from 'formik';
@@ -10,7 +10,6 @@ import {
 import { Text } from '@/src/components/common/Text';
 import PersonIcon from '@/assets/images/icon_person.svg';
 import { MaterialIcons } from '@expo/vector-icons';
-import { Platform } from 'react-native';
 import { CheckBoxButtonGroup } from '../../common/CheckBoxButtonGroup';
 import { LabelledButton } from '../../common/LabelledButton';
 import { genders, getGenderIcon, Gender } from '@/src/resources/gender';
@@ -39,7 +38,6 @@ export const UpdatePersonalInformation = ({ ...props }: ViewProps) => {
     useFormikContext<UpdateUserProfileFormType>();
 
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(new Date());
 
   const genderOptions: CheckBoxOption<string>[] = Object.keys(genders).reduce(
     (list: CheckBoxOption<string>[], value) => [
@@ -116,18 +114,6 @@ export const UpdatePersonalInformation = ({ ...props }: ViewProps) => {
   ) => {
     setSelectedGender(option);
     setFieldValue('gender', option.value);
-  };
-
-  const handleDateChange = (
-    event: any,
-    date: Date | undefined,
-    setFieldValue: any,
-  ) => {
-    if (date) {
-      setSelectedDate(date);
-      setFieldValue('dateOfBirth', formatDate(date));
-    }
-    setShowDatePicker(false);
   };
 
   return (
@@ -228,7 +214,6 @@ export const UpdatePersonalInformation = ({ ...props }: ViewProps) => {
             initialValue={cityOptions(values.state as State).find(
               option => option.value === values.city,
             )}
-            disabled={!values.state}
           />
 
           {touched.city && errors.city && (

@@ -28,20 +28,20 @@ export const PersonalInformation = ({ userData, ...props }: Props) => {
       />
       <ProfileItem
         title="Gender"
-        subtitle={
-          genders[userData.profile.gender as keyof typeof genders]
-        }
+        subtitle={genders[userData.profile.gender as keyof typeof genders]}
       />
       <ProfileItem
         title="Address"
-        subtitle={[
-          cities[userData.profile.city as keyof typeof cities],
-          states[userData.profile.state as keyof typeof states],
-          userData.profile.country,
-          userData.profile.pincode,
-        ]
-          .filter(Boolean)
-          .join(', ')}
+        subtitle={
+          [
+            cities[userData.profile.city as keyof typeof cities],
+            states[userData.profile.state as keyof typeof states],
+            userData.profile.country,
+          ]
+            .filter(Boolean)
+            .join(', ') +
+          (userData.profile.pincode ? ` - ${userData.profile.pincode}` : '')
+        }
       />
       <ProfileItem title="Phone" subtitle={userData.phone || 'N/A'} />
     </YStack>

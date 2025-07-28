@@ -48,7 +48,7 @@ export function useUserRepository() {
   const updateProfile = async (
     data: UpdateUserProfileRequest,
   ): Promise<ApiResponse<User>> => {
-    return handleApiResponse(client.post('/users/profile', data));
+    return handleApiResponse(client.put('/users/editProfile', data));
   };
 
   const getProfile = async (): Promise<ApiResponse<User>> => {
