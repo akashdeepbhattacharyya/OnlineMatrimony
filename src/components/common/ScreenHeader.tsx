@@ -1,32 +1,34 @@
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import Back from '../../../assets/images/back.svg';
-import { useNavigation } from '@react-navigation/native';
-import { View, ViewProps, XStack, Image } from 'tamagui';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { ViewProps, XStack } from 'tamagui';
 import { Text } from './Text';
 import NotificationIcon from '@/assets/images/icon_notification.svg';
 import { accountStateItem } from '@/src/services/repositories/slices/userSlice';
 import { useAppSelector } from '@/src/services/repositories/store/hook';
 import { ProfilePicture } from '../profile/ProfilePicture';
+import { RootStackParamList } from '@/src/navigation/RootNavigator';
 
 type Props = {
   headerText?: string;
   isBack?: boolean;
-  onProfiilePress?: () => void;
-  onNotificationPress?: () => void;
 } & ViewProps;
 
-const Header = ({
-  headerText,
-  isBack = false,
-  onProfiilePress,
-  onNotificationPress,
-  ...props
-}: Props) => {
-  const navigation = useNavigation();
+const Header = ({ headerText, isBack = false, ...props }: Props) => {
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const { userData } = useAppSelector(accountStateItem);
 
   const handelBack = () => {
     navigation.goBack();
+  };
+
+  const onProfilePress = () => {
+    navigation.navigate('Profile');
+  };
+
+  const onNotificationPress = () => {
+    // Handle notification press
+    console.log('Notification pressed');
   };
 
   return (
@@ -54,7 +56,7 @@ const Header = ({
         {headerText}
       </Text>
       <XStack alignItems="center" justifyContent="center" gap={'$3.5'}>
-        <TouchableOpacity onPress={onProfiilePress}>
+        <TouchableOpacity onPress={onProfilePress}>
           <ProfilePicture
             uri={
               userData.profile.primaryPhotoUrl ||

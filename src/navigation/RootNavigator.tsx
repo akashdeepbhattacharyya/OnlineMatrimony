@@ -4,6 +4,7 @@ import { useAuth } from '@/src/context/AuthContext';
 import { ActivityIndicator, View, StyleSheet } from 'react-native';
 import FooterNavigator from '../components/common/footer';
 import { User } from '../models/User';
+import { tabItems } from '../resources/tab-item';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -22,6 +23,7 @@ export type RootStackParamList = {
   Subscription: undefined;
   Profile: undefined;
   UpdateProfile: { data: User };
+  AiMatches: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -58,6 +60,9 @@ const SubscriptionScreen = lazy(
 );
 const Profile = lazy(() => import('@/src/screens/profile/Profile'));
 const UpdateProfile = lazy(() => import('@/src/screens/profile/UpdateProfile'));
+const AiMatchesScreen = lazy(
+  () => import('@/src/screens/aiMatches/AiMatchesScreen'),
+);
 
 const Loading = () => (
   <View style={styles.loadingContainer}>
@@ -69,19 +74,6 @@ type RootNavigatorProps = { currentRoute: string };
 
 const RootNavigator = ({ currentRoute }: RootNavigatorProps) => {
   const { user } = useAuth();
-
-  const tabItems: {
-    key: string;
-    label: string;
-    icon: string;
-    route: string;
-  }[] = [
-    { key: 'Home', label: 'Home', icon: 'home', route: 'Home' },
-    { key: 'AI', label: 'AI Matches', icon: '', route: 'Home' },
-    { key: 'Chat', label: 'Chat', icon: 'message-circle', route: 'Home' },
-    { key: 'Search', label: 'Search', icon: 'search', route: 'Search' },
-    { key: 'Settings', label: 'Settings', icon: 'settings', route: 'Settings' },
-  ];
 
   const isActiveTab = useMemo(() => {
     return tabItems.some(item => item.route === currentRoute);
@@ -125,6 +117,7 @@ const RootNavigator = ({ currentRoute }: RootNavigatorProps) => {
               />
               <Stack.Screen name="Profile" component={Profile} />
               <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
+              <Stack.Screen name="AiMatches" component={AiMatchesScreen} />
             </>
           ) : (
             <>

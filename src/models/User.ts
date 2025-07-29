@@ -49,6 +49,7 @@ export type ProfessionalInformation = {
 
 export type UserProfile = {
   aboutMe?: string; // Optional field for a brief description about the user
+  photoUrls?: string[]; // Array of URLs for multiple photos
   primaryPhotoUrl?: string; // Optional field for profile picture
 } & PersonalInformation &
   OtherInformation &
