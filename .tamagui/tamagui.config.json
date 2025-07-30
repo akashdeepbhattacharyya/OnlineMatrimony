@@ -33573,6 +33573,13 @@
           "val": "#696969",
           "variable": ""
         },
+        "gray_darker": {
+          "isVar": true,
+          "key": "$gray_darker",
+          "name": "c-gray_darker",
+          "val": "#4F4F4F",
+          "variable": ""
+        },
         "gray_light": {
           "isVar": true,
           "key": "$gray_light",
@@ -36158,6 +36165,13 @@
         "key": "$gray_dark",
         "name": "c-gray_dark",
         "val": "#696969",
+        "variable": ""
+      },
+      "$color.gray_darker": {
+        "isVar": true,
+        "key": "$gray_darker",
+        "name": "c-gray_darker",
+        "val": "#4F4F4F",
         "variable": ""
       },
       "$color.gray_light": {

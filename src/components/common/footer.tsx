@@ -1,18 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
-  View,
-  Text,
   StyleSheet,
   TouchableOpacity,
   Dimensions,
   Animated,
-  Platform,
 } from 'react-native';
+import { Text } from './Text';
 import Svg, { Path } from 'react-native-svg';
-import { Feather } from '@expo/vector-icons';
-import AI from '../../../assets/images/ai.svg';
-import { useNavigation, NavigationProp, useNavigationState } from '@react-navigation/core';
+import { useNavigation, NavigationProp } from '@react-navigation/core';
 import { RootStackParamList } from '../../navigation/RootNavigator';
+import { View, YStack } from 'tamagui';
+import { tabItems } from '@/src/resources/tab-item';
+import { LinearGradient } from 'expo-linear-gradient';
+import { ManageMatch } from '../navigation/ManageMatch';
+import { matchStateItem } from '@/src/services/repositories/slices/match-slice';
+import { useAppSelector } from '@/src/services/repositories/store/hook';
+import { emitFooterEvent } from '@/src/hooks/useFooterEvent';
 
 const { width } = Dimensions.get('window');
 const tabWidth = width / 5;
@@ -24,22 +27,7 @@ const FooterNavigator = ({ currentRoute }: RootNavigatorProps) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const translateX = useRef(new Animated.Value(0)).current;
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-
-  const tabItems = [
-    { key: 'Home', label: 'Home', icon: 'home', route: 'Home' },
-    { key: 'AI', label: 'AI Matches', icon: '', route: 'Home' },
-    { key: 'Chat', label: 'Chat', icon: 'message-circle', route: 'Home' },
-    { key: 'Search', label: 'Search', icon: 'search', route: 'Search' },
-    { key: 'Settings', label: 'Settings', icon: 'settings', route: 'Settings' },
-  ];
-
-  
-
-  useEffect(() => {
-    const index = tabItems.findIndex(item => item.key === currentRoute);
-    setActiveTab(currentRoute);
-    setActiveIndex(index >= 0 ? index : 0);
-  }, [currentRoute]);
+  const { pendingMatches } = useAppSelector(matchStateItem);
 
   useEffect(() => {
     Animated.spring(translateX, {
@@ -48,49 +36,83 @@ const FooterNavigator = ({ currentRoute }: RootNavigatorProps) => {
     }).start();
   }, [activeIndex]);
 
-  const handleNavigation = (item: typeof tabItems[0]) => {
+  const handleNavigation = (item: (typeof tabItems)[0], i: number) => {
     setActiveTab(item.key);
     const index = tabItems.findIndex(i => i.key === item.key);
     setActiveIndex(index);
-    navigation.navigate(item.route);
+    navigation.navigate({
+      name: item.route as keyof RootStackParamList,
+    } as any);
   };
 
-const getPathWithDip = (index: number) => {
-  const dipWidth = 155;  // wider
-  const dipHeight = 52;  // deeper
-  const edgeSmoothness = 41; // how fat/rounded the sides are
+  const getPathWithDip = (index: number) => {
+    const dipWidth = 155; // wider
+    const dipHeight = 52; // deeper
+    const edgeSmoothness = 42; // how fat/rounded the sides are
 
-  const centerX = tabWidth * index + tabWidth / 2;
-  const left = centerX - dipWidth / 2;
-  const right = centerX + dipWidth / 2;
+    const centerX = tabWidth * index + tabWidth / 2;
+    const left = centerX - dipWidth / 2;
+    const right = centerX + dipWidth / 2;
 
-  return `
+    return `
     M0 0
     H${left}
-    C${left + edgeSmoothness} 0, ${centerX - edgeSmoothness} ${dipHeight}, ${centerX} ${dipHeight}
-    C${centerX + edgeSmoothness} ${dipHeight}, ${right - edgeSmoothness} 0, ${right} 0
+    C${left + edgeSmoothness} 0, ${centerX - edgeSmoothness
+      } ${dipHeight}, ${centerX} ${dipHeight}
+    C${centerX + edgeSmoothness} ${dipHeight}, ${right - edgeSmoothness
+      } 0, ${right} 0
     H${width}
     V80
     H0
     Z
   `;
-};
+  };
 
   return (
     <View style={styles.absoluteBottom}>
+      {/* Background Gradient */}
+      <LinearGradient
+        colors={['#2D152A00', '#000000']}
+        style={{
+          flex: 1,
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+        }}
+      />
+
+      {/* Floating ManageMatch Component */}
+      {activeIndex === 1 && pendingMatches.length > 0 && (
+        <ManageMatch
+          onAccept={() => {
+            emitFooterEvent('ACCEPT_MATCH');
+          }}
+          onReject={() => {
+            emitFooterEvent('REJECT_MATCH');
+          }}
+        />
+      )}
+
       {/* Dynamic Curved Background */}
-      <Svg width={width} height={80} viewBox={`0 0 ${width} 80`} style={[StyleSheet.absoluteFill, {}]}>
-        <Path d={getPathWithDip(activeIndex)} fill="#4F4F4F" />
+      <Svg
+        width={width}
+        height={80}
+        viewBox={`0 0 ${width} 80`}
+        style={[StyleSheet.absoluteFill, {}, { top: 102 }]}
+      >
+        <Path d={getPathWithDip(activeIndex)} fill="#696969" />
       </Svg>
 
       {/* Floating Icon */}
-      <Animated.View style={[styles.indicator, { transform: [{ translateX }] }]}>
+      <Animated.View
+        style={[styles.indicator, { transform: [{ translateX }] }]}
+      >
         <View style={styles.circleIcon}>
-          {tabItems[activeIndex]?.key === 'AI' ? (
-            <AI width={35} height={35} fill="#fff" />
-          ) : (
-            <Feather name={tabItems[activeIndex]?.icon as any} size={30} color="#fff" />
-          )}
+          <Svg width={35} height={35} viewBox="0 0 35 35" fill="#ffffff">
+            {tabItems[activeIndex]?.icon}
+          </Svg>
         </View>
       </Animated.View>
 
@@ -101,16 +123,30 @@ const getPathWithDip = (index: number) => {
           return (
             <TouchableOpacity
               key={index}
-              onPress={() => handleNavigation(item)}
+              onPress={() => handleNavigation(item, index)}
               style={styles.tabItem}
               activeOpacity={0.8}
             >
-              {isActive ? null : item.key === 'AI' ? (
-                <AI width={25} height={25} fill="#aaa" />
-              ) : (
-                <Feather name={item.icon as any} size={25} color="#aaa" />
-              )}
-              {!isActive && <Text style={styles.tabLabel}>{item.label}</Text>}
+              <YStack gap={'$1.5'} marginBottom={5} alignItems="center">
+                {isActive ? null : (
+                  <Svg
+                    opacity={0.6}
+                    style={{
+                      height: 20,
+                      width: 20,
+                      scaleX: 0.6,
+                      scaleY: 0.6,
+                    }}
+                  >
+                    {item.icon}
+                  </Svg>
+                )}
+                {!isActive && (
+                  <Text font="heading" size="extra_small" color="#A9A9A9">
+                    {item.label}
+                  </Text>
+                )}
+              </YStack>
             </TouchableOpacity>
           );
         })}
@@ -126,8 +162,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     width: '100%',
-    height: 80,
-    zIndex: 10,
+    height: 182,
   },
   tabRow: {
     position: 'absolute',
@@ -137,22 +172,20 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-
   },
   tabItem: {
     alignItems: 'center',
     justifyContent: 'center',
     width: tabWidth,
-    paddingTop: 10,
   },
   tabLabel: {
     fontSize: 11,
-    color: '#aaa',
+    color: '#A9A9A9',
     marginTop: 2,
   },
   indicator: {
     position: 'absolute',
-    top: -30,
+    top: 80,
     width: tabWidth,
     height: 80,
     alignItems: 'center',
@@ -163,11 +196,11 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     backgroundColor: '#F85F5F',
-    borderRadius: 100,
+    borderRadius: 35,
     alignItems: 'center',
     justifyContent: 'center',
     elevation: 5,
-    shadowColor: '#000',
+    shadowColor: '#000000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 3,

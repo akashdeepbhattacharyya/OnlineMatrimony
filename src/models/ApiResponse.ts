@@ -12,3 +12,14 @@ export type ApiError = {
 };
 
 export type ApiResponse<T> = ApiSuccess<T> | ApiError;
+
+export type PagedResponse<T> = {
+  content: T[];
+  page: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
+  first: boolean;
+  last: boolean;
+  empty: boolean;
+};

@@ -8,19 +8,11 @@ import TestimonialCarousel from '@/src/components/home/TestimonialCarousel';
 import { SafeAreaScreen as Screen } from '@/src/components/layouts/SafeAreaScreen';
 import { TitleAndSubtitle } from '@/src/components/common/TitleAndSubtitle';
 import { YStack } from 'tamagui';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
-import { RootStackParamList } from '@/src/navigation/RootNavigator';
 
 export default function HomeScreen() {
-  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-
-  const handleProfilePress = () => {
-    navigation.navigate('Profile');
-  };
-
   return (
     <Screen>
-      <Header onProfiilePress={handleProfilePress} />
+      <Header />
       <ScrollView
         contentContainerStyle={{ flexGrow: 1 }}
         showsVerticalScrollIndicator={false}
