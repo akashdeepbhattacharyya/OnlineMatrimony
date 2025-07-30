@@ -80,7 +80,7 @@ export default function AiMatchesScreen() {
             ))
           ) : (
             <View justifyContent="center" alignItems="center">
-              <Text fontSize="$body" color="$text">
+              <Text color="$text">
                 No matches found.
               </Text>
             </View>

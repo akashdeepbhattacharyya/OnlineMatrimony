@@ -30,19 +30,13 @@ const FooterNavigator = ({ currentRoute }: RootNavigatorProps) => {
   const { pendingMatches } = useAppSelector(matchStateItem);
 
   useEffect(() => {
-    const index = tabItems.findIndex(item => item.key === currentRoute);
-    setActiveTab(currentRoute);
-    setActiveIndex(index >= 0 ? index : 0);
-  }, [currentRoute]);
-
-  useEffect(() => {
     Animated.spring(translateX, {
       toValue: activeIndex * tabWidth,
       useNativeDriver: true,
     }).start();
   }, [activeIndex]);
 
-  const handleNavigation = (item: (typeof tabItems)[0]) => {
+  const handleNavigation = (item: (typeof tabItems)[0], i: number) => {
     setActiveTab(item.key);
     const index = tabItems.findIndex(i => i.key === item.key);
     setActiveIndex(index);
@@ -63,12 +57,10 @@ const FooterNavigator = ({ currentRoute }: RootNavigatorProps) => {
     return `
     M0 0
     H${left}
-    C${left + edgeSmoothness} 0, ${
-      centerX - edgeSmoothness
-    } ${dipHeight}, ${centerX} ${dipHeight}
-    C${centerX + edgeSmoothness} ${dipHeight}, ${
-      right - edgeSmoothness
-    } 0, ${right} 0
+    C${left + edgeSmoothness} 0, ${centerX - edgeSmoothness
+      } ${dipHeight}, ${centerX} ${dipHeight}
+    C${centerX + edgeSmoothness} ${dipHeight}, ${right - edgeSmoothness
+      } 0, ${right} 0
     H${width}
     V80
     H0
@@ -131,7 +123,7 @@ const FooterNavigator = ({ currentRoute }: RootNavigatorProps) => {
           return (
             <TouchableOpacity
               key={index}
-              onPress={() => handleNavigation(item)}
+              onPress={() => handleNavigation(item, index)}
               style={styles.tabItem}
               activeOpacity={0.8}
             >
