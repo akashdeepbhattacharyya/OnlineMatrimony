@@ -15,16 +15,18 @@ export const useUserMatch = () => {
 
     try {
       const response = await matchRepository.getMatches(page, size, 'PENDING');
-
       if (response.status) {
         const result = response.data.content;
         setData(result);
+        return result;
       } else {
         setError(response.message || 'Failed to fetch pending matches');
+        throw new Error(response.message || 'Failed to fetch pending matches');
       }
     } catch (err: any) {
       console.error('Get pending matches error:', err);
       setError(err.message || 'Failed to fetch pending matches');
+      throw err;
     } finally {
       setLoading(false);
     }

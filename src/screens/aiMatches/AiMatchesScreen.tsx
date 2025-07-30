@@ -1,5 +1,3 @@
-// import { StyleSheet, Text, View } from 'react-native'
-
 import { ScrollView, View, YStack } from 'tamagui';
 import { Text } from '@/src/components/common/Text';
 import { SafeAreaScreen as Screen } from '@/src/components/layouts/SafeAreaScreen';
@@ -13,17 +11,26 @@ import { MatchPersonalInformation } from '@/src/components/ai-matches/MatchPerso
 import { MatchContactInformation } from '@/src/components/ai-matches/MatchContactInformations';
 import { MatchPreferences } from '@/src/components/ai-matches/MatchPreferences';
 import { accountStateItem } from '@/src/services/repositories/slices/userSlice';
-import { useAppSelector } from '@/src/services/repositories/store/hook';
+import {
+  useAppDispatch,
+  useAppSelector,
+} from '@/src/services/repositories/store/hook';
+import { fetchPendingMatches } from '@/src/services/repositories/slices/match-slice';
 
 export default function AiMatchesScreen() {
   const [page, setPage] = useState(0);
   const { data, getPendingMatches } = useUserMatch();
   const { showLoader, hideLoader } = useLoader();
   const { userData } = useAppSelector(accountStateItem);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     showLoader();
-    getPendingMatches(page, 1);
+    dispatch(
+      fetchPendingMatches({
+        getPendingMatches: () => getPendingMatches(page, 1),
+      }),
+    );
     hideLoader();
   }, [page]);
 
