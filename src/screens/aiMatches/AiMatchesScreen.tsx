@@ -78,7 +78,7 @@ export default function AiMatchesScreen() {
         }}
         showsVerticalScrollIndicator={false}
       >
-        <YStack flex={1} marginBottom={'$12'} paddingHorizontal={'$4'}>
+        <YStack flex={1} marginBottom={'$19'} paddingHorizontal={'$4'}>
           {match ? (
             <YStack key={0} gap={'$4'}>
               <MatchProfilePicture
