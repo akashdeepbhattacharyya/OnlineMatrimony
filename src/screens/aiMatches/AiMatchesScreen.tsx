@@ -16,7 +16,7 @@ import {
   useAppSelector,
 } from '@/src/services/repositories/store/hook';
 import { fetchPendingMatches } from '@/src/services/repositories/slices/match-slice';
-import { useFooterAction } from '@/src/context/FooterActionContext';
+import { useFooterEvent } from '@/src/hooks/useFooterEvent';
 
 export default function AiMatchesScreen() {
   const [page, setPage] = useState(0);
@@ -24,7 +24,6 @@ export default function AiMatchesScreen() {
   const { showLoader, hideLoader } = useLoader();
   const { userData } = useAppSelector(accountStateItem);
   const dispatch = useAppDispatch();
-  const { setAcceptMatchCallback, setRejectMatchCallback } = useFooterAction();
 
   useEffect(() => {
     showLoader();
@@ -46,10 +45,8 @@ export default function AiMatchesScreen() {
     console.log('Reject match callback triggered');
   }, []);
 
-  useEffect(() => {
-    setAcceptMatchCallback(() => handleAcceptMatch);
-    setRejectMatchCallback(() => handleRejectMatch);
-  }, []);
+  useFooterEvent('ACCEPT_MATCH', handleAcceptMatch);
+  useFooterEvent('REJECT_MATCH', handleRejectMatch);
 
   return (
     <Screen>

@@ -20,7 +20,6 @@ import { TamaguiProvider } from 'tamagui';
 import tamaguiConfig from './tamagui/tamagui.config';
 import { Provider } from 'react-redux';
 import { store } from './src/services/repositories/store/store';
-import { FooterActionProvider } from './src/context/FooterActionContext';
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
@@ -69,36 +68,32 @@ const App = () => {
   }
 
   return (
-    <FooterActionProvider>
-      <SafeAreaProvider>
-        <Provider store={store}>
-          <AuthContextProvider>
-            <TamaguiProvider config={tamaguiConfig}>
-              <LoaderProvider>
-                <NavigationContainer
-                  ref={navigationRef}
-                  onReady={() => {
-                    const route = navigationRef.getCurrentRoute()?.name ?? '';
-                    setCurrentRoute(route);
-                  }}
-                  onStateChange={() => {
-                    const route = navigationRef.getCurrentRoute()?.name ?? '';
-                    setCurrentRoute(route);
-                  }}
-                  theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
-                >
-                  <RootNavigator currentRoute={currentRoute} />
-                  <LoaderOverlay />
-                  <StatusBar
-                    style={colorScheme === 'dark' ? 'light' : 'dark'}
-                  />
-                </NavigationContainer>
-              </LoaderProvider>
-            </TamaguiProvider>
-          </AuthContextProvider>
-        </Provider>
-      </SafeAreaProvider>
-    </FooterActionProvider>
+    <SafeAreaProvider>
+      <Provider store={store}>
+        <AuthContextProvider>
+          <TamaguiProvider config={tamaguiConfig}>
+            <LoaderProvider>
+              <NavigationContainer
+                ref={navigationRef}
+                onReady={() => {
+                  const route = navigationRef.getCurrentRoute()?.name ?? '';
+                  setCurrentRoute(route);
+                }}
+                onStateChange={() => {
+                  const route = navigationRef.getCurrentRoute()?.name ?? '';
+                  setCurrentRoute(route);
+                }}
+                theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+              >
+                <RootNavigator currentRoute={currentRoute} />
+                <LoaderOverlay />
+                <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
+              </NavigationContainer>
+            </LoaderProvider>
+          </TamaguiProvider>
+        </AuthContextProvider>
+      </Provider>
+    </SafeAreaProvider>
   );
 };
 
