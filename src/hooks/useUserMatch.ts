@@ -5,7 +5,7 @@ import { useMatchRepository } from '../api/repositories/useMatchRepository';
 export const useUserMatch = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | undefined>();
-  const [data, setData] = useState<Match[]>([]);
+  const [data, setData] = useState<Match[] | string | undefined>(undefined);
   const matchRepository = useMatchRepository();
 
   const getPendingMatches = async (page: number, size: number = 1) => {
@@ -35,9 +35,11 @@ export const useUserMatch = () => {
   const acceptMatch = async (matchId: number) => {
     setLoading(true);
     setError(undefined);
+    setData(undefined);
     try {
       const response = await matchRepository.acceptMatch(matchId);
       if (response.status) {
+        setData(response.data);
         return response.data;
       } else {
         setError(response.message || 'Failed to accept match');
@@ -55,9 +57,11 @@ export const useUserMatch = () => {
   const rejectMatch = async (matchId: number) => {
     setLoading(true);
     setError(undefined);
+    setData(undefined);
     try {
       const response = await matchRepository.rejectMatch(matchId);
       if (response.status) {
+        setData(response.data);
         return response.data;
       } else {
         setError(response.message || 'Failed to reject match');
