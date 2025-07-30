@@ -15,6 +15,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { ManageMatch } from '../navigation/ManageMatch';
 import { matchStateItem } from '@/src/services/repositories/slices/match-slice';
 import { useAppSelector } from '@/src/services/repositories/store/hook';
+import { useFooterAction } from '@/src/context/FooterActionContext';
 
 const { width } = Dimensions.get('window');
 const tabWidth = width / 5;
@@ -27,6 +28,7 @@ const FooterNavigator = ({ currentRoute }: RootNavigatorProps) => {
   const translateX = useRef(new Animated.Value(0)).current;
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const { pendingMatches } = useAppSelector(matchStateItem);
+  const { runAcceptMatchCallback, runRejectMatchCallback } = useFooterAction();
 
   useEffect(() => {
     const index = tabItems.findIndex(item => item.key === currentRoute);
@@ -92,7 +94,16 @@ const FooterNavigator = ({ currentRoute }: RootNavigatorProps) => {
 
       {/* Floating ManageMatch Component */}
       {activeIndex === 1 && pendingMatches.length > 0 && (
-        <ManageMatch onAccept={() => {}} onReject={() => {}} />
+        <ManageMatch
+          onAccept={() => {
+            runAcceptMatchCallback();
+            console.log('Accepted match');
+          }}
+          onReject={() => {
+            runRejectMatchCallback();
+            console.log('Rejected match');
+          }}
+        />
       )}
 
       {/* Dynamic Curved Background */}

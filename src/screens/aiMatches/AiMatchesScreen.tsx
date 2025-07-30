@@ -3,7 +3,7 @@ import { Text } from '@/src/components/common/Text';
 import { SafeAreaScreen as Screen } from '@/src/components/layouts/SafeAreaScreen';
 import Header from '@/src/components/common/ScreenHeader';
 import { useUserMatch } from '@/src/hooks/useUserMatch';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useLoader } from '@/src/context/LoaderContext';
 import { MatchProfilePicture } from '@/src/components/ai-matches/MatchProfilePicture';
 import { MatchAboutSelf } from '@/src/components/ai-matches/MatchAboutSelf';
@@ -16,6 +16,7 @@ import {
   useAppSelector,
 } from '@/src/services/repositories/store/hook';
 import { fetchPendingMatches } from '@/src/services/repositories/slices/match-slice';
+import { useFooterAction } from '@/src/context/FooterActionContext';
 
 export default function AiMatchesScreen() {
   const [page, setPage] = useState(0);
@@ -23,6 +24,7 @@ export default function AiMatchesScreen() {
   const { showLoader, hideLoader } = useLoader();
   const { userData } = useAppSelector(accountStateItem);
   const dispatch = useAppDispatch();
+  const { setAcceptMatchCallback, setRejectMatchCallback } = useFooterAction();
 
   useEffect(() => {
     showLoader();
@@ -33,6 +35,21 @@ export default function AiMatchesScreen() {
     );
     hideLoader();
   }, [page]);
+
+  const handleAcceptMatch = useCallback(() => {
+    // Handle accept match logic here
+    console.log('Accept match callback triggered');
+  }, []);
+
+  const handleRejectMatch = useCallback(() => {
+    // Handle reject match logic here
+    console.log('Reject match callback triggered');
+  }, []);
+
+  useEffect(() => {
+    setAcceptMatchCallback(() => handleAcceptMatch);
+    setRejectMatchCallback(() => handleRejectMatch);
+  }, []);
 
   return (
     <Screen>
