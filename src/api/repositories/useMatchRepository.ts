@@ -18,7 +18,21 @@ export function useMatchRepository() {
     );
   };
 
+  const acceptMatch = async (matchId: number): Promise<ApiResponse<string>> => {
+    return handleApiResponse(
+      client.post(`/matches/action`, { matchId, action: 'ACCEPTED' }),
+    );
+  };
+
+  const rejectMatch = async (matchId: number): Promise<ApiResponse<string>> => {
+    return handleApiResponse(
+      client.post(`/matches/action`, { matchId, action: 'REJECTED' }),
+    );
+  };
+
   return {
     getMatches,
+    acceptMatch,
+    rejectMatch,
   };
 }

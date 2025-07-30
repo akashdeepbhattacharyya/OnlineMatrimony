@@ -8,7 +8,7 @@ export const useUserMatch = () => {
   const [data, setData] = useState<Match[]>([]);
   const matchRepository = useMatchRepository();
 
-  const getPendingMatches = async (page: number, size: number) => {
+  const getPendingMatches = async (page: number, size: number = 1) => {
     setLoading(true);
     setError(undefined);
     setData([]);
@@ -32,10 +32,54 @@ export const useUserMatch = () => {
     }
   };
 
+  const acceptMatch = async (matchId: number) => {
+    setLoading(true);
+    setError(undefined);
+    try {
+      const response = await matchRepository.acceptMatch(matchId);
+      if (response.status) {
+        // await getPendingMatches(0); // Refresh matches after accepting
+        return response.data;
+      } else {
+        setError(response.message || 'Failed to accept match');
+        throw new Error(response.message || 'Failed to accept match');
+      }
+    } catch (err: any) {
+      console.error('Accept match error:', err);
+      setError(err.message || 'Failed to accept match');
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const rejectMatch = async (matchId: number) => {
+    setLoading(true);
+    setError(undefined);
+    try {
+      const response = await matchRepository.rejectMatch(matchId);
+      if (response.status) {
+        // await getPendingMatches(0); // Refresh matches after rejecting
+        return response.data;
+      } else {
+        setError(response.message || 'Failed to reject match');
+        throw new Error(response.message || 'Failed to reject match');
+      }
+    } catch (err: any) {
+      console.error('Reject match error:', err);
+      setError(err.message || 'Failed to reject match');
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return {
     loading,
     error,
     data,
     getPendingMatches,
+    acceptMatch,
+    rejectMatch,
   };
 };

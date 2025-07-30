@@ -14,7 +14,6 @@ type Props = {
 
 export const MatchProfilePicture = ({ matchedUserProfile }: Props) => {
   const { height } = Dimensions.get('window');
-  console.log('MatchProfilePicture matchedUserProfile:', matchedUserProfile);
   return (
     <View height={height * 0.55}>
       <Image

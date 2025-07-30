@@ -3,14 +3,13 @@ import { Text } from '@/src/components/common/Text';
 import { SafeAreaScreen as Screen } from '@/src/components/layouts/SafeAreaScreen';
 import Header from '@/src/components/common/ScreenHeader';
 import { useUserMatch } from '@/src/hooks/useUserMatch';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useLoader } from '@/src/context/LoaderContext';
 import { MatchProfilePicture } from '@/src/components/ai-matches/MatchProfilePicture';
 import { MatchAboutSelf } from '@/src/components/ai-matches/MatchAboutSelf';
 import { MatchPersonalInformation } from '@/src/components/ai-matches/MatchPersonalInformation';
 import { MatchContactInformation } from '@/src/components/ai-matches/MatchContactInformations';
 import { MatchPreferences } from '@/src/components/ai-matches/MatchPreferences';
-import { accountStateItem } from '@/src/services/repositories/slices/userSlice';
 import {
   useAppDispatch,
   useAppSelector,
@@ -19,31 +18,52 @@ import { fetchPendingMatches } from '@/src/services/repositories/slices/match-sl
 import { useFooterEvent } from '@/src/hooks/useFooterEvent';
 
 export default function AiMatchesScreen() {
-  const [page, setPage] = useState(0);
-  const { data, getPendingMatches } = useUserMatch();
+  const { getPendingMatches, acceptMatch, rejectMatch } = useUserMatch();
   const { showLoader, hideLoader } = useLoader();
-  const { userData } = useAppSelector(accountStateItem);
+  const { userData } = useAppSelector(state => state.user);
+  const { pendingMatches } = useAppSelector(state => state.match);
   const dispatch = useAppDispatch();
+
+  const match = useMemo(() => {
+    console.log('Pending matches:', pendingMatches);
+    return pendingMatches.length > 0 ? pendingMatches[0] : undefined;
+  }, [pendingMatches]);
 
   useEffect(() => {
     showLoader();
     dispatch(
       fetchPendingMatches({
-        getPendingMatches: () => getPendingMatches(page, 1),
+        getPendingMatches: () => getPendingMatches(0),
       }),
     );
     hideLoader();
-  }, [page]);
-
-  const handleAcceptMatch = useCallback(() => {
-    // Handle accept match logic here
-    console.log('Accept match callback triggered');
   }, []);
 
-  const handleRejectMatch = useCallback(() => {
-    // Handle reject match logic here
-    console.log('Reject match callback triggered');
-  }, []);
+  const handleAcceptMatch = async () => {
+    if (match) {
+      console.log('Accepting match:', match.id);
+      await acceptMatch(match.id);
+      // Refresh pending matches after accepting
+      dispatch(
+        fetchPendingMatches({ getPendingMatches: () => getPendingMatches(0) }),
+      );
+    } else {
+      console.log('No match to accept');
+    }
+  };
+
+  const handleRejectMatch = async () => {
+    if (match) {
+      console.log('Rejecting match:', match.id);
+      await rejectMatch(match.id);
+      // Refresh pending matches after rejecting
+      dispatch(
+        fetchPendingMatches({ getPendingMatches: () => getPendingMatches(0) }),
+      );
+    } else {
+      console.log('No match to reject');
+    }
+  };
 
   useFooterEvent('ACCEPT_MATCH', handleAcceptMatch);
   useFooterEvent('REJECT_MATCH', handleRejectMatch);
@@ -59,28 +79,31 @@ export default function AiMatchesScreen() {
         showsVerticalScrollIndicator={false}
       >
         <YStack flex={1} marginBottom={'$12'} paddingHorizontal={'$4'}>
-          {data.length > 0 ? (
-            data.map((match, index) => (
-              <YStack key={index} gap={'$4'}>
-                <MatchProfilePicture
-                  matchedUserProfile={match.matchedUserProfile}
-                />
-                <MatchAboutSelf matchedUserProfile={match.matchedUserProfile} />
-                <MatchPersonalInformation
-                  matchedUserProfile={match.matchedUserProfile}
-                />
-                <MatchContactInformation
-                  matchedUserProfile={match.matchedUserProfile}
-                />
-                <MatchPreferences
-                  match={match}
-                  currentUserProfile={userData.profile}
-                />
-              </YStack>
-            ))
+          {match ? (
+            <YStack key={0} gap={'$4'}>
+              <MatchProfilePicture
+                matchedUserProfile={match.matchedUserProfile}
+              />
+              <MatchAboutSelf matchedUserProfile={match.matchedUserProfile} />
+              <MatchPersonalInformation
+                matchedUserProfile={match.matchedUserProfile}
+              />
+              <MatchContactInformation
+                matchedUserProfile={match.matchedUserProfile}
+              />
+              <MatchPreferences
+                match={match}
+                currentUserProfile={userData.profile}
+              />
+            </YStack>
           ) : (
-            <View justifyContent="center" alignItems="center">
-              <Text color="$text">
+            <View
+              justifyContent="center"
+              alignItems="center"
+              width={'100%'}
+              height={'100%'}
+            >
+              <Text font="heading" size="large" color="$text">
                 No matches found.
               </Text>
             </View>

@@ -19,10 +19,6 @@ export const fetchPendingMatches = createAsyncThunk(
   ) => {
     try {
       const response = await getPendingMatches();
-      console.log('fetchPendingMatches response:', response);
-      if (response.length === 0) {
-        return thunkAPI.rejectWithValue(response);
-      }
       return response;
     } catch (e) {
       console.error(e);
