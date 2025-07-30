@@ -1,23 +1,20 @@
 import React, { useEffect, useRef, useState } from 'react';
 import {
-  View,
   StyleSheet,
   TouchableOpacity,
   Dimensions,
   Animated,
-  Platform,
 } from 'react-native';
 import { Text } from './Text';
 import Svg, { Path } from 'react-native-svg';
-import { Feather } from '@expo/vector-icons';
-import {
-  useNavigation,
-  NavigationProp,
-  useNavigationState,
-} from '@react-navigation/core';
+import { useNavigation, NavigationProp } from '@react-navigation/core';
 import { RootStackParamList } from '../../navigation/RootNavigator';
-import { getToken, YStack } from 'tamagui';
+import { View, YStack } from 'tamagui';
 import { tabItems } from '@/src/resources/tab-item';
+import { LinearGradient } from 'expo-linear-gradient';
+import { ManageMatch } from '../navigation/ManageMatch';
+import { matchStateItem } from '@/src/services/repositories/slices/match-slice';
+import { useAppSelector } from '@/src/services/repositories/store/hook';
 
 const { width } = Dimensions.get('window');
 const tabWidth = width / 5;
@@ -29,6 +26,7 @@ const FooterNavigator = ({ currentRoute }: RootNavigatorProps) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const translateX = useRef(new Animated.Value(0)).current;
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const { pendingMatches } = useAppSelector(matchStateItem);
 
   useEffect(() => {
     const index = tabItems.findIndex(item => item.key === currentRoute);
@@ -79,17 +77,32 @@ const FooterNavigator = ({ currentRoute }: RootNavigatorProps) => {
 
   return (
     <View style={styles.absoluteBottom}>
+      {/* Background Gradient */}
+      <LinearGradient
+        colors={['#2D152A00', '#000000']}
+        style={{
+          flex: 1,
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+        }}
+      />
+
+      {/* Floating ManageMatch Component */}
+      {activeIndex === 1 && pendingMatches.length > 0 && (
+        <ManageMatch onAccept={() => {}} onReject={() => {}} />
+      )}
+
       {/* Dynamic Curved Background */}
       <Svg
         width={width}
         height={80}
         viewBox={`0 0 ${width} 80`}
-        style={[StyleSheet.absoluteFill, {}]}
+        style={[StyleSheet.absoluteFill, {}, { top: 102 }]}
       >
-        <Path
-          d={getPathWithDip(activeIndex)}
-          fill={getToken('$color.gray_darker')}
-        />
+        <Path d={getPathWithDip(activeIndex)} fill="#696969" />
       </Svg>
 
       {/* Floating Icon */}
@@ -97,12 +110,7 @@ const FooterNavigator = ({ currentRoute }: RootNavigatorProps) => {
         style={[styles.indicator, { transform: [{ translateX }] }]}
       >
         <View style={styles.circleIcon}>
-          <Svg
-            width={35}
-            height={35}
-            viewBox="0 0 35 35"
-            fill={getToken('$color.white')}
-          >
+          <Svg width={35} height={35} viewBox="0 0 35 35" fill="#ffffff">
             {tabItems[activeIndex]?.icon}
           </Svg>
         </View>
@@ -134,11 +142,7 @@ const FooterNavigator = ({ currentRoute }: RootNavigatorProps) => {
                   </Svg>
                 )}
                 {!isActive && (
-                  <Text
-                    font="heading"
-                    size="extra_small"
-                    color={getToken('$color.gray')}
-                  >
+                  <Text font="heading" size="extra_small" color="#A9A9A9">
                     {item.label}
                   </Text>
                 )}
@@ -158,8 +162,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 0,
     width: '100%',
-    height: 80,
-    zIndex: 10,
+    height: 182,
   },
   tabRow: {
     position: 'absolute',
@@ -177,12 +180,12 @@ const styles = StyleSheet.create({
   },
   tabLabel: {
     fontSize: 11,
-    color: '#aaa',
+    color: '#A9A9A9',
     marginTop: 2,
   },
   indicator: {
     position: 'absolute',
-    top: -30,
+    top: 80,
     width: tabWidth,
     height: 80,
     alignItems: 'center',
@@ -197,7 +200,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     elevation: 5,
-    shadowColor: '#000',
+    shadowColor: '#000000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 3,
