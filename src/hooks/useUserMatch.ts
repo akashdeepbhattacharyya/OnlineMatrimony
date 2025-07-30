@@ -38,7 +38,6 @@ export const useUserMatch = () => {
     try {
       const response = await matchRepository.acceptMatch(matchId);
       if (response.status) {
-        // await getPendingMatches(0); // Refresh matches after accepting
         return response.data;
       } else {
         setError(response.message || 'Failed to accept match');
@@ -59,7 +58,6 @@ export const useUserMatch = () => {
     try {
       const response = await matchRepository.rejectMatch(matchId);
       if (response.status) {
-        // await getPendingMatches(0); // Refresh matches after rejecting
         return response.data;
       } else {
         setError(response.message || 'Failed to reject match');
