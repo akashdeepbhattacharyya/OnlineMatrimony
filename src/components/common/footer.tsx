@@ -13,8 +13,8 @@ import { View, YStack } from 'tamagui';
 import { tabItems } from '@/src/resources/tab-item';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ManageMatch } from '../navigation/ManageMatch';
-import { matchStateItem } from '@/src/services/repositories/slices/match-slice';
-import { useAppSelector } from '@/src/services/repositories/store/hook';
+import { matchStateItem } from '@/src/services/slices/match-slice';
+import { useAppSelector } from '@/src/services/store/hook';
 import { emitFooterEvent } from '@/src/hooks/useFooterEvent';
 
 const { width } = Dimensions.get('window');
@@ -57,10 +57,12 @@ const FooterNavigator = ({ currentRoute }: RootNavigatorProps) => {
     return `
     M0 0
     H${left}
-    C${left + edgeSmoothness} 0, ${centerX - edgeSmoothness
-      } ${dipHeight}, ${centerX} ${dipHeight}
-    C${centerX + edgeSmoothness} ${dipHeight}, ${right - edgeSmoothness
-      } 0, ${right} 0
+    C${left + edgeSmoothness} 0, ${
+      centerX - edgeSmoothness
+    } ${dipHeight}, ${centerX} ${dipHeight}
+    C${centerX + edgeSmoothness} ${dipHeight}, ${
+      right - edgeSmoothness
+    } 0, ${right} 0
     H${width}
     V80
     H0

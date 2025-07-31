@@ -4,8 +4,8 @@ import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { ViewProps, XStack } from 'tamagui';
 import { Text } from './Text';
 import NotificationIcon from '@/assets/images/icon_notification.svg';
-import { accountStateItem } from '@/src/services/repositories/slices/userSlice';
-import { useAppSelector } from '@/src/services/repositories/store/hook';
+import { accountStateItem } from '@/src/services/slices/userSlice';
+import { useAppSelector } from '@/src/services/store/hook';
 import { ProfilePicture } from '../profile/ProfilePicture';
 import { RootStackParamList } from '@/src/navigation/RootNavigator';
 

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../store/store';
-import { User } from '../../../models/User';
+import { User } from '../../models/User';
 import { ApiResponse } from '@/src/models/ApiResponse';
 
 type UserState = {

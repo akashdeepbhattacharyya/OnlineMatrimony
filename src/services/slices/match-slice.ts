@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../store/store';
-import { ApiResponse, PagedResponse } from '@/src/models/ApiResponse';
 import { Match } from '@/src/models/Match';
 
 type MatchState = {

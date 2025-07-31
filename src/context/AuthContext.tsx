@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { User } from '../models/User';
-import { useAppDispatch } from '../services/repositories/store/hook';
-import { setUser as setUserAction } from '../services/repositories/slices/userSlice';
+import { useAppDispatch } from '../services/store/hook';
+import { setUser as setUserAction } from '../services/slices/userSlice';
 import { Token } from '../models/Authentication';
 
 type AuthContextType = {

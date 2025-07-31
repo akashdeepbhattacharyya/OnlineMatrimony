@@ -18,11 +18,8 @@ import { useLoader } from '@/src/context/LoaderContext';
 import {
   accountStateItem,
   fetchUserProfile,
-} from '@/src/services/repositories/slices/userSlice';
-import {
-  useAppDispatch,
-  useAppSelector,
-} from '@/src/services/repositories/store/hook';
+} from '@/src/services/slices/userSlice';
+import { useAppDispatch, useAppSelector } from '@/src/services/store/hook';
 import { useEffect, useMemo } from 'react';
 import { useUserRepository } from '@/src/api/repositories/useUserRepository';
 

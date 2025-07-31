@@ -10,11 +10,8 @@ import { MatchAboutSelf } from '@/src/components/ai-matches/MatchAboutSelf';
 import { MatchPersonalInformation } from '@/src/components/ai-matches/MatchPersonalInformation';
 import { MatchContactInformation } from '@/src/components/ai-matches/MatchContactInformations';
 import { MatchPreferences } from '@/src/components/ai-matches/MatchPreferences';
-import {
-  useAppDispatch,
-  useAppSelector,
-} from '@/src/services/repositories/store/hook';
-import { fetchPendingMatches } from '@/src/services/repositories/slices/match-slice';
+import { useAppDispatch, useAppSelector } from '@/src/services/store/hook';
+import { fetchPendingMatches } from '@/src/services/slices/match-slice';
 import { useFooterEvent } from '@/src/hooks/useFooterEvent';
 
 export default function AiMatchesScreen() {
