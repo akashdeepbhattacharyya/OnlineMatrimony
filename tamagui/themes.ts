@@ -44,7 +44,7 @@ const themes: {
     unselected: tokens.color.gray,
   },
   dark_divider: {
-    background: tokens.color.gray_dark,
+    background: tokens.color.gray_lighter,
   },
   dark_sign_up_button: {
     background: tokens.color.button_bg_red,
@@ -107,6 +107,15 @@ const themes: {
     background: tokens.color.transparent,
     borderColor: tokens.color.white,
     color: tokens.color.white,
+  },
+  dark_settings_item_title: {
+    color: tokens.color.white,
+  },
+  dark_settings_item_value: {
+    color: tokens.color.button_bg_red,
+  },
+  dark_settings_terms_and_conditions: {
+    color: tokens.color.gray_lighter,
   },
 };
 
