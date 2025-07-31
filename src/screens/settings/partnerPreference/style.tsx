@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import responsive from '../../components/common/responsive';
+import responsive from '../../../components/common/responsive';
 
 export const styles = StyleSheet.create({
     wrapper: {
