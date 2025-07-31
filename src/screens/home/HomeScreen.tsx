@@ -1,6 +1,6 @@
 import { ImageBackground } from 'react-native';
 import { styles } from './style';
-import Header from '../../components/common/ScreenHeader';
+import { TabHeader } from '../../components/common/TabHeader';
 import { ScrollView } from 'react-native-gesture-handler';
 import TipsAndTestimonial from '../../components/home/TipsAndTestimonial';
 import FAQCard from '@/src/components/home/faqCard';
@@ -8,11 +8,14 @@ import TestimonialCarousel from '@/src/components/home/TestimonialCarousel';
 import { SafeAreaScreen as Screen } from '@/src/components/layouts/SafeAreaScreen';
 import { TitleAndSubtitle } from '@/src/components/common/TitleAndSubtitle';
 import { YStack } from 'tamagui';
+import { useAppSelector } from '@/src/services/store/hook';
 
 export default function HomeScreen() {
+  const { userData } = useAppSelector(state => state.user);
+
   return (
     <Screen>
-      <Header />
+      <TabHeader headerText={`Hi, ${userData?.profile?.fullName}`} />
       <ScrollView
         contentContainerStyle={{ flexGrow: 1 }}
         showsVerticalScrollIndicator={false}

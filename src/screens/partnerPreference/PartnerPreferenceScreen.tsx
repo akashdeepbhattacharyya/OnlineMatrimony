@@ -9,12 +9,13 @@ import {
 import { Formik } from 'formik';
 
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import Header from '../../components/common/ScreenHeader';
+import Header from '../../components/common/Header';
 import { styles } from './style';
 import { ScrollView } from 'react-native-gesture-handler';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import CheckboxGroupAccordion from '../../components/ui/CheckboxGroupAccordion';
 import PartnerPreferenceForm from '../../components/PartnerPreference/PartnerPreferenceForm';
+import { ScreenHeader } from '@/src/components/common/ScreenHeader';
 
 export default function PartnerPreferenceScreen() {
     const { width } = Dimensions.get('window');
@@ -78,7 +79,7 @@ export default function PartnerPreferenceScreen() {
                     barStyle="default"
                     showHideTransition="fade"
                 />
-                <Header headerText="Partner Preference" isBack />
+                <ScreenHeader headerText="Partner Preference" />
                 <ScrollView
                     showsVerticalScrollIndicator={false}
                     contentContainerStyle={{

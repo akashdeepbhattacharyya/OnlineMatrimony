@@ -9,10 +9,10 @@ import {
 import React, { useState } from 'react';
 import ProfileCard from '../../components/search/ProfileCard';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-import Header from '../../components/common/ScreenHeader';
 import { MaterialIcons } from '@expo/vector-icons';
 
 import { styles } from './style';
+import { TabHeader } from '@/src/components/common/TabHeader';
 
 export default function SearchScreen() {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(0);
@@ -138,7 +138,7 @@ export default function SearchScreen() {
           barStyle="default"
           showHideTransition="fade"
         />
-        <Header headerText="Search" />
+        <TabHeader headerText="Search" />
         <View
           style={{
             flexDirection: 'row',

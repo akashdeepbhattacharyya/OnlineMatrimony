@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import Header from '../../components/common/ScreenHeader';
 import { NavigationProp, useNavigation } from '@react-navigation/core';
 import { RootStackParamList } from '../../navigation/RootNavigator';
 import { SafeAreaScreen as Screen } from '@/src/components/layouts/SafeAreaScreen';
 import { SettingsItem } from '@/src/components/settings/SettingsItems';
 import { SettingsItemsSection } from '@/src/components/settings/SettingsItemsSection';
 import { TermsAndConditions } from '@/src/components/settings/TermsAndConditions';
+import { TabHeader } from '@/src/components/common/TabHeader';
 
 export default function Settings() {
   const [selectedLanguage, setSelectedLanguage] = useState('English');
@@ -13,7 +13,7 @@ export default function Settings() {
 
   return (
     <Screen>
-      <Header headerText="Matches" />
+      <TabHeader headerText="Settings" />
       <SettingsItemsSection
         title="Options & Settings"
         marginTop={'$2'}

@@ -1,7 +1,6 @@
 import { ScrollView, View, YStack } from 'tamagui';
 import { Text } from '@/src/components/common/Text';
 import { SafeAreaScreen as Screen } from '@/src/components/layouts/SafeAreaScreen';
-import Header from '@/src/components/common/ScreenHeader';
 import { useUserMatch } from '@/src/hooks/useUserMatch';
 import { useEffect, useMemo } from 'react';
 import { useLoader } from '@/src/context/LoaderContext';
@@ -13,6 +12,7 @@ import { MatchPreferences } from '@/src/components/ai-matches/MatchPreferences';
 import { useAppDispatch, useAppSelector } from '@/src/services/store/hook';
 import { fetchPendingMatches } from '@/src/services/slices/match-slice';
 import { useFooterEvent } from '@/src/hooks/useFooterEvent';
+import { TabHeader } from '@/src/components/common/TabHeader';
 
 export default function AiMatchesScreen() {
   const { getPendingMatches, acceptMatch, rejectMatch } = useUserMatch();
@@ -67,7 +67,7 @@ export default function AiMatchesScreen() {
 
   return (
     <Screen>
-      <Header headerText="Matches" />
+      <TabHeader headerText="Matches" />
       <ScrollView
         contentContainerStyle={{
           flexGrow: 1,
