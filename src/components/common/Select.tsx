@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useState } from 'react';
-import type { SelectProps, ViewProps } from 'tamagui';
+import type { GetThemeValueForKey, SelectProps, ViewProps } from 'tamagui';
 import { Option } from '@/src/resources/form';
 import {
   Adapt,
@@ -17,6 +17,13 @@ import { TouchableOpacity } from 'react-native';
 import { Text } from './Text';
 import { Divider } from './Divider';
 
+type SelectValueProps = {
+  fontSize?: GetThemeValueForKey<'fontSize'>;
+  backgroundColor?: GetThemeValueForKey<'backgroundColor'>;
+  placeholderTextColor?: GetThemeValueForKey<'color'>;
+  textColor?: GetThemeValueForKey<'color'>;
+};
+
 type Props = {
   options: Option[];
   title: string;
@@ -26,6 +33,7 @@ type Props = {
   triggerTestID?: string;
   placeholder?: string;
   triggerProps?: ViewProps;
+  selectValueProps?: SelectValueProps;
   contentFullScreen?: boolean;
   disabled?: boolean;
   icon?: ReactNode;
@@ -39,6 +47,12 @@ export function SelectC({
   triggerTestID = 'select-trigger',
   placeholder,
   triggerProps,
+  selectValueProps = {
+    fontSize: '$nm',
+    backgroundColor: getToken('$color.white'),
+    placeholderTextColor: getToken('$color.gray'),
+    textColor: getToken('$color.black'),
+  },
   initialValue,
   contentFullScreen = false,
   disabled,
@@ -77,28 +91,25 @@ export function SelectC({
         opacity={1}
         testID={triggerTestID}
         borderRadius={'$10'}
+        paddingHorizontal="$6"
+        paddingVertical="$3"
         {...triggerProps}
       >
-        <XStack
-          flex={1}
-          alignItems="center"
-          gap={'$4.5'}
-          paddingHorizontal="$3"
-          paddingVertical="$1"
-        >
-          {<Select.Icon>{icon}</Select.Icon>}
+        <XStack flex={1} alignItems="center" gap={'$4.5'}>
+          {icon && <Select.Icon>{icon}</Select.Icon>}
           <Select.Value
             flex={1}
-            fontSize="$nm"
-            backgroundColor={getToken('$color.white')}
+            placeholder={placeholder || 'Select an option'}
+            fontSize={selectValueProps.fontSize}
+            backgroundColor={selectValueProps.backgroundColor}
             fontFamily="$heading"
             color={
               labelBy(value)
-                ? getToken('$color.black')
-                : getToken('$color.gray')
+                ? selectValueProps.textColor
+                : selectValueProps.placeholderTextColor
             }
           >
-            {labelBy(value) || placeholder || 'Select an option'}
+            {labelBy(value)}
           </Select.Value>
           <ChevronDownIcon />
         </XStack>
@@ -126,7 +137,7 @@ export function SelectC({
             padding="$2"
             borderTopLeftRadius="$8"
             borderTopRightRadius="$8"
-            marginTop="$20"
+            // marginTop="$20"
             elevation={6}
             backgroundColor="$background"
           >

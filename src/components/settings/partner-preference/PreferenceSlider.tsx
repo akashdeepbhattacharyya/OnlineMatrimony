@@ -3,7 +3,6 @@ import { Text } from '@/src/components/common/Text';
 import { Slider, SliderValue } from '../../common/Slider';
 
 type Props = {
-  title: string;
   maxTitle?: string;
   minTitle?: string;
   sliderValue: SliderValue;
@@ -12,7 +11,6 @@ type Props = {
 };
 
 export const PreferenceSlider = ({
-  title,
   maxTitle,
   minTitle,
   sliderValue,
@@ -21,9 +19,6 @@ export const PreferenceSlider = ({
 }: Props) => {
   return (
     <YStack>
-      <Text font="headingLight" size="small">
-        {title}
-      </Text>
       <XStack
         justifyContent="space-between"
         alignItems="center"
