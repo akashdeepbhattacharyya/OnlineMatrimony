@@ -19,7 +19,7 @@ import { navigationRef } from './src/navigation/navigationRef';
 import { TamaguiProvider } from 'tamagui';
 import tamaguiConfig from './tamagui/tamagui.config';
 import { Provider } from 'react-redux';
-import { store } from './src/services/repositories/store/store';
+import { store } from './src/services/store/store';
 
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
