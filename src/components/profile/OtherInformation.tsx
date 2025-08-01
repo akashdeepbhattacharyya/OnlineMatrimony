@@ -1,7 +1,7 @@
 import { UserProfile } from '@/src/models/User';
 import { YStack, ViewProps } from 'tamagui';
 import { ProfileItem } from './ProfileItem';
-import { ProfileTileHeader } from '../common/ProfileTileHeader';
+import { TileHeader } from '../common/ProfileTileHeader';
 import { castes } from '@/src/resources/caste';
 import { diets } from '@/src/resources/diet';
 import { educations } from '@/src/resources/education';
@@ -24,7 +24,7 @@ export const OtherInformation = ({ userProfile, ...props }: Props) => {
       borderRadius="$8"
       {...props}
     >
-      <ProfileTileHeader title="Other Information" />
+      <TileHeader title="Other Information" />
       <ProfileItem
         title="Diet"
         subtitle={diets[userProfile.diet as keyof typeof diets]}

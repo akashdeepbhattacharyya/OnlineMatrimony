@@ -10,7 +10,7 @@ import { genderOptions } from '@/src/resources/gender';
 import { useFormikContext } from 'formik';
 import { Text } from '../../common/Text';
 import { maritalStatusOptions } from '@/src/resources/marital-status';
-import { ProfileTileHeader } from '../../common/ProfileTileHeader';
+import { TileHeader } from '../../common/ProfileTileHeader';
 
 export const PersonalPreferences = ({ ...props }: ViewProps) => {
   const { values, errors, touched, setFieldValue } =
@@ -28,7 +28,7 @@ export const PersonalPreferences = ({ ...props }: ViewProps) => {
       borderRadius="$8"
       {...props}
     >
-      <ProfileTileHeader title="Personal Preferences" />
+      <TileHeader title="Personal Preferences" />
       <YStack gap={'$2'}>
         <PreferenceItem title="Age">
           <PreferenceSlider

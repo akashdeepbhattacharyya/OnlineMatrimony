@@ -8,7 +8,7 @@ import { dietOptions } from '@/src/resources/diet';
 import { casteOptions } from '@/src/resources/caste';
 import { motherTongueOptions } from '@/src/resources/mother-tongue';
 import { religionOptions } from '@/src/resources/religion';
-import { ProfileTileHeader } from '../../common/ProfileTileHeader';
+import { TileHeader } from '../../common/ProfileTileHeader';
 
 export const OtherPreferences = ({ ...props }: ViewProps) => {
   const { values, errors, touched, setFieldValue } =
@@ -26,7 +26,7 @@ export const OtherPreferences = ({ ...props }: ViewProps) => {
       borderRadius="$8"
       {...props}
     >
-      <ProfileTileHeader title="Other Preferences" />
+      <TileHeader title="Other Preferences" />
       <YStack gap={'$2'}>
         <PreferenceItem title="Diet">
           <PreferenceSelect

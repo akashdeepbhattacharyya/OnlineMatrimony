@@ -6,7 +6,7 @@ type Props = {
   title: string;
 } & ViewProps;
 
-export const ProfileTileHeader = ({ title, ...props }: Props) => {
+export const TileHeader = ({ title, ...props }: Props) => {
   return (
     <YStack gap={'$3'} {...props}>
       <Text font="headingBold" size="normal">

@@ -1,7 +1,7 @@
 import { UserProfile } from '@/src/models/User';
 import { YStack, ViewProps } from 'tamagui';
 import { Text } from '@/src/components/common/Text';
-import { ProfileTileHeader } from '../common/ProfileTileHeader';
+import { TileHeader } from '../common/ProfileTileHeader';
 
 type Props = {
   userProfile: UserProfile;
@@ -18,7 +18,7 @@ export const AboutYourSelf = ({ userProfile, ...props }: Props) => {
       borderRadius="$8"
       {...props}
     >
-      <ProfileTileHeader title="About Yourself" />
+      <TileHeader title="About Yourself" />
       <Text font="heading" size="normal">
         {userProfile.aboutMe || 'No information provided.'}
       </Text>

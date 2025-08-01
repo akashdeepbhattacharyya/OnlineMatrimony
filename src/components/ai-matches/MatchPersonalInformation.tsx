@@ -1,6 +1,6 @@
 import { YStack, ViewProps } from 'tamagui';
 import { ProfileItem } from '../profile/ProfileItem';
-import { ProfileTileHeader } from '../common/ProfileTileHeader';
+import { TileHeader } from '../common/ProfileTileHeader';
 import { genders } from '@/src/resources/gender';
 import { cities, states } from '@/src/resources/city-state';
 import { formatDateString } from '@/src/utils/dateFormatter';
@@ -24,7 +24,7 @@ export const MatchPersonalInformation = ({
       borderRadius="$8"
       {...props}
     >
-      <ProfileTileHeader title="Personal Information" />
+      <TileHeader title="Personal Information" />
       <ProfileItem
         title="Date of Birth"
         subtitle={

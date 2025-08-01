@@ -1,7 +1,7 @@
 import { UserProfile } from '@/src/models/User';
 import { YStack, ViewProps } from 'tamagui';
 import { ProfileItem } from './ProfileItem';
-import { ProfileTileHeader } from '../common/ProfileTileHeader';
+import { TileHeader } from '../common/ProfileTileHeader';
 import { occupations } from '@/src/resources/occupation';
 
 type Props = {
@@ -19,7 +19,7 @@ export const ProfessionalInformation = ({ userProfile, ...props }: Props) => {
       borderRadius="$8"
       {...props}
     >
-      <ProfileTileHeader title="Professional Information" />
+      <TileHeader title="Professional Information" />
       <ProfileItem
         title="Occupation"
         subtitle={

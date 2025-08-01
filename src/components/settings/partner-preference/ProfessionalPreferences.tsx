@@ -8,7 +8,7 @@ import { occupationOptions } from '@/src/resources/occupation';
 import { educationOptions } from '@/src/resources/education';
 import { SliderValue } from '../../common/Slider';
 import { PreferenceSlider } from './PreferenceSlider';
-import { ProfileTileHeader } from '../../common/ProfileTileHeader';
+import { TileHeader } from '../../common/ProfileTileHeader';
 
 export const ProfessionalPreferences = ({ ...props }: ViewProps) => {
   const { values, errors, touched, setFieldValue } =
@@ -26,7 +26,7 @@ export const ProfessionalPreferences = ({ ...props }: ViewProps) => {
       borderRadius="$8"
       {...props}
     >
-      <ProfileTileHeader title="Professional Preferences" />
+      <TileHeader title="Professional Preferences" />
       <YStack gap={'$2'}>
         <PreferenceItem title="Education">
           <PreferenceSelect

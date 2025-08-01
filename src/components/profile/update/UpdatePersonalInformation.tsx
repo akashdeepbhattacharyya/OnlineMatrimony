@@ -1,5 +1,5 @@
 import { YStack, ViewProps, getToken } from 'tamagui';
-import { ProfileTileHeader } from '../../common/ProfileTileHeader';
+import { TileHeader } from '../../common/ProfileTileHeader';
 import { LabelledTextField } from '../../common/LabelledTextField';
 import { useFormikContext } from 'formik';
 import {
@@ -125,7 +125,7 @@ export const UpdatePersonalInformation = ({ ...props }: ViewProps) => {
       borderRadius="$8"
       {...props}
     >
-      <ProfileTileHeader title="Personal Information" />
+      <TileHeader title="Personal Information" />
       <YStack gap={'$3.5'} width="100%">
         {/* Full Name */}
         <YStack gap={'$2'}>
