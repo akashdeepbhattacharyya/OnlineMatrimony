@@ -9,7 +9,7 @@ import {
   Occupation,
   Religion,
   State,
-} from '../resources/update-profile';
+} from '../resources/city-state';
 
 export type PersonalInformation = {
   fullName: string;

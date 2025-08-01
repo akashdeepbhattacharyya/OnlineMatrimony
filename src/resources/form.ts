@@ -1,5 +1,12 @@
 import { Gender } from './gender';
-import { City, MaritalStatus, State } from './update-profile';
+import { City, State } from './city-state';
+import { Caste } from './caste';
+import { MaritalStatus } from './marital-status';
+import { MotherTongue } from './mother-tongue';
+import { Diet } from './diet';
+import { Religion } from './religion';
+import { Education } from './education';
+import { Occupation } from './occupation';
 
 export type Option<T = string> = {
   label: string;
@@ -47,4 +54,10 @@ export type PartnerPreferenceFormType = {
   gender?: Gender;
   city?: City;
   state?: State;
+  diet?: Diet;
+  religion?: Religion;
+  motherTongue?: MotherTongue;
+  caste?: Caste;
+  education?: Education;
+  occupation?: Occupation;
 };

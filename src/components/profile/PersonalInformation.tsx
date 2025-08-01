@@ -3,7 +3,7 @@ import { YStack, ViewProps } from 'tamagui';
 import { ProfileItem } from './ProfileItem';
 import { ProfileTileHeader } from './ProfileTileHeader';
 import { genders } from '@/src/resources/gender';
-import { cities, states } from '@/src/resources/update-profile';
+import { cities, states } from '@/src/resources/city-state';
 
 type Props = {
   userData: User;

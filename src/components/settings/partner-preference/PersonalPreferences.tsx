@@ -5,15 +5,15 @@ import { formatFeetInch } from '@/src/utils/utils';
 import { PreferenceItem } from './PreferenceItem';
 import {
   cityOptions,
-  maritalStatusOptions,
   State,
   stateOptions,
-} from '@/src/resources/update-profile';
+} from '@/src/resources/city-state';
 import { PartnerPreferenceFormType } from '@/src/resources/form';
 import { PreferenceSelect } from './PreferenceSelect';
 import { genderOptions } from '@/src/resources/gender';
 import { useFormikContext } from 'formik';
 import { Text } from '../../common/Text';
+import { maritalStatusOptions } from '@/src/resources/marital-status';
 
 export const PersonalPreferences = ({ ...props }: ViewProps) => {
   const { values, errors, touched, setFieldValue } =

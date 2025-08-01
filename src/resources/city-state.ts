@@ -1,61 +1,5 @@
 import { Option } from '@/src/resources/form';
 
-export const maritalStatus = {
-  SINGLE: 'Single',
-  MARRIED: 'Married',
-  DIVORCED: 'Divorced',
-  WIDOWED: 'Widowed',
-  SEPARATED: 'Separated',
-  NEVER_MARRIED: 'Never Married',
-};
-export type MaritalStatus = keyof typeof maritalStatus;
-
-export const maritalStatusOptions: Option<MaritalStatus>[] = Object.keys(
-  maritalStatus,
-).map(key => ({
-  label: maritalStatus[key as keyof typeof maritalStatus],
-  value: key as MaritalStatus,
-}));
-
-export const motherTongues = {
-  ENGLISH: 'English',
-  HINDI: 'Hindi',
-  BENGALI: 'Bengali',
-  TELUGU: 'Telugu',
-  TAMIL: 'Tamil',
-  MARATHI: 'Marathi',
-  URDU: 'Urdu',
-  GUJARATI: 'Gujarati',
-  MALAYALAM: 'Malayalam',
-  KANNADA: 'Kannada',
-};
-export type MotherTongue = keyof typeof motherTongues;
-export const religions = {
-  HINDU: 'Hindu',
-  MUSLIM: 'Muslim',
-  CHRISTIAN: 'Christian',
-  SIKH: 'Sikh',
-  BUDDHIST: 'Buddhist',
-  JAIN: 'Jain',
-  OTHER: 'Other',
-};
-export type Religion = keyof typeof religions;
-export const castes = {
-  GENERAL: 'General',
-  OBC: 'OBC',
-  SC: 'SC',
-  ST: 'ST',
-  OTHER: 'Other',
-};
-export type Caste = keyof typeof castes;
-export const diets = {
-  VEGETARIAN: 'Vegetarian',
-  NON_VEGETARIAN: 'Non-Vegetarian',
-  VEGAN: 'Vegan',
-  OTHER: 'Other',
-};
-export type Diet = keyof typeof diets;
-
 export const cities = {
   PORT_BLAIR: 'Port Blair',
   VISAKHAPATNAM: 'Visakhapatnam',
@@ -149,25 +93,6 @@ export const cities = {
 };
 export type City = keyof typeof cities;
 
-export const educations = {
-  NO_FORMAL_EDUCATION: 'No Formal Education',
-  HIGH_SCHOOL: 'High School',
-  DIPLOMA: 'Diploma',
-  BACHELOR_DEGREE: "Bachelor's Degree",
-  MASTER_DEGREE: "Master's Degree",
-  DOCTORATE: 'Doctorate',
-  OTHER: 'Other',
-};
-export type Education = keyof typeof educations;
-export const occupations = {
-  ENGINEER: 'Engineer',
-  DOCTOR: 'Doctor',
-  TEACHER: 'Teacher',
-  LAWYER: 'Lawyer',
-  ARTIST: 'Artist',
-  OTHER: 'Other',
-};
-export type Occupation = keyof typeof occupations;
 export const states = {
   ANDAMAN_NICOBAR: 'Andaman & Nicobar Islands',
   ANDHRA_PRADESH: 'Andhra Pradesh',

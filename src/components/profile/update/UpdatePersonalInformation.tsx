@@ -20,7 +20,7 @@ import {
   State,
   stateCityMapping,
   states,
-} from '@/src/resources/update-profile';
+} from '@/src/resources/city-state';
 import { useState } from 'react';
 import { LabelledSelect } from '../../common/LabelledSelect';
 import StateIcon from '@/assets/images/icon-state.svg';

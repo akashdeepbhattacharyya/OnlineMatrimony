@@ -8,6 +8,7 @@ import { PersonalPreferences } from '@/src/components/settings/partner-preferenc
 import { PartnerPreferenceFormType } from '@/src/resources/form';
 import { PrimaryButton } from '@/src/components/common/PrimaryButton';
 import { partnerPreferenceSchema } from '@/src/resources/validations/partner-preference';
+import { OtherPreferences } from '@/src/components/settings/partner-preference/OtherPreferences';
 
 export default function PartnerPreferenceScreen() {
   const initialValues: PartnerPreferenceFormType = {
@@ -42,7 +43,10 @@ export default function PartnerPreferenceScreen() {
               paddingVertical={'$2'}
               justifyContent="space-between"
             >
-              <PersonalPreferences />
+              <YStack gap={'$4'}>
+                <PersonalPreferences />
+                <OtherPreferences />
+              </YStack>
               <PrimaryButton
                 title="Confirm"
                 onPress={() => handleSubmit()}

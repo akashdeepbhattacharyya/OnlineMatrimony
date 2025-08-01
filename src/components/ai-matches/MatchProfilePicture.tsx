@@ -5,7 +5,7 @@ import CameraBlob from '@/assets/images/camera.svg';
 import MenuBlob from '@/assets/images/menu.svg';
 import VerifiedBlob from '@/assets/images/verified.svg';
 import { toAge, toFeetAndInches, toUri } from '@/src/utils/utils';
-import { cities, states } from '@/src/resources/update-profile';
+import { cities, states } from '@/src/resources/city-state';
 import { Dimensions } from 'react-native';
 
 type Props = {

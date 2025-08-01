@@ -2,7 +2,7 @@ import { UserProfile } from '@/src/models/User';
 import { YStack, ViewProps } from 'tamagui';
 import { ProfileItem } from './ProfileItem';
 import { ProfileTileHeader } from './ProfileTileHeader';
-import { occupations } from '@/src/resources/update-profile';
+import { occupations } from '@/src/resources/occupation';
 
 type Props = {
   userProfile: UserProfile;
