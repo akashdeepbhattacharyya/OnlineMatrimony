@@ -1,7 +1,7 @@
 import { UserProfile } from '@/src/models/User';
 import { YStack, ViewProps } from 'tamagui';
 import { ProfileItem } from './ProfileItem';
-import { ProfileTileHeader } from './ProfileTileHeader';
+import { ProfileTileHeader } from '../common/ProfileTileHeader';
 import { castes } from '@/src/resources/caste';
 import { diets } from '@/src/resources/diet';
 import { educations } from '@/src/resources/education';

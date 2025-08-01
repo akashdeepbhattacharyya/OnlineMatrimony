@@ -1,6 +1,6 @@
 import { YStack, ViewProps } from 'tamagui';
 import { Text } from '@/src/components/common/Text';
-import { ProfileTileHeader } from '../profile/ProfileTileHeader';
+import { ProfileTileHeader } from '../common/ProfileTileHeader';
 import { MatchedUserProfile } from '@/src/models/Match';
 
 type Props = {

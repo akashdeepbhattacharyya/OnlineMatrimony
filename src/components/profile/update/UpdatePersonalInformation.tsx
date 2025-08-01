@@ -1,5 +1,5 @@
 import { YStack, ViewProps, getToken } from 'tamagui';
-import { ProfileTileHeader } from '../ProfileTileHeader';
+import { ProfileTileHeader } from '../../common/ProfileTileHeader';
 import { LabelledTextField } from '../../common/LabelledTextField';
 import { useFormikContext } from 'formik';
 import {

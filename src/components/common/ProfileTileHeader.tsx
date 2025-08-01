@@ -1,6 +1,6 @@
 import { ViewProps, YStack } from 'tamagui';
 import { Text } from '@/src/components/common/Text';
-import { DottedDivider } from '../common/DottedDivider';
+import { DottedDivider } from './DottedDivider';
 
 type Props = {
   title: string;

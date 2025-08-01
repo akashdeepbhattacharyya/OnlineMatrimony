@@ -1,5 +1,5 @@
 import { YStack, ViewProps, XStack, View, Image, getToken } from 'tamagui';
-import { ProfileTileHeader } from '../profile/ProfileTileHeader';
+import { ProfileTileHeader } from '../common/ProfileTileHeader';
 import { Match } from '@/src/models/Match';
 import { Text } from '../common/Text';
 import { UserProfile } from '@/src/models/User';

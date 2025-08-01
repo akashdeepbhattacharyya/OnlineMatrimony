@@ -8,7 +8,7 @@ import { dietOptions } from '@/src/resources/diet';
 import { casteOptions } from '@/src/resources/caste';
 import { motherTongueOptions } from '@/src/resources/mother-tongue';
 import { religionOptions } from '@/src/resources/religion';
-import { ProfileTileHeader } from '../../profile/ProfileTileHeader';
+import { ProfileTileHeader } from '../../common/ProfileTileHeader';
 
 export const OtherPreferences = ({ ...props }: ViewProps) => {
   const { values, errors, touched, setFieldValue } =

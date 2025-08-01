@@ -1,5 +1,5 @@
 import { YStack, ViewProps } from 'tamagui';
-import { ProfileTileHeader } from '../ProfileTileHeader';
+import { ProfileTileHeader } from '../../common/ProfileTileHeader';
 import { UpdateUserProfileFormType } from '@/src/resources/form';
 import { useFormikContext } from 'formik';
 import { TextArea } from '../../common/TextArea';
