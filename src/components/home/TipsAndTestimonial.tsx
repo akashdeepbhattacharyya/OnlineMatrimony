@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
-import { Dimensions, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  Dimensions,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import { Video } from 'expo-av';
 import { Tip } from '../../interface/home';
 import { Image, View, XStack, YStack } from 'tamagui';
 import { Text } from '@/src/components/common/Text';
 import PlayIcon from '@/assets/images/icon_play.svg';
-import DottedDivider from '@/assets/images/dotted-divider.svg';
-import { TileHeader } from './TileHeader';
+import { TileHeader } from '../common/TileHeader';
 
 const { width, height } = Dimensions.get('window');
 
@@ -101,8 +105,11 @@ const TipsAndTestimonial = ({ onSeeAll }: { onSeeAll: () => void }) => {
         padding={'$4'}
         borderRadius={'$8'}
       >
-        <TileHeader title={`Tips & Testimonials`} onSeeAll={onSeeAll} />
-        <DottedDivider width={'100%'} />
+        <TileHeader
+          title={`Tips & Testimonials`}
+          rightButtonTitle="See All"
+          onSeeAll={onSeeAll}
+        />
         <FlatList
           data={testiMonial}
           renderItem={renderItem}

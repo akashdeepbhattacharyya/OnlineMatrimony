@@ -2,9 +2,8 @@ import { FlatList } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { getToken, View, XStack, YStack } from 'tamagui';
 import { Text } from '@/src/components/common/Text';
-import DottedDivider from '@/assets/images/dotted-divider.svg';
 import { Divider } from '../common/Divider';
-import { TileHeader } from './TileHeader';
+import { TileHeader } from '../common/TileHeader';
 
 const faqs = [
   'Is This Site Safe To Use?',
@@ -22,8 +21,11 @@ const FAQCard = ({ onSeeAll }: { onSeeAll: () => void }) => {
         padding={'$4'}
         borderRadius={'$8'}
       >
-        <TileHeader title={`Frequently Asked Questions`} onSeeAll={onSeeAll} />
-        <DottedDivider width={'100%'} />
+        <TileHeader
+          title={`Frequently Asked Questions`}
+          rightButtonTitle="See All"
+          onSeeAll={onSeeAll}
+        />
         <FlatList
           data={faqs}
           keyExtractor={(item, index) => index.toString()}
