@@ -1,7 +1,7 @@
 import { UserProfile } from '@/src/models/User';
 import { YStack, ViewProps } from 'tamagui';
 import { ProfileItem } from './ProfileItem';
-import { TileHeader } from '../common/ProfileTileHeader';
+import { TileHeader } from '../common/TileHeader';
 
 type Props = {
   userProfile: UserProfile;

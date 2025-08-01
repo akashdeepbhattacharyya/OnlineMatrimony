@@ -8,7 +8,7 @@ import { occupationOptions } from '@/src/resources/occupation';
 import { educationOptions } from '@/src/resources/education';
 import { SliderValue } from '../../common/Slider';
 import { PreferenceSlider } from './PreferenceSlider';
-import { TileHeader } from '../../common/ProfileTileHeader';
+import { TileHeader } from '../../common/TileHeader';
 
 export const ProfessionalPreferences = ({ ...props }: ViewProps) => {
   const { values, errors, touched, setFieldValue } =

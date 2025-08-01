@@ -10,7 +10,7 @@ import { genderOptions } from '@/src/resources/gender';
 import { useFormikContext } from 'formik';
 import { Text } from '../../common/Text';
 import { maritalStatusOptions } from '@/src/resources/marital-status';
-import { TileHeader } from '../../common/ProfileTileHeader';
+import { TileHeader } from '../../common/TileHeader';
 
 export const PersonalPreferences = ({ ...props }: ViewProps) => {
   const { values, errors, touched, setFieldValue } =
