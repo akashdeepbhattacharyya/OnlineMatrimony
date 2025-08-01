@@ -9,6 +9,7 @@ import { PartnerPreferenceFormType } from '@/src/resources/form';
 import { PrimaryButton } from '@/src/components/common/PrimaryButton';
 import { partnerPreferenceSchema } from '@/src/resources/validations/partner-preference';
 import { OtherPreferences } from '@/src/components/settings/partner-preference/OtherPreferences';
+import { ProfessionalPreferences } from '@/src/components/settings/partner-preference/ProfessionalPreferences';
 
 export default function PartnerPreferenceScreen() {
   const initialValues: PartnerPreferenceFormType = {
@@ -18,6 +19,7 @@ export default function PartnerPreferenceScreen() {
     gender: undefined,
     city: undefined,
     state: undefined,
+    annualIncomeRange: { min: 5, max: 100 },
   };
 
   const onConfirm = async (values: PartnerPreferenceFormType) => {
@@ -26,7 +28,7 @@ export default function PartnerPreferenceScreen() {
 
   return (
     <Screen>
-      <ScreenHeader headerText="Partner Preference" />
+      <ScreenHeader headerText="Partner Preferences" />
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ flexGrow: 1 }}
@@ -46,6 +48,7 @@ export default function PartnerPreferenceScreen() {
               <YStack gap={'$4'}>
                 <PersonalPreferences />
                 <OtherPreferences />
+                <ProfessionalPreferences />
               </YStack>
               <PrimaryButton
                 title="Confirm"

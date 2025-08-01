@@ -3,17 +3,14 @@ import { PreferenceSlider } from './PreferenceSlider';
 import { SliderValue } from '../../common/Slider';
 import { formatFeetInch } from '@/src/utils/utils';
 import { PreferenceItem } from './PreferenceItem';
-import {
-  cityOptions,
-  State,
-  stateOptions,
-} from '@/src/resources/city-state';
+import { cityOptions, State, stateOptions } from '@/src/resources/city-state';
 import { PartnerPreferenceFormType } from '@/src/resources/form';
 import { PreferenceSelect } from './PreferenceSelect';
 import { genderOptions } from '@/src/resources/gender';
 import { useFormikContext } from 'formik';
 import { Text } from '../../common/Text';
 import { maritalStatusOptions } from '@/src/resources/marital-status';
+import { ProfileTileHeader } from '../../profile/ProfileTileHeader';
 
 export const PersonalPreferences = ({ ...props }: ViewProps) => {
   const { values, errors, touched, setFieldValue } =
@@ -31,6 +28,7 @@ export const PersonalPreferences = ({ ...props }: ViewProps) => {
       borderRadius="$8"
       {...props}
     >
+      <ProfileTileHeader title="Personal Preferences" />
       <YStack gap={'$2'}>
         <PreferenceItem title="Age">
           <PreferenceSlider

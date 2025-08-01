@@ -60,4 +60,5 @@ export type PartnerPreferenceFormType = {
   caste?: Caste;
   education?: Education;
   occupation?: Occupation;
+  annualIncomeRange: { min: number; max: number };
 };
