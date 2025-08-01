@@ -15,7 +15,7 @@ import { genderOptions } from '@/src/resources/gender';
 import { useFormikContext } from 'formik';
 import { Text } from '../../common/Text';
 
-export const PersonalPreference = ({ ...props }: ViewProps) => {
+export const PersonalPreferences = ({ ...props }: ViewProps) => {
   const { values, errors, touched, setFieldValue } =
     useFormikContext<PartnerPreferenceFormType>();
 

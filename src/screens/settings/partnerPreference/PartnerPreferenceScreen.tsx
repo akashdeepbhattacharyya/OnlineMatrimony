@@ -4,7 +4,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaScreen as Screen } from '@/src/components/layouts/SafeAreaScreen';
 import { ScreenHeader } from '@/src/components/common/ScreenHeader';
 import { YStack } from 'tamagui';
-import { PersonalPreference } from '@/src/components/settings/partner-preference/PersonalPreference';
+import { PersonalPreferences } from '@/src/components/settings/partner-preference/PersonalPreferences';
 import { PartnerPreferenceFormType } from '@/src/resources/form';
 import { PrimaryButton } from '@/src/components/common/PrimaryButton';
 import { partnerPreferenceSchema } from '@/src/resources/validations/partner-preference';
@@ -42,7 +42,7 @@ export default function PartnerPreferenceScreen() {
               paddingVertical={'$2'}
               justifyContent="space-between"
             >
-              <PersonalPreference />
+              <PersonalPreferences />
               <PrimaryButton
                 title="Confirm"
                 onPress={() => handleSubmit()}
