@@ -1,12 +1,6 @@
 import * as Yup from 'yup';
 import { genders } from '../gender';
-import {
-  cities,
-  maritalStatus,
-  religions,
-  stateCityMapping,
-  states,
-} from '../update-profile';
+import { cities, stateCityMapping, states } from '../city-state';
 import { UpdateUserProfileFormType } from '../form';
 
 export const updateUserProfileSchema = Yup.object<UpdateUserProfileFormType>({

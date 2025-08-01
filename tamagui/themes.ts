@@ -117,6 +117,10 @@ const themes: {
   dark_settings_terms_and_conditions: {
     color: tokens.color.gray_lighter,
   },
+  dark_slider: {
+    color: tokens.color.gray_lighter,
+    colorFocus: tokens.color.button_bg_red,
+  },
 };
 
 export default themes;

@@ -1,5 +1,5 @@
 import { YStack, ViewProps, getToken } from 'tamagui';
-import { ProfileTileHeader } from '../ProfileTileHeader';
+import { TileHeader } from '../../common/TileHeader';
 import { LabelledTextField } from '../../common/LabelledTextField';
 import { useFormikContext } from 'formik';
 import {
@@ -20,7 +20,7 @@ import {
   State,
   stateCityMapping,
   states,
-} from '@/src/resources/update-profile';
+} from '@/src/resources/city-state';
 import { useState } from 'react';
 import { LabelledSelect } from '../../common/LabelledSelect';
 import StateIcon from '@/assets/images/icon-state.svg';
@@ -125,7 +125,7 @@ export const UpdatePersonalInformation = ({ ...props }: ViewProps) => {
       borderRadius="$8"
       {...props}
     >
-      <ProfileTileHeader title="Personal Information" />
+      <TileHeader title="Personal Information" />
       <YStack gap={'$3.5'} width="100%">
         {/* Full Name */}
         <YStack gap={'$2'}>

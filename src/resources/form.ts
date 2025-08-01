@@ -1,4 +1,12 @@
 import { Gender } from './gender';
+import { City, State } from './city-state';
+import { Caste } from './caste';
+import { MaritalStatus } from './marital-status';
+import { MotherTongue } from './mother-tongue';
+import { Diet } from './diet';
+import { Religion } from './religion';
+import { Education } from './education';
+import { Occupation } from './occupation';
 
 export type Option<T = string> = {
   label: string;
@@ -37,4 +45,20 @@ export type UpdateUserProfileFormType = {
   pincode?: string;
   country?: string;
   aboutMe?: string;
+};
+
+export type PartnerPreferenceFormType = {
+  ageRange: { min: number; max: number };
+  heightRange: { min: number; max: number };
+  maritalStatus?: MaritalStatus;
+  gender?: Gender;
+  city?: City;
+  state?: State;
+  diet?: Diet;
+  religion?: Religion;
+  motherTongue?: MotherTongue;
+  caste?: Caste;
+  education?: Education;
+  occupation?: Occupation;
+  annualIncomeRange: { min: number; max: number };
 };

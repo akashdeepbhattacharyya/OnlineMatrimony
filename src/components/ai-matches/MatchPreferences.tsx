@@ -1,5 +1,5 @@
 import { YStack, ViewProps, XStack, View, Image, getToken } from 'tamagui';
-import { ProfileTileHeader } from '../profile/ProfileTileHeader';
+import { TileHeader } from '../common/TileHeader';
 import { Match } from '@/src/models/Match';
 import { Text } from '../common/Text';
 import { UserProfile } from '@/src/models/User';
@@ -63,7 +63,7 @@ export const MatchPreferences = ({
           </View>
         </YStack>
       </View>
-      <ProfileTileHeader
+      <TileHeader
         title={`You Match ${match.matchScore}/12 Of ${
           match.matchedUserProfile.gender === 'FEMALE' ? 'Her' : 'Him'
         } Preferences`}

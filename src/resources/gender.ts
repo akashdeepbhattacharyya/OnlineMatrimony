@@ -1,3 +1,5 @@
+import { Option } from '@/src/resources/form';
+
 export const genders = {
   MALE: 'Male',
   FEMALE: 'Female',
@@ -13,3 +15,10 @@ export const getGenderIcon = (gender: Gender) => {
       return gender.toLowerCase();
   }
 };
+
+export const genderOptions: Option<Gender>[] = Object.keys(genders).map(
+  key => ({
+    label: genders[key as keyof typeof genders],
+    value: key as Gender,
+  }),
+);

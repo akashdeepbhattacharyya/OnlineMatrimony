@@ -41,7 +41,7 @@ const ProfileSelection = lazy(
 const SettingsScreen = lazy(() => import('../screens/settings/Settings'));
 const SearchScreen = lazy(() => import('../screens/search/SearchScreen'));
 const PartnerPreferenceScreen = lazy(
-  () => import('../screens/partnerPreference/PartnerPreferenceScreen'),
+  () => import('../screens/settings/partnerPreference/PartnerPreferenceScreen'),
 );
 const NotificationSettingsScreen = lazy(
   () => import('../screens/notificationSettings/NotificationSettingsScreen'),

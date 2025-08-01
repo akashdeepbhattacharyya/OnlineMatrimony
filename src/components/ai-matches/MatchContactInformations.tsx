@@ -1,6 +1,6 @@
 import { YStack, ViewProps } from 'tamagui';
 import { ProfileItem } from '../profile/ProfileItem';
-import { ProfileTileHeader } from '../profile/ProfileTileHeader';
+import { TileHeader } from '../common/TileHeader';
 import { MatchedUserProfile } from '@/src/models/Match';
 
 type Props = {
@@ -21,7 +21,7 @@ export const MatchContactInformation = ({
       borderRadius="$8"
       {...props}
     >
-      <ProfileTileHeader title="Contact Details" />
+      <TileHeader title="Contact Details" />
       <ProfileItem title="Email" subtitle={matchedUserProfile.email || 'N/A'} />
       <ProfileItem title="Phone" subtitle={matchedUserProfile.phone || 'N/A'} />
     </YStack>

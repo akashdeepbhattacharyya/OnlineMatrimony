@@ -1,7 +1,7 @@
 import { UserProfile } from '@/src/models/User';
 import { YStack, ViewProps } from 'tamagui';
 import { ProfileItem } from './ProfileItem';
-import { ProfileTileHeader } from './ProfileTileHeader';
+import { TileHeader } from '../common/TileHeader';
 
 type Props = {
   userProfile: UserProfile;
@@ -18,7 +18,7 @@ export const Documents = ({ userProfile, ...props }: Props) => {
       borderRadius="$8"
       {...props}
     >
-      <ProfileTileHeader title="Documents" />
+      <TileHeader title="Documents" />
       <ProfileItem title="ID Proof" subtitle={userProfile.idProof} />
       <ProfileItem title="Address Proof" subtitle={userProfile.addressProof} />
     </YStack>

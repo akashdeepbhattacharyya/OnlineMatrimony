@@ -1,6 +1,6 @@
 import { YStack, ViewProps } from 'tamagui';
 import { Text } from '@/src/components/common/Text';
-import { ProfileTileHeader } from '../profile/ProfileTileHeader';
+import { TileHeader } from '../common/TileHeader';
 import { MatchedUserProfile } from '@/src/models/Match';
 
 type Props = {
@@ -18,7 +18,7 @@ export const MatchAboutSelf = ({ matchedUserProfile, ...props }: Props) => {
       borderRadius="$8"
       {...props}
     >
-      <ProfileTileHeader title={`About ${matchedUserProfile.fullName}`} />
+      <TileHeader title={`About ${matchedUserProfile.fullName}`} />
       <Text font="heading" size="normal">
         {matchedUserProfile.aboutMe || 'No information provided.'}
       </Text>

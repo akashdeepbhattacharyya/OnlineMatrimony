@@ -1,9 +1,9 @@
 import { User } from '@/src/models/User';
 import { YStack, ViewProps } from 'tamagui';
 import { ProfileItem } from './ProfileItem';
-import { ProfileTileHeader } from './ProfileTileHeader';
+import { TileHeader } from '../common/TileHeader';
 import { genders } from '@/src/resources/gender';
-import { cities, states } from '@/src/resources/update-profile';
+import { cities, states } from '@/src/resources/city-state';
 
 type Props = {
   userData: User;
@@ -20,7 +20,7 @@ export const PersonalInformation = ({ userData, ...props }: Props) => {
       borderRadius="$8"
       {...props}
     >
-      <ProfileTileHeader title="Personal Information" />
+      <TileHeader title="Personal Information" />
       <ProfileItem title="Full Name" subtitle={userData.profile.fullName} />
       <ProfileItem
         title="Date of Birth"

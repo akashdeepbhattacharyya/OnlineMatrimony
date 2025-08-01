@@ -1,5 +1,5 @@
 import { YStack, ViewProps } from 'tamagui';
-import { ProfileTileHeader } from '../ProfileTileHeader';
+import { TileHeader } from '../../common/TileHeader';
 import { UpdateUserProfileFormType } from '@/src/resources/form';
 import { useFormikContext } from 'formik';
 import { TextArea } from '../../common/TextArea';
@@ -18,7 +18,7 @@ export const UpdateAboutYourSelf = ({ ...props }: ViewProps) => {
       borderRadius="$8"
       {...props}
     >
-      <ProfileTileHeader title="About Yourself" />
+      <TileHeader title="About Yourself" />
       <TextArea
         theme="text_area"
         placeholder="Tell us about yourself"
