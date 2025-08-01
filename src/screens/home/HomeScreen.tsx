@@ -3,7 +3,7 @@ import { styles } from './style';
 import { TabHeader } from '../../components/common/TabHeader';
 import { ScrollView } from 'react-native-gesture-handler';
 import TipsAndTestimonial from '../../components/home/TipsAndTestimonial';
-import FAQCard from '@/src/components/home/faqCard';
+import { FAQCard } from '@/src/components/home/Card';
 import TestimonialCarousel from '@/src/components/home/TestimonialCarousel';
 import { SafeAreaScreen as Screen } from '@/src/components/layouts/SafeAreaScreen';
 import { TitleAndSubtitle } from '@/src/components/common/TitleAndSubtitle';

@@ -12,7 +12,7 @@ const faqs = [
   'How Do I Create A Good Profile?',
 ];
 
-const FAQCard = ({ onSeeAll }: { onSeeAll: () => void }) => {
+export const FAQCard = ({ onSeeAll }: { onSeeAll: () => void }) => {
   return (
     <View theme={'home_tiles'} padding={'$4.5'} marginBottom={'$13'}>
       <YStack
@@ -60,5 +60,3 @@ const FAQRow = ({ title }: { title: string }) => {
     </YStack>
   );
 };
-
-export default FAQCard;
