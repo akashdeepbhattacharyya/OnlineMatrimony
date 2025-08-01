@@ -5,8 +5,8 @@ import { useHttpClient } from '../useHttpClient';
 import { useAuth } from '@/src/context/AuthContext';
 
 export function useUserRepository() {
-  const { token } = useAuth();
-  const client = useHttpClient({}, token?.accessToken);
+  const { token, saveToken } = useAuth();
+  const client = useHttpClient({}, token, saveToken);
 
   const updateProfilePicture = async (
     data: string,
