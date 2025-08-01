@@ -1,5 +1,5 @@
 import { Text } from '@/src/components/common/Text';
-import { ViewProps, YStack } from 'tamagui';
+import { getToken, ViewProps, YStack } from 'tamagui';
 
 type Props = {
   title: string;
@@ -9,7 +9,11 @@ type Props = {
 export const PreferenceItem = ({ title, children, ...props }: Props) => {
   return (
     <YStack {...props}>
-      <Text font="headingLight" size="small">
+      <Text
+        font="headingLight"
+        size="small"
+        color={getToken('$color.gray_lighter')}
+      >
         {title}
       </Text>
       {children}

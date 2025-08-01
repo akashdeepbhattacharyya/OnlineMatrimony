@@ -1,3 +1,5 @@
+import { Option } from '@/src/resources/form';
+
 export const maritalStatus = {
   SINGLE: 'Single',
   MARRIED: 'Married',
@@ -7,6 +9,13 @@ export const maritalStatus = {
   NEVER_MARRIED: 'Never Married',
 };
 export type MaritalStatus = keyof typeof maritalStatus;
+
+export const maritalStatusOptions: Option<MaritalStatus>[] = Object.keys(
+  maritalStatus,
+).map(key => ({
+  label: maritalStatus[key as keyof typeof maritalStatus],
+  value: key as MaritalStatus,
+}));
 
 export const motherTongues = {
   ENGLISH: 'English',
@@ -232,4 +241,19 @@ export const stateCityMapping: Record<State, City[]> = {
   UTTAR_PRADESH: ['LUCKNOW', 'KANPUR', 'GHAZIABAD', 'AGRA', 'OTHER'],
   UTTARAKHAND: ['DEHRADUN', 'HARIDWAR', 'OTHER'],
   WEST_BENGAL: ['KOLKATA', 'HOWRAH', 'DURGAPUR', 'SILIGURI', 'OTHER'],
+};
+
+export const stateOptions: Option<State>[] = Object.keys(states).map(key => ({
+  label: states[key as keyof typeof states],
+  value: key as State,
+}));
+
+export const cityOptions = (state: State): Option<City>[] => {
+  if (!state) return [];
+  return stateCityMapping[state]
+    ? stateCityMapping[state].map(value => ({
+        label: cities[value as keyof typeof cities],
+        value: value as City,
+      }))
+    : [];
 };

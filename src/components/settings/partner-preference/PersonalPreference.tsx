@@ -1,26 +1,23 @@
-import { getToken, ViewProps, YStack } from 'tamagui';
+import { ViewProps, YStack } from 'tamagui';
 import { PreferenceSlider } from './PreferenceSlider';
-import { useState } from 'react';
 import { SliderValue } from '../../common/Slider';
 import { formatFeetInch } from '@/src/utils/utils';
 import { PreferenceItem } from './PreferenceItem';
-import { Select } from '../../common/Select';
-import { MaritalStatus, maritalStatus } from '@/src/resources/update-profile';
-import { Option } from '@/src/resources/form';
+import {
+  cityOptions,
+  maritalStatusOptions,
+  State,
+  stateOptions,
+} from '@/src/resources/update-profile';
+import { PartnerPreferenceFormType } from '@/src/resources/form';
+import { PreferenceSelect } from './PreferenceSelect';
+import { genderOptions } from '@/src/resources/gender';
+import { useFormikContext } from 'formik';
+import { Text } from '../../common/Text';
 
 export const PersonalPreference = ({ ...props }: ViewProps) => {
-  const [ageRange, setAgeRange] = useState<SliderValue>({ min: 25, max: 50 });
-  const [heightRange, setHeightRange] = useState<SliderValue>({
-    min: 4.5,
-    max: 7.0,
-  });
-
-  const maritalStatusOptions: Option<MaritalStatus>[] = Object.keys(
-    maritalStatus,
-  ).map(key => ({
-    label: maritalStatus[key as keyof typeof maritalStatus],
-    value: key as MaritalStatus,
-  }));
+  const { values, errors, touched, setFieldValue } =
+    useFormikContext<PartnerPreferenceFormType>();
 
   return (
     <YStack
@@ -28,51 +25,113 @@ export const PersonalPreference = ({ ...props }: ViewProps) => {
       width={'100%'}
       gap={'$3'}
       backgroundColor={'$background'}
-      padding="$4"
+      paddingHorizontal="$4"
+      paddingTop={'$4'}
+      paddingBottom="$2"
       borderRadius="$8"
       {...props}
     >
-      <PreferenceItem title="Age">
-        <PreferenceSlider
-          minTitle={`Min ${ageRange.min} Yrs`}
-          maxTitle={`Max ${ageRange.max} Yrs`}
-          sliderValue={ageRange}
-          onValuesChange={setAgeRange}
-          step={1}
-        />
-      </PreferenceItem>
-      <PreferenceItem title="Height">
-        <PreferenceSlider
-          minTitle={`Min ${formatFeetInch(heightRange.min)}`}
-          maxTitle={`Max ${formatFeetInch(heightRange.max)}`}
-          sliderValue={heightRange}
-          onValuesChange={setHeightRange}
-          step={0.5}
-        />
-      </PreferenceItem>
-      <PreferenceItem title="Marital Status">
-        <Select
-          options={maritalStatusOptions}
-          placeholder="Select Marital Status"
-          onChange={value => console.log('Selected Marital Status:', value)}
-          // initialValue={maritalStatusOptions[0]}
-          // value={undefined}
-          title="Marital Status"
-          triggerProps={{
-            padding: 0,
-            borderRadius: 0,
-            backgroundColor: 'transparent',
-            borderColor: 'transparent',
-            marginTop: -5,
-          }}
-          selectValueProps={{
-            fontSize: '$sm',
-            backgroundColor: 'transparent',
-            placeholderTextColor: getToken('$color.white'),
-            textColor: getToken('$color.white'),
-          }}
-        />
-      </PreferenceItem>
+      <YStack gap={'$2'}>
+        <PreferenceItem title="Age">
+          <PreferenceSlider
+            minTitle={`Min ${values.ageRange.min} Yrs`}
+            maxTitle={`Max ${values.ageRange.max} Yrs`}
+            sliderValue={values.ageRange}
+            onValuesChange={(sliderValue: SliderValue) => {
+              setFieldValue('ageRange', sliderValue);
+            }}
+            step={1}
+          />
+        </PreferenceItem>
+        {touched.ageRange && errors.ageRange && (
+          <Text theme={'error_message'}>{errors.ageRange}</Text>
+        )}
+      </YStack>
+
+      <YStack gap={'$2'}>
+        <PreferenceItem title="Height">
+          <PreferenceSlider
+            minTitle={`Min ${formatFeetInch(values.heightRange.min)}`}
+            maxTitle={`Max ${formatFeetInch(values.heightRange.max)}`}
+            sliderValue={values.heightRange}
+            onValuesChange={(sliderValue: SliderValue) => {
+              setFieldValue('heightRange', sliderValue);
+            }}
+            step={0.5}
+          />
+        </PreferenceItem>
+        {touched.heightRange && errors.heightRange && (
+          <Text theme={'error_message'}>{errors.heightRange}</Text>
+        )}
+      </YStack>
+
+      <YStack gap={'$2'}>
+        <PreferenceItem title="Marital Status">
+          <PreferenceSelect
+            options={maritalStatusOptions}
+            placeholder="Select Marital Status"
+            onChange={value => setFieldValue('maritalStatus', value)}
+            initialValue={maritalStatusOptions.find(
+              option => option.value === values.maritalStatus,
+            )}
+            title="Select Marital Status"
+          />
+        </PreferenceItem>
+        {touched.maritalStatus && errors.maritalStatus && (
+          <Text theme={'error_message'}>{errors.maritalStatus}</Text>
+        )}
+      </YStack>
+
+      <YStack gap={'$2'}>
+        <PreferenceItem title="Gender">
+          <PreferenceSelect
+            options={genderOptions}
+            placeholder="Select Gender"
+            onChange={value => setFieldValue('gender', value)}
+            initialValue={genderOptions.find(
+              option => option.value === values.gender,
+            )}
+            title="Select Gender"
+          />
+        </PreferenceItem>
+        {touched.gender && errors.gender && (
+          <Text theme={'error_message'}>{errors.gender}</Text>
+        )}
+      </YStack>
+
+      <YStack gap={'$2'}>
+        <PreferenceItem title="State">
+          <PreferenceSelect
+            options={stateOptions}
+            placeholder="Select State"
+            onChange={value => setFieldValue('state', value)}
+            initialValue={stateOptions.find(
+              option => option.value === values.state,
+            )}
+            title="Select State"
+          />
+        </PreferenceItem>
+        {touched.state && errors.state && (
+          <Text theme={'error_message'}>{errors.state}</Text>
+        )}
+      </YStack>
+
+      <YStack gap={'$2'}>
+        <PreferenceItem title="City">
+          <PreferenceSelect
+            options={cityOptions(values.state as State)}
+            placeholder="Select City"
+            onChange={value => setFieldValue('city', value)}
+            initialValue={cityOptions(values.state as State).find(
+              option => option.value === values.city,
+            )}
+            title="Select City"
+          />
+        </PreferenceItem>
+        {touched.city && errors.city && (
+          <Text theme={'error_message'}>{errors.city}</Text>
+        )}
+      </YStack>
     </YStack>
   );
 };

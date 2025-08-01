@@ -37,6 +37,7 @@ type Props = {
   contentFullScreen?: boolean;
   disabled?: boolean;
   icon?: ReactNode;
+  chevronIconColor?: string;
 } & SelectProps;
 
 export function SelectC({
@@ -57,6 +58,7 @@ export function SelectC({
   contentFullScreen = false,
   disabled,
   icon,
+  chevronIconColor = getToken('$color.black'),
   ...props
 }: Props) {
   const [value, setValue] = useState(initialValue?.value);
@@ -111,7 +113,7 @@ export function SelectC({
           >
             {labelBy(value)}
           </Select.Value>
-          <ChevronDownIcon />
+          <ChevronDownIcon style={{ color: chevronIconColor }} />
         </XStack>
       </Select.Trigger>
       <Adapt platform="touch">
@@ -137,11 +139,11 @@ export function SelectC({
             padding="$2"
             borderTopLeftRadius="$8"
             borderTopRightRadius="$8"
-            // marginTop="$20"
+            marginTop="$10"
             elevation={6}
             backgroundColor="$background"
           >
-            <Sheet.ScrollView marginBottom="$20">
+            <Sheet.ScrollView marginBottom="$12">
               <Adapt.Contents />
             </Sheet.ScrollView>
           </Sheet.Frame>

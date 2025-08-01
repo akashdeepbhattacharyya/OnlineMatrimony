@@ -1,4 +1,5 @@
 import { Gender } from './gender';
+import { City, MaritalStatus, State } from './update-profile';
 
 export type Option<T = string> = {
   label: string;
@@ -37,4 +38,13 @@ export type UpdateUserProfileFormType = {
   pincode?: string;
   country?: string;
   aboutMe?: string;
+};
+
+export type PartnerPreferenceFormType = {
+  ageRange: { min: number; max: number };
+  heightRange: { min: number; max: number };
+  maritalStatus?: MaritalStatus;
+  gender?: Gender;
+  city?: City;
+  state?: State;
 };
