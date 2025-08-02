@@ -38,7 +38,7 @@ const testiMonial: Tip[] = [
   },
 ];
 
-const TipsAndTestimonial = ({ onSeeAll }: { onSeeAll: () => void }) => {
+const TipsAndTestimonial = ({ onRightButton }: { onRightButton: () => void }) => {
   const [isPlaying, setIsPlaying] = useState<boolean[]>(
     new Array(testiMonial.length).fill(false),
   );
@@ -108,7 +108,7 @@ const TipsAndTestimonial = ({ onSeeAll }: { onSeeAll: () => void }) => {
         <TileHeader
           title={`Tips & Testimonials`}
           rightButtonTitle="See All"
-          onSeeAll={onSeeAll}
+          onRightButton={onRightButton}
         />
         <FlatList
           data={testiMonial}

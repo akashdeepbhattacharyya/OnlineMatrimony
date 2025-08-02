@@ -6,7 +6,7 @@ type Props = {
   size?: number;
   testID?: string;
   selected: boolean;
-  enabled: boolean;
+  enabled?: boolean;
 } & ViewProps;
 
 export const CheckBox = ({

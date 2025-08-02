@@ -50,15 +50,15 @@ export type UpdateUserProfileFormType = {
 export type PartnerPreferenceFormType = {
   ageRange: { min: number; max: number };
   heightRange: { min: number; max: number };
-  maritalStatus?: MaritalStatus;
+  maritalStatuses?: MaritalStatus[];
   gender?: Gender;
-  city?: City;
-  state?: State;
-  diet?: Diet;
-  religion?: Religion;
-  motherTongue?: MotherTongue;
-  caste?: Caste;
-  education?: Education;
-  occupation?: Occupation;
+  cities?: City[];
+  states?: State[];
+  diets?: Diet[];
+  religions?: Religion[];
+  motherTongues?: MotherTongue[];
+  castes?: Caste[];
+  educations?: Education[];
+  occupations?: Occupation[];
   annualIncomeRange: { min: number; max: number };
 };

@@ -121,6 +121,12 @@ const themes: {
     color: tokens.color.gray_lighter,
     colorFocus: tokens.color.button_bg_red,
   },
+  dark_tile_header: {
+    color: tokens.color.white,
+  },
+  dark_tile_header_right_button: {
+    color: tokens.color.button_bg_red,
+  },
 };
 
 export default themes;

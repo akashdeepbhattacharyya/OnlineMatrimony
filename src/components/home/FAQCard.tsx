@@ -12,7 +12,7 @@ const faqs = [
   'How Do I Create A Good Profile?',
 ];
 
-export const FAQCard = ({ onSeeAll }: { onSeeAll: () => void }) => {
+export const FAQCard = ({ onRightButton }: { onRightButton: () => void }) => {
   return (
     <View theme={'home_tiles'} padding={'$4.5'} marginBottom={'$13'}>
       <YStack
@@ -24,7 +24,7 @@ export const FAQCard = ({ onSeeAll }: { onSeeAll: () => void }) => {
         <TileHeader
           title={`Frequently Asked Questions`}
           rightButtonTitle="See All"
-          onSeeAll={onSeeAll}
+          onRightButton={onRightButton}
         />
         <FlatList
           data={faqs}

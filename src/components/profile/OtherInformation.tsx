@@ -5,7 +5,7 @@ import { TileHeader } from '../common/TileHeader';
 import { castes } from '@/src/resources/caste';
 import { diets } from '@/src/resources/diet';
 import { educations } from '@/src/resources/education';
-import { maritalStatus } from '@/src/resources/marital-status';
+import { maritalStatuses } from '@/src/resources/marital-status';
 import { motherTongues } from '@/src/resources/mother-tongue';
 import { religions } from '@/src/resources/religion';
 
@@ -48,7 +48,7 @@ export const OtherInformation = ({ userProfile, ...props }: Props) => {
       <ProfileItem
         title="Marital Status"
         subtitle={
-          maritalStatus[userProfile.maritalStatus as keyof typeof maritalStatus]
+          maritalStatuses[userProfile.maritalStatus as keyof typeof maritalStatuses]
         }
       />
       <ProfileItem

@@ -1,6 +1,6 @@
 import { Option } from '@/src/resources/form';
 
-export const maritalStatus = {
+export const maritalStatuses = {
   SINGLE: 'Single',
   MARRIED: 'Married',
   DIVORCED: 'Divorced',
@@ -8,11 +8,11 @@ export const maritalStatus = {
   SEPARATED: 'Separated',
   NEVER_MARRIED: 'Never Married',
 };
-export type MaritalStatus = keyof typeof maritalStatus;
+export type MaritalStatus = keyof typeof maritalStatuses;
 
 export const maritalStatusOptions: Option<MaritalStatus>[] = Object.keys(
-  maritalStatus,
+  maritalStatuses,
 ).map(key => ({
-  label: maritalStatus[key as keyof typeof maritalStatus],
+  label: maritalStatuses[key as keyof typeof maritalStatuses],
   value: key as MaritalStatus,
 }));

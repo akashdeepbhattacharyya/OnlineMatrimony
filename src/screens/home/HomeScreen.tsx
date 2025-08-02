@@ -40,9 +40,9 @@ export default function HomeScreen() {
               bottom={'$3'}
             />
           </ImageBackground>
-          <TipsAndTestimonial onSeeAll={() => {}} />
+          <TipsAndTestimonial onRightButton={() => {}} />
           <TestimonialCarousel />
-          <FAQCard onSeeAll={() => {}} />
+          <FAQCard onRightButton={() => {}} />
         </YStack>
       </ScrollView>
     </Screen>

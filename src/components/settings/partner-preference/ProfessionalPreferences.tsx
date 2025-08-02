@@ -1,14 +1,14 @@
 import { ViewProps, YStack } from 'tamagui';
 import { PreferenceItem } from './PreferenceItem';
 import { PartnerPreferenceFormType } from '@/src/resources/form';
-import { PreferenceSelect } from './PreferenceSelect';
 import { useFormikContext } from 'formik';
 import { Text } from '../../common/Text';
-import { occupationOptions } from '@/src/resources/occupation';
-import { educationOptions } from '@/src/resources/education';
+import { occupationOptions, occupations } from '@/src/resources/occupation';
+import { educationOptions, educations } from '@/src/resources/education';
 import { SliderValue } from '../../common/Slider';
 import { PreferenceSlider } from './PreferenceSlider';
 import { TileHeader } from '../../common/TileHeader';
+import { MultiSelectButton } from '../../common/MultiSelectButton';
 
 export const ProfessionalPreferences = ({ ...props }: ViewProps) => {
   const { values, errors, touched, setFieldValue } =
@@ -29,35 +29,53 @@ export const ProfessionalPreferences = ({ ...props }: ViewProps) => {
       <TileHeader title="Professional Preferences" />
       <YStack gap={'$2'}>
         <PreferenceItem title="Education">
-          <PreferenceSelect
-            options={educationOptions}
-            placeholder="Select Education"
-            onChange={value => setFieldValue('education', value)}
-            initialValue={educationOptions.find(
-              option => option.value === values.education,
-            )}
+          <MultiSelectButton
             title="Select Education"
+            options={educationOptions}
+            onChange={selected => {
+              setFieldValue(
+                'educations',
+                selected.map(item => item.value),
+              );
+            }}
+            initialValues={
+              values.educations
+                ? values.educations.map(education => ({
+                    label: educations[education],
+                    value: education,
+                  }))
+                : undefined
+            }
           />
         </PreferenceItem>
-        {touched.education && errors.education && (
-          <Text theme={'error_message'}>{errors.education}</Text>
+        {touched.educations && errors.educations && (
+          <Text theme={'error_message'}>{errors.educations}</Text>
         )}
       </YStack>
 
       <YStack gap={'$2'}>
         <PreferenceItem title="Occupation">
-          <PreferenceSelect
-            options={occupationOptions}
-            placeholder="Select Occupation"
-            onChange={value => setFieldValue('occupation', value)}
-            initialValue={occupationOptions.find(
-              option => option.value === values.occupation,
-            )}
+          <MultiSelectButton
             title="Select Occupation"
+            options={occupationOptions}
+            onChange={selected => {
+              setFieldValue(
+                'occupations',
+                selected.map(item => item.value),
+              );
+            }}
+            initialValues={
+              values.occupations
+                ? values.occupations.map(occupation => ({
+                    label: occupations[occupation],
+                    value: occupation,
+                  }))
+                : undefined
+            }
           />
         </PreferenceItem>
-        {touched.occupation && errors.occupation && (
-          <Text theme={'error_message'}>{errors.occupation}</Text>
+        {touched.occupations && errors.occupations && (
+          <Text theme={'error_message'}>{errors.occupations}</Text>
         )}
       </YStack>
 

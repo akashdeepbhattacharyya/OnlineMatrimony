@@ -4,11 +4,15 @@ import { PartnerPreferenceFormType } from '@/src/resources/form';
 import { PreferenceSelect } from './PreferenceSelect';
 import { useFormikContext } from 'formik';
 import { Text } from '../../common/Text';
-import { dietOptions } from '@/src/resources/diet';
-import { casteOptions } from '@/src/resources/caste';
-import { motherTongueOptions } from '@/src/resources/mother-tongue';
-import { religionOptions } from '@/src/resources/religion';
+import { dietOptions, diets } from '@/src/resources/diet';
+import { casteOptions, castes } from '@/src/resources/caste';
+import {
+  motherTongueOptions,
+  motherTongues,
+} from '@/src/resources/mother-tongue';
+import { religionOptions, religions } from '@/src/resources/religion';
 import { TileHeader } from '../../common/TileHeader';
+import { MultiSelectButton } from '../../common/MultiSelectButton';
 
 export const OtherPreferences = ({ ...props }: ViewProps) => {
   const { values, errors, touched, setFieldValue } =
@@ -29,69 +33,105 @@ export const OtherPreferences = ({ ...props }: ViewProps) => {
       <TileHeader title="Other Preferences" />
       <YStack gap={'$2'}>
         <PreferenceItem title="Diet">
-          <PreferenceSelect
-            options={dietOptions}
-            placeholder="Select Diet"
-            onChange={value => setFieldValue('diet', value)}
-            initialValue={dietOptions.find(
-              option => option.value === values.diet,
-            )}
+          <MultiSelectButton
             title="Select Diet"
+            options={dietOptions}
+            onChange={selected => {
+              setFieldValue(
+                'diet',
+                selected.map(item => item.value),
+              );
+            }}
+            initialValues={
+              values.diets
+                ? values.diets.map(diet => ({
+                    label: diets[diet],
+                    value: diet,
+                  }))
+                : undefined
+            }
           />
         </PreferenceItem>
-        {touched.diet && errors.diet && (
-          <Text theme={'error_message'}>{errors.diet}</Text>
+        {touched.diets && errors.diets && (
+          <Text theme={'error_message'}>{errors.diets}</Text>
         )}
       </YStack>
 
       <YStack gap={'$2'}>
         <PreferenceItem title="Religion">
-          <PreferenceSelect
-            options={religionOptions}
-            placeholder="Select Religion"
-            onChange={value => setFieldValue('religion', value)}
-            initialValue={religionOptions.find(
-              option => option.value === values.religion,
-            )}
+          <MultiSelectButton
             title="Select Religion"
+            options={religionOptions}
+            onChange={selected => {
+              setFieldValue(
+                'religions',
+                selected.map(item => item.value),
+              );
+            }}
+            initialValues={
+              values.religions
+                ? values.religions.map(religion => ({
+                    label: religions[religion],
+                    value: religion,
+                  }))
+                : undefined
+            }
           />
         </PreferenceItem>
-        {touched.religion && errors.religion && (
-          <Text theme={'error_message'}>{errors.religion}</Text>
+        {touched.religions && errors.religions && (
+          <Text theme={'error_message'}>{errors.religions}</Text>
         )}
       </YStack>
 
       <YStack gap={'$2'}>
         <PreferenceItem title="Caste">
-          <PreferenceSelect
-            options={casteOptions}
-            placeholder="Select Caste"
-            onChange={value => setFieldValue('caste', value)}
-            initialValue={casteOptions.find(
-              option => option.value === values.caste,
-            )}
+          <MultiSelectButton
             title="Select Caste"
+            options={casteOptions}
+            onChange={selected => {
+              setFieldValue(
+                'castes',
+                selected.map(item => item.value),
+              );
+            }}
+            initialValues={
+              values.castes
+                ? values.castes.map(caste => ({
+                    label: castes[caste],
+                    value: caste,
+                  }))
+                : undefined
+            }
           />
         </PreferenceItem>
-        {touched.caste && errors.caste && (
-          <Text theme={'error_message'}>{errors.caste}</Text>
+        {touched.castes && errors.castes && (
+          <Text theme={'error_message'}>{errors.castes}</Text>
         )}
       </YStack>
 
       <YStack gap={'$2'}>
         <PreferenceItem title="Mother Tongue">
-          <PreferenceSelect
-            options={motherTongueOptions}
-            placeholder="Select Mother Tongue"
-            onChange={value => setFieldValue('motherTongue', value)}
-            initialValue={motherTongueOptions.find(
-              option => option.value === values.motherTongue,
-            )}
+          <MultiSelectButton
             title="Select Mother Tongue"
+            options={motherTongueOptions}
+            onChange={selected => {
+              setFieldValue(
+                'motherTongue',
+                selected.map(item => item.value),
+              );
+            }}
+            initialValues={
+              values.motherTongues
+                ? values.motherTongues.map(motherTongue => ({
+                    label: motherTongues[motherTongue],
+                    value: motherTongue,
+                  }))
+                : undefined
+            }
           />
         </PreferenceItem>
-        {touched.motherTongue && errors.motherTongue && (
-          <Text theme={'error_message'}>{errors.motherTongue}</Text>
+        {touched.motherTongues && errors.motherTongues && (
+          <Text theme={'error_message'}>{errors.motherTongues}</Text>
         )}
       </YStack>
     </YStack>
