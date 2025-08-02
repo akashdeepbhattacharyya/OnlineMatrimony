@@ -6,7 +6,7 @@ import { Match } from '@/src/models/Match';
 
 export function useMatchRepository() {
   const { token, saveToken } = useAuth();
-  const client = useHttpClient({}, token, saveToken);
+  const client = useHttpClient(token, saveToken);
 
   const getMatches = async (
     page: number,

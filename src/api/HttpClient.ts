@@ -5,7 +5,7 @@ import { useAuthRepository } from './repositories/useAuthRepository';
 import { useAppSelector } from '../services/store/hook';
 // import { useAuth } from '../context/AuthContext';
 
-export class HttpClient implements IHttpClient {
+/*export class HttpClient implements IHttpClient {
   constructor(
     private baseUrl: string,
     private defaultHeaders: Record<string, string> = {},
@@ -51,21 +51,6 @@ export class HttpClient implements IHttpClient {
     } else {
       throw new Error('No token available for refresh');
     }
-
-    // if (!this.refreshAuthToken) {
-    //   throw new Error('No refreshAuthToken function provided');
-    // }
-    // try {
-    //   const newToken = await this.refreshAuthToken();
-    //   if (this.saveToken) {
-    //     this.saveToken({ accessToken: newToken });
-    //   }
-    //   this.authToken = newToken;
-    //   return newToken;
-    // } catch (error) {
-    //   console.error('Error refreshing auth token:', error);
-    //   throw error;
-    // }
   }
 
   private async request<T>(
@@ -148,5 +133,137 @@ export class HttpClient implements IHttpClient {
 
   delete<T>(url: string, config?: RequestConfig): Promise<T> {
     return this.request<T>('DELETE', url, undefined, config);
+  }
+}
+*/
+
+import axios, {
+  AxiosInstance,
+  AxiosRequestConfig,
+  AxiosResponse,
+  AxiosError,
+} from 'axios';
+import { refreshAccessToken } from './refreshAccessToken';
+
+export class HttpClient implements IHttpClient {
+  private axiosInstance: AxiosInstance;
+  private isRefreshing: boolean = false;
+  private failedQueue: any[] = [];
+  private token?: Token;
+  private saveToken?: (token: Token) => void;
+
+  constructor(
+    baseURL: string,
+    token?: Token,
+    saveToken?: (token: Token) => void,
+  ) {
+    this.axiosInstance = axios.create({
+      baseURL,
+      headers: { 'Content-Type': 'application/json' },
+    });
+    this.token = token;
+    this.saveToken = saveToken;
+
+    this.axiosInstance.interceptors.request.use(async config => {
+      if (this.token) {
+        config.headers.Authorization = `Bearer ${this.token.accessToken}`;
+      }
+      return config;
+    });
+
+    this.axiosInstance.interceptors.response.use(
+      (response: AxiosResponse) => response,
+      async (error: AxiosError) => {
+        const originalRequest = error.config as AxiosRequestConfig & {
+          _retry?: boolean;
+        };
+
+        if (error.response?.status === 401 && !originalRequest._retry) {
+          if (this.isRefreshing) {
+            return new Promise((resolve, reject) => {
+              this.failedQueue.push({
+                resolve: (token: Token) => {
+                  originalRequest.headers = {
+                    ...originalRequest.headers,
+                    Authorization: `Bearer ${token.accessToken}`,
+                  };
+                  resolve(this.axiosInstance(originalRequest));
+                },
+                reject: (err: any) => reject(err),
+              });
+            });
+          }
+
+          originalRequest._retry = true;
+          this.isRefreshing = true;
+
+          try {
+            if (this.token) {
+              const response = await refreshAccessToken(
+                this.token.refreshToken || '',
+              );
+              if (!response.status) {
+                throw new Error('Failed to refresh token');
+              }
+              const newToken: Token = {
+                accessToken: response.data.accessToken,
+                refreshToken: response.data.refreshToken,
+                tokenType: response.data.tokenType,
+                expiresIn: response.data.expiresIn,
+              };
+              this.token = newToken;
+              this.saveToken?.(newToken);
+
+              this.failedQueue.forEach(prom => prom.resolve(response));
+              this.failedQueue = [];
+
+              originalRequest.headers = {
+                ...originalRequest.headers,
+                Authorization: `Bearer ${newToken.accessToken}`,
+              };
+              return this.axiosInstance(originalRequest);
+            } else {
+              throw new Error('No token available for refresh');
+            }
+          } catch (err) {
+            this.failedQueue.forEach(prom => prom.reject(err));
+            this.failedQueue = [];
+            return Promise.reject(err);
+          } finally {
+            this.isRefreshing = false;
+          }
+        }
+
+        return Promise.reject(error);
+      },
+    );
+  }
+
+  async get<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
+    const response = await this.axiosInstance.get<T>(url, config);
+    return response.data;
+  }
+
+  async post<T>(
+    url: string,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): Promise<T> {
+    const response = await this.axiosInstance.post<T>(url, data, config);
+    return response.data;
+  }
+
+  async put<T>(
+    url: string,
+    data?: any,
+    config?: AxiosRequestConfig,
+  ): Promise<T> {
+    const response = await this.axiosInstance.put<T>(url, data, config);
+    return response.data;
+  }
+
+  async delete<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
+    const response = await this.axiosInstance.delete<T>(url, config);
+    return response.data;
   }
 }

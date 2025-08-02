@@ -10,7 +10,7 @@ import { handleApiResponse } from '@/src/utils/handleApiResponse';
 import { useHttpClient } from '../useHttpClient';
 
 export function useAuthRepository() {
-  const client = useHttpClient({});
+  const client = useHttpClient();
 
   const register = async (
     data: UserRegistrationRequest,

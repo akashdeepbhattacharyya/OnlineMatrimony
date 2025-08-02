@@ -1,6 +1,7 @@
 import { UpdateUserProfileRequest } from '../models/User';
 import { UpdateUserProfileFormType } from '../resources/form';
-import { formatDateString } from './dateFormatter';
+import Constants from 'expo-constants';
+import { Platform } from 'react-native';
 
 export const isValidPhone = (value: string) => {
   const phoneRegex = /^[0-9]{10}$/; // You can customize this
@@ -86,3 +87,15 @@ export function formatFeetInch(value: number) {
   const inches = Math.round((value - feet) * 12);
   return `${feet}'${inches}"`;
 }
+
+export const apiBaseUrl = () => {
+  const { API_BASE_URL } = Constants.expoConfig?.extra?.keys;
+  var apiBaseUrl = API_BASE_URL;
+  if (Platform.OS === 'android') {
+    // For Android, use the local IP address if running on an emulator
+    if (apiBaseUrl?.includes('localhost')) {
+      apiBaseUrl = apiBaseUrl.replace('localhost', '10.0.2.2');
+    }
+  }
+  return apiBaseUrl || '';
+};

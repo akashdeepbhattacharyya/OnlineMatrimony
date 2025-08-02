@@ -6,7 +6,7 @@ import { useAuth } from '@/src/context/AuthContext';
 
 export function useUserRepository() {
   const { token, saveToken } = useAuth();
-  const client = useHttpClient({}, token, saveToken);
+  const client = useHttpClient(token, saveToken);
 
   const updateProfilePicture = async (
     data: string,
