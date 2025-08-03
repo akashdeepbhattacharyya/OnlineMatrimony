@@ -119,3 +119,50 @@ export type UpdatePartnerPreferencesRequest = {
   states: string;
   countries: string;
 };
+
+export const isProfileComplete = (userProfile: UserProfile): boolean => {
+  return (
+    userProfile.fullName !== '' &&
+    userProfile.dateOfBirth !== '' &&
+    userProfile.gender !== undefined &&
+    userProfile.city !== undefined &&
+    userProfile.state !== undefined &&
+    userProfile.pincode !== undefined &&
+    userProfile.aboutMe !== undefined &&
+    userProfile.diet !== undefined &&
+    userProfile.height !== undefined &&
+    userProfile.weight !== undefined &&
+    userProfile.religion !== undefined &&
+    userProfile.caste !== undefined &&
+    userProfile.motherTongue !== undefined &&
+    userProfile.maritalStatus !== undefined &&
+    userProfile.education !== undefined &&
+    userProfile.occupation !== undefined &&
+    userProfile.annualIncome !== undefined &&
+    userProfile.primaryPhotoUrl !== undefined
+  );
+};
+
+export const isPartnerPreferencesComplete = (
+  preferences: PartnerPreferences,
+): boolean => {
+  return (
+    preferences.minAge !== undefined &&
+    preferences.maxAge !== undefined &&
+    preferences.minHeight !== undefined &&
+    preferences.maxHeight !== undefined &&
+    preferences.maritalStatus !== '' &&
+    preferences.religion !== '' &&
+    preferences.caste !== '' &&
+    preferences.motherTongue !== '' &&
+    preferences.diet !== '' &&
+    preferences.education !== '' &&
+    preferences.occupation !== '' &&
+    preferences.minIncome !== undefined &&
+    preferences.maxIncome !== undefined &&
+    preferences.cities !== '' &&
+    preferences.states !== '' &&
+    preferences.countries !== '' &&
+    preferences.gender !== ''
+  );
+};

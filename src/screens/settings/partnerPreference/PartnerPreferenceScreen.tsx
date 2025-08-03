@@ -25,13 +25,11 @@ import { useAuth } from '@/src/context/AuthContext';
 
 export default function PartnerPreferenceScreen() {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const { partnerPreferences } = useAppSelector(
-    state => state.partnerPreferences,
-  );
+  const { userData } = useAppSelector(state => state.user);
   const { showLoader, hideLoader } = useLoader();
   const dispatch = useAppDispatch();
   const userRepository = useUserRepository();
-  const { savePartnerPreferences } = useAuth();
+  const { saveUser } = useAuth();
 
   useEffect(() => {
     showLoader();
@@ -43,8 +41,9 @@ export default function PartnerPreferenceScreen() {
     hideLoader();
   }, []);
 
-  const initialValues: PartnerPreferenceFormType =
-    toPartnerPreferenceFormType(partnerPreferences);
+  const initialValues: PartnerPreferenceFormType = toPartnerPreferenceFormType(
+    userData.preference,
+  );
 
   const onConfirm = async (values: PartnerPreferenceFormType) => {
     console.log('Updated values:', values);
@@ -54,9 +53,7 @@ export default function PartnerPreferenceScreen() {
     try {
       const response = await userRepository.updatePartnerPreferences(request);
       console.log('Partner preferences updated successfully:', response);
-      if (response.preference) {
-        savePartnerPreferences(response.preference);
-      }
+      saveUser(response);
       hideLoader();
       navigation.goBack();
     } catch (error) {

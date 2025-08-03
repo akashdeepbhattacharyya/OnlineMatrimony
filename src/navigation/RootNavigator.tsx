@@ -1,9 +1,13 @@
-import { Suspense, lazy, useMemo } from 'react';
+import { Suspense, lazy, use, useMemo } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useAuth } from '@/src/context/AuthContext';
 import { ActivityIndicator, View, StyleSheet } from 'react-native';
 import FooterNavigator from '../components/common/footer';
-import { User } from '../models/User';
+import {
+  isPartnerPreferencesComplete,
+  isProfileComplete,
+  User,
+} from '../models/User';
 import { tabItems } from '../resources/tab-item';
 
 export type RootStackParamList = {
@@ -22,7 +26,9 @@ export type RootStackParamList = {
   HideDeleteProfile: undefined;
   Subscription: undefined;
   Profile: undefined;
-  UpdateProfile: { data: User };
+  UpdateProfile: {
+    data: { userData: User; purpose: 'REGISTRATION' | 'UPDATE' };
+  };
   AiMatches: undefined;
 };
 
@@ -79,22 +85,51 @@ const RootNavigator = ({ currentRoute }: RootNavigatorProps) => {
     return tabItems.some(item => item.route === currentRoute);
   }, [currentRoute]);
 
+  const getInitialRouteName = () => {
+    if (user) {
+      console.log('User is logged in:', user);
+      console.log('User profile:', user.profile);
+      console.log('User preferences:', user.preference);
+      if (isProfileComplete(user.profile)) {
+        console.log('User profile is complete');
+        if (user.preference && isPartnerPreferencesComplete(user.preference)) {
+          console.log('User partner preferences are complete');
+          return 'Home';
+        } else {
+          console.log('User partner preferences are not complete');
+          return 'PartnerPreference';
+        }
+      } else {
+        console.log('User profile is not complete');
+        return 'UpdateProfile';
+      }
+    }
+    return 'Onboarding';
+  };
+
   return (
     <Suspense fallback={<Loading />}>
       <View style={styles.wrapper}>
         <Stack.Navigator
-          initialRouteName={user ? 'Home' : 'Onboarding'}
+          initialRouteName={getInitialRouteName()}
           screenOptions={{ headerShown: false }}
         >
           {user ? (
             <>
-              <Stack.Screen name="Home" component={HomeScreen} />
-              <Stack.Screen name="Settings" component={SettingsScreen} />
-              <Stack.Screen name="Search" component={SearchScreen} />
+              <Stack.Screen
+                name="UpdateProfile"
+                component={UpdateProfile}
+                initialParams={{
+                  data: { userData: user, purpose: 'REGISTRATION' },
+                }}
+              />
               <Stack.Screen
                 name="PartnerPreference"
                 component={PartnerPreferenceScreen}
               />
+              <Stack.Screen name="Home" component={HomeScreen} />
+              <Stack.Screen name="Settings" component={SettingsScreen} />
+              <Stack.Screen name="Search" component={SearchScreen} />
               <Stack.Screen
                 name="NotificationSettings"
                 component={NotificationSettingsScreen}
@@ -116,7 +151,7 @@ const RootNavigator = ({ currentRoute }: RootNavigatorProps) => {
                 component={SubscriptionScreen}
               />
               <Stack.Screen name="Profile" component={Profile} />
-              <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
+
               <Stack.Screen name="AiMatches" component={AiMatchesScreen} />
             </>
           ) : (

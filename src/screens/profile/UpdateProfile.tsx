@@ -26,7 +26,9 @@ type Props = {
 
 export default function UpdateProfile({
   route: {
-    params: { data: userData },
+    params: {
+      data: { userData, purpose },
+    },
   },
 }: Props) {
   const navigation = useNavigation();
@@ -98,15 +100,17 @@ export default function UpdateProfile({
   return (
     <Screen theme="dark">
       <ProfileBackground uri={photoUri} />
-      <View
-        marginTop={Platform.OS === 'android' ? '$4' : '$2'}
-        paddingHorizontal={'$4'}
-        paddingVertical={'$2'}
-      >
-        <TouchableOpacity onPress={onBackPress}>
-          <BackIcon />
-        </TouchableOpacity>
-      </View>
+      {purpose === 'UPDATE' && (
+        <View
+          marginTop={Platform.OS === 'android' ? '$4' : '$2'}
+          paddingHorizontal={'$4'}
+          paddingVertical={'$2'}
+        >
+          <TouchableOpacity onPress={onBackPress}>
+            <BackIcon />
+          </TouchableOpacity>
+        </View>
+      )}
       <ScrollView
         contentContainerStyle={{
           flexGrow: 1,
