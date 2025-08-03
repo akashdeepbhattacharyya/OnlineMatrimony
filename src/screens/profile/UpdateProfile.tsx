@@ -1,9 +1,5 @@
 import { SafeAreaScreen as Screen } from '@/src/components/layouts/SafeAreaScreen';
-import {
-  Platform,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
+import { Platform, ScrollView, TouchableOpacity } from 'react-native';
 import { YStack, View } from 'tamagui';
 import BackIcon from '@/assets/images/icon-back.svg';
 import { RouteProp, useNavigation } from '@react-navigation/native';
@@ -67,15 +63,15 @@ export default function UpdateProfile({
   const onUpdate = async (values: UpdateUserProfileFormType) => {
     console.log('Updated values:', values);
     showLoader();
-    const response = await userRepository.updateProfile(
-      convertToPayload(values),
-    );
-    if (response.status) {
-      console.log('Profile updated successfully:', response.data);
-      saveUser(response.data);
+    try {
+      const response = await userRepository.updateProfile(
+        convertToPayload(values),
+      );
+      console.log('Profile updated successfully:', response);
+      saveUser(response);
       navigation.goBack();
-    } else {
-      console.error('Failed to update profile:', response.errorCode);
+    } catch (error) {
+      console.error('Failed to update profile:', error);
     }
     hideLoader();
   };
@@ -86,16 +82,14 @@ export default function UpdateProfile({
     console.log('Selected image:', uri);
     try {
       const response = await userRepository.updateProfilePicture(uri);
-      if (response.status) {
-        console.log('Profile picture updated successfully:', response);
-        saveUser({
-          ...userData,
-          profile: {
-            ...userData.profile,
-            primaryPhotoUrl: response.data,
-          },
-        });
-      }
+      console.log('Profile picture updated successfully:', response);
+      saveUser({
+        ...userData,
+        profile: {
+          ...userData.profile,
+          primaryPhotoUrl: response,
+        },
+      });
     } catch (error) {
       console.error('Upload error:', error);
     }

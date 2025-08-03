@@ -1,16 +1,25 @@
 import { ViewProps, YStack } from 'tamagui';
 import { PreferenceSlider } from './PreferenceSlider';
 import { SliderValue } from '../../common/Slider';
-import { formatFeetInch } from '@/src/utils/utils';
+import { toFeetAndInches } from '@/src/utils/utils';
 import { PreferenceItem } from './PreferenceItem';
-import { cityOptions, State, stateOptions } from '@/src/resources/city-state';
+import {
+  cities,
+  cityOptionsByStates,
+  stateOptions,
+  states,
+} from '@/src/resources/city-state';
 import { PartnerPreferenceFormType } from '@/src/resources/form';
 import { PreferenceSelect } from './PreferenceSelect';
 import { genderOptions } from '@/src/resources/gender';
 import { useFormikContext } from 'formik';
 import { Text } from '../../common/Text';
-import { maritalStatusOptions } from '@/src/resources/marital-status';
+import {
+  maritalStatuses,
+  maritalStatusOptions,
+} from '@/src/resources/marital-status';
 import { TileHeader } from '../../common/TileHeader';
+import { MultiSelectButton } from '../../common/MultiSelectButton';
 
 export const PersonalPreferences = ({ ...props }: ViewProps) => {
   const { values, errors, touched, setFieldValue } =
@@ -38,6 +47,8 @@ export const PersonalPreferences = ({ ...props }: ViewProps) => {
             onValuesChange={(sliderValue: SliderValue) => {
               setFieldValue('ageRange', sliderValue);
             }}
+            max={46}
+            min={25}
             step={1}
           />
         </PreferenceItem>
@@ -49,13 +60,15 @@ export const PersonalPreferences = ({ ...props }: ViewProps) => {
       <YStack gap={'$2'}>
         <PreferenceItem title="Height">
           <PreferenceSlider
-            minTitle={`Min ${formatFeetInch(values.heightRange.min)}`}
-            maxTitle={`Max ${formatFeetInch(values.heightRange.max)}`}
+            minTitle={`Min ${toFeetAndInches(values.heightRange.min)}`}
+            maxTitle={`Max ${toFeetAndInches(values.heightRange.max)}`}
             sliderValue={values.heightRange}
             onValuesChange={(sliderValue: SliderValue) => {
               setFieldValue('heightRange', sliderValue);
             }}
-            step={0.5}
+            max={213}
+            min={137}
+            step={15}
           />
         </PreferenceItem>
         {touched.heightRange && errors.heightRange && (
@@ -65,18 +78,20 @@ export const PersonalPreferences = ({ ...props }: ViewProps) => {
 
       <YStack gap={'$2'}>
         <PreferenceItem title="Marital Status">
-          <PreferenceSelect
+          <MultiSelectButton
+            title={'Select Marital Status'}
+            value={values.maritalStatuses
+              ?.map(item => maritalStatuses[item])
+              .join(', ')}
             options={maritalStatusOptions}
-            placeholder="Select Marital Status"
-            onChange={value => setFieldValue('maritalStatus', value)}
-            initialValue={maritalStatusOptions.find(
-              option => option.value === values.maritalStatus,
-            )}
-            title="Select Marital Status"
+            onChange={selected => {
+              setFieldValue('maritalStatuses', selected);
+            }}
+            selected={values.maritalStatuses}
           />
         </PreferenceItem>
-        {touched.maritalStatus && errors.maritalStatus && (
-          <Text theme={'error_message'}>{errors.maritalStatus}</Text>
+        {touched.maritalStatuses && errors.maritalStatuses && (
+          <Text theme={'error_message'}>{errors.maritalStatuses}</Text>
         )}
       </YStack>
 
@@ -99,35 +114,36 @@ export const PersonalPreferences = ({ ...props }: ViewProps) => {
 
       <YStack gap={'$2'}>
         <PreferenceItem title="State">
-          <PreferenceSelect
+          <MultiSelectButton
+            title={'Select State'}
+            value={values.states?.map(item => states[item]).join(', ')}
             options={stateOptions}
-            placeholder="Select State"
-            onChange={value => setFieldValue('state', value)}
-            initialValue={stateOptions.find(
-              option => option.value === values.state,
-            )}
-            title="Select State"
+            onChange={selected => {
+              setFieldValue('states', selected);
+              setFieldValue('cities', undefined); // Reset city when state changes
+            }}
+            selected={values.states}
           />
         </PreferenceItem>
-        {touched.state && errors.state && (
-          <Text theme={'error_message'}>{errors.state}</Text>
+        {touched.states && errors.states && (
+          <Text theme={'error_message'}>{errors.states}</Text>
         )}
       </YStack>
 
       <YStack gap={'$2'}>
         <PreferenceItem title="City">
-          <PreferenceSelect
-            options={cityOptions(values.state as State)}
-            placeholder="Select City"
-            onChange={value => setFieldValue('city', value)}
-            initialValue={cityOptions(values.state as State).find(
-              option => option.value === values.city,
-            )}
-            title="Select City"
+          <MultiSelectButton
+            title={'Select City'}
+            value={values.cities?.map(item => cities[item]).join(', ')}
+            options={cityOptionsByStates(values.states || [])}
+            onChange={selected => {
+              setFieldValue('cities', selected);
+            }}
+            selected={values.cities}
           />
         </PreferenceItem>
-        {touched.city && errors.city && (
-          <Text theme={'error_message'}>{errors.city}</Text>
+        {touched.cities && errors.cities && (
+          <Text theme={'error_message'}>{errors.cities}</Text>
         )}
       </YStack>
     </YStack>

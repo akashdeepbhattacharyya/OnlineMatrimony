@@ -12,10 +12,18 @@ export type SliderValue = {
 type Props = {
   onValuesChange: (values: SliderValue) => void;
   sliderValue: SliderValue;
+  max: number;
+  min: number;
   step: number;
 };
 
-export const Slider = ({ onValuesChange, sliderValue, step }: Props) => {
+export const Slider = ({
+  onValuesChange,
+  sliderValue,
+  max,
+  min,
+  step,
+}: Props) => {
   const { width } = Dimensions.get('window');
 
   const handleValuesChange = (values: number[]) => {
@@ -28,8 +36,8 @@ export const Slider = ({ onValuesChange, sliderValue, step }: Props) => {
         values={[sliderValue.min, sliderValue.max]}
         sliderLength={width - 90}
         onValuesChange={handleValuesChange}
-        min={sliderValue.min}
-        max={sliderValue.max}
+        min={min}
+        max={max}
         step={step}
         selectedStyle={{ backgroundColor: getToken('$color.button_bg_red') }}
         unselectedStyle={{ backgroundColor: getToken('$color.gray_lighter') }}

@@ -43,4 +43,3 @@ const matchSlice = createSlice({
 
 export const { setPendingMatches } = matchSlice.actions;
 export default matchSlice.reducer;
-export const matchStateItem = (state: RootState) => state.match;

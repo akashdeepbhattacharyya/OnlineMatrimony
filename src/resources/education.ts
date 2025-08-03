@@ -4,8 +4,8 @@ export const educations = {
   NO_FORMAL_EDUCATION: 'No Formal Education',
   HIGH_SCHOOL: 'High School',
   DIPLOMA: 'Diploma',
-  BACHELOR_DEGREE: "Bachelor's Degree",
-  MASTER_DEGREE: "Master's Degree",
+  GRADUATE: 'Graduate',
+  POST_GRADUATE: 'Post Graduate',
   DOCTORATE: 'Doctorate',
   OTHER: 'Other',
 };

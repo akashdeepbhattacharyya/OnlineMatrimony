@@ -5,25 +5,30 @@ import { TouchableOpacity } from 'react-native';
 
 type Props = {
   title: string;
-  onSeeAll?: () => void;
+  onRightButton?: () => void;
   rightButtonTitle?: string;
 } & ViewProps;
 
 export const TileHeader = ({
   title,
-  onSeeAll,
+  onRightButton,
   rightButtonTitle,
   ...props
 }: Props) => {
   return (
-    <YStack gap={'$3'} {...props}>
+    <YStack theme={'tile_header'} gap={'$3'} {...props}>
       <XStack justifyContent="space-between" alignItems="center">
         <Text font="headingBold" size="normal">
           {title}
         </Text>
         {rightButtonTitle && (
-          <TouchableOpacity onPress={onSeeAll}>
-            <Text font="heading" size="normal" color={'$buttonTitle'}>
+          <TouchableOpacity onPress={onRightButton}>
+            <Text
+              theme={'right_button'}
+              font="heading"
+              size="normal"
+              color={'$color'}
+            >
               {rightButtonTitle}
             </Text>
           </TouchableOpacity>

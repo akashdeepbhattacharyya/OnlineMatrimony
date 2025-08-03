@@ -1,15 +1,12 @@
 import { ImageSourcePropType } from 'react-native';
 import { Gender } from '../resources/gender';
-import {
-  Caste,
-  City,
-  Education,
-  MaritalStatus,
-  MotherTongue,
-  Occupation,
-  Religion,
-  State,
-} from '../resources/city-state';
+import { City, State } from '../resources/city-state';
+import { Caste } from '../resources/caste';
+import { Education } from '../resources/education';
+import { MaritalStatus } from '../resources/marital-status';
+import { MotherTongue } from '../resources/mother-tongue';
+import { Occupation } from '../resources/occupation';
+import { Religion } from '../resources/religion';
 
 export type PersonalInformation = {
   fullName: string;
@@ -61,7 +58,28 @@ export type User = {
   email: string;
   phone: string;
   profile: UserProfile;
+  preference?: PartnerPreferences;
 } & MatchInformation;
+
+export type PartnerPreferences = {
+  minAge: number;
+  maxAge: number;
+  minHeight: number;
+  maxHeight: number;
+  maritalStatus: string;
+  religion: string;
+  caste: string;
+  motherTongue: string;
+  diet: string;
+  education: string;
+  occupation: string;
+  minIncome: number;
+  maxIncome: number;
+  cities: string;
+  states: string;
+  countries: string;
+  gender: string;
+};
 
 export type UpdateUserProfileRequest = {
   fullName?: string;
@@ -81,4 +99,23 @@ export type UpdateUserProfileRequest = {
   education?: string;
   occupation?: string;
   annualIncome?: string;
+};
+
+export type UpdatePartnerPreferencesRequest = {
+  minAge: number;
+  maxAge: number;
+  minHeight: number;
+  maxHeight: number;
+  maritalStatus: string;
+  religion: string;
+  caste: string;
+  motherTongue: string;
+  diet: string;
+  education: string;
+  occupation: string;
+  minIncome: number;
+  maxIncome: number;
+  cities: string;
+  states: string;
+  countries: string;
 };

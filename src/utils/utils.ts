@@ -65,7 +65,7 @@ export const toFeetAndInches = (heightInCm?: number): string | undefined => {
   const totalInches = heightInCm / 2.54; // Convert cm to inches
   const feet = Math.floor(totalInches / 12);
   const inches = Math.round(totalInches % 12);
-  return `${feet}' ${inches}"`;
+  return `${feet}'${inches}"`;
 };
 
 export const toUri = (
@@ -85,4 +85,14 @@ export function formatFeetInch(value: number) {
   const feet = Math.floor(value);
   const inches = Math.round((value - feet) * 12);
   return `${feet}'${inches}"`;
+}
+
+export function formatAnnualIncome(value: number) {
+  if (value < 10000000) {
+    const lakhs = Math.floor(value / 100000);
+    return `${lakhs} ${lakhs === 1 ? 'Lakh' : 'Lakhs'}`;
+  } else {
+    const crores = Math.floor(value / 10000000);
+    return `${crores} ${crores === 1 ? 'Crore' : 'Crores'}`;
+  }
 }

@@ -182,3 +182,38 @@ export const cityOptions = (state: State): Option<City>[] => {
       }))
     : [];
 };
+
+export const cityOptionsByStates = (states: State[]): Option<City>[] => {
+  if (!states || states.length === 0) return [];
+  const citiesSet = new Set<City>();
+  states.forEach(state => {
+    if (stateCityMapping[state]) {
+      stateCityMapping[state].forEach(city => citiesSet.add(city));
+    }
+  });
+  return Array.from(citiesSet)
+    .sort((a, b) => {
+      if (a === 'OTHER') return 1; // Move 'OTHER' to the end
+      if (b === 'OTHER') return -1; // Move 'OTHER' to the end
+      return a.localeCompare(b); // Sort alphabetically
+    })
+    .map(value => ({
+      label: cities[value as keyof typeof cities],
+      value: value as City,
+    }));
+};
+
+export const citiesByStates = (states: State[]): City[] => {
+  if (!states || states.length === 0) return [];
+  const citiesSet = new Set<City>();
+  states.forEach(state => {
+    if (stateCityMapping[state]) {
+      stateCityMapping[state].forEach(city => citiesSet.add(city));
+    }
+  });
+  return Array.from(citiesSet).sort((a, b) => {
+    if (a === 'OTHER') return 1; // Move 'OTHER' to the end
+    if (b === 'OTHER') return -1; // Move 'OTHER' to the end
+    return a.localeCompare(b); // Sort alphabetically
+  });
+};
