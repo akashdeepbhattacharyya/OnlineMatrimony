@@ -9,6 +9,7 @@ import { SliderValue } from '../../common/Slider';
 import { PreferenceSlider } from './PreferenceSlider';
 import { TileHeader } from '../../common/TileHeader';
 import { MultiSelectButton } from '../../common/MultiSelectButton';
+import { formatAnnualIncome } from '@/src/utils/utils';
 
 export const ProfessionalPreferences = ({ ...props }: ViewProps) => {
   const { values, errors, touched, setFieldValue } =
@@ -82,8 +83,8 @@ export const ProfessionalPreferences = ({ ...props }: ViewProps) => {
       <YStack gap={'$2'}>
         <PreferenceItem title="Annual Income">
           <PreferenceSlider
-            minTitle={`Min ${values.annualIncomeRange.min} LPA`}
-            maxTitle={`Max ${values.annualIncomeRange.max} LPA`}
+            minTitle={`Min ${formatAnnualIncome(values.annualIncomeRange.min)}`}
+            maxTitle={`Max ${formatAnnualIncome(values.annualIncomeRange.max)}`}
             sliderValue={values.annualIncomeRange}
             onValuesChange={(sliderValue: SliderValue) => {
               setFieldValue('annualIncomeRange', sliderValue);

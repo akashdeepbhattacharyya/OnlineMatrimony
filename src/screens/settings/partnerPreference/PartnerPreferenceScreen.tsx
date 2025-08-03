@@ -15,7 +15,7 @@ export default function PartnerPreferenceScreen() {
   const initialValues: PartnerPreferenceFormType = {
     ageRange: { min: 25, max: 50 },
     heightRange: { min: 4.5, max: 7 },
-    annualIncomeRange: { min: 5, max: 100 },
+    annualIncomeRange: { min: 5, max: 500 },
   };
 
   const onConfirm = async (values: PartnerPreferenceFormType) => {

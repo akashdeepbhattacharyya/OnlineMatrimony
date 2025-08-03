@@ -86,3 +86,11 @@ export function formatFeetInch(value: number) {
   const inches = Math.round((value - feet) * 12);
   return `${feet}'${inches}"`;
 }
+
+export function formatAnnualIncome(value: number) {
+  if (value < 100) {
+    return `${value} LPA`;
+  } else {
+    return `${(value / 100).toFixed(1)} CPA`;
+  }
+}
