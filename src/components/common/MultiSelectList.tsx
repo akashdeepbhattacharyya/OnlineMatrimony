@@ -6,60 +6,55 @@ import { Divider } from './Divider';
 import { CheckBox } from './CheckBox';
 import { TouchableOpacity } from 'react-native';
 
-type Props = {
-  options: Option[];
-  onChange: (selected: Option[]) => void;
-  selected?: Option[];
+type Props<T> = {
+  options: Option<T>[];
+  onChange: (selected: T[]) => void;
+  selected?: T[];
 } & ViewProps;
 
-export function MultiSelectList({
+export function MultiSelectList<T>({
   options,
   onChange,
   selected = [],
   ...props
-}: Props) {
-  const [selectedOptions, setSelectedOptions] = useState<Option[]>(selected);
+}: Props<T>) {
+  const [selectedItems, setSelectedItems] = useState<T[]>(selected);
 
-  // console.log('Selected options:', selected);
+  console.log('MultiSelectList: Selected options:', selectedItems);
 
-  const toggleOption = (option: Option) => {
-    const options = selectedOptions.includes(option)
-      ? selectedOptions.filter(i => i !== option)
-      : [...selectedOptions, option];
-    setSelectedOptions(options);
+  const toggleItem = (item: T) => {
+    const options = selectedItems.includes(item)
+      ? selectedItems.filter(i => i !== item)
+      : [...selectedItems, item];
+    setSelectedItems(options);
     onChange(options);
   };
 
   return (
     <YStack {...props}>
-      {console.log('--------------------------------------')}
-      {options.map(
-        option => (
-          console.log(
-            'Rendering option:',
-            option.label,
-            selectedOptions.includes(option),
-          ),
-          (
-            <YStack key={option.value}>
-              <TouchableOpacity onPress={() => toggleOption(option)}>
-                <XStack
-                  justifyContent="space-between"
-                  alignItems="center"
-                  paddingVertical={'$2.5'}
-                  paddingTop={'$3.5'}
-                >
-                  <Text font="heading" size="small">
-                    {option.label}
-                  </Text>
-                  <CheckBox selected={selectedOptions.includes(option)} />
-                </XStack>
-                <Divider width={'100%'} />
-              </TouchableOpacity>
-            </YStack>
-          )
+      {options.map((option, index) => (
+        console.log(
+          'Rendering option:',
+          option.value,
+          selectedItems.includes(option.value),
         ),
-      )}
+        <YStack key={index}>
+          <TouchableOpacity onPress={() => toggleItem(option.value)}>
+            <XStack
+              justifyContent="space-between"
+              alignItems="center"
+              paddingVertical={'$2.5'}
+              paddingTop={'$3.5'}
+            >
+              <Text font="heading" size="small">
+                {option.label}
+              </Text>
+              <CheckBox selected={selectedItems.includes(option.value)} />
+            </XStack>
+            <Divider width={'100%'} />
+          </TouchableOpacity>
+        </YStack>
+      ))}
     </YStack>
   );
 }

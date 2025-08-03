@@ -7,6 +7,8 @@ type Props = {
   minTitle?: string;
   sliderValue: SliderValue;
   onValuesChange: (values: SliderValue) => void;
+  max: number;
+  min: number;
   step: number;
 };
 
@@ -15,6 +17,8 @@ export const PreferenceSlider = ({
   minTitle,
   sliderValue,
   onValuesChange,
+  max,
+  min,
   step,
 }: Props) => {
   return (
@@ -35,6 +39,8 @@ export const PreferenceSlider = ({
         sliderValue={sliderValue}
         onValuesChange={onValuesChange}
         step={step}
+        min={min}
+        max={max}
       />
     </YStack>
   );

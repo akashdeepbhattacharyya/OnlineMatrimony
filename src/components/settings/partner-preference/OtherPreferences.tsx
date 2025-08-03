@@ -34,22 +34,13 @@ export const OtherPreferences = ({ ...props }: ViewProps) => {
       <YStack gap={'$2'}>
         <PreferenceItem title="Diet">
           <MultiSelectButton
-            title="Select Diet"
+            title={'Select Diet'}
+            value={values.diets?.map(item => diets[item]).join(', ')}
             options={dietOptions}
             onChange={selected => {
-              setFieldValue(
-                'diet',
-                selected.map(item => item.value),
-              );
+              setFieldValue('diets', selected);
             }}
-            initialValues={
-              values.diets
-                ? values.diets.map(diet => ({
-                    label: diets[diet],
-                    value: diet,
-                  }))
-                : undefined
-            }
+            selected={values.diets}
           />
         </PreferenceItem>
         {touched.diets && errors.diets && (
@@ -60,22 +51,13 @@ export const OtherPreferences = ({ ...props }: ViewProps) => {
       <YStack gap={'$2'}>
         <PreferenceItem title="Religion">
           <MultiSelectButton
-            title="Select Religion"
+            title={'Select Religion'}
+            value={values.religions?.map(item => religions[item]).join(', ')}
             options={religionOptions}
             onChange={selected => {
-              setFieldValue(
-                'religions',
-                selected.map(item => item.value),
-              );
+              setFieldValue('religions', selected);
             }}
-            initialValues={
-              values.religions
-                ? values.religions.map(religion => ({
-                    label: religions[religion],
-                    value: religion,
-                  }))
-                : undefined
-            }
+            selected={values.religions}
           />
         </PreferenceItem>
         {touched.religions && errors.religions && (
@@ -86,22 +68,13 @@ export const OtherPreferences = ({ ...props }: ViewProps) => {
       <YStack gap={'$2'}>
         <PreferenceItem title="Caste">
           <MultiSelectButton
-            title="Select Caste"
+            title={'Select Caste'}
+            value={values.castes?.map(item => castes[item]).join(', ')}
             options={casteOptions}
             onChange={selected => {
-              setFieldValue(
-                'castes',
-                selected.map(item => item.value),
-              );
+              setFieldValue('castes', selected);
             }}
-            initialValues={
-              values.castes
-                ? values.castes.map(caste => ({
-                    label: castes[caste],
-                    value: caste,
-                  }))
-                : undefined
-            }
+            selected={values.castes}
           />
         </PreferenceItem>
         {touched.castes && errors.castes && (
@@ -112,22 +85,15 @@ export const OtherPreferences = ({ ...props }: ViewProps) => {
       <YStack gap={'$2'}>
         <PreferenceItem title="Mother Tongue">
           <MultiSelectButton
-            title="Select Mother Tongue"
+            title={'Select Mother Tongue'}
+            value={values.motherTongues
+              ?.map(item => motherTongues[item])
+              .join(', ')}
             options={motherTongueOptions}
             onChange={selected => {
-              setFieldValue(
-                'motherTongue',
-                selected.map(item => item.value),
-              );
+              setFieldValue('motherTongues', selected);
             }}
-            initialValues={
-              values.motherTongues
-                ? values.motherTongues.map(motherTongue => ({
-                    label: motherTongues[motherTongue],
-                    value: motherTongue,
-                  }))
-                : undefined
-            }
+            selected={values.motherTongues}
           />
         </PreferenceItem>
         {touched.motherTongues && errors.motherTongues && (

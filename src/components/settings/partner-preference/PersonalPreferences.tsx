@@ -1,7 +1,7 @@
 import { ViewProps, YStack } from 'tamagui';
 import { PreferenceSlider } from './PreferenceSlider';
 import { SliderValue } from '../../common/Slider';
-import { formatFeetInch } from '@/src/utils/utils';
+import { toFeetAndInches } from '@/src/utils/utils';
 import { PreferenceItem } from './PreferenceItem';
 import {
   cities,
@@ -47,6 +47,8 @@ export const PersonalPreferences = ({ ...props }: ViewProps) => {
             onValuesChange={(sliderValue: SliderValue) => {
               setFieldValue('ageRange', sliderValue);
             }}
+            max={46}
+            min={25}
             step={1}
           />
         </PreferenceItem>
@@ -58,13 +60,15 @@ export const PersonalPreferences = ({ ...props }: ViewProps) => {
       <YStack gap={'$2'}>
         <PreferenceItem title="Height">
           <PreferenceSlider
-            minTitle={`Min ${formatFeetInch(values.heightRange.min)}`}
-            maxTitle={`Max ${formatFeetInch(values.heightRange.max)}`}
+            minTitle={`Min ${toFeetAndInches(values.heightRange.min)}`}
+            maxTitle={`Max ${toFeetAndInches(values.heightRange.max)}`}
             sliderValue={values.heightRange}
             onValuesChange={(sliderValue: SliderValue) => {
               setFieldValue('heightRange', sliderValue);
             }}
-            step={0.5}
+            max={213}
+            min={137}
+            step={15}
           />
         </PreferenceItem>
         {touched.heightRange && errors.heightRange && (
@@ -75,22 +79,15 @@ export const PersonalPreferences = ({ ...props }: ViewProps) => {
       <YStack gap={'$2'}>
         <PreferenceItem title="Marital Status">
           <MultiSelectButton
-            title="Select Marital Status"
+            title={'Select Marital Status'}
+            value={values.maritalStatuses
+              ?.map(item => maritalStatuses[item])
+              .join(', ')}
             options={maritalStatusOptions}
             onChange={selected => {
-              setFieldValue(
-                'maritalStatuses',
-                selected.map(item => item.value),
-              );
+              setFieldValue('maritalStatuses', selected);
             }}
-            initialValues={
-              values.maritalStatuses
-                ? values.maritalStatuses.map(status => ({
-                    label: maritalStatuses[status],
-                    value: status,
-                  }))
-                : undefined
-            }
+            selected={values.maritalStatuses}
           />
         </PreferenceItem>
         {touched.maritalStatuses && errors.maritalStatuses && (
@@ -118,23 +115,14 @@ export const PersonalPreferences = ({ ...props }: ViewProps) => {
       <YStack gap={'$2'}>
         <PreferenceItem title="State">
           <MultiSelectButton
-            title="Select State"
+            title={'Select State'}
+            value={values.states?.map(item => states[item]).join(', ')}
             options={stateOptions}
             onChange={selected => {
-              setFieldValue(
-                'states',
-                selected.map(item => item.value),
-              );
+              setFieldValue('states', selected);
               setFieldValue('cities', undefined); // Reset city when state changes
             }}
-            initialValues={
-              values.states
-                ? values.states.map(state => ({
-                    label: states[state],
-                    value: state,
-                  }))
-                : undefined
-            }
+            selected={values.states}
           />
         </PreferenceItem>
         {touched.states && errors.states && (
@@ -145,22 +133,13 @@ export const PersonalPreferences = ({ ...props }: ViewProps) => {
       <YStack gap={'$2'}>
         <PreferenceItem title="City">
           <MultiSelectButton
-            title="Select City"
+            title={'Select City'}
+            value={values.cities?.map(item => cities[item]).join(', ')}
             options={cityOptionsByStates(values.states || [])}
             onChange={selected => {
-              setFieldValue(
-                'cities',
-                selected.map(item => item.value),
-              );
+              setFieldValue('cities', selected);
             }}
-            initialValues={
-              values.cities
-                ? values.cities.map(city => ({
-                    label: cities[city],
-                    value: city,
-                  }))
-                : undefined
-            }
+            selected={values.cities}
           />
         </PreferenceItem>
         {touched.cities && errors.cities && (

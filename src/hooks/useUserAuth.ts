@@ -23,14 +23,9 @@ export const useUserAuth = () => {
     try {
       const response = await authRepository.register(payload);
 
-      if (response.status) {
-        const contact = payload.email || payload.phone || '';
-        setData(contact);
-        return contact;
-      } else {
-        setError(response.message || 'Registration failed');
-        return null;
-      }
+      const contact = payload.email || payload.phone || '';
+      setData(contact);
+      return contact;
     } catch (err: any) {
       console.error('Registration error:', err);
       setError(err.message || 'Registration failed');
@@ -50,15 +45,8 @@ export const useUserAuth = () => {
 
     try {
       const response = await authRepository.resendOtp({ contact, purpose });
-
-      if (response.status) {
-        const result = response.data;
-        setData(result);
-        return result;
-      } else {
-        setError(response.message || 'Failed to resend OTP');
-        return null;
-      }
+      setData(response);
+      return response;
     } catch (err: any) {
       console.error('Resend OTP error:', err);
       setError(err.message || 'Resend OTP failed');
@@ -78,14 +66,8 @@ export const useUserAuth = () => {
     try {
       const response = await authRepository.verifyOtp(otpPayload);
 
-      if (response.status) {
-        const result = response.data;
-        setData(result);
-        return result;
-      } else {
-        setError(response.message || 'OTP verification failed');
-        return null;
-      }
+      setData(response);
+      return response;
     } catch (err: any) {
       console.error('Submit OTP error:', err);
       setError(err.message || 'OTP verification failed');
@@ -105,14 +87,8 @@ export const useUserAuth = () => {
     try {
       const response = await authRepository.login(payload);
 
-      if (response.status) {
-        const result = response.data;
-        setData(result);
-        return result;
-      } else {
-        setError(response.message || 'Login failed');
-        return null;
-      }
+      setData(response);
+      return response;
     } catch (err: any) {
       console.error('Login error:', err);
       setError(err.message || 'Login failed');

@@ -6,24 +6,24 @@ import { useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { Text } from './Text';
 
-type Props = {
+type Props<T> = {
   title: string;
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  options: Option[];
-  onChange: (selected: Option[]) => void;
-  selected?: Option[];
+  options: Option<T>[];
+  onChange: (selected: T[]) => void;
+  selected?: T[];
 };
 
-export const MultiSelect = ({
+export function MultiSelect<T>({
   title,
   open,
   onOpenChange,
   options,
   onChange,
   selected = [],
-}: Props) => {
-  const [selectedOptions, setSelectedOptions] = useState<Option[]>(selected);
+}: Props<T>) {
+  const [selectedItems, setSelectedItems] = useState<T[]>(selected);
 
   return (
     <Sheet
@@ -62,13 +62,13 @@ export const MultiSelect = ({
           <MultiSelectList
             options={options}
             onChange={selected => {
-              setSelectedOptions(selected);
+              setSelectedItems(selected);
               onChange(selected);
             }}
-            selected={selectedOptions}
+            selected={selectedItems}
           />
         </Sheet.ScrollView>
       </Sheet.Frame>
     </Sheet>
   );
-};
+}

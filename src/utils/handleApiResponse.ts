@@ -1,31 +1,25 @@
-import { ApiResponse } from '@/src/models/ApiResponse';
-
-export async function handleApiResponse<T>(
-  promise: Promise<any>,
-): Promise<ApiResponse<T>> {
+export async function handleApiResponse<T>(promise: Promise<any>): Promise<T> {
   try {
     const response = await promise;
     console.log('API Response:', typeof response?.status);
     if (response?.status === false) {
-      return {
-        errorCode: response.errorCode,
+      throw {
+        errorCode: response.errorCode || 'API_ERROR',
         status: false,
-        statusCode: response.statusCode,
-        message: response.message,
+        statusCode: response.statusCode || 500,
+        message:
+          response.message || 'An error occurred while processing the request',
       };
     }
 
-    return {
-      status: true,
-      data: response.data,
-      statusCode: response.statusCode,
-    };
+    return response.data as T;
   } catch (error: any) {
-    return {
-      errorCode: error.errorCode || 'NETWORK_ERROR',
+    throw {
+      errorCode: error.errorCode || 'API_ERROR',
       status: false,
-      statusCode: error.status || 500,
-      message: error.message || 'An unknown error occurred',
+      statusCode: error.statusCode || 500,
+      message:
+        error.message || 'An error occurred while processing the request',
     };
   }
 }

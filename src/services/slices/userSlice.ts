@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '../store/store';
 import { User } from '../../models/User';
-import { ApiResponse } from '@/src/models/ApiResponse';
 
 type UserState = {
   userData: User;
@@ -13,17 +12,11 @@ const initialState: UserState = {
 
 export const fetchUserProfile = createAsyncThunk(
   `user/userProfile`,
-  async (
-    { getProfile }: { getProfile: () => Promise<ApiResponse<User>> },
-    thunkAPI,
-  ) => {
+  async ({ getProfile }: { getProfile: () => Promise<User> }, thunkAPI) => {
     try {
       const response = await getProfile();
       console.log('fetchUserProfile response:', response);
-      if (response.status === false) {
-        return thunkAPI.rejectWithValue(response);
-      }
-      return response.data;
+      return response;
     } catch (e) {
       console.error(e);
       return thunkAPI.rejectWithValue({ status: false, data: undefined });

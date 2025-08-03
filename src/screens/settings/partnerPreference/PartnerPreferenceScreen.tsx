@@ -1,25 +1,68 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Formik } from 'formik';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaScreen as Screen } from '@/src/components/layouts/SafeAreaScreen';
 import { ScreenHeader } from '@/src/components/common/ScreenHeader';
 import { YStack } from 'tamagui';
 import { PersonalPreferences } from '@/src/components/settings/partner-preference/PersonalPreferences';
-import { PartnerPreferenceFormType } from '@/src/resources/form';
+import {
+  PartnerPreferenceFormType,
+  toPartnerPreferenceFormType,
+  toPartnerPreferencesRequest,
+} from '@/src/resources/form';
 import { PrimaryButton } from '@/src/components/common/PrimaryButton';
 import { partnerPreferenceSchema } from '@/src/resources/validations/partner-preference';
 import { OtherPreferences } from '@/src/components/settings/partner-preference/OtherPreferences';
 import { ProfessionalPreferences } from '@/src/components/settings/partner-preference/ProfessionalPreferences';
+import { useUserRepository } from '@/src/api/repositories/useUserRepository';
+import { useLoader } from '@/src/context/LoaderContext';
+import { RootStackParamList } from '@/src/navigation/RootNavigator';
+
+import { useAppSelector, useAppDispatch } from '@/src/services/store/hook';
+import { useNavigation, NavigationProp } from '@react-navigation/native';
+import { fetchPartnerPreferences } from '@/src/services/slices/partner-preferences';
+import { useAuth } from '@/src/context/AuthContext';
 
 export default function PartnerPreferenceScreen() {
-  const initialValues: PartnerPreferenceFormType = {
-    ageRange: { min: 25, max: 50 },
-    heightRange: { min: 4.5, max: 7 },
-    annualIncomeRange: { min: 5, max: 500 },
-  };
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const { partnerPreferences } = useAppSelector(
+    state => state.partnerPreferences,
+  );
+  const { showLoader, hideLoader } = useLoader();
+  const dispatch = useAppDispatch();
+  const userRepository = useUserRepository();
+  const { savePartnerPreferences } = useAuth();
+
+  useEffect(() => {
+    showLoader();
+    dispatch(
+      fetchPartnerPreferences({
+        getPartnerPreferences: userRepository.getPartnerPreferences,
+      }),
+    );
+    hideLoader();
+  }, []);
+
+  const initialValues: PartnerPreferenceFormType =
+    toPartnerPreferenceFormType(partnerPreferences);
 
   const onConfirm = async (values: PartnerPreferenceFormType) => {
     console.log('Updated values:', values);
+    const request = toPartnerPreferencesRequest(values);
+    console.log('Request to update partner preferences:', request);
+    showLoader();
+    try {
+      const response = await userRepository.updatePartnerPreferences(request);
+      console.log('Partner preferences updated successfully:', response);
+      if (response.preference) {
+        savePartnerPreferences(response.preference);
+      }
+      hideLoader();
+      navigation.goBack();
+    } catch (error) {
+      console.error('Error updating partner preferences:', error);
+      hideLoader();
+    }
   };
 
   return (

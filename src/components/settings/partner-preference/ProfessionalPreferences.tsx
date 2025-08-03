@@ -31,22 +31,13 @@ export const ProfessionalPreferences = ({ ...props }: ViewProps) => {
       <YStack gap={'$2'}>
         <PreferenceItem title="Education">
           <MultiSelectButton
-            title="Select Education"
+            title={'Select Education'}
+            value={values.educations?.map(item => educations[item]).join(', ')}
             options={educationOptions}
             onChange={selected => {
-              setFieldValue(
-                'educations',
-                selected.map(item => item.value),
-              );
+              setFieldValue('educations', selected);
             }}
-            initialValues={
-              values.educations
-                ? values.educations.map(education => ({
-                    label: educations[education],
-                    value: education,
-                  }))
-                : undefined
-            }
+            selected={values.educations}
           />
         </PreferenceItem>
         {touched.educations && errors.educations && (
@@ -57,22 +48,15 @@ export const ProfessionalPreferences = ({ ...props }: ViewProps) => {
       <YStack gap={'$2'}>
         <PreferenceItem title="Occupation">
           <MultiSelectButton
-            title="Select Occupation"
+            title={'Select Occupation'}
+            value={values.occupations
+              ?.map(item => occupations[item])
+              .join(', ')}
             options={occupationOptions}
             onChange={selected => {
-              setFieldValue(
-                'occupations',
-                selected.map(item => item.value),
-              );
+              setFieldValue('occupations', selected);
             }}
-            initialValues={
-              values.occupations
-                ? values.occupations.map(occupation => ({
-                    label: occupations[occupation],
-                    value: occupation,
-                  }))
-                : undefined
-            }
+            selected={values.occupations}
           />
         </PreferenceItem>
         {touched.occupations && errors.occupations && (
@@ -89,7 +73,9 @@ export const ProfessionalPreferences = ({ ...props }: ViewProps) => {
             onValuesChange={(sliderValue: SliderValue) => {
               setFieldValue('annualIncomeRange', sliderValue);
             }}
-            step={1}
+            max={10000000}
+            min={500000}
+            step={100000}
           />
         </PreferenceItem>
         {touched.annualIncomeRange && errors.annualIncomeRange && (

@@ -7,22 +7,24 @@ import { Option } from '@/src/resources/form';
 import ChevronIcon from '@/assets/images/chevron-down.svg';
 import { Text } from './Text';
 
-type Props = {
+type Props<T> = {
   title: string;
-  options: Option[];
-  initialValues?: Option[];
-  onChange: (selected: Option[]) => void;
+  value?: string;
+  options: Option<T>[];
+  selected?: T[];
+  onChange: (selected: T[]) => void;
 } & ViewProps;
 
-export const MultiSelectButton = ({
+export const MultiSelectButton = <T,>({
   title,
+  value,
   options,
-  initialValues = [],
+  selected = [],
   onChange,
   ...props
-}: Props) => {
+}: Props<T>) => {
   const [open, setOpen] = useState(false);
-  const [selectedOptions, setSelectedOptions] = useState<Option[]>(initialValues);
+  const [selectedItems, setSelectedItems] = useState<T[]>(selected);
 
   return (
     <YStack {...props} paddingVertical={'$2.5'} width={'100%'}>
@@ -34,9 +36,7 @@ export const MultiSelectButton = ({
           gap={'$4'}
         >
           <Text font="heading" size="normal" flex={1}>
-            {selectedOptions.length > 0
-              ? selectedOptions.map(option => option.label).join(', ')
-              : title}
+            {value || title}
           </Text>
           <ChevronIcon color={getToken('$color.white')} />
         </XStack>
@@ -47,10 +47,10 @@ export const MultiSelectButton = ({
         onOpenChange={setOpen}
         options={options}
         onChange={selected => {
-          setSelectedOptions(selected);
+          setSelectedItems(selected);
           onChange(selected);
         }}
-        selected={selectedOptions}
+        selected={selectedItems}
       />
     </YStack>
   );

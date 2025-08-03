@@ -12,19 +12,19 @@ export function useMatchRepository() {
     page: number,
     size: number,
     status: 'PENDING' | 'ACCEPTED' | 'REJECTED' | 'MUTUAL' = 'PENDING',
-  ): Promise<ApiResponse<PagedResponse<Match>>> => {
+  ): Promise<PagedResponse<Match>> => {
     return handleApiResponse(
       client.get(`/matches?page=${page}&size=${size}&status=${status}`),
     );
   };
 
-  const acceptMatch = async (matchId: number): Promise<ApiResponse<string>> => {
+  const acceptMatch = async (matchId: number): Promise<string> => {
     return handleApiResponse(
       client.post(`/matches/action`, { matchId, action: 'ACCEPTED' }),
     );
   };
 
-  const rejectMatch = async (matchId: number): Promise<ApiResponse<string>> => {
+  const rejectMatch = async (matchId: number): Promise<string> => {
     return handleApiResponse(
       client.post(`/matches/action`, { matchId, action: 'REJECTED' }),
     );

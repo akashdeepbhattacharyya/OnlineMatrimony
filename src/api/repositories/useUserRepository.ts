@@ -1,6 +1,10 @@
 import { ApiResponse } from '@/src/models/ApiResponse';
 import { handleApiResponse } from '@/src/utils/handleApiResponse';
-import { UpdateUserProfileRequest, User } from '@/src/models/User';
+import {
+  UpdatePartnerPreferencesRequest,
+  UpdateUserProfileRequest,
+  User,
+} from '@/src/models/User';
 import { useHttpClient } from '../useHttpClient';
 import { useAuth } from '@/src/context/AuthContext';
 
@@ -8,9 +12,7 @@ export function useUserRepository() {
   const { token, saveToken } = useAuth();
   const client = useHttpClient({}, token, saveToken);
 
-  const updateProfilePicture = async (
-    data: string,
-  ): Promise<ApiResponse<string>> => {
+  const updateProfilePicture = async (data: string): Promise<string> => {
     const name = data.split('/').pop() || 'profile.jpg';
     const type = 'image/jpeg';
 
@@ -47,17 +49,29 @@ export function useUserRepository() {
     */
   const updateProfile = async (
     data: UpdateUserProfileRequest,
-  ): Promise<ApiResponse<User>> => {
+  ): Promise<User> => {
     return handleApiResponse(client.put('/users/editProfile', data));
   };
 
-  const getProfile = async (): Promise<ApiResponse<User>> => {
+  const getProfile = async (): Promise<User> => {
     return handleApiResponse(client.get('/users/profile'));
+  };
+
+  const updatePartnerPreferences = async (
+    data: UpdatePartnerPreferencesRequest,
+  ): Promise<User> => {
+    return handleApiResponse(client.put('/users/editPreferences', data));
+  };
+
+  const getPartnerPreferences = async (): Promise<User> => {
+    return handleApiResponse(client.get('/users/getPreferences'));
   };
 
   return {
     updateProfilePicture,
     updateProfile,
     getProfile,
+    getPartnerPreferences,
+    updatePartnerPreferences,
   };
 }

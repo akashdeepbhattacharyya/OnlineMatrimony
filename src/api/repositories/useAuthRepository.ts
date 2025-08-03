@@ -5,33 +5,24 @@ import {
   UserRegistrationRequest,
   VerifyOTPRequest,
 } from '@/src/models/Authentication';
-import { ApiResponse } from '@/src/models/ApiResponse';
 import { handleApiResponse } from '@/src/utils/handleApiResponse';
 import { useHttpClient } from '../useHttpClient';
 
 export function useAuthRepository() {
   const client = useHttpClient({});
 
-  const register = async (
-    data: UserRegistrationRequest,
-  ): Promise<ApiResponse<string>> => {
+  const register = async (data: UserRegistrationRequest): Promise<string> => {
     return handleApiResponse(client.post('/auth/register', data));
   };
-  const resendOtp = async (
-    data: ResendOTPRequest,
-  ): Promise<ApiResponse<string>> => {
+  const resendOtp = async (data: ResendOTPRequest): Promise<string> => {
     return handleApiResponse(client.post('/auth/resend-otp', data));
   };
 
-  const verifyOtp = async (
-    data: VerifyOTPRequest,
-  ): Promise<ApiResponse<string>> => {
+  const verifyOtp = async (data: VerifyOTPRequest): Promise<string> => {
     return handleApiResponse(client.post('/auth/verify-otp', data));
   };
 
-  const login = async (
-    data: LoginRequest,
-  ): Promise<ApiResponse<LoginResponse>> => {
+  const login = async (data: LoginRequest): Promise<LoginResponse> => {
     return handleApiResponse(client.post('/auth/login', data));
   };
 

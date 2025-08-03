@@ -13,7 +13,6 @@ import { View, YStack } from 'tamagui';
 import { tabItems } from '@/src/resources/tab-item';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ManageMatch } from '../navigation/ManageMatch';
-import { matchStateItem } from '@/src/services/slices/match-slice';
 import { useAppSelector } from '@/src/services/store/hook';
 import { emitFooterEvent } from '@/src/hooks/useFooterEvent';
 
@@ -27,7 +26,7 @@ const FooterNavigator = ({ currentRoute }: RootNavigatorProps) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const translateX = useRef(new Animated.Value(0)).current;
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const { pendingMatches } = useAppSelector(matchStateItem);
+  const { pendingMatches } = useAppSelector(state => state.match);
 
   useEffect(() => {
     Animated.spring(translateX, {
