@@ -1,0 +1,23 @@
+import Svg, { Path, SvgProps } from 'react-native-svg';
+import { View } from 'tamagui';
+
+type Props = {
+  selected: boolean;
+  enabled?: boolean;
+} & SvgProps;
+
+export const MaleIcon = ({ selected, enabled, ...props }: Props) => {
+  return (
+    <View alignItems="center">
+      <Svg width={28} height={29} fill="none" viewBox="0 0 28 29" {...props}>
+        <Path
+          d="M17.6281 10.9917C16.7205 10.0885 15.6439 9.3729 14.4598 8.88576C13.2756 8.39862 12.0071 8.14949 10.7267 8.15258C9.4463 8.15567 8.17903 8.41093 6.99726 8.90379C5.81549 9.39664 4.74236 10.1174 3.83915 11.025C2.93595 11.9326 2.22035 13.0092 1.73321 14.1933C1.24607 15.3775 0.996935 16.646 1.00003 17.9264C1.00312 19.2068 1.25838 20.4741 1.75124 21.6559C2.24409 22.8376 2.96489 23.9108 3.87247 24.814C5.70541 26.6381 8.18791 27.6593 10.7738 27.6531C13.3598 27.6468 15.8373 26.6136 17.6614 24.7806C19.4855 22.9477 20.5068 20.4652 20.5005 17.8793C20.4943 15.2933 19.461 12.8158 17.6281 10.9917ZM17.6281 10.9917L27.0011 1.65283M27.0011 1.65283H20.5011M27.0011 1.65283V8.15283"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          stroke={selected ? '#F85F5F' : enabled ? '#FFFFFF' : '#A9A9A9'}
+        />
+      </Svg>
+    </View>
+  );
+};

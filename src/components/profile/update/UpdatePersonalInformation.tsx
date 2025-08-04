@@ -1,26 +1,18 @@
-import { YStack, ViewProps, getToken } from 'tamagui';
+import { YStack, ViewProps } from 'tamagui';
 import { TileHeader } from '../../common/TileHeader';
 import { LabelledTextField } from '../../common/LabelledTextField';
 import { useFormikContext } from 'formik';
 import {
-  CheckBoxOption,
-  Option,
+  OptionWithIcon,
   UpdateUserProfileFormType,
 } from '@/src/resources/form';
 import { Text } from '@/src/components/common/Text';
 import PersonIcon from '@/assets/images/icon_person.svg';
-import { MaterialIcons } from '@expo/vector-icons';
 import { CheckBoxButtonGroup } from '../../common/CheckBoxButtonGroup';
 import { LabelledButton } from '../../common/LabelledButton';
-import { genders, getGenderIcon, Gender } from '@/src/resources/gender';
+import { Gender, genderOptionsWithIcons } from '@/src/resources/gender';
 import DOBIcon from '@/assets/images/icon-dob.svg';
-import {
-  cities,
-  City,
-  State,
-  stateCityMapping,
-  states,
-} from '@/src/resources/city-state';
+import { cityOptions, State, stateOptions } from '@/src/resources/city-state';
 import { useState } from 'react';
 import { LabelledSelect } from '../../common/LabelledSelect';
 import StateIcon from '@/assets/images/icon-state.svg';
@@ -38,80 +30,16 @@ export const UpdatePersonalInformation = ({ ...props }: ViewProps) => {
     useFormikContext<UpdateUserProfileFormType>();
 
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const genderOptions: CheckBoxOption<string>[] = genders ? Object.keys(genders).reduce(
-    (list: CheckBoxOption<string>[], value) => [
-      ...list,
-      {
-        label: genders[value as keyof typeof genders],
-        value,
-        icon: (
-          <MaterialIcons
-            name={getGenderIcon(value as Gender) as any}
-            size={40}
-            color={
-              selectedGender == undefined
-                ? getToken('$color.white')
-                : selectedGender?.value == value
-                  ? getToken('$color.button_bg_red')
-                  : getToken('$color.gray')
-            }
-            style={{ marginLeft: 8 }}
-          />
-        ),
-      },
-    ],
-    [],
-  ) : [];
 
-  const stateOptions: Option<State>[] = states ? Object.keys(states).reduce(
-    (list: Option<State>[], value) => [
-      ...list,
-      {
-        label: states[value as keyof typeof states],
-        value: value as State,
-      },
-    ],
-    [],
-  ) : [];
-
-  const cityOptions = (state: State): Option<City>[] => {
-    if (!state) return [];
-    return stateCityMapping[state] ? stateCityMapping[state].reduce(
-      (list: Option<City>[], value) => [
-        ...list,
-        {
-          label: cities[value as keyof typeof cities],
-          value: value as City,
-        },
-      ],
-      [],
-    ) : [];
-  };
-
-  const [selectedGender, setSelectedGender] = useState<
-    CheckBoxOption<string> | undefined
-  >(
-    values.gender
-      ? {
-        label: genders[values.gender as keyof typeof genders],
-        value: values.gender,
-        icon: (
-          <MaterialIcons
-            name={getGenderIcon(values.gender as Gender) as any}
-            size={40}
-            color={getToken('$color.button_bg_red')}
-            style={{ marginLeft: 8 }}
-          />
-        ),
-      }
-      : undefined,
+  const [selectedGender, setSelectedGender] = useState<Gender | undefined>(
+    values.gender as Gender | undefined,
   );
 
   const handleGenderChange = (
-    option: CheckBoxOption<string>,
+    option: OptionWithIcon<Gender>,
     setFieldValue: any,
   ) => {
-    setSelectedGender(option);
+    setSelectedGender(option.value);
     setFieldValue('gender', option.value);
   };
 
@@ -165,7 +93,7 @@ export const UpdatePersonalInformation = ({ ...props }: ViewProps) => {
               Select Gender
             </Text>
             <CheckBoxButtonGroup
-              options={genderOptions}
+              options={genderOptionsWithIcons(selectedGender)}
               selectedOption={selectedGender}
               onChange={option => handleGenderChange(option, setFieldValue)}
             />

@@ -17,7 +17,7 @@ export type Option<T = string> = {
   value: T;
 };
 
-export type CheckBoxOption<T = string> = {
+export type OptionWithIcon<T = string> = {
   icon?: React.ReactNode;
 } & Option<T>;
 
