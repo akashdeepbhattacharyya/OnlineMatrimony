@@ -1,5 +1,5 @@
 import { getToken } from 'tamagui';
-import { Select } from '../../common/Select';
+import { SelectC } from '../../common/SelectC';
 import { Option } from '@/src/resources/form';
 
 type Props = {
@@ -18,7 +18,7 @@ export const PreferenceSelect = ({
   placeholder = 'Select an option',
 }: Props) => {
   return (
-    <Select
+    <SelectC
       options={options}
       placeholder={placeholder}
       onChange={onChange}

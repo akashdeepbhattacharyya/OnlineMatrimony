@@ -12,7 +12,14 @@ import { CheckBoxButtonGroup } from '../../common/CheckBoxButtonGroup';
 import { LabelledButton } from '../../common/LabelledButton';
 import { Gender, genderOptionsWithIcons } from '@/src/resources/gender';
 import DOBIcon from '@/assets/images/icon-dob.svg';
-import { cityOptions, State, stateOptions } from '@/src/resources/city-state';
+import {
+  cities,
+  City,
+  cityOptions,
+  State,
+  stateOptions,
+  states,
+} from '@/src/resources/city-state';
 import { useState } from 'react';
 import { LabelledSelect } from '../../common/LabelledSelect';
 import StateIcon from '@/assets/images/icon-state.svg';
@@ -108,39 +115,32 @@ export const UpdatePersonalInformation = ({ ...props }: ViewProps) => {
           <LabelledSelect
             label="State"
             title="Select State"
-            value={values.state}
+            value={states[values.state as State]}
             onChange={value => {
               setFieldValue('state', value);
               setFieldValue('city', '');
               setFieldValue('pincode', '');
             }}
             options={stateOptions}
-            placeholder="Select Your State"
             icon={<StateIcon />}
-            initialValue={stateOptions.find(
-              option => option.value === values.state,
-            )}
           />
 
           {touched.state && errors.state && (
             <Text theme={'error_message'}>{errors.state}</Text>
           )}
         </YStack>
+
         {/* City */}
         <YStack gap={'$2'}>
           <LabelledSelect
             label="City"
             title="Select City"
-            value={values.city}
+            value={cities[values.city as City]}
             onChange={value => {
               setFieldValue('city', value), setFieldValue('pincode', '');
             }}
             options={cityOptions(values.state as State)}
-            placeholder="Select Your City"
             icon={<CityIcon />}
-            initialValue={cityOptions(values.state as State).find(
-              option => option.value === values.city,
-            )}
             disabled={!values.state} // Disable if state is not selected
           />
 
