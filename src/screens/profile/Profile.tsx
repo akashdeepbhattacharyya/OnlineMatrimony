@@ -42,7 +42,10 @@ export default function Profile() {
 
   const onEditPress = () => {
     navigation.navigate('UpdateProfile', {
-      data: userData,
+      data: {
+        userData,
+        purpose: 'UPDATE',
+      },
     });
   };
 

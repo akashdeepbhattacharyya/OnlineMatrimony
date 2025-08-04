@@ -7,6 +7,7 @@ import { MaritalStatus } from '../resources/marital-status';
 import { MotherTongue } from '../resources/mother-tongue';
 import { Occupation } from '../resources/occupation';
 import { Religion } from '../resources/religion';
+import { Diet } from '../resources/diet';
 
 export type PersonalInformation = {
   fullName: string;
@@ -24,9 +25,9 @@ export type MatchInformation = {
 };
 
 export type OtherInformation = {
-  diet: string;
-  height: number;
-  weight: number;
+  diet?: Diet;
+  height?: number;
+  weight?: number;
   religion?: Religion; // Optional field
   caste?: Caste; // Optional field
   motherTongue?: MotherTongue; // Optional field
@@ -40,8 +41,8 @@ export type Documents = {
 };
 
 export type ProfessionalInformation = {
-  occupation: Occupation; // Use the Occupation type
-  annualIncome: string; // e.g., "50000 USD"
+  occupation?: Occupation; // Use the Occupation type
+  annualIncome?: string; // e.g., "50000 USD"
 };
 
 export type UserProfile = {

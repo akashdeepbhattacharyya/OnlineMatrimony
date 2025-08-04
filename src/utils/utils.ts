@@ -1,6 +1,3 @@
-import { UpdateUserProfileRequest } from '../models/User';
-import { UpdateUserProfileFormType } from '../resources/form';
-import { formatDateString } from './dateFormatter';
 
 export const isValidPhone = (value: string) => {
   const phoneRegex = /^[0-9]{10}$/; // You can customize this
@@ -25,20 +22,6 @@ export const isEmailOrPhone = (
   } else {
     return 'invalid';
   }
-};
-
-export const convertToPayload = (
-  form: UpdateUserProfileFormType,
-): UpdateUserProfileRequest => {
-  return {
-    fullName: form.fullName,
-    dateOfBirth: form.dateOfBirth,
-    gender: form.gender,
-    state: form.state,
-    city: form.city,
-    pincode: form.pincode,
-    aboutMe: form.aboutMe,
-  };
 };
 
 export const toAge = (dateOfBirth?: string): number | undefined => {

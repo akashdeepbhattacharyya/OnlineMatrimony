@@ -10,6 +10,8 @@ import { Occupation } from './occupation';
 import {
   PartnerPreferences,
   UpdatePartnerPreferencesRequest,
+  UpdateUserProfileRequest,
+  UserProfile,
 } from '../models/User';
 
 export type Option<T = string> = {
@@ -40,16 +42,42 @@ export type UpdateUserProfileFormType = {
   fullName: string;
   dateOfBirth: string;
   gender?: Gender;
-  // height?: number;
-  // weight?: number;
-  // maritalStatus?: string;
-  // religion?: string;
-  state?: string;
-  city?: string;
+  height?: number;
+  weight?: number;
+  maritalStatus?: MaritalStatus;
+  state?: State;
+  city?: City;
   pincode?: string;
   country?: string;
+  diet?: Diet;
+  caste?: Caste;
+  motherTongue?: MotherTongue;
+  religion?: Religion;
+  education?: Education;
+  occupation?: Occupation;
+  annualIncome?: string;
   aboutMe?: string;
 };
+
+/*
+fullName?: string;
+  dateOfBirth?: string;
+  gender?: string;
+  city?: string;
+  state?: string;
+  pincode?: string;
+  aboutMe?: string;
+  diet?: string;
+  height?: number;
+  weight?: number;
+  religion?: string;
+  caste?: string;
+  motherTongue?: string;
+  maritalStatus?: string;
+  education?: string;
+  occupation?: string;
+  annualIncome?: string;
+*/
 
 export type PartnerPreferenceFormType = {
   ageRange: { min: number; max: number };
@@ -65,6 +93,54 @@ export type PartnerPreferenceFormType = {
   educations?: Education[];
   occupations?: Occupation[];
   annualIncomeRange: { min: number; max: number };
+};
+
+export const toUpdateUserProfileFormType = (
+  userProfile: UserProfile,
+): UpdateUserProfileFormType => {
+  return {
+    fullName: userProfile.fullName,
+    dateOfBirth: userProfile.dateOfBirth,
+    gender: userProfile.gender,
+    height: userProfile.height,
+    weight: userProfile.weight,
+    maritalStatus: userProfile.maritalStatus,
+    state: userProfile.state,
+    city: userProfile.city,
+    pincode: userProfile.pincode,
+    diet: userProfile.diet,
+    caste: userProfile.caste,
+    motherTongue: userProfile.motherTongue,
+    religion: userProfile.religion,
+    education: userProfile.education,
+    occupation: userProfile.occupation,
+    annualIncome: userProfile.annualIncome,
+    aboutMe: userProfile.aboutMe,
+  };
+};
+
+export const toUpdateUserProfileRequest = (
+  form: UpdateUserProfileFormType,
+): UpdateUserProfileRequest => {
+  return {
+    fullName: form.fullName,
+    dateOfBirth: form.dateOfBirth,
+    gender: form.gender,
+    height: form.height,
+    weight: form.weight,
+    maritalStatus: form.maritalStatus,
+    state: form.state,
+    city: form.city,
+    pincode: form.pincode,
+    diet: form.diet,
+    caste: form.caste,
+    motherTongue: form.motherTongue,
+    religion: form.religion,
+    education: form.education,
+    occupation: form.occupation,
+    annualIncome: form.annualIncome,
+    aboutMe: form.aboutMe,
+  };
 };
 
 export const toPartnerPreferenceFormType = (

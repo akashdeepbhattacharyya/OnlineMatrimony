@@ -7,7 +7,11 @@ import { UpdateProfilePicture } from '@/src/components/profile/update/UpdateProf
 import { NameAndEmail } from '@/src/components/profile/NameAndEmail';
 import { Formik } from 'formik';
 import { UpdatePersonalInformation } from '@/src/components/profile/update/UpdatePersonalInformation';
-import { UpdateUserProfileFormType } from '@/src/resources/form';
+import {
+  toUpdateUserProfileFormType,
+  toUpdateUserProfileRequest,
+  UpdateUserProfileFormType,
+} from '@/src/resources/form';
 import { PrimaryButton } from '@/src/components/common/PrimaryButton';
 import { updateUserProfileSchema } from '@/src/resources/validations/update-profile';
 import { UpdateAboutYourSelf } from '@/src/components/profile/update/UpdateAboutSelf';
@@ -16,9 +20,11 @@ import { useEffect, useState } from 'react';
 import { ImagePicker } from '@/src/components/common/ImagePicker';
 import { useLoader } from '@/src/context/LoaderContext';
 import { RootStackParamList } from '@/src/navigation/RootNavigator';
-import { convertToPayload } from '@/src/utils/utils';
 import { useUserRepository } from '@/src/api/repositories/useUserRepository';
 import { useAuth } from '@/src/context/AuthContext';
+import { UpdateOtherInformation } from '@/src/components/profile/update/UpdateOtherInformation';
+import { Diet } from '@/src/resources/diet';
+import { UpdateProfessionalInformation } from '@/src/components/profile/update/UpdateProfessionalInformation';
 
 type Props = {
   route: RouteProp<RootStackParamList, 'UpdateProfile'>;
@@ -52,26 +58,22 @@ export default function UpdateProfile({
     navigation.goBack();
   };
 
-  const initialValues: UpdateUserProfileFormType = {
-    fullName: userData.profile.fullName,
-    dateOfBirth: userData.profile.dateOfBirth,
-    gender: userData.profile.gender,
-    city: userData.profile.city,
-    state: userData.profile.state,
-    pincode: userData.profile.pincode,
-    aboutMe: userData.profile.aboutMe,
-  };
+  const initialValues: UpdateUserProfileFormType = toUpdateUserProfileFormType(
+    userData.profile,
+  );
 
   const onUpdate = async (values: UpdateUserProfileFormType) => {
     console.log('Updated values:', values);
     showLoader();
     try {
       const response = await userRepository.updateProfile(
-        convertToPayload(values),
+        toUpdateUserProfileRequest(values),
       );
       console.log('Profile updated successfully:', response);
       saveUser(response);
-      navigation.goBack();
+      if (purpose === 'UPDATE') {
+        navigation.goBack();
+      }
     } catch (error) {
       console.error('Failed to update profile:', error);
     }
@@ -136,6 +138,8 @@ export default function UpdateProfile({
             <YStack marginTop={'$4.5'} width="100%" marginBottom={'$10'}>
               <YStack gap={'$3'}>
                 <UpdatePersonalInformation />
+                <UpdateOtherInformation />
+                <UpdateProfessionalInformation />
                 <UpdateAboutYourSelf />
               </YStack>
 

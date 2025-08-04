@@ -2,7 +2,6 @@ import { Option } from '@/src/resources/form';
 
 export const maritalStatuses = {
   SINGLE: 'Single',
-  MARRIED: 'Married',
   DIVORCED: 'Divorced',
   WIDOWED: 'Widowed',
   SEPARATED: 'Separated',
