@@ -1,4 +1,3 @@
-
 export const isValidPhone = (value: string) => {
   const phoneRegex = /^[0-9]{10}$/; // You can customize this
   return phoneRegex.test(value);
@@ -63,12 +62,6 @@ export const toUri = (
   }
   return `https://ui-avatars.com/api/?name=${fullName}&background=${background}&color=${color}&size=${size}`;
 };
-
-export function formatFeetInch(value: number) {
-  const feet = Math.floor(value);
-  const inches = Math.round((value - feet) * 12);
-  return `${feet}'${inches}"`;
-}
 
 export function formatAnnualIncome(value: number) {
   if (value < 10000000) {

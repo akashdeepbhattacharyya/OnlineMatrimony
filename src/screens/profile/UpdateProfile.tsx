@@ -2,7 +2,7 @@ import { SafeAreaScreen as Screen } from '@/src/components/layouts/SafeAreaScree
 import { Platform, ScrollView, TouchableOpacity } from 'react-native';
 import { YStack, View } from 'tamagui';
 import BackIcon from '@/assets/images/icon-back.svg';
-import { RouteProp, useNavigation } from '@react-navigation/native';
+import { NavigationProp, RouteProp, useNavigation } from '@react-navigation/native';
 import { UpdateProfilePicture } from '@/src/components/profile/update/UpdateProfilePicture';
 import { NameAndEmail } from '@/src/components/profile/NameAndEmail';
 import { Formik } from 'formik';
@@ -25,6 +25,7 @@ import { useAuth } from '@/src/context/AuthContext';
 import { UpdateOtherInformation } from '@/src/components/profile/update/UpdateOtherInformation';
 import { Diet } from '@/src/resources/diet';
 import { UpdateProfessionalInformation } from '@/src/components/profile/update/UpdateProfessionalInformation';
+import { isPartnerPreferencesComplete } from '@/src/models/User';
 
 type Props = {
   route: RouteProp<RootStackParamList, 'UpdateProfile'>;
@@ -37,7 +38,7 @@ export default function UpdateProfile({
     },
   },
 }: Props) {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();;
   const [openImagePicker, setOpenImagePicker] = useState(false);
   const [photoUri, setPhotoUri] = useState<string | undefined>(undefined);
   const { showLoader, hideLoader } = useLoader();
@@ -73,6 +74,12 @@ export default function UpdateProfile({
       saveUser(response);
       if (purpose === 'UPDATE') {
         navigation.goBack();
+      } else {
+        if (isPartnerPreferencesComplete(response.preference)) {
+          navigation.navigate('Home');
+        } else {
+          navigation.navigate('PartnerPreference');
+        }
       }
     } catch (error) {
       console.error('Failed to update profile:', error);

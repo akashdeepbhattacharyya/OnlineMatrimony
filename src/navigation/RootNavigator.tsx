@@ -87,9 +87,6 @@ const RootNavigator = ({ currentRoute }: RootNavigatorProps) => {
 
   const getInitialRouteName = () => {
     if (user) {
-      console.log('User is logged in:', user);
-      console.log('User profile:', user.profile);
-      console.log('User preferences:', user.preference);
       if (isProfileComplete(user.profile)) {
         console.log('User profile is complete');
         if (user.preference && isPartnerPreferencesComplete(user.preference)) {
@@ -104,6 +101,7 @@ const RootNavigator = ({ currentRoute }: RootNavigatorProps) => {
         return 'UpdateProfile';
       }
     }
+    console.log('User is not logged in, navigating to Onboarding');
     return 'Onboarding';
   };
 

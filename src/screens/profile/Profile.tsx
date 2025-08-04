@@ -92,9 +92,9 @@ export default function Profile() {
           marginBottom={'$5'}
         >
           <PersonalInformation userData={userData} />
-          {/* <OtherInformation userData={userData} />
-          <Documents userData={userData} />
-          <ProfessionalInformation userData={userData} /> */}
+          <OtherInformation userProfile={userData.profile} />
+          {/* <Documents userProfile={userData.profile} /> */}
+          <ProfessionalInformation userProfile={userData.profile} />
           <AboutYourSelf userProfile={userData.profile} />
         </YStack>
       </ScrollView>

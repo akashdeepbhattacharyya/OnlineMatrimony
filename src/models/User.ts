@@ -145,25 +145,26 @@ export const isProfileComplete = (userProfile: UserProfile): boolean => {
 };
 
 export const isPartnerPreferencesComplete = (
-  preferences: PartnerPreferences,
+  partnerPreferences?: PartnerPreferences,
 ): boolean => {
+  if (!partnerPreferences) return false;
   return (
-    preferences.minAge !== undefined &&
-    preferences.maxAge !== undefined &&
-    preferences.minHeight !== undefined &&
-    preferences.maxHeight !== undefined &&
-    preferences.maritalStatus !== '' &&
-    preferences.religion !== '' &&
-    preferences.caste !== '' &&
-    preferences.motherTongue !== '' &&
-    preferences.diet !== '' &&
-    preferences.education !== '' &&
-    preferences.occupation !== '' &&
-    preferences.minIncome !== undefined &&
-    preferences.maxIncome !== undefined &&
-    preferences.cities !== '' &&
-    preferences.states !== '' &&
-    preferences.countries !== '' &&
-    preferences.gender !== ''
+    partnerPreferences.minAge !== undefined &&
+    partnerPreferences.maxAge !== undefined &&
+    partnerPreferences.minHeight !== undefined &&
+    partnerPreferences.maxHeight !== undefined &&
+    partnerPreferences.maritalStatus !== '' &&
+    partnerPreferences.religion !== '' &&
+    partnerPreferences.caste !== '' &&
+    partnerPreferences.motherTongue !== '' &&
+    partnerPreferences.diet !== '' &&
+    partnerPreferences.education !== '' &&
+    partnerPreferences.occupation !== '' &&
+    partnerPreferences.minIncome !== undefined &&
+    partnerPreferences.maxIncome !== undefined &&
+    partnerPreferences.cities !== '' &&
+    partnerPreferences.states !== '' &&
+    partnerPreferences.countries !== '' &&
+    partnerPreferences.gender !== ''
   );
 };
