@@ -78,12 +78,7 @@ const Loading = () => (
 
 type RootNavigatorProps = { currentRoute: string };
 
-type RootNavigatorState = {
-  showUserProfile: boolean;
-  showPartnerPreference: boolean;
-};
-
-const UpdateUserProfileStack = (userData: User) => {
+const OnboardingUserProfileStack = (userData: User) => {
   return (
     <>
       <Stack.Screen
@@ -97,7 +92,7 @@ const UpdateUserProfileStack = (userData: User) => {
   );
 };
 
-const UpdatePartnerPreferenceStack = () => {
+const OnboardingPartnerPreferenceStack = () => {
   return (
     <>
       <Stack.Screen
@@ -156,39 +151,26 @@ const RootNavigator = ({ currentRoute }: RootNavigatorProps) => {
     return tabItems.some(item => item.route === currentRoute);
   }, [currentRoute]);
 
-  const [rootNavigatorState, setRootNavigatorState] =
-    useState<RootNavigatorState>({
-      showUserProfile: false,
-      showPartnerPreference: false,
-    });
-
   const profileCompleted = isProfileComplete(user?.profile);
   const partnerPreferencesCompleted = isPartnerPreferencesComplete(
     user?.preference,
   );
-
-  useEffect(() => {
-    setRootNavigatorState({
-      showUserProfile: profileCompleted,
-      showPartnerPreference: partnerPreferencesCompleted,
-    });
-  }, [profileCompleted, partnerPreferencesCompleted]);
 
   return (
     <Suspense fallback={<Loading />}>
       <View style={styles.wrapper}>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
           {user
-            ? !rootNavigatorState.showUserProfile
+            ? !profileCompleted
               ? (console.log(
                   'User profile is not complete, showing UpdateProfile stack',
                 ),
-                UpdateUserProfileStack(user))
-              : !rootNavigatorState.showPartnerPreference
+                OnboardingUserProfileStack(user))
+              : !partnerPreferencesCompleted
               ? (console.log(
                   'Partner preferences are not complete, showing UpdatePartnerPreference stack',
                 ),
-                UpdatePartnerPreferenceStack())
+                OnboardingPartnerPreferenceStack())
               : (console.log(
                   'User profile and Partner preferences are complete, showing HomeStack',
                 ),

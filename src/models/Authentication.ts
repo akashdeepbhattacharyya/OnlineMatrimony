@@ -56,10 +56,26 @@ export type LoginRequest = {
   rememberMe: boolean;
 };
 
+/**
+ * Represents the response returned after a successful login.
+ * Combines user information and authentication token details.
+ *
+ * @property user - The authenticated user's details.
+ * @property [Token properties] - All properties from the Token type.
+ */
 export type LoginResponse = {
   user: User;
 } & Token;
 
+/**
+ * Represents an authentication token object containing access and refresh tokens,
+ * token type, and expiration information.
+ *
+ * @property accessToken - The token used to access protected resources.
+ * @property refreshToken - The token used to obtain a new access token when the current one expires.
+ * @property tokenType - The type of the token (e.g., "Bearer").
+ * @property expiresIn - The duration in seconds until the access token expires.
+ */
 export type Token = {
   accessToken: string;
   refreshToken: string;
