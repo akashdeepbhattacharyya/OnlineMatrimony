@@ -23,9 +23,7 @@ import { RootStackParamList } from '@/src/navigation/RootNavigator';
 import { useUserRepository } from '@/src/api/repositories/useUserRepository';
 import { useAuth } from '@/src/context/AuthContext';
 import { UpdateOtherInformation } from '@/src/components/profile/update/UpdateOtherInformation';
-import { Diet } from '@/src/resources/diet';
 import { UpdateProfessionalInformation } from '@/src/components/profile/update/UpdateProfessionalInformation';
-import { isPartnerPreferencesComplete } from '@/src/models/User';
 
 type Props = {
   route: RouteProp<RootStackParamList, 'UpdateProfile'>;
@@ -74,12 +72,6 @@ export default function UpdateProfile({
       saveUser(response);
       if (purpose === 'UPDATE') {
         navigation.goBack();
-      } else {
-        if (isPartnerPreferencesComplete(response.preference)) {
-          navigation.navigate('Home');
-        } else {
-          navigation.navigate('PartnerPreference');
-        }
       }
     } catch (error) {
       console.error('Failed to update profile:', error);

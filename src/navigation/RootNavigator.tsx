@@ -1,4 +1,4 @@
-import { Suspense, lazy, use, useMemo } from 'react';
+import { Suspense, lazy, use, useEffect, useMemo, useState } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useAuth } from '@/src/context/AuthContext';
 import { ActivityIndicator, View, StyleSheet } from 'react-native';
@@ -19,7 +19,7 @@ export type RootStackParamList = {
   ProfileSelection: { data: { email: string; password: string } };
   Settings: undefined;
   Search: undefined;
-  PartnerPreference: undefined;
+  PartnerPreference: { data: { purpose: 'ONBOARDING' | 'UPDATE' } };
   NotificationSettings: undefined;
   AccountSettings: undefined;
   ContactFilters: undefined;
@@ -27,7 +27,7 @@ export type RootStackParamList = {
   Subscription: undefined;
   Profile: undefined;
   UpdateProfile: {
-    data: { userData: User; purpose: 'REGISTRATION' | 'UPDATE' };
+    data: { userData: User; purpose: 'ONBOARDING' | 'UPDATE' };
   };
   AiMatches: undefined;
 };
@@ -40,7 +40,7 @@ const SignUpScreen = lazy(() => import('../screens/signUp/SignUpScreen'));
 const OtpValidationScreen = lazy(
   () => import('../screens/otpValidation/OtpValidationScreen'),
 );
-const Onboarding = lazy(() => import('../screens/onBoarding/Onboarding'));
+const Onboarding = lazy(() => import('../screens/onboarding/Onboarding'));
 const ProfileSelection = lazy(
   () => import('../screens/profileSelection/ProfileSelection'),
 );
@@ -78,6 +78,77 @@ const Loading = () => (
 
 type RootNavigatorProps = { currentRoute: string };
 
+type RootNavigatorState = {
+  showUserProfile: boolean;
+  showPartnerPreference: boolean;
+};
+
+const UpdateUserProfileStack = (userData: User) => {
+  return (
+    <>
+      <Stack.Screen
+        name="UpdateProfile"
+        component={UpdateProfile}
+        initialParams={{
+          data: { userData: userData, purpose: 'ONBOARDING' },
+        }}
+      />
+    </>
+  );
+};
+
+const UpdatePartnerPreferenceStack = () => {
+  return (
+    <>
+      <Stack.Screen
+        name="PartnerPreference"
+        component={PartnerPreferenceScreen}
+        initialParams={{ data: { purpose: 'ONBOARDING' } }}
+      />
+    </>
+  );
+};
+
+const HomeStack = () => {
+  return (
+    <>
+      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="Settings" component={SettingsScreen} />
+      <Stack.Screen name="Search" component={SearchScreen} />
+      <Stack.Screen
+        name="NotificationSettings"
+        component={NotificationSettingsScreen}
+      />
+      <Stack.Screen name="AccountSettings" component={AccountSettingsScreen} />
+      <Stack.Screen name="ContactFilters" component={ContactFiltersScreen} />
+      <Stack.Screen
+        name="HideDeleteProfile"
+        component={HideDeleteProfileScreen}
+      />
+      <Stack.Screen name="Subscription" component={SubscriptionScreen} />
+      <Stack.Screen name="Profile" component={Profile} />
+      <Stack.Screen name="AiMatches" component={AiMatchesScreen} />
+      <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
+      <Stack.Screen
+        name="PartnerPreference"
+        component={PartnerPreferenceScreen}
+      />
+    </>
+  );
+};
+
+const LoginStack = () => {
+  return (
+    <>
+      <Stack.Screen name="Onboarding" component={Onboarding} />
+      <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="SignUp" component={SignUpScreen} />
+      <Stack.Screen name="Otp" component={OtpValidationScreen} />
+      <Stack.Screen name="ProfileSelection" component={ProfileSelection} />
+    </>
+  );
+};
+
 const RootNavigator = ({ currentRoute }: RootNavigatorProps) => {
   const { user } = useAuth();
 
@@ -85,85 +156,45 @@ const RootNavigator = ({ currentRoute }: RootNavigatorProps) => {
     return tabItems.some(item => item.route === currentRoute);
   }, [currentRoute]);
 
-  const getInitialRouteName = () => {
-    if (user) {
-      if (isProfileComplete(user.profile)) {
-        console.log('User profile is complete');
-        if (user.preference && isPartnerPreferencesComplete(user.preference)) {
-          console.log('User partner preferences are complete');
-          return 'Home';
-        } else {
-          console.log('User partner preferences are not complete');
-          return 'PartnerPreference';
-        }
-      } else {
-        console.log('User profile is not complete');
-        return 'UpdateProfile';
-      }
-    }
-    console.log('User is not logged in, navigating to Onboarding');
-    return 'Onboarding';
-  };
+  const [rootNavigatorState, setRootNavigatorState] =
+    useState<RootNavigatorState>({
+      showUserProfile: false,
+      showPartnerPreference: false,
+    });
+
+  const profileCompleted = isProfileComplete(user?.profile);
+  const partnerPreferencesCompleted = isPartnerPreferencesComplete(
+    user?.preference,
+  );
+
+  useEffect(() => {
+    setRootNavigatorState({
+      showUserProfile: profileCompleted,
+      showPartnerPreference: partnerPreferencesCompleted,
+    });
+  }, [profileCompleted, partnerPreferencesCompleted]);
 
   return (
     <Suspense fallback={<Loading />}>
       <View style={styles.wrapper}>
-        <Stack.Navigator
-          initialRouteName={getInitialRouteName()}
-          screenOptions={{ headerShown: false }}
-        >
-          {user ? (
-            <>
-              <Stack.Screen
-                name="UpdateProfile"
-                component={UpdateProfile}
-                initialParams={{
-                  data: { userData: user, purpose: 'REGISTRATION' },
-                }}
-              />
-              <Stack.Screen
-                name="PartnerPreference"
-                component={PartnerPreferenceScreen}
-              />
-              <Stack.Screen name="Home" component={HomeScreen} />
-              <Stack.Screen name="Settings" component={SettingsScreen} />
-              <Stack.Screen name="Search" component={SearchScreen} />
-              <Stack.Screen
-                name="NotificationSettings"
-                component={NotificationSettingsScreen}
-              />
-              <Stack.Screen
-                name="AccountSettings"
-                component={AccountSettingsScreen}
-              />
-              <Stack.Screen
-                name="ContactFilters"
-                component={ContactFiltersScreen}
-              />
-              <Stack.Screen
-                name="HideDeleteProfile"
-                component={HideDeleteProfileScreen}
-              />
-              <Stack.Screen
-                name="Subscription"
-                component={SubscriptionScreen}
-              />
-              <Stack.Screen name="Profile" component={Profile} />
-
-              <Stack.Screen name="AiMatches" component={AiMatchesScreen} />
-            </>
-          ) : (
-            <>
-              <Stack.Screen name="Onboarding" component={Onboarding} />
-              <Stack.Screen name="Login" component={LoginScreen} />
-              <Stack.Screen name="SignUp" component={SignUpScreen} />
-              <Stack.Screen name="Otp" component={OtpValidationScreen} />
-              <Stack.Screen
-                name="ProfileSelection"
-                component={ProfileSelection}
-              />
-            </>
-          )}
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+          {user
+            ? !rootNavigatorState.showUserProfile
+              ? (console.log(
+                  'User profile is not complete, showing UpdateProfile stack',
+                ),
+                UpdateUserProfileStack(user))
+              : !rootNavigatorState.showPartnerPreference
+              ? (console.log(
+                  'Partner preferences are not complete, showing UpdatePartnerPreference stack',
+                ),
+                UpdatePartnerPreferenceStack())
+              : (console.log(
+                  'User profile and Partner preferences are complete, showing HomeStack',
+                ),
+                HomeStack())
+            : (console.log('User is not logged in, showing LoginStack'),
+              LoginStack())}
         </Stack.Navigator>
 
         {isActiveTab && <FooterNavigator currentRoute={currentRoute} />}

@@ -19,11 +19,25 @@ import { useLoader } from '@/src/context/LoaderContext';
 import { RootStackParamList } from '@/src/navigation/RootNavigator';
 
 import { useAppSelector, useAppDispatch } from '@/src/services/store/hook';
-import { useNavigation, NavigationProp } from '@react-navigation/native';
+import {
+  useNavigation,
+  NavigationProp,
+  RouteProp,
+} from '@react-navigation/native';
 import { fetchPartnerPreferences } from '@/src/services/slices/partner-preferences';
 import { useAuth } from '@/src/context/AuthContext';
 
-export default function PartnerPreferenceScreen() {
+type Props = {
+  route: RouteProp<RootStackParamList, 'PartnerPreference'>;
+};
+
+export default function PartnerPreferenceScreen({
+  route: {
+    params: {
+      data: { purpose },
+    },
+  },
+}: Props) {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const { userData } = useAppSelector(state => state.user);
   const { showLoader, hideLoader } = useLoader();
@@ -64,7 +78,10 @@ export default function PartnerPreferenceScreen() {
 
   return (
     <Screen>
-      <ScreenHeader headerText="Partner Preferences" />
+      <ScreenHeader
+        headerText="Partner Preferences"
+        screenType={purpose === 'ONBOARDING' ? 'onboarding' : 'default'}
+      />
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ flexGrow: 1 }}

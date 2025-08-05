@@ -1,10 +1,9 @@
 import { ViewProps } from 'tamagui';
-import Header from './Header';
+import Header, { HeaderProps } from './Header';
 
-type Props = {
-  headerText?: string;
-} & ViewProps;
-
-export const ScreenHeader = ({ headerText, ...props }: Props) => {
+export const ScreenHeader = ({
+  headerText,
+  ...props
+}: HeaderProps) => {
   return <Header headerText={headerText} {...props} />;
 };

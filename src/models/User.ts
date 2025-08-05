@@ -16,6 +16,7 @@ export type PersonalInformation = {
   city?: City; // Optional field
   state?: State; // Optional field for address
   pincode?: string; // Optional field for postal code
+  age: number; // Calculated from dateOfBirth
 };
 
 export type MatchInformation = {
@@ -121,50 +122,53 @@ export type UpdatePartnerPreferencesRequest = {
   countries: string;
 };
 
-export const isProfileComplete = (userProfile: UserProfile): boolean => {
-  return (
-    userProfile.fullName !== '' &&
-    userProfile.dateOfBirth !== '' &&
-    userProfile.gender !== undefined &&
-    userProfile.city !== undefined &&
-    userProfile.state !== undefined &&
-    userProfile.pincode !== undefined &&
-    userProfile.aboutMe !== undefined &&
-    userProfile.diet !== undefined &&
-    userProfile.height !== undefined &&
-    userProfile.weight !== undefined &&
-    userProfile.religion !== undefined &&
-    userProfile.caste !== undefined &&
-    userProfile.motherTongue !== undefined &&
-    userProfile.maritalStatus !== undefined &&
-    userProfile.education !== undefined &&
-    userProfile.occupation !== undefined &&
-    userProfile.annualIncome !== undefined &&
-    userProfile.primaryPhotoUrl !== undefined
-  );
+export const isProfileComplete = (userProfile?: UserProfile): boolean => {
+  if (!userProfile) return false;
+  const isComplete =
+    userProfile.fullName !== null &&
+    userProfile.dateOfBirth !== null &&
+    userProfile.gender !== null &&
+    userProfile.city !== null &&
+    userProfile.state !== null &&
+    userProfile.pincode !== null &&
+    userProfile.aboutMe !== null &&
+    userProfile.diet !== null &&
+    userProfile.height !== null &&
+    userProfile.weight !== null &&
+    userProfile.religion !== null &&
+    userProfile.caste !== null &&
+    userProfile.motherTongue !== null &&
+    userProfile.maritalStatus !== null &&
+    userProfile.education !== null &&
+    userProfile.occupation !== null &&
+    userProfile.annualIncome !== null &&
+    userProfile.primaryPhotoUrl !== null;
+  return isComplete;
 };
 
 export const isPartnerPreferencesComplete = (
   partnerPreferences?: PartnerPreferences,
 ): boolean => {
   if (!partnerPreferences) return false;
-  return (
-    partnerPreferences.minAge !== undefined &&
-    partnerPreferences.maxAge !== undefined &&
-    partnerPreferences.minHeight !== undefined &&
-    partnerPreferences.maxHeight !== undefined &&
-    partnerPreferences.maritalStatus !== '' &&
-    partnerPreferences.religion !== '' &&
-    partnerPreferences.caste !== '' &&
-    partnerPreferences.motherTongue !== '' &&
-    partnerPreferences.diet !== '' &&
-    partnerPreferences.education !== '' &&
-    partnerPreferences.occupation !== '' &&
-    partnerPreferences.minIncome !== undefined &&
-    partnerPreferences.maxIncome !== undefined &&
-    partnerPreferences.cities !== '' &&
-    partnerPreferences.states !== '' &&
-    partnerPreferences.countries !== '' &&
-    partnerPreferences.gender !== ''
-  );
+  const isComplete =
+    partnerPreferences.minAge !== null &&
+    partnerPreferences.maxAge !== null &&
+    partnerPreferences.minHeight !== null &&
+    partnerPreferences.maxHeight !== null &&
+    partnerPreferences.minIncome !== null &&
+    partnerPreferences.maxIncome !== null &&
+    partnerPreferences.maritalStatus !== null &&
+    partnerPreferences.religion !== null &&
+    partnerPreferences.caste !== null &&
+    partnerPreferences.motherTongue !== null &&
+    partnerPreferences.diet !== null &&
+    partnerPreferences.education !== null &&
+    partnerPreferences.occupation !== null &&
+    partnerPreferences.minIncome !== null &&
+    partnerPreferences.maxIncome !== null &&
+    partnerPreferences.cities !== null &&
+    partnerPreferences.states !== null &&
+    partnerPreferences.countries !== null &&
+    partnerPreferences.gender !== null;
+  return isComplete;
 };

@@ -21,7 +21,11 @@ export default function Settings() {
       >
         <SettingsItem
           title="Partner Preferences"
-          onPress={() => navigation.navigate('PartnerPreference')}
+          onPress={() =>
+            navigation.navigate('PartnerPreference', {
+              data: { purpose: 'UPDATE' },
+            })
+          }
         />
         <SettingsItem
           title="Notifications"
