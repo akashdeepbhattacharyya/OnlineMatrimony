@@ -15,14 +15,8 @@ export const useUserMatch = () => {
 
     try {
       const response = await matchRepository.getMatches(page, size, 'PENDING');
-      if (response.status) {
-        const result = response.data.content;
-        setData(result);
-        return result;
-      } else {
-        setError(response.message || 'Failed to fetch pending matches');
-        throw new Error(response.message || 'Failed to fetch pending matches');
-      }
+      setData(response.content);
+      return response.content;
     } catch (err: any) {
       console.error('Get pending matches error:', err);
       setError(err.message || 'Failed to fetch pending matches');
@@ -38,13 +32,8 @@ export const useUserMatch = () => {
     setData(undefined);
     try {
       const response = await matchRepository.acceptMatch(matchId);
-      if (response.status) {
-        setData(response.data);
-        return response.data;
-      } else {
-        setError(response.message || 'Failed to accept match');
-        throw new Error(response.message || 'Failed to accept match');
-      }
+      setData(response);
+      return response;
     } catch (err: any) {
       console.error('Accept match error:', err);
       setError(err.message || 'Failed to accept match');
@@ -60,13 +49,8 @@ export const useUserMatch = () => {
     setData(undefined);
     try {
       const response = await matchRepository.rejectMatch(matchId);
-      if (response.status) {
-        setData(response.data);
-        return response.data;
-      } else {
-        setError(response.message || 'Failed to reject match');
-        throw new Error(response.message || 'Failed to reject match');
-      }
+      setData(response);
+      return response;
     } catch (err: any) {
       console.error('Reject match error:', err);
       setError(err.message || 'Failed to reject match');

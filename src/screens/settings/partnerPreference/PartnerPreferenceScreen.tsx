@@ -55,9 +55,13 @@ export default function PartnerPreferenceScreen({
     hideLoader();
   }, []);
 
+  console.log('Partner preferences fetched:', userData.preference);
+
   const initialValues: PartnerPreferenceFormType = toPartnerPreferenceFormType(
     userData.preference,
   );
+
+  console.log('Initial values for partner preferences:', initialValues);
 
   const onConfirm = async (values: PartnerPreferenceFormType) => {
     console.log('Updated values:', values);
@@ -69,7 +73,9 @@ export default function PartnerPreferenceScreen({
       console.log('Partner preferences updated successfully:', response);
       saveUser(response);
       hideLoader();
-      navigation.goBack();
+      if (purpose === 'UPDATE') {
+        navigation.goBack();
+      }
     } catch (error) {
       console.error('Error updating partner preferences:', error);
       hideLoader();

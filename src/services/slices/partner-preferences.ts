@@ -18,8 +18,7 @@ export const fetchPartnerPreferences = createAsyncThunk(
   ) => {
     try {
       const response = await getPartnerPreferences();
-      console.log('fetchPartnerPreferences response:', response);
-
+      
       if (!response || !response.preference) {
         return thunkAPI.rejectWithValue({
           status: false,
