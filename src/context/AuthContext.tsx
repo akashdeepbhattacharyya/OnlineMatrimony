@@ -10,11 +10,13 @@ import { Use } from 'react-native-svg';
 type AuthContextType = {
   user: User | undefined;
   token: Token | undefined;
+  partnerPreferences: PartnerPreferences | undefined;
   saveUser: (userData: User) => Promise<void>;
   clearUser: () => Promise<void>;
   saveToken: (token: Token) => Promise<void>;
   clearToken: () => Promise<void>;
   clearSession: () => Promise<void>;
+  clearPartnerPreferences: () => Promise<void>;
   isLoading: boolean;
 };
 
@@ -64,8 +66,26 @@ export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
       }
     };
 
+    const loadPartnerPreferences = async () => {
+      try {
+        const storedPreferences = await AsyncStorage.getItem(
+          'partnerPreferences',
+        );
+        if (storedPreferences) {
+          const parsedPreferences = JSON.parse(storedPreferences);
+          setPartnerPreferences(parsedPreferences);
+          dispatch(setPartnerPreferencesAction(parsedPreferences));
+        }
+      } catch (error) {
+        console.error('Error loading partner preferences from storage:', error);
+        // Clear corrupted data
+        await AsyncStorage.removeItem('partnerPreferences');
+      }
+    };
+
     loadUser();
     loadToken();
+    loadPartnerPreferences();
   }, []);
 
   const saveUser = async (userData: User) => {
@@ -114,8 +134,19 @@ export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       await clearUser();
       await clearToken();
+      await clearPartnerPreferences();
     } catch (error) {
       console.error('Error clearing session:', error);
+      throw error;
+    }
+  };
+
+  const clearPartnerPreferences = async () => {
+    try {
+      setPartnerPreferences(undefined);
+      await AsyncStorage.removeItem('partnerPreferences');
+    } catch (error) {
+      console.error('Error clearing partner preferences from storage:', error);
       throw error;
     }
   };
@@ -125,11 +156,13 @@ export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
       value={{
         user,
         token,
+        partnerPreferences,
         saveUser,
         clearUser,
         saveToken,
         clearToken,
         clearSession,
+        clearPartnerPreferences,
         isLoading,
       }}
     >

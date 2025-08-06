@@ -39,7 +39,9 @@ export default function PartnerPreferenceScreen({
   },
 }: Props) {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const { userData } = useAppSelector(state => state.user);
+  const { partnerPreferences } = useAppSelector(
+    state => state.partnerPreferences,
+  );
   const { showLoader, hideLoader } = useLoader();
   const dispatch = useAppDispatch();
   const userRepository = useUserRepository();
@@ -55,13 +57,8 @@ export default function PartnerPreferenceScreen({
     hideLoader();
   }, []);
 
-  console.log('Partner preferences fetched:', userData.preference);
-
-  const initialValues: PartnerPreferenceFormType = toPartnerPreferenceFormType(
-    userData.preference,
-  );
-
-  console.log('Initial values for partner preferences:', initialValues);
+  const initialValues: PartnerPreferenceFormType =
+    toPartnerPreferenceFormType(partnerPreferences);
 
   const onConfirm = async (values: PartnerPreferenceFormType) => {
     console.log('Updated values:', values);

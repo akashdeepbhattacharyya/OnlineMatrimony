@@ -11,7 +11,7 @@ export type SliderValue = {
 
 type Props = {
   onValuesChange: (values: SliderValue) => void;
-  sliderValue: SliderValue;
+  sliderValue?: SliderValue;
   max: number;
   min: number;
   step: number;
@@ -33,7 +33,7 @@ export const Slider = ({
   return (
     <View alignItems="center" width="100%">
       <MultiSlider
-        values={[sliderValue.min, sliderValue.max]}
+        values={sliderValue ? [sliderValue.min, sliderValue.max] : undefined}
         sliderLength={width - 90}
         onValuesChange={handleValuesChange}
         min={min}

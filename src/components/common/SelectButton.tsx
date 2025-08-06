@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { TouchableOpacity } from 'react-native';
-import { XStack, YStack, ViewProps } from 'tamagui';
+import { XStack, YStack, ViewProps, getToken } from 'tamagui';
 import { Option } from '@/src/resources/form';
 import ChevronIcon from '@/assets/images/chevron-down.svg';
 import { Text } from './Text';
@@ -54,7 +54,13 @@ export const SelectButton = <T,>({
           >
             {value || title}
           </Text>
-          <ChevronIcon color="$color" />
+          <ChevronIcon
+            color={
+              theme === 'select_dark_mode'
+                ? getToken('$color.white')
+                : getToken('$color.black')
+            }
+          />
         </XStack>
       </TouchableOpacity>
       <Select

@@ -52,7 +52,7 @@ export const UpdateOtherInformation = ({ ...props }: ViewProps) => {
         {/* Height */}
         <YStack gap={'$2'}>
           <LabelledTextField
-            label="Height"
+            label="Height (in cm)"
             placeholder="Enter Your Height"
             icon={<PersonIcon />}
             onChangeText={handleChange('height')}
@@ -68,7 +68,7 @@ export const UpdateOtherInformation = ({ ...props }: ViewProps) => {
         {/* Weight */}
         <YStack gap={'$2'}>
           <LabelledTextField
-            label="Weight"
+            label="Weight (in kg)"
             placeholder="Enter Your Weight"
             icon={<PersonIcon />}
             onChangeText={handleChange('weight')}

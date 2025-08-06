@@ -80,8 +80,12 @@ fullName?: string;
 */
 
 export type PartnerPreferenceFormType = {
-  ageRange: { min: number; max: number };
-  heightRange: { min: number; max: number };
+  maxAge: number;
+  minAge: number;
+  maxHeight: number;
+  minHeight: number;
+  maxIncome: number;
+  minIncome: number;
   maritalStatuses?: MaritalStatus[];
   gender?: Gender;
   cities?: City[];
@@ -92,7 +96,6 @@ export type PartnerPreferenceFormType = {
   castes?: Caste[];
   educations?: Education[];
   occupations?: Occupation[];
-  annualIncomeRange: { min: number; max: number };
 };
 
 export const toUpdateUserProfileFormType = (
@@ -148,20 +151,21 @@ export const toPartnerPreferenceFormType = (
 ): PartnerPreferenceFormType => {
   if (!preferences) {
     return {
-      ageRange: { min: 25, max: 50 },
-      heightRange: { min: 4.5, max: 7 },
-      annualIncomeRange: { min: 5, max: 500 },
+      maxAge: 46,
+      minAge: 25,
+      maxHeight: 213,
+      minHeight: 137,
+      maxIncome: 1000000,
+      minIncome: 500000,
     };
   }
   return {
-    ageRange: {
-      min: preferences.minAge,
-      max: preferences.maxAge,
-    },
-    heightRange: {
-      min: preferences.minHeight,
-      max: preferences.maxHeight,
-    },
+    maxAge: preferences.maxAge,
+    minAge: preferences.minAge,
+    maxHeight: preferences.maxHeight,
+    minHeight: preferences.minHeight,
+    maxIncome: preferences.maxIncome,
+    minIncome: preferences.minIncome,
     maritalStatuses: preferences.maritalStatuses.split(',') as MaritalStatus[],
     gender: preferences.gender as Gender,
     cities: preferences.cities.split(',') as City[],
@@ -172,10 +176,6 @@ export const toPartnerPreferenceFormType = (
     castes: preferences.castes.split(',') as Caste[],
     educations: preferences.educations.split(',') as Education[],
     occupations: preferences.occupations.split(',') as Occupation[],
-    annualIncomeRange: {
-      min: preferences.minIncome,
-      max: preferences.maxIncome,
-    },
   };
 };
 
@@ -183,10 +183,10 @@ export const toPartnerPreferencesRequest = (
   form: PartnerPreferenceFormType,
 ): UpdatePartnerPreferencesRequest => {
   return {
-    minAge: form.ageRange.min,
-    maxAge: form.ageRange.max,
-    minHeight: form.heightRange.min,
-    maxHeight: form.heightRange.max,
+    minAge: form.minAge,
+    maxAge: form.maxAge,
+    minHeight: form.minHeight,
+    maxHeight: form.maxHeight,
     maritalStatuses: form.maritalStatuses?.join(',') || '',
     religions: form.religions?.join(',') || '',
     castes: form.castes?.join(',') || '',
@@ -194,8 +194,8 @@ export const toPartnerPreferencesRequest = (
     diet: form.diet || '',
     educations: form.educations?.join(',') || '',
     occupations: form.occupations?.join(',') || '',
-    minIncome: form.annualIncomeRange.min,
-    maxIncome: form.annualIncomeRange.max,
+    minIncome: form.minIncome,
+    maxIncome: form.maxIncome,
     cities: form.cities?.join(',') || '',
     states: form.states?.join(',') || '',
     countries: 'INDIA',

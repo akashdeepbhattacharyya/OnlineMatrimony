@@ -39,43 +39,41 @@ export const PersonalPreferences = ({ ...props }: ViewProps) => {
       {...props}
     >
       <TileHeader title="Personal Preferences" />
-      <YStack gap={'$2'}>
-        <PreferenceItem title="Age">
-          <PreferenceSlider
-            minTitle={`Min ${values.ageRange.min} Yrs`}
-            maxTitle={`Max ${values.ageRange.max} Yrs`}
-            sliderValue={values.ageRange}
-            onValuesChange={(sliderValue: SliderValue) => {
-              setFieldValue('ageRange', sliderValue);
-            }}
-            max={46}
-            min={25}
-            step={1}
-          />
-        </PreferenceItem>
-        {touched.ageRange && errors.ageRange && (
-          <Text theme={'error_message'}>{errors.ageRange}</Text>
-        )}
-      </YStack>
+      <PreferenceItem title="Age">
+        <PreferenceSlider
+          minTitle={`Min ${values.minAge} Yrs`}
+          maxTitle={`Max ${values.maxAge} Yrs`}
+          sliderValue={{
+            min: values.minAge,
+            max: values.maxAge,
+          }}
+          onValuesChange={(sliderValue: SliderValue) => {
+            setFieldValue('maxAge', sliderValue.max);
+            setFieldValue('minAge', sliderValue.min);
+          }}
+          max={46}
+          min={25}
+          step={1}
+        />
+      </PreferenceItem>
 
-      <YStack gap={'$2'}>
-        <PreferenceItem title="Height">
-          <PreferenceSlider
-            minTitle={`Min ${toFeetAndInches(values.heightRange.min)}`}
-            maxTitle={`Max ${toFeetAndInches(values.heightRange.max)}`}
-            sliderValue={values.heightRange}
-            onValuesChange={(sliderValue: SliderValue) => {
-              setFieldValue('heightRange', sliderValue);
-            }}
-            max={213}
-            min={137}
-            step={15}
-          />
-        </PreferenceItem>
-        {touched.heightRange && errors.heightRange && (
-          <Text theme={'error_message'}>{errors.heightRange}</Text>
-        )}
-      </YStack>
+      <PreferenceItem title="Height">
+        <PreferenceSlider
+          minTitle={`Min ${toFeetAndInches(values.minHeight)}`}
+          maxTitle={`Max ${toFeetAndInches(values.maxHeight)}`}
+          sliderValue={{
+            min: values.minHeight,
+            max: values.maxHeight,
+          }}
+          onValuesChange={(sliderValue: SliderValue) => {
+            setFieldValue('maxHeight', sliderValue.max);
+            setFieldValue('minHeight', sliderValue.min);
+          }}
+          max={213}
+          min={137}
+          step={15}
+        />
+      </PreferenceItem>
 
       <YStack gap={'$2'}>
         <PreferenceItem title="Marital Statuses">
@@ -100,7 +98,7 @@ export const PersonalPreferences = ({ ...props }: ViewProps) => {
         <PreferenceItem title="Gender">
           <SelectButton
             title="Select Gender"
-            theme='select_dark_mode'
+            theme="select_dark_mode"
             value={values.gender ? genders[values.gender] : undefined}
             options={genderOptions}
             onChange={selected => {
