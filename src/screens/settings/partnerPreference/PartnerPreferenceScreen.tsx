@@ -103,6 +103,7 @@ export default function PartnerPreferenceScreen({
               paddingHorizontal={'$4'}
               paddingVertical={'$2'}
               justifyContent="space-between"
+              marginBottom={'$6'}
             >
               <YStack gap={'$4'}>
                 <PersonalPreferences />
