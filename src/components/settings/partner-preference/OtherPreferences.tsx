@@ -13,6 +13,7 @@ import {
 import { religionOptions, religions } from '@/src/resources/religion';
 import { TileHeader } from '../../common/TileHeader';
 import { MultiSelectButton } from '../../common/MultiSelectButton';
+import { SelectButton } from '../../common/SelectButton';
 
 export const OtherPreferences = ({ ...props }: ViewProps) => {
   const { values, errors, touched, setFieldValue } =
@@ -33,25 +34,26 @@ export const OtherPreferences = ({ ...props }: ViewProps) => {
       <TileHeader title="Other Preferences" />
       <YStack gap={'$2'}>
         <PreferenceItem title="Diet">
-          <MultiSelectButton
-            title={'Select Diet'}
-            value={values.diets?.map(item => diets[item]).join(', ')}
+          <SelectButton
+            title="Select Diet"
+            theme="select_dark_mode"
+            value={values.diet ? diets[values.diet] : undefined}
             options={dietOptions}
             onChange={selected => {
-              setFieldValue('diets', selected);
+              setFieldValue('diet', selected);
             }}
-            selected={values.diets}
+            selected={values.diet}
           />
         </PreferenceItem>
-        {touched.diets && errors.diets && (
-          <Text theme={'error_message'}>{errors.diets}</Text>
+        {touched.diet && errors.diet && (
+          <Text theme={'error_message'}>{errors.diet}</Text>
         )}
       </YStack>
 
       <YStack gap={'$2'}>
-        <PreferenceItem title="Religion">
+        <PreferenceItem title="Religions">
           <MultiSelectButton
-            title={'Select Religion'}
+            title={'Select Religions'}
             value={values.religions?.map(item => religions[item]).join(', ')}
             options={religionOptions}
             onChange={selected => {
@@ -66,9 +68,9 @@ export const OtherPreferences = ({ ...props }: ViewProps) => {
       </YStack>
 
       <YStack gap={'$2'}>
-        <PreferenceItem title="Caste">
+        <PreferenceItem title="Castes">
           <MultiSelectButton
-            title={'Select Caste'}
+            title={'Select Castes'}
             value={values.castes?.map(item => castes[item]).join(', ')}
             options={casteOptions}
             onChange={selected => {
@@ -84,20 +86,23 @@ export const OtherPreferences = ({ ...props }: ViewProps) => {
 
       <YStack gap={'$2'}>
         <PreferenceItem title="Mother Tongue">
-          <MultiSelectButton
-            title={'Select Mother Tongue'}
-            value={values.motherTongues
-              ?.map(item => motherTongues[item])
-              .join(', ')}
+          <SelectButton
+            title="Select Mother Tongue"
+            theme="select_dark_mode"
+            value={
+              values.motherTongue
+                ? motherTongues[values.motherTongue]
+                : undefined
+            }
             options={motherTongueOptions}
             onChange={selected => {
-              setFieldValue('motherTongues', selected);
+              setFieldValue('motherTongue', selected);
             }}
-            selected={values.motherTongues}
+            selected={values.motherTongue}
           />
         </PreferenceItem>
-        {touched.motherTongues && errors.motherTongues && (
-          <Text theme={'error_message'}>{errors.motherTongues}</Text>
+        {touched.motherTongue && errors.motherTongue && (
+          <Text theme={'error_message'}>{errors.motherTongue}</Text>
         )}
       </YStack>
     </YStack>

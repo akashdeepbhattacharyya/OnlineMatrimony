@@ -11,7 +11,7 @@ import {
 } from '@/src/resources/city-state';
 import { PartnerPreferenceFormType } from '@/src/resources/form';
 import { PreferenceSelect } from './PreferenceSelect';
-import { genderOptions } from '@/src/resources/gender';
+import { genderOptions, genders } from '@/src/resources/gender';
 import { useFormikContext } from 'formik';
 import { Text } from '../../common/Text';
 import {
@@ -20,6 +20,7 @@ import {
 } from '@/src/resources/marital-status';
 import { TileHeader } from '../../common/TileHeader';
 import { MultiSelectButton } from '../../common/MultiSelectButton';
+import { SelectButton } from '../../common/SelectButton';
 
 export const PersonalPreferences = ({ ...props }: ViewProps) => {
   const { values, errors, touched, setFieldValue } =
@@ -77,9 +78,9 @@ export const PersonalPreferences = ({ ...props }: ViewProps) => {
       </YStack>
 
       <YStack gap={'$2'}>
-        <PreferenceItem title="Marital Status">
+        <PreferenceItem title="Marital Statuses">
           <MultiSelectButton
-            title={'Select Marital Status'}
+            title={'Select Marital Statuses'}
             value={values.maritalStatuses
               ?.map(item => maritalStatuses[item])
               .join(', ')}
@@ -97,14 +98,15 @@ export const PersonalPreferences = ({ ...props }: ViewProps) => {
 
       <YStack gap={'$2'}>
         <PreferenceItem title="Gender">
-          <PreferenceSelect
-            options={genderOptions}
-            placeholder="Select Gender"
-            onChange={value => setFieldValue('gender', value)}
-            initialValue={genderOptions.find(
-              option => option.value === values.gender,
-            )}
+          <SelectButton
             title="Select Gender"
+            theme='select_dark_mode'
+            value={values.gender ? genders[values.gender] : undefined}
+            options={genderOptions}
+            onChange={selected => {
+              setFieldValue('gender', selected);
+            }}
+            selected={values.gender}
           />
         </PreferenceItem>
         {touched.gender && errors.gender && (
@@ -113,9 +115,9 @@ export const PersonalPreferences = ({ ...props }: ViewProps) => {
       </YStack>
 
       <YStack gap={'$2'}>
-        <PreferenceItem title="State">
+        <PreferenceItem title="States">
           <MultiSelectButton
-            title={'Select State'}
+            title={'Select States'}
             value={values.states?.map(item => states[item]).join(', ')}
             options={stateOptions}
             onChange={selected => {
@@ -131,9 +133,9 @@ export const PersonalPreferences = ({ ...props }: ViewProps) => {
       </YStack>
 
       <YStack gap={'$2'}>
-        <PreferenceItem title="City">
+        <PreferenceItem title="Cities">
           <MultiSelectButton
-            title={'Select City'}
+            title={'Select Cities'}
             value={values.cities?.map(item => cities[item]).join(', ')}
             options={cityOptionsByStates(values.states || [])}
             onChange={selected => {

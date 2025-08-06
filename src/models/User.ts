@@ -114,13 +114,13 @@ export type User = {
  * @property maxAge - The maximum age of the preferred partner.
  * @property minHeight - The minimum height of the preferred partner (in centimeters).
  * @property maxHeight - The maximum height of the preferred partner (in centimeters).
- * @property maritalStatus - The preferred marital status of the partner.
- * @property religion - The preferred religion of the partner.
- * @property caste - The preferred caste of the partner.
+ * @property maritalStatuses - The preferred marital statuses of the partner.
+ * @property religions - The preferred religions of the partner.
+ * @property castes - The preferred castes of the partner.
  * @property motherTongue - The preferred mother tongue of the partner.
- * @property diet - The preferred dietary habits of the partner.
- * @property education - The preferred education level of the partner.
- * @property occupation - The preferred occupation of the partner.
+ * @property diet - The preferred dietary habit of the partner.
+ * @property educations - The preferred education levels of the partner.
+ * @property occupations - The preferred occupations of the partner.
  * @property minIncome - The minimum annual income of the preferred partner.
  * @property maxIncome - The maximum annual income of the preferred partner.
  * @property cities - The preferred cities where the partner may reside.
@@ -133,13 +133,13 @@ export type PartnerPreferences = {
   maxAge: number;
   minHeight: number;
   maxHeight: number;
-  maritalStatus: string;
-  religion: string;
-  caste: string;
+  maritalStatuses: string;
+  religions: string;
+  castes: string;
   motherTongue: string;
   diet: string;
-  education: string;
-  occupation: string;
+  educations: string;
+  occupations: string;
   minIncome: number;
   maxIncome: number;
   cities: string;
@@ -167,7 +167,7 @@ export type PartnerPreferences = {
  * @property maritalStatus - The user's marital status.
  * @property education - The user's highest educational qualification.
  * @property occupation - The user's occupation.
- * @property annualIncome - The user's annual income.@property annualIncome - The user's annual income.
+ * @property annualIncome - The user's annual income.
  */
 export type UpdateUserProfileRequest = {
   fullName?: string;
@@ -196,13 +196,14 @@ export type UpdateUserProfileRequest = {
  * @property maxAge - Maximum preferred age of the partner.
  * @property minHeight - Minimum preferred height of the partner.
  * @property maxHeight - Maximum preferred height of the partner.
- * @property maritalStatus - Preferred marital status of the partner.
- * @property religion - Preferred religion of the partner.
- * @property caste - Preferred caste of the partner.
+ * @property gender - Preferred gender of the partner.
+ * @property maritalStatuses - Preferred marital statuses of the partner.
+ * @property religions - Preferred religions of the partner.
+ * @property castes - Preferred castes of the partner.
  * @property motherTongue - Preferred mother tongue of the partner.
  * @property diet - Preferred diet of the partner.
- * @property education - Preferred education level of the partner.
- * @property occupation - Preferred occupation of the partner.
+ * @property educations - Preferred education levels of the partner.
+ * @property occupations - Preferred occupations of the partner.
  * @property minIncome - Minimum preferred income of the partner.
  * @property maxIncome - Maximum preferred income of the partner.
  * @property cities - Preferred cities for the partner.
@@ -214,13 +215,14 @@ export type UpdatePartnerPreferencesRequest = {
   maxAge: number;
   minHeight: number;
   maxHeight: number;
-  maritalStatus: string;
-  religion: string;
-  caste: string;
+  gender: string;
+  maritalStatuses: string;
+  religions: string;
+  castes: string;
   motherTongue: string;
   diet: string;
-  education: string;
-  occupation: string;
+  educations: string;
+  occupations: string;
   minIncome: number;
   maxIncome: number;
   cities: string;
@@ -230,27 +232,6 @@ export type UpdatePartnerPreferencesRequest = {
 
 /**
  * Checks whether the provided user profile is complete.
- *
- * A profile is considered complete if all required fields are not `null`.
- * The required fields are:
- * - fullName
- * - dateOfBirth
- * - gender
- * - city
- * - state
- * - pincode
- * - aboutMe
- * - diet
- * - height
- * - weight
- * - religion
- * - caste
- * - motherTongue
- * - maritalStatus
- * - education
- * - occupation
- * - annualIncome
- * - primaryPhotoUrl
  *
  * @param userProfile - The user profile to check for completeness.
  * @returns `true` if all required fields are present and not `null`, otherwise `false`.
@@ -296,13 +277,13 @@ export const isPartnerPreferencesComplete = (
     partnerPreferences.maxHeight !== null &&
     partnerPreferences.minIncome !== null &&
     partnerPreferences.maxIncome !== null &&
-    partnerPreferences.maritalStatus !== null &&
-    partnerPreferences.religion !== null &&
-    partnerPreferences.caste !== null &&
+    partnerPreferences.maritalStatuses !== null &&
+    partnerPreferences.religions !== null &&
+    partnerPreferences.castes !== null &&
     partnerPreferences.motherTongue !== null &&
     partnerPreferences.diet !== null &&
-    partnerPreferences.education !== null &&
-    partnerPreferences.occupation !== null &&
+    partnerPreferences.educations !== null &&
+    partnerPreferences.occupations !== null &&
     partnerPreferences.minIncome !== null &&
     partnerPreferences.maxIncome !== null &&
     partnerPreferences.cities !== null &&

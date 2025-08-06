@@ -29,9 +29,9 @@ export const ProfessionalPreferences = ({ ...props }: ViewProps) => {
     >
       <TileHeader title="Professional Preferences" />
       <YStack gap={'$2'}>
-        <PreferenceItem title="Education">
+        <PreferenceItem title="Educations">
           <MultiSelectButton
-            title={'Select Education'}
+            title={'Select Educations'}
             value={values.educations?.map(item => educations[item]).join(', ')}
             options={educationOptions}
             onChange={selected => {
@@ -46,9 +46,9 @@ export const ProfessionalPreferences = ({ ...props }: ViewProps) => {
       </YStack>
 
       <YStack gap={'$2'}>
-        <PreferenceItem title="Occupation">
+        <PreferenceItem title="Occupations">
           <MultiSelectButton
-            title={'Select Occupation'}
+            title={'Select Occupations'}
             value={values.occupations
               ?.map(item => occupations[item])
               .join(', ')}

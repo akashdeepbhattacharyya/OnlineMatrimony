@@ -86,9 +86,9 @@ export type PartnerPreferenceFormType = {
   gender?: Gender;
   cities?: City[];
   states?: State[];
-  diets?: Diet[];
+  diet?: Diet;
   religions?: Religion[];
-  motherTongues?: MotherTongue[];
+  motherTongue?: MotherTongue;
   castes?: Caste[];
   educations?: Education[];
   occupations?: Occupation[];
@@ -162,34 +162,16 @@ export const toPartnerPreferenceFormType = (
       min: preferences.minHeight,
       max: preferences.maxHeight,
     },
-    maritalStatuses: preferences.maritalStatus
-      ? (preferences.maritalStatus.split(',') as MaritalStatus[])
-      : undefined,
+    maritalStatuses: preferences.maritalStatuses.split(',') as MaritalStatus[],
     gender: preferences.gender as Gender,
-    cities: preferences.cities
-      ? (preferences.cities.split(',') as City[])
-      : undefined,
-    states: preferences.states
-      ? (preferences.states.split(',') as State[])
-      : undefined,
-    diets: preferences.diet
-      ? (preferences.diet.split(',') as Diet[])
-      : undefined,
-    religions: preferences.religion
-      ? (preferences.religion.split(',') as Religion[])
-      : undefined,
-    motherTongues: preferences.motherTongue
-      ? (preferences.motherTongue.split(',') as MotherTongue[])
-      : undefined,
-    castes: preferences.caste
-      ? (preferences.caste.split(',') as Caste[])
-      : undefined,
-    educations: preferences.education
-      ? (preferences.education.split(',') as Education[])
-      : undefined,
-    occupations: preferences.occupation
-      ? (preferences.occupation.split(',') as Occupation[])
-      : undefined,
+    cities: preferences.cities.split(',') as City[],
+    states: preferences.states.split(',') as State[],
+    diet: preferences.diet as Diet,
+    religions: preferences.religions.split(',') as Religion[],
+    motherTongue: preferences.motherTongue as MotherTongue,
+    castes: preferences.castes.split(',') as Caste[],
+    educations: preferences.educations.split(',') as Education[],
+    occupations: preferences.occupations.split(',') as Occupation[],
     annualIncomeRange: {
       min: preferences.minIncome,
       max: preferences.maxIncome,
@@ -205,17 +187,18 @@ export const toPartnerPreferencesRequest = (
     maxAge: form.ageRange.max,
     minHeight: form.heightRange.min,
     maxHeight: form.heightRange.max,
-    maritalStatus: form.maritalStatuses?.join(',') || '',
-    religion: form.religions?.join(',') || '',
-    caste: form.castes?.join(',') || '',
-    motherTongue: form.motherTongues?.join(',') || '',
-    diet: form.diets?.join(',') || '',
-    education: form.educations?.join(',') || '',
-    occupation: form.occupations?.join(',') || '',
+    maritalStatuses: form.maritalStatuses?.join(',') || '',
+    religions: form.religions?.join(',') || '',
+    castes: form.castes?.join(',') || '',
+    motherTongue: form.motherTongue || '',
+    diet: form.diet || '',
+    educations: form.educations?.join(',') || '',
+    occupations: form.occupations?.join(',') || '',
     minIncome: form.annualIncomeRange.min,
     maxIncome: form.annualIncomeRange.max,
     cities: form.cities?.join(',') || '',
     states: form.states?.join(',') || '',
     countries: 'INDIA',
+    gender: form.gender || '',
   };
 };

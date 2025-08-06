@@ -44,8 +44,8 @@ export const partnerPreferenceSchema = Yup.object<PartnerPreferenceFormType>({
     }
     return schema;
   }),
-  diets: Yup.array()
-    .of(Yup.string().oneOf(Object.keys(diets)))
+  diet: Yup.string()
+    .oneOf(Object.keys(diets))
     .required('Diet preference is required'),
   religions: Yup.array()
     .of(Yup.string().oneOf(Object.keys(religions)))
@@ -53,8 +53,8 @@ export const partnerPreferenceSchema = Yup.object<PartnerPreferenceFormType>({
   castes: Yup.array()
     .of(Yup.string().oneOf(Object.keys(castes)))
     .required('Caste preference is required'),
-  motherTongues: Yup.array()
-    .of(Yup.string().oneOf(Object.keys(motherTongues)))
+  motherTongue: Yup.string()
+    .oneOf(Object.keys(motherTongues))
     .required('Mother tongue preference is required'),
   educations: Yup.array()
     .of(Yup.string().oneOf(Object.keys(educations)))
