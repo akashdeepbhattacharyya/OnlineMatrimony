@@ -60,6 +60,8 @@ export default function PartnerPreferenceScreen({
   const initialValues: PartnerPreferenceFormType =
     toPartnerPreferenceFormType(partnerPreferences);
 
+    console.log('Initial values for form:', initialValues);
+
   const onConfirm = async (values: PartnerPreferenceFormType) => {
     console.log('Updated values:', values);
     const request = toPartnerPreferencesRequest(values);
@@ -91,7 +93,7 @@ export default function PartnerPreferenceScreen({
       >
         <Formik<PartnerPreferenceFormType>
           initialValues={initialValues}
-          validationSchema={partnerPreferenceSchema}
+          // validationSchema={partnerPreferenceSchema}
           onSubmit={onConfirm}
         >
           {({ handleSubmit, isSubmitting, isValid }) => (

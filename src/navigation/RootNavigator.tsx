@@ -160,7 +160,7 @@ const RootNavigator = ({ currentRoute }: RootNavigatorProps) => {
     <Suspense fallback={<Loading />}>
       <View style={styles.wrapper}>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-          {user
+          {/* {user
             ? !profileCompleted
               ? (console.log(
                   'User profile is not complete, showing UpdateProfile stack',
@@ -176,7 +176,8 @@ const RootNavigator = ({ currentRoute }: RootNavigatorProps) => {
                 ),
                 HomeStack())
             : (console.log('User is not logged in, showing LoginStack'),
-              LoginStack())}
+              LoginStack())} */}
+          {user ? HomeStack() : LoginStack()}
         </Stack.Navigator>
 
         {isActiveTab && <FooterNavigator currentRoute={currentRoute} />}

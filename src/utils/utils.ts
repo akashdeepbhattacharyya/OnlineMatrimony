@@ -64,6 +64,9 @@ export const toUri = (
 };
 
 export function formatAnnualIncome(value: number) {
+  if (value === 0) {
+    return 'N/A';
+  }
   if (value < 10000000) {
     const lakhs = Math.floor(value / 100000);
     return `${lakhs} ${lakhs === 1 ? 'Lakh' : 'Lakhs'}`;

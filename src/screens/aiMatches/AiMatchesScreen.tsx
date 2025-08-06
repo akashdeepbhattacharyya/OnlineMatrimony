@@ -100,8 +100,14 @@ export default function AiMatchesScreen() {
               width={'100%'}
               height={'100%'}
             >
-              <Text font="heading" size="large" color="$text">
-                No matches found.
+              <Text
+                font="heading"
+                size="large"
+                color="$text"
+                textAlign="center"
+                padding={'$4'}
+              >
+                {`No matches found. \nPlease update your profile and partner preferences.`}
               </Text>
             </View>
           )}

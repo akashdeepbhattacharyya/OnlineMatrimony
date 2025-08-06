@@ -24,17 +24,20 @@ export const ProfessionalInformation = ({ userProfile, ...props }: Props) => {
       <TileHeader title="Professional Information" />
       <ProfileItem
         title="Highest Education"
-        subtitle={educations[userProfile.education as keyof typeof educations]}
+        subtitle={
+          educations[userProfile.education as keyof typeof educations] || 'N/A'
+        }
       />
       <ProfileItem
         title="Occupation"
         subtitle={
-          occupations[userProfile.occupation as keyof typeof occupations]
+          occupations[userProfile.occupation as keyof typeof occupations] ||
+          'N/A'
         }
       />
       <ProfileItem
         title="Annual Income"
-        subtitle={formatAnnualIncome(Number(userProfile.annualIncome))}
+        subtitle={formatAnnualIncome(Number(userProfile.annualIncome || 0))}
       />
     </YStack>
   );
