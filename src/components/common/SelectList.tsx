@@ -1,6 +1,6 @@
 import { Option } from '@/src/resources/form';
 import { useState } from 'react';
-import { YStack, XStack, ViewProps } from 'tamagui';
+import { YStack, XStack, ViewProps, getToken } from 'tamagui';
 import { Text } from './Text';
 import { Divider } from './Divider';
 import { CheckBox } from './CheckBox';
@@ -8,24 +8,21 @@ import { TouchableOpacity } from 'react-native';
 
 type Props<T> = {
   options: Option<T>[];
-  onChange: (selected: T[]) => void;
-  selected?: T[];
+  onChange: (selected: T) => void;
+  selected?: T;
 } & ViewProps;
 
-export function MultiSelectList<T>({
+export function SelectList<T>({
   options,
   onChange,
-  selected = [],
+  selected,
   ...props
 }: Props<T>) {
-  const [selectedItems, setSelectedItems] = useState<T[]>(selected);
+  const [selectedItem, setSelectedItem] = useState<T | undefined>(selected);
 
   const toggleItem = (item: T) => {
-    const options = selectedItems.includes(item)
-      ? selectedItems.filter(i => i !== item)
-      : [...selectedItems, item];
-    setSelectedItems(options);
-    onChange(options);
+    setSelectedItem(item);
+    onChange(item);
   };
 
   return (
@@ -39,10 +36,14 @@ export function MultiSelectList<T>({
               paddingVertical={'$2.5'}
               paddingTop={'$3.5'}
             >
-              <Text font="heading" size="small">
+              <Text
+                font="heading"
+                size="small"
+                color={getToken('$color.white')}
+              >
                 {option.label}
               </Text>
-              <CheckBox selected={selectedItems.includes(option.value)} />
+              <CheckBox selected={selectedItem === option.value} />
             </XStack>
             <Divider width={'100%'} />
           </TouchableOpacity>

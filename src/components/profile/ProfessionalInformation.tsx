@@ -3,6 +3,8 @@ import { YStack, ViewProps } from 'tamagui';
 import { ProfileItem } from './ProfileItem';
 import { TileHeader } from '../common/TileHeader';
 import { occupations } from '@/src/resources/occupation';
+import { educations } from '@/src/resources/education';
+import { formatAnnualIncome } from '@/src/utils/utils';
 
 type Props = {
   userProfile: UserProfile;
@@ -21,12 +23,22 @@ export const ProfessionalInformation = ({ userProfile, ...props }: Props) => {
     >
       <TileHeader title="Professional Information" />
       <ProfileItem
-        title="Occupation"
+        title="Highest Education"
         subtitle={
-          occupations[userProfile.occupation as keyof typeof occupations]
+          educations[userProfile.education as keyof typeof educations] || 'N/A'
         }
       />
-      <ProfileItem title="Annual Income" subtitle={userProfile.annualIncome} />
+      <ProfileItem
+        title="Occupation"
+        subtitle={
+          occupations[userProfile.occupation as keyof typeof occupations] ||
+          'N/A'
+        }
+      />
+      <ProfileItem
+        title="Annual Income"
+        subtitle={formatAnnualIncome(Number(userProfile.annualIncome || 0))}
+      />
     </YStack>
   );
 };

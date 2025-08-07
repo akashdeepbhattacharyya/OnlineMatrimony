@@ -10,6 +10,8 @@ import { Occupation } from './occupation';
 import {
   PartnerPreferences,
   UpdatePartnerPreferencesRequest,
+  UpdateUserProfileRequest,
+  UserProfile,
 } from '../models/User';
 
 export type Option<T = string> = {
@@ -17,7 +19,7 @@ export type Option<T = string> = {
   value: T;
 };
 
-export type CheckBoxOption<T = string> = {
+export type OptionWithIcon<T = string> = {
   icon?: React.ReactNode;
 } & Option<T>;
 
@@ -40,31 +42,108 @@ export type UpdateUserProfileFormType = {
   fullName: string;
   dateOfBirth: string;
   gender?: Gender;
-  // height?: number;
-  // weight?: number;
-  // maritalStatus?: string;
-  // religion?: string;
-  state?: string;
-  city?: string;
+  height?: number;
+  weight?: number;
+  maritalStatus?: MaritalStatus;
+  state?: State;
+  city?: City;
   pincode?: string;
   country?: string;
+  diet?: Diet;
+  caste?: Caste;
+  motherTongue?: MotherTongue;
+  religion?: Religion;
+  education?: Education;
+  occupation?: Occupation;
+  annualIncome?: string;
   aboutMe?: string;
 };
 
+/*
+fullName?: string;
+  dateOfBirth?: string;
+  gender?: string;
+  city?: string;
+  state?: string;
+  pincode?: string;
+  aboutMe?: string;
+  diet?: string;
+  height?: number;
+  weight?: number;
+  religion?: string;
+  caste?: string;
+  motherTongue?: string;
+  maritalStatus?: string;
+  education?: string;
+  occupation?: string;
+  annualIncome?: string;
+*/
+
 export type PartnerPreferenceFormType = {
-  ageRange: { min: number; max: number };
-  heightRange: { min: number; max: number };
+  maxAge: number;
+  minAge: number;
+  maxHeight: number;
+  minHeight: number;
+  maxIncome: number;
+  minIncome: number;
   maritalStatuses?: MaritalStatus[];
   gender?: Gender;
   cities?: City[];
   states?: State[];
-  diets?: Diet[];
+  diet?: Diet;
   religions?: Religion[];
-  motherTongues?: MotherTongue[];
+  motherTongue?: MotherTongue;
   castes?: Caste[];
   educations?: Education[];
   occupations?: Occupation[];
-  annualIncomeRange: { min: number; max: number };
+};
+
+export const toUpdateUserProfileFormType = (
+  userProfile: UserProfile,
+): UpdateUserProfileFormType => {
+  return {
+    fullName: userProfile.fullName,
+    dateOfBirth: userProfile.dateOfBirth,
+    gender: userProfile.gender,
+    height: userProfile.height,
+    weight: userProfile.weight,
+    maritalStatus: userProfile.maritalStatus,
+    state: userProfile.state,
+    city: userProfile.city,
+    pincode: userProfile.pincode,
+    diet: userProfile.diet,
+    caste: userProfile.caste,
+    motherTongue: userProfile.motherTongue,
+    religion: userProfile.religion,
+    education: userProfile.education,
+    occupation: userProfile.occupation,
+    annualIncome: userProfile.annualIncome,
+    aboutMe: userProfile.aboutMe,
+  };
+};
+
+export const toUpdateUserProfileRequest = (
+  form: UpdateUserProfileFormType,
+): UpdateUserProfileRequest => {
+  return {
+    fullName: form.fullName,
+    dateOfBirth: form.dateOfBirth,
+    gender: form.gender,
+    height: form.height,
+    weight: form.weight,
+    maritalStatus: form.maritalStatus,
+    state: form.state,
+    city: form.city,
+    pincode: form.pincode,
+    diet: form.diet,
+    caste: form.caste,
+    motherTongue: form.motherTongue,
+    religion: form.religion,
+    education: form.education,
+    occupation: form.occupation,
+    annualIncome: form.annualIncome,
+    aboutMe: form.aboutMe,
+  };
 };
 
 export const toPartnerPreferenceFormType = (
@@ -72,52 +151,31 @@ export const toPartnerPreferenceFormType = (
 ): PartnerPreferenceFormType => {
   if (!preferences) {
     return {
-      ageRange: { min: 25, max: 50 },
-      heightRange: { min: 4.5, max: 7 },
-      annualIncomeRange: { min: 5, max: 500 },
+      maxAge: 46,
+      minAge: 25,
+      maxHeight: 213,
+      minHeight: 137,
+      maxIncome: 1000000,
+      minIncome: 500000,
     };
   }
   return {
-    ageRange: {
-      min: preferences.minAge,
-      max: preferences.maxAge,
-    },
-    heightRange: {
-      min: preferences.minHeight,
-      max: preferences.maxHeight,
-    },
-    maritalStatuses: preferences.maritalStatus
-      ? (preferences.maritalStatus.split(',') as MaritalStatus[])
-      : undefined,
+    maxAge: preferences.maxAge,
+    minAge: preferences.minAge,
+    maxHeight: preferences.maxHeight,
+    minHeight: preferences.minHeight,
+    maxIncome: preferences.maxIncome,
+    minIncome: preferences.minIncome,
+    maritalStatuses: preferences.maritalStatuses.split(',') as MaritalStatus[],
     gender: preferences.gender as Gender,
-    cities: preferences.cities
-      ? (preferences.cities.split(',') as City[])
-      : undefined,
-    states: preferences.states
-      ? (preferences.states.split(',') as State[])
-      : undefined,
-    diets: preferences.diet
-      ? (preferences.diet.split(',') as Diet[])
-      : undefined,
-    religions: preferences.religion
-      ? (preferences.religion.split(',') as Religion[])
-      : undefined,
-    motherTongues: preferences.motherTongue
-      ? (preferences.motherTongue.split(',') as MotherTongue[])
-      : undefined,
-    castes: preferences.caste
-      ? (preferences.caste.split(',') as Caste[])
-      : undefined,
-    educations: preferences.education
-      ? (preferences.education.split(',') as Education[])
-      : undefined,
-    occupations: preferences.occupation
-      ? (preferences.occupation.split(',') as Occupation[])
-      : undefined,
-    annualIncomeRange: {
-      min: preferences.minIncome,
-      max: preferences.maxIncome,
-    },
+    cities: preferences.cities.split(',') as City[],
+    states: preferences.states.split(',') as State[],
+    diet: preferences.diet as Diet,
+    religions: preferences.religions.split(',') as Religion[],
+    motherTongue: preferences.motherTongue as MotherTongue,
+    castes: preferences.castes.split(',') as Caste[],
+    educations: preferences.educations.split(',') as Education[],
+    occupations: preferences.occupations.split(',') as Occupation[],
   };
 };
 
@@ -125,21 +183,22 @@ export const toPartnerPreferencesRequest = (
   form: PartnerPreferenceFormType,
 ): UpdatePartnerPreferencesRequest => {
   return {
-    minAge: form.ageRange.min,
-    maxAge: form.ageRange.max,
-    minHeight: form.heightRange.min,
-    maxHeight: form.heightRange.max,
-    maritalStatus: form.maritalStatuses?.join(',') || '',
-    religion: form.religions?.join(',') || '',
-    caste: form.castes?.join(',') || '',
-    motherTongue: form.motherTongues?.join(',') || '',
-    diet: form.diets?.join(',') || '',
-    education: form.educations?.join(',') || '',
-    occupation: form.occupations?.join(',') || '',
-    minIncome: form.annualIncomeRange.min,
-    maxIncome: form.annualIncomeRange.max,
+    minAge: form.minAge,
+    maxAge: form.maxAge,
+    minHeight: form.minHeight,
+    maxHeight: form.maxHeight,
+    maritalStatuses: form.maritalStatuses?.join(',') || '',
+    religions: form.religions?.join(',') || '',
+    castes: form.castes?.join(',') || '',
+    motherTongue: form.motherTongue || '',
+    diet: form.diet || '',
+    educations: form.educations?.join(',') || '',
+    occupations: form.occupations?.join(',') || '',
+    minIncome: form.minIncome,
+    maxIncome: form.maxIncome,
     cities: form.cities?.join(',') || '',
     states: form.states?.join(',') || '',
     countries: 'INDIA',
+    gender: form.gender || '',
   };
 };

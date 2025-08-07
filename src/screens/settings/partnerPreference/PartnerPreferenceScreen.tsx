@@ -19,11 +19,25 @@ import { useLoader } from '@/src/context/LoaderContext';
 import { RootStackParamList } from '@/src/navigation/RootNavigator';
 
 import { useAppSelector, useAppDispatch } from '@/src/services/store/hook';
-import { useNavigation, NavigationProp } from '@react-navigation/native';
+import {
+  useNavigation,
+  NavigationProp,
+  RouteProp,
+} from '@react-navigation/native';
 import { fetchPartnerPreferences } from '@/src/services/slices/partner-preferences';
 import { useAuth } from '@/src/context/AuthContext';
 
-export default function PartnerPreferenceScreen() {
+type Props = {
+  route: RouteProp<RootStackParamList, 'PartnerPreference'>;
+};
+
+export default function PartnerPreferenceScreen({
+  route: {
+    params: {
+      data: { purpose },
+    },
+  },
+}: Props) {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const { partnerPreferences } = useAppSelector(
     state => state.partnerPreferences,
@@ -31,7 +45,7 @@ export default function PartnerPreferenceScreen() {
   const { showLoader, hideLoader } = useLoader();
   const dispatch = useAppDispatch();
   const userRepository = useUserRepository();
-  const { savePartnerPreferences } = useAuth();
+  const { saveUser } = useAuth();
 
   useEffect(() => {
     showLoader();
@@ -46,6 +60,8 @@ export default function PartnerPreferenceScreen() {
   const initialValues: PartnerPreferenceFormType =
     toPartnerPreferenceFormType(partnerPreferences);
 
+    console.log('Initial values for form:', initialValues);
+
   const onConfirm = async (values: PartnerPreferenceFormType) => {
     console.log('Updated values:', values);
     const request = toPartnerPreferencesRequest(values);
@@ -54,11 +70,11 @@ export default function PartnerPreferenceScreen() {
     try {
       const response = await userRepository.updatePartnerPreferences(request);
       console.log('Partner preferences updated successfully:', response);
-      if (response.preference) {
-        savePartnerPreferences(response.preference);
-      }
+      saveUser(response);
       hideLoader();
-      navigation.goBack();
+      if (purpose === 'UPDATE') {
+        navigation.goBack();
+      }
     } catch (error) {
       console.error('Error updating partner preferences:', error);
       hideLoader();
@@ -67,14 +83,17 @@ export default function PartnerPreferenceScreen() {
 
   return (
     <Screen>
-      <ScreenHeader headerText="Partner Preferences" />
+      <ScreenHeader
+        headerText="Partner Preferences"
+        screenType={purpose === 'ONBOARDING' ? 'onboarding' : 'default'}
+      />
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ flexGrow: 1 }}
       >
         <Formik<PartnerPreferenceFormType>
           initialValues={initialValues}
-          validationSchema={partnerPreferenceSchema}
+          // validationSchema={partnerPreferenceSchema}
           onSubmit={onConfirm}
         >
           {({ handleSubmit, isSubmitting, isValid }) => (
@@ -83,6 +102,7 @@ export default function PartnerPreferenceScreen() {
               paddingHorizontal={'$4'}
               paddingVertical={'$2'}
               justifyContent="space-between"
+              marginBottom={'$6'}
             >
               <YStack gap={'$4'}>
                 <PersonalPreferences />

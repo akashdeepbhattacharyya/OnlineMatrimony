@@ -1,17 +1,16 @@
 import { CheckBox } from './CheckBox';
 import { View, ViewProps, XStack } from 'tamagui';
-import { useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { Text } from './Text';
-import { CheckBoxOption } from '@/src/resources/form';
+import { OptionWithIcon } from '@/src/resources/form';
 
 type Props<T> = {
   testID?: string;
-  option: CheckBoxOption<T>;
+  option: OptionWithIcon<T>;
   selected: boolean;
   enabled?: boolean;
   size?: number;
-  onChange: (option: CheckBoxOption<T>) => void;
+  onChange: (option: OptionWithIcon<T>) => void;
 } & ViewProps;
 
 export const CheckBoxButton = <T = string,>({

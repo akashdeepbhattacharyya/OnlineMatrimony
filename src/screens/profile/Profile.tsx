@@ -42,7 +42,10 @@ export default function Profile() {
 
   const onEditPress = () => {
     navigation.navigate('UpdateProfile', {
-      data: userData,
+      data: {
+        userData,
+        purpose: 'UPDATE',
+      },
     });
   };
 
@@ -89,9 +92,9 @@ export default function Profile() {
           marginBottom={'$5'}
         >
           <PersonalInformation userData={userData} />
-          {/* <OtherInformation userData={userData} />
-          <Documents userData={userData} />
-          <ProfessionalInformation userData={userData} /> */}
+          <OtherInformation userProfile={userData.profile} />
+          {/* <Documents userProfile={userData.profile} /> */}
+          <ProfessionalInformation userProfile={userData.profile} />
           <AboutYourSelf userProfile={userData.profile} />
         </YStack>
       </ScrollView>

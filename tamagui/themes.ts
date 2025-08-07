@@ -127,6 +127,16 @@ const themes: {
   dark_tile_header_right_button: {
     color: tokens.color.button_bg_red,
   },
+  dark_select_light_mode: {
+    background: tokens.color.white,
+    color: tokens.color.black,
+    placeholder: tokens.color.gray_lighter,
+  },
+  dark_select_dark_mode: {
+    background: tokens.color.transparent,
+    color: tokens.color.white,
+    placeholder: tokens.color.white,
+  },
 };
 
 export default themes;

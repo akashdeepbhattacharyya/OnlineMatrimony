@@ -11,7 +11,7 @@ export function useMatchRepository() {
   const getMatches = async (
     page: number,
     size: number,
-    status: 'PENDING' | 'ACCEPTED' | 'REJECTED' | 'MUTUAL' = 'PENDING',
+    status: 'PENDING' | 'ACCEPTED' | 'REJECTED' | 'MUTUAL',
   ): Promise<PagedResponse<Match>> => {
     return handleApiResponse(
       client.get(`/matches?page=${page}&size=${size}&status=${status}`),
@@ -20,13 +20,13 @@ export function useMatchRepository() {
 
   const acceptMatch = async (matchId: number): Promise<string> => {
     return handleApiResponse(
-      client.post(`/matches/action`, { matchId, action: 'ACCEPTED' }),
+      client.post(`/matches/action`, { matchId, action: 'ACCEPT' }),
     );
   };
 
   const rejectMatch = async (matchId: number): Promise<string> => {
     return handleApiResponse(
-      client.post(`/matches/action`, { matchId, action: 'REJECTED' }),
+      client.post(`/matches/action`, { matchId, action: 'REJECT' }),
     );
   };
 

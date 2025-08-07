@@ -2,12 +2,16 @@ import { SafeAreaScreen as Screen } from '@/src/components/layouts/SafeAreaScree
 import { Platform, ScrollView, TouchableOpacity } from 'react-native';
 import { YStack, View } from 'tamagui';
 import BackIcon from '@/assets/images/icon-back.svg';
-import { RouteProp, useNavigation } from '@react-navigation/native';
+import { NavigationProp, RouteProp, useNavigation } from '@react-navigation/native';
 import { UpdateProfilePicture } from '@/src/components/profile/update/UpdateProfilePicture';
 import { NameAndEmail } from '@/src/components/profile/NameAndEmail';
 import { Formik } from 'formik';
 import { UpdatePersonalInformation } from '@/src/components/profile/update/UpdatePersonalInformation';
-import { UpdateUserProfileFormType } from '@/src/resources/form';
+import {
+  toUpdateUserProfileFormType,
+  toUpdateUserProfileRequest,
+  UpdateUserProfileFormType,
+} from '@/src/resources/form';
 import { PrimaryButton } from '@/src/components/common/PrimaryButton';
 import { updateUserProfileSchema } from '@/src/resources/validations/update-profile';
 import { UpdateAboutYourSelf } from '@/src/components/profile/update/UpdateAboutSelf';
@@ -16,9 +20,10 @@ import { useEffect, useState } from 'react';
 import { ImagePicker } from '@/src/components/common/ImagePicker';
 import { useLoader } from '@/src/context/LoaderContext';
 import { RootStackParamList } from '@/src/navigation/RootNavigator';
-import { convertToPayload } from '@/src/utils/utils';
 import { useUserRepository } from '@/src/api/repositories/useUserRepository';
 import { useAuth } from '@/src/context/AuthContext';
+import { UpdateOtherInformation } from '@/src/components/profile/update/UpdateOtherInformation';
+import { UpdateProfessionalInformation } from '@/src/components/profile/update/UpdateProfessionalInformation';
 
 type Props = {
   route: RouteProp<RootStackParamList, 'UpdateProfile'>;
@@ -26,10 +31,12 @@ type Props = {
 
 export default function UpdateProfile({
   route: {
-    params: { data: userData },
+    params: {
+      data: { userData, purpose },
+    },
   },
 }: Props) {
-  const navigation = useNavigation();
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();;
   const [openImagePicker, setOpenImagePicker] = useState(false);
   const [photoUri, setPhotoUri] = useState<string | undefined>(undefined);
   const { showLoader, hideLoader } = useLoader();
@@ -50,26 +57,22 @@ export default function UpdateProfile({
     navigation.goBack();
   };
 
-  const initialValues: UpdateUserProfileFormType = {
-    fullName: userData.profile.fullName,
-    dateOfBirth: userData.profile.dateOfBirth,
-    gender: userData.profile.gender,
-    city: userData.profile.city,
-    state: userData.profile.state,
-    pincode: userData.profile.pincode,
-    aboutMe: userData.profile.aboutMe,
-  };
+  const initialValues: UpdateUserProfileFormType = toUpdateUserProfileFormType(
+    userData.profile,
+  );
 
   const onUpdate = async (values: UpdateUserProfileFormType) => {
     console.log('Updated values:', values);
     showLoader();
     try {
       const response = await userRepository.updateProfile(
-        convertToPayload(values),
+        toUpdateUserProfileRequest(values),
       );
       console.log('Profile updated successfully:', response);
       saveUser(response);
-      navigation.goBack();
+      if (purpose === 'UPDATE') {
+        navigation.goBack();
+      }
     } catch (error) {
       console.error('Failed to update profile:', error);
     }
@@ -98,15 +101,17 @@ export default function UpdateProfile({
   return (
     <Screen theme="dark">
       <ProfileBackground uri={photoUri} />
-      <View
-        marginTop={Platform.OS === 'android' ? '$4' : '$2'}
-        paddingHorizontal={'$4'}
-        paddingVertical={'$2'}
-      >
-        <TouchableOpacity onPress={onBackPress}>
-          <BackIcon />
-        </TouchableOpacity>
-      </View>
+      {purpose === 'UPDATE' && (
+        <View
+          marginTop={Platform.OS === 'android' ? '$4' : '$2'}
+          paddingHorizontal={'$4'}
+          paddingVertical={'$2'}
+        >
+          <TouchableOpacity onPress={onBackPress}>
+            <BackIcon />
+          </TouchableOpacity>
+        </View>
+      )}
       <ScrollView
         contentContainerStyle={{
           flexGrow: 1,
@@ -132,6 +137,8 @@ export default function UpdateProfile({
             <YStack marginTop={'$4.5'} width="100%" marginBottom={'$10'}>
               <YStack gap={'$3'}>
                 <UpdatePersonalInformation />
+                <UpdateOtherInformation />
+                <UpdateProfessionalInformation />
                 <UpdateAboutYourSelf />
               </YStack>
 

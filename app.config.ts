@@ -1,24 +1,19 @@
-export const IS_STAGING = process.env.APP_VARIANT === 'development';
+export const IS_DEVELOPMENT = process.env.APP_VARIANT === 'development';
 export const IS_LOCAL = process.env.APP_VARIANT === 'local';
 
 module.exports = {
   expo: {
-    name: 'OnlineMatrimony',
+    name: 'Dhol Matrimony',
     slug: 'onlinematrimony',
     version: '1.0.0',
     orientation: 'portrait',
-    icon: './assets/images/img3.png',
-    userInterfaceStyle: 'light',
-    scheme: 'onlinematrimony',
-    splash: {
-      image: './assets/images/splash.png',
-      resizeMode: 'contain',
-      backgroundColor: '#ffffff',
-    },
+    icon: './assets/images/icon.png',
+    userInterfaceStyle: 'automatic',
+    scheme: 'dholmatrimony',
     assetBundlePatterns: ['**/*'],
     ios: {
-      supportsTablet: true,
-      bundleIdentifier: 'com.anonymous.onlinematrimony',
+      supportsTablet: false,
+      bundleIdentifier: 'com.joshful.dholmatrimony',
       infoPlist: {
         NSLocationWhenInUseUsageDescription:
           'Allow to access your location for address autofill',
@@ -26,13 +21,13 @@ module.exports = {
     },
     android: {
       adaptiveIcon: {
-        foregroundImage: './assets/images/img3.png',
+        foregroundImage: './assets/images/adaptive-icon.png',
         backgroundColor: '#ffffff',
       },
-      package: 'com.anonymous.onlinematrimony',
+      package: 'com.joshful.dholmatrimony',
     },
     web: {
-      favicon: './assets/images/img3.png',
+      favicon: './assets/images/icon.png',
     },
     plugins: [
       'expo-font',
@@ -41,6 +36,21 @@ module.exports = {
         {
           photosPermission: 'Allow $(PRODUCT_NAME) to access your photos.',
           cameraPermission: 'Allow $(PRODUCT_NAME) to access your camera.',
+        },
+      ],
+      [
+        'expo-splash-screen',
+        {
+          resizeMode: 'cover',
+          ios: {
+            image: './assets/images/splash.png',
+            enableFullScreenImage_legacy: true,
+          },
+          android: {
+            image: './assets/images/splash_android.png',
+            imageWidth: 200,
+          },
+          backgroundColor: '#2B2B2B',
         },
       ],
     ],

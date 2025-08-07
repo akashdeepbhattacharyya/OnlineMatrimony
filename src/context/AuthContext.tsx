@@ -3,18 +3,20 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { PartnerPreferences, User } from '../models/User';
 import { useAppDispatch } from '../services/store/hook';
 import { setUser as setUserAction } from '../services/slices/userSlice';
+import { setPartnerPreferences as setPartnerPreferencesAction } from '../services/slices/partner-preferences';
 import { Token } from '../models/Authentication';
+import { Use } from 'react-native-svg';
 
 type AuthContextType = {
   user: User | undefined;
   token: Token | undefined;
+  partnerPreferences: PartnerPreferences | undefined;
   saveUser: (userData: User) => Promise<void>;
   clearUser: () => Promise<void>;
   saveToken: (token: Token) => Promise<void>;
   clearToken: () => Promise<void>;
   clearSession: () => Promise<void>;
-  partnerPreferences?: PartnerPreferences;
-  savePartnerPreferences: (preferences: PartnerPreferences) => Promise<void>;
+  clearPartnerPreferences: () => Promise<void>;
   isLoading: boolean;
 };
 
@@ -25,7 +27,9 @@ export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [user, setUser] = useState<User | undefined>(undefined);
   const [token, setToken] = useState<Token | undefined>(undefined);
-  const [partnerPreferences, setPartnerPreferences] = useState<PartnerPreferences | undefined>(undefined);
+  const [partnerPreferences, setPartnerPreferences] = useState<
+    PartnerPreferences | undefined
+  >(undefined);
   const [isLoading, setIsLoading] = useState(true);
   const dispatch = useAppDispatch();
 
@@ -64,10 +68,13 @@ export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
 
     const loadPartnerPreferences = async () => {
       try {
-        const storedPreferences = await AsyncStorage.getItem('partnerPreferences');
+        const storedPreferences = await AsyncStorage.getItem(
+          'partnerPreferences',
+        );
         if (storedPreferences) {
           const parsedPreferences = JSON.parse(storedPreferences);
           setPartnerPreferences(parsedPreferences);
+          dispatch(setPartnerPreferencesAction(parsedPreferences));
         }
       } catch (error) {
         console.error('Error loading partner preferences from storage:', error);
@@ -127,18 +134,19 @@ export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       await clearUser();
       await clearToken();
+      await clearPartnerPreferences();
     } catch (error) {
       console.error('Error clearing session:', error);
       throw error;
     }
   };
 
-  const savePartnerPreferences = async (preferences: PartnerPreferences) => {
+  const clearPartnerPreferences = async () => {
     try {
-      setPartnerPreferences(preferences);
-      await AsyncStorage.setItem('partnerPreferences', JSON.stringify(preferences));
+      setPartnerPreferences(undefined);
+      await AsyncStorage.removeItem('partnerPreferences');
     } catch (error) {
-      console.error('Error saving partner preferences to storage:', error);
+      console.error('Error clearing partner preferences from storage:', error);
       throw error;
     }
   };
@@ -148,13 +156,13 @@ export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
       value={{
         user,
         token,
+        partnerPreferences,
         saveUser,
         clearUser,
         saveToken,
         clearToken,
         clearSession,
-        partnerPreferences,
-        savePartnerPreferences,
+        clearPartnerPreferences,
         isLoading,
       }}
     >

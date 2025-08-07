@@ -1,16 +1,5 @@
-import { ViewProps } from 'tamagui';
-import Header from './Header';
+import Header, { HeaderProps } from './Header';
 
-type Props = {
-  headerText?: string;
-} & ViewProps;
-
-export const TabHeader = ({ headerText, ...props }: Props) => {
-  return (
-    <Header
-      headerText={headerText}
-      screenType="tab"
-      {...props}
-    />
-  );
+export const TabHeader = ({ headerText, ...props }: HeaderProps) => {
+  return <Header headerText={headerText} screenType="tab" {...props} />;
 };

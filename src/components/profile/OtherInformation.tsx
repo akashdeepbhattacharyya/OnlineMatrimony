@@ -4,10 +4,10 @@ import { ProfileItem } from './ProfileItem';
 import { TileHeader } from '../common/TileHeader';
 import { castes } from '@/src/resources/caste';
 import { diets } from '@/src/resources/diet';
-import { educations } from '@/src/resources/education';
 import { maritalStatuses } from '@/src/resources/marital-status';
 import { motherTongues } from '@/src/resources/mother-tongue';
 import { religions } from '@/src/resources/religion';
+import { toFeetAndInches } from '@/src/utils/utils';
 
 type Props = {
   userProfile: UserProfile;
@@ -27,33 +27,34 @@ export const OtherInformation = ({ userProfile, ...props }: Props) => {
       <TileHeader title="Other Information" />
       <ProfileItem
         title="Diet"
-        subtitle={diets[userProfile.diet as keyof typeof diets]}
+        subtitle={diets[userProfile.diet as keyof typeof diets] || 'N/A'}
       />
-      <ProfileItem title="Height" subtitle={userProfile.height} />
-      <ProfileItem title="Weight" subtitle={userProfile.weight} />
+      <ProfileItem
+        title="Height"
+        subtitle={toFeetAndInches(userProfile.height) || 'N/A'}
+      />
+      <ProfileItem title="Weight" subtitle={`${userProfile.weight || 0} kg`} />
       <ProfileItem
         title="Religion"
-        subtitle={religions[userProfile.religion as keyof typeof religions]}
+        subtitle={religions[userProfile.religion as keyof typeof religions] || 'N/A'}
       />
       <ProfileItem
         title="Caste"
-        subtitle={castes[userProfile.caste as keyof typeof castes]}
+        subtitle={castes[userProfile.caste as keyof typeof castes] || 'N/A'}
       />
       <ProfileItem
-        title="Languages"
+        title="Mother Tongue"
         subtitle={
-          motherTongues[userProfile.motherTongue as keyof typeof motherTongues]
+          motherTongues[userProfile.motherTongue as keyof typeof motherTongues] || 'N/A'
         }
       />
       <ProfileItem
         title="Marital Status"
         subtitle={
-          maritalStatuses[userProfile.maritalStatus as keyof typeof maritalStatuses]
+          maritalStatuses[
+            userProfile.maritalStatus as keyof typeof maritalStatuses
+          ] || 'N/A'
         }
-      />
-      <ProfileItem
-        title="Highest Education"
-        subtitle={educations[userProfile.education as keyof typeof educations]}
       />
     </YStack>
   );

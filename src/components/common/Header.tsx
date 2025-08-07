@@ -12,7 +12,7 @@ import GhostView from './GhostView';
 
 type Props = {
   headerText?: string;
-  screenType?: 'default' | 'tab';
+  screenType?: 'default' | 'tab' | 'onboarding';
 } & ViewProps;
 
 const Header = ({ headerText, screenType = 'default', ...props }: Props) => {
@@ -34,7 +34,7 @@ const Header = ({ headerText, screenType = 'default', ...props }: Props) => {
 
   return (
     <XStack
-      justifyContent="space-between"
+      justifyContent={screenType === 'onboarding' ? 'center' : 'space-between'}
       alignItems="center"
       paddingVertical={'$2'}
       paddingHorizontal={'$4'}
@@ -77,3 +77,4 @@ const Header = ({ headerText, screenType = 'default', ...props }: Props) => {
 };
 
 export default Header;
+export type HeaderProps = Props;

@@ -6,11 +6,11 @@ type Props<T> = {
   testID?: string;
   options: Option<T>[];
   onChange: (option: Option<T>) => void;
-  selectedOption?: Option<T> | null;
+  selectedOption?: T;
   disabled?: boolean;
 } & ViewProps;
 
-export const CheckBoxButtonGroup = <T = string,>({
+export const CheckBoxButtonGroup = <T,>({
   testID = 'check-box-button-group',
   options,
   onChange,
@@ -26,7 +26,7 @@ export const CheckBoxButtonGroup = <T = string,>({
             <CheckBoxButton
               testID={`${'checkbox-button'}-${index + 1}`}
               option={item}
-              selected={item.value === selectedOption?.value}
+              selected={item.value === selectedOption}
               enabled={selectedOption == undefined}
               disabled={disabled}
               onChange={onChange}

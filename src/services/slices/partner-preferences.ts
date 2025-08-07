@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PartnerPreferences, User } from '@/src/models/User';
-import { ApiResponse } from '@/src/models/ApiResponse';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type MatchState = {
   partnerPreferences?: PartnerPreferences;
@@ -18,7 +18,6 @@ export const fetchPartnerPreferences = createAsyncThunk(
   ) => {
     try {
       const response = await getPartnerPreferences();
-      console.log('fetchPartnerPreferences response:', response);
 
       if (!response || !response.preference) {
         return thunkAPI.rejectWithValue({
@@ -28,7 +27,10 @@ export const fetchPartnerPreferences = createAsyncThunk(
           message: 'No partner preferences found',
         });
       }
-
+      await AsyncStorage.setItem(
+        'partnerPreferences',
+        JSON.stringify(response.preference),
+      );
       return response.preference;
     } catch (e) {
       console.error(e);

@@ -1,7 +1,3 @@
-import { UpdateUserProfileRequest } from '../models/User';
-import { UpdateUserProfileFormType } from '../resources/form';
-import { formatDateString } from './dateFormatter';
-
 export const isValidPhone = (value: string) => {
   const phoneRegex = /^[0-9]{10}$/; // You can customize this
   return phoneRegex.test(value);
@@ -25,20 +21,6 @@ export const isEmailOrPhone = (
   } else {
     return 'invalid';
   }
-};
-
-export const convertToPayload = (
-  form: UpdateUserProfileFormType,
-): UpdateUserProfileRequest => {
-  return {
-    fullName: form.fullName,
-    dateOfBirth: form.dateOfBirth,
-    gender: form.gender,
-    state: form.state,
-    city: form.city,
-    pincode: form.pincode,
-    aboutMe: form.aboutMe,
-  };
 };
 
 export const toAge = (dateOfBirth?: string): number | undefined => {
@@ -81,13 +63,10 @@ export const toUri = (
   return `https://ui-avatars.com/api/?name=${fullName}&background=${background}&color=${color}&size=${size}`;
 };
 
-export function formatFeetInch(value: number) {
-  const feet = Math.floor(value);
-  const inches = Math.round((value - feet) * 12);
-  return `${feet}'${inches}"`;
-}
-
 export function formatAnnualIncome(value: number) {
+  if (value === 0) {
+    return 'N/A';
+  }
   if (value < 10000000) {
     const lakhs = Math.floor(value / 100000);
     return `${lakhs} ${lakhs === 1 ? 'Lakh' : 'Lakhs'}`;

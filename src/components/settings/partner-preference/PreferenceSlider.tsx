@@ -5,7 +5,7 @@ import { Slider, SliderValue } from '../../common/Slider';
 type Props = {
   maxTitle?: string;
   minTitle?: string;
-  sliderValue: SliderValue;
+  sliderValue?: SliderValue;
   onValuesChange: (values: SliderValue) => void;
   max: number;
   min: number;

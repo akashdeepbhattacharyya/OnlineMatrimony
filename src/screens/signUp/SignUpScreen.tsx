@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { ScrollView, ImageBackground, Platform } from 'react-native';
+import { ScrollView, ImageBackground } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { NavigationProp, useNavigation } from '@react-navigation/core';
 import { RootStackParamList } from '../../navigation/RootNavigator';
@@ -9,7 +9,7 @@ import { useLoader } from '../../context/LoaderContext';
 import { CheckBoxButton } from '@/src/components/common/CheckBoxButton';
 import { PrimaryButton } from '@/src/components/common/PrimaryButton';
 import { TitleAndSubtitle } from '@/src/components/common/TitleAndSubtitle';
-import { YStack, XStack, getToken, View } from 'tamagui';
+import { YStack, XStack } from 'tamagui';
 import { LabelledTextField } from '@/src/components/common/LabelledTextField';
 import PersonIcon from '@/assets/images/icon_person.svg';
 import EmailIcon from '@/assets/images/icon_email.svg';
@@ -17,12 +17,8 @@ import PhoneIcon from '@/assets/images/icon_phone.svg';
 import { LabelledButton } from '@/src/components/common/LabelledButton';
 import { Text } from '@/src/components/common/Text';
 import { CheckBoxButtonGroup } from '@/src/components/common/CheckBoxButtonGroup';
-import { Gender, genders, getGenderIcon } from '@/src/resources/gender';
-import {
-  CheckBoxOption,
-  Option,
-  UserRegistrationFormType,
-} from '@/src/resources/form';
+import { Gender, genderOptionsWithIcons } from '@/src/resources/gender';
+import { Option, UserRegistrationFormType } from '@/src/resources/form';
 import { SocialMediaButtons } from '@/src/components/common/SocialMediaButtons';
 import { LabelledDivider } from '@/src/components/common/LabelledDivider';
 import { useUserAuth } from '@/src/hooks/useUserAuth';
@@ -39,47 +35,23 @@ import { DateTimePicker } from '@/src/components/common/DateTimePicker';
 export default function SignUpScreen() {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const [selectedDate, setSelectedDate] = useState(new Date(2000, 0, 1));
-  const [selectedGender, setSelectedGender] = useState<
-    Option<string> | undefined
-  >(__DEV__ ? process.env.SIGNUP_GENDER : undefined);
-  const { register, error: userRegistrationError, data } = useUserAuth();
+  const [selectedGender, setSelectedGender] = useState<Gender | undefined>(
+    __DEV__ ? process.env.SIGNUP_GENDER : undefined,
+  );
+  const { register, error: userRegistrationError } = useUserAuth();
+
+  const randomValue = Math.floor(Math.random() * (99 - 30 + 1)) + 30;
 
   const initialValues = {
-    fullName: __DEV__ ? process.env.SIGNUP_FULL_NAME : '',
-    email: __DEV__ ? process.env.SIGNUP_EMAIL : '',
-    phone: __DEV__ ? process.env.SIGNUP_PHONE_NO : '',
-    dateOfBirth: __DEV__ ? process.env.SIGNUP_DOB : '',
-    gender: __DEV__ ? process.env.SIGNUP_GENDER : '',
-    terms: __DEV__ ? process.env.SIGNUP_TERMS : false,
-    password: __DEV__ ? process.env.SIGNUP_PASSWORD : '',
-    confirmPassword: __DEV__ ? process.env.SIGNUP_PASSWORD : '',
+    fullName: __DEV__ ? `John Doe` : '',
+    email: __DEV__ ? `johndoe${randomValue}@example.com` : '',
+    phone: __DEV__ ? `98765432${randomValue}` : '',
+    dateOfBirth: __DEV__ ? `1990-01-01` : '',
+    gender: __DEV__ ? `MALE` : '',
+    terms: __DEV__ ? true : false,
+    password: __DEV__ ? `Boxer@1998` : '',
+    confirmPassword: __DEV__ ? `Boxer@1998` : '',
   };
-
-  const genderOptions: CheckBoxOption<string>[] = Object.keys(genders).reduce(
-    (list: CheckBoxOption<string>[], value) => [
-      ...list,
-      {
-        label: genders[value as keyof typeof genders],
-        value,
-        icon: (
-          <MaterialIcons
-            name={getGenderIcon(value as Gender) as any}
-            size={40}
-            color={
-              selectedGender == undefined
-                ? getToken('$color.white')
-                : selectedGender?.value == value
-                ? getToken('$color.button_bg_red')
-                : getToken('$color.gray')
-            }
-            style={{ marginLeft: 8 }}
-          />
-        ),
-      },
-    ],
-    [],
-  );
 
   const { showLoader, hideLoader } = useLoader();
 
@@ -111,22 +83,9 @@ export default function SignUpScreen() {
     }
   };
 
-  const handleDateChange = (
-    event: any,
-    date: Date | undefined,
-    setFieldValue: any,
-  ) => {
-    setShowDatePicker(false);
-    if (date) {
-      setSelectedDate(date);
-      const formatted = formatDate(date);
-      setFieldValue('dateOfBirth', formatted);
-    }
-  };
-
-  const handleGenderChange = (option: Option<string>, setFieldValue: any) => {
+  const handleGenderChange = (option: Option<Gender>, setFieldValue: any) => {
     setFieldValue('gender', option.value);
-    setSelectedGender(option);
+    setSelectedGender(option.value);
   };
 
   return (
@@ -294,7 +253,7 @@ export default function SignUpScreen() {
                       Select Gender
                     </Text>
                     <CheckBoxButtonGroup
-                      options={genderOptions}
+                      options={genderOptionsWithIcons(selectedGender)}
                       selectedOption={selectedGender}
                       onChange={option =>
                         handleGenderChange(option, setFieldValue)
