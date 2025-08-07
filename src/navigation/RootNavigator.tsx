@@ -50,7 +50,7 @@ const PartnerPreferenceScreen = lazy(
   () => import('../screens/settings/partnerPreference/PartnerPreferenceScreen'),
 );
 const NotificationSettingsScreen = lazy(
-  () => import('../screens/notificationSettings/NotificationSettingsScreen'),
+  () => import('../screens/settings/notificationSettings/NotificationSettingsScreen'),
 );
 const AccountSettingsScreen = lazy(
   () => import('../screens/accountSettings/AccountSettingsScreen'),
