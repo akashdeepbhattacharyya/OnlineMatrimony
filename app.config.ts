@@ -1,4 +1,4 @@
-export const IS_STAGING = process.env.APP_VARIANT === 'development';
+export const IS_DEVELOPMENT = process.env.APP_VARIANT === 'development';
 export const IS_LOCAL = process.env.APP_VARIANT === 'local';
 
 module.exports = {

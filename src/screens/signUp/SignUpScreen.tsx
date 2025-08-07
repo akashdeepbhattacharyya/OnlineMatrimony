@@ -40,15 +40,17 @@ export default function SignUpScreen() {
   );
   const { register, error: userRegistrationError } = useUserAuth();
 
+  const randomValue = Math.floor(Math.random() * (99 - 30 + 1)) + 30;
+
   const initialValues = {
-    fullName: __DEV__ ? process.env.SIGNUP_FULL_NAME : '',
-    email: __DEV__ ? process.env.SIGNUP_EMAIL : '',
-    phone: __DEV__ ? process.env.SIGNUP_PHONE_NO : '',
-    dateOfBirth: __DEV__ ? process.env.SIGNUP_DOB : '',
-    gender: __DEV__ ? process.env.SIGNUP_GENDER : '',
-    terms: __DEV__ ? process.env.SIGNUP_TERMS : false,
-    password: __DEV__ ? process.env.SIGNUP_PASSWORD : '',
-    confirmPassword: __DEV__ ? process.env.SIGNUP_PASSWORD : '',
+    fullName: __DEV__ ? `John Doe` : '',
+    email: __DEV__ ? `johndoe${randomValue}@example.com` : '',
+    phone: __DEV__ ? `98765432${randomValue}` : '',
+    dateOfBirth: __DEV__ ? `1990-01-01` : '',
+    gender: __DEV__ ? `MALE` : '',
+    terms: __DEV__ ? true : false,
+    password: __DEV__ ? `Boxer@1998` : '',
+    confirmPassword: __DEV__ ? `Boxer@1998` : '',
   };
 
   const { showLoader, hideLoader } = useLoader();
