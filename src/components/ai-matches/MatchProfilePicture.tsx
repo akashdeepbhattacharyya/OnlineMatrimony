@@ -7,6 +7,9 @@ import VerifiedBlob from '@/assets/images/verified.svg';
 import { toAge, toFeetAndInches, toUri } from '@/src/utils/utils';
 import { cities, states } from '@/src/resources/city-state';
 import { Dimensions } from 'react-native';
+import { Occupation, occupations } from '@/src/resources/occupation';
+import { religions } from '@/src/resources/religion';
+import { castes } from '@/src/resources/caste';
 
 type Props = {
   matchedUserProfile: MatchedUserProfile;
@@ -65,13 +68,15 @@ export const MatchProfilePicture = ({ matchedUserProfile }: Props) => {
             {[
               [toAge(matchedUserProfile.dateOfBirth), 'yrs'].join(' '),
               toFeetAndInches(matchedUserProfile.height),
-              matchedUserProfile.occupation,
+              occupations[
+                matchedUserProfile.occupation as keyof typeof occupations
+              ],
             ].join('  ')}
           </Text>
           <Text font="heading" size="small">
             {[
-              matchedUserProfile.religion,
-              matchedUserProfile.caste,
+              religions[matchedUserProfile.religion as keyof typeof religions],
+              castes[matchedUserProfile.caste as keyof typeof castes],
               cities[matchedUserProfile.city as keyof typeof cities],
               states[matchedUserProfile.state as keyof typeof states],
             ]

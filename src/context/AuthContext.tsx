@@ -1,22 +1,22 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { PartnerPreferences, User } from '../models/User';
 import { useAppDispatch } from '../services/store/hook';
 import { setUser as setUserAction } from '../services/slices/userSlice';
 import { setPartnerPreferences as setPartnerPreferencesAction } from '../services/slices/partner-preferences';
 import { Token } from '../models/Authentication';
-import { Use } from 'react-native-svg';
+import { getItem, removeItem, setItem } from '../services/local-storage';
 
 type AuthContextType = {
   user: User | undefined;
   token: Token | undefined;
   partnerPreferences: PartnerPreferences | undefined;
   saveUser: (userData: User) => Promise<void>;
-  clearUser: () => Promise<void>;
   saveToken: (token: Token) => Promise<void>;
+  savePartnerPreferences: (preferences?: PartnerPreferences) => Promise<void>;
+  clearUser: () => Promise<void>;
   clearToken: () => Promise<void>;
-  clearSession: () => Promise<void>;
   clearPartnerPreferences: () => Promise<void>;
+  clearSession: () => Promise<void>;
   isLoading: boolean;
 };
 
@@ -37,16 +37,13 @@ export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
     const loadUser = async () => {
       try {
         setIsLoading(true);
-        const storedUser = await AsyncStorage.getItem('user');
-        if (storedUser) {
-          const parsedUser = JSON.parse(storedUser);
-          setUser(parsedUser);
-          dispatch(setUserAction({ userData: parsedUser }));
-        }
+        const storedUser = await getItem('USER');
+        setUser(storedUser);
+        dispatch(setUserAction({ userData: storedUser }));
       } catch (error) {
         console.error('Error loading user from storage:', error);
         // Clear corrupted data
-        await AsyncStorage.removeItem('user');
+        await removeItem('USER');
       } finally {
         setIsLoading(false);
       }
@@ -54,32 +51,28 @@ export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
 
     const loadToken = async () => {
       try {
-        const storedToken = await AsyncStorage.getItem('token');
-        if (storedToken) {
-          const parsedToken = JSON.parse(storedToken);
-          setToken(parsedToken);
-        }
+        const storedToken = await getItem('TOKEN');
+        setToken(storedToken);
       } catch (error) {
         console.error('Error loading token from storage:', error);
         // Clear corrupted data
-        await AsyncStorage.removeItem('token');
+        await removeItem('TOKEN');
       }
     };
 
     const loadPartnerPreferences = async () => {
       try {
-        const storedPreferences = await AsyncStorage.getItem(
-          'partnerPreferences',
+        const storedPreferences = await getItem('PARTNER_PREFERENCES');
+        setPartnerPreferences(storedPreferences);
+        dispatch(
+          setPartnerPreferencesAction({
+            partnerPreferences: storedPreferences,
+          }),
         );
-        if (storedPreferences) {
-          const parsedPreferences = JSON.parse(storedPreferences);
-          setPartnerPreferences(parsedPreferences);
-          dispatch(setPartnerPreferencesAction(parsedPreferences));
-        }
       } catch (error) {
         console.error('Error loading partner preferences from storage:', error);
         // Clear corrupted data
-        await AsyncStorage.removeItem('partnerPreferences');
+        await removeItem('PARTNER_PREFERENCES');
       }
     };
 
@@ -92,20 +85,9 @@ export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
     try {
       setUser(userData);
       dispatch(setUserAction({ userData: userData }));
-      await AsyncStorage.setItem('user', JSON.stringify(userData));
+      await setItem('USER', userData);
     } catch (error) {
       console.error('Error saving user to storage:', error);
-      throw error;
-    }
-  };
-
-  const clearUser = async () => {
-    try {
-      setUser(undefined);
-      await AsyncStorage.removeItem('user');
-      await clearToken();
-    } catch (error) {
-      console.error('Error removing user from storage:', error);
       throw error;
     }
   };
@@ -113,9 +95,33 @@ export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
   const saveToken = async (token: Token) => {
     try {
       setToken(token);
-      await AsyncStorage.setItem('token', JSON.stringify(token));
+      await setItem('TOKEN', token);
     } catch (error) {
       console.error('Error saving token to storage:', error);
+      throw error;
+    }
+  };
+
+  const savePartnerPreferences = async (preferences?: PartnerPreferences) => {
+    try {
+      setPartnerPreferences(preferences);
+      dispatch(
+        setPartnerPreferencesAction({ partnerPreferences: preferences }),
+      );
+      await setItem('PARTNER_PREFERENCES', preferences);
+    } catch (error) {
+      console.error('Error saving partner preferences to storage:', error);
+      throw error;
+    }
+  };
+
+  const clearUser = async () => {
+    try {
+      setUser(undefined);
+      await removeItem('USER');
+      await clearToken();
+    } catch (error) {
+      console.error('Error removing user from storage:', error);
       throw error;
     }
   };
@@ -123,9 +129,19 @@ export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
   const clearToken = async () => {
     try {
       setToken(undefined);
-      await AsyncStorage.removeItem('token');
+      await removeItem('TOKEN');
     } catch (error) {
       console.error('Error clearing token from storage:', error);
+      throw error;
+    }
+  };
+
+  const clearPartnerPreferences = async () => {
+    try {
+      setPartnerPreferences(undefined);
+      await removeItem('PARTNER_PREFERENCES');
+    } catch (error) {
+      console.error('Error clearing partner preferences from storage:', error);
       throw error;
     }
   };
@@ -141,16 +157,6 @@ export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
-  const clearPartnerPreferences = async () => {
-    try {
-      setPartnerPreferences(undefined);
-      await AsyncStorage.removeItem('partnerPreferences');
-    } catch (error) {
-      console.error('Error clearing partner preferences from storage:', error);
-      throw error;
-    }
-  };
-
   return (
     <AuthContext.Provider
       value={{
@@ -162,6 +168,7 @@ export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
         saveToken,
         clearToken,
         clearSession,
+        savePartnerPreferences,
         clearPartnerPreferences,
         isLoading,
       }}

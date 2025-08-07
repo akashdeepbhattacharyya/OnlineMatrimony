@@ -1,5 +1,4 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../store/store';
 import { Match } from '@/src/models/Match';
 
 type MatchState = {
@@ -30,8 +29,8 @@ const matchSlice = createSlice({
   name: 'match',
   initialState,
   reducers: {
-    setPendingMatches(state, action: PayloadAction<Match[]>) {
-      state.pendingMatches = action.payload;
+    setMatches(state, action: PayloadAction<MatchState>) {
+      state.pendingMatches = action.payload.pendingMatches;
     },
   },
   extraReducers: builder => {
@@ -41,5 +40,5 @@ const matchSlice = createSlice({
   },
 });
 
-export const { setPendingMatches } = matchSlice.actions;
+export const { setMatches } = matchSlice.actions;
 export default matchSlice.reducer;

@@ -23,8 +23,10 @@ export const PersonalInformation = ({ userData, ...props }: Props) => {
       <TileHeader title="Personal Information" />
       <ProfileItem title="Full Name" subtitle={userData.profile.fullName} />
       <ProfileItem
-        title="Date of Birth"
-        subtitle={userData.profile.dateOfBirth || 'N/A'}
+        title="Age"
+        subtitle={
+          userData.profile.age ? `${userData.profile.age} years` : 'N/A'
+        }
       />
       <ProfileItem
         title="Gender"

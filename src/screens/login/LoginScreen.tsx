@@ -21,7 +21,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 const LoginScreen = () => {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const { saveUser, saveToken } = useAuth();
+  const { saveUser, saveToken, savePartnerPreferences } = useAuth();
 
   const initialValues = {
     emailOrPhone: __DEV__ ? process.env.LOGIN_PHONE_NO : '',
@@ -47,6 +47,7 @@ const LoginScreen = () => {
         expiresIn: response.expiresIn,
       });
       saveUser(response.user);
+      savePartnerPreferences(response.user.preference);
       console.log('Login successful:', response);
     } else {
       console.log('Login failed:', loginError);
