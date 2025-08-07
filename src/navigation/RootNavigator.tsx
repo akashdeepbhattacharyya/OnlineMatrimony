@@ -40,7 +40,7 @@ const SignUpScreen = lazy(() => import('../screens/signUp/SignUpScreen'));
 const OtpValidationScreen = lazy(
   () => import('../screens/otpValidation/OtpValidationScreen'),
 );
-const Onboarding = lazy(() => import('../screens/onboarding/Onboarding'));
+const Onboarding = lazy(() => import('../screens/onBoarding/Onboarding'));
 const ProfileSelection = lazy(
   () => import('../screens/profileSelection/ProfileSelection'),
 );
