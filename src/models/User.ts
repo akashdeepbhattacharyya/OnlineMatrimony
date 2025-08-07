@@ -26,7 +26,7 @@ export type PersonalInformation = {
   city?: City;
   state?: State;
   pincode?: string;
-  age: number;
+  age?: number;
 };
 
 /**

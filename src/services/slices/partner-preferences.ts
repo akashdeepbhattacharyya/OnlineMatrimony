@@ -1,12 +1,12 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PartnerPreferences, User } from '@/src/models/User';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { setItem } from '../local-storage';
 
-type MatchState = {
+type PartnerPreferencesState = {
   partnerPreferences?: PartnerPreferences;
 };
 
-const initialState: MatchState = {
+const initialState: PartnerPreferencesState = {
   partnerPreferences: undefined,
 };
 
@@ -27,10 +27,7 @@ export const fetchPartnerPreferences = createAsyncThunk(
           message: 'No partner preferences found',
         });
       }
-      await AsyncStorage.setItem(
-        'partnerPreferences',
-        JSON.stringify(response.preference),
-      );
+      setItem('PARTNER_PREFERENCES', response.preference);
       return response.preference;
     } catch (e) {
       console.error(e);
@@ -48,8 +45,11 @@ const matchSlice = createSlice({
   name: 'preference',
   initialState,
   reducers: {
-    setPartnerPreferences(state, action: PayloadAction<PartnerPreferences>) {
-      state.partnerPreferences = action.payload;
+    setPartnerPreferences(
+      state,
+      action: PayloadAction<PartnerPreferencesState>,
+    ) {
+      state.partnerPreferences = action.payload.partnerPreferences;
     },
   },
   extraReducers: builder => {
