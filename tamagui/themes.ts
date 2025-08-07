@@ -8,7 +8,17 @@ export type BaseTheme = {
   buttonTitle: string | Variable<any>;
   title: string | Variable<any>;
   subtitle: string | Variable<any>;
-} & TamaguiBaseTheme;
+} & TamaguiBaseTheme &
+  SwitchTheme;
+
+type SwitchTheme = {
+  backgroundOff: string | Variable<any>;
+  backgroundOn: string | Variable<any>;
+  thumbOn: string | Variable<any>;
+  thumbOff: string | Variable<any>;
+  borderColorOn: string | Variable<any>;
+  borderColorOff: string | Variable<any>;
+};
 
 const themes: {
   [key: string]: Partial<BaseTheme>;
@@ -136,6 +146,15 @@ const themes: {
     background: tokens.color.transparent,
     color: tokens.color.white,
     placeholder: tokens.color.white,
+  },
+  dark_notification_item: {
+    title: tokens.color.white,
+    backgroundOff: tokens.color.primary,
+    backgroundOn: tokens.color.button_bg_red,
+    thumbOn: tokens.color.white,
+    thumbOff: tokens.color.gray_lighter,
+    borderColorOn: tokens.color.white,
+    borderColorOff: tokens.color.gray_dark,
   },
 };
 
