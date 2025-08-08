@@ -59,7 +59,7 @@ const ContactFiltersScreen = lazy(
   () => import('../screens/contactFilters/ContactFiltersScreen'),
 );
 const HideDeleteProfileScreen = lazy(
-  () => import('../screens/hideDeleteProfile/HideDeleteProfileScreen'),
+  () => import('../screens/settings/accountSettings/hideDeleteProfile/HideDeleteProfileScreen'),
 );
 const SubscriptionScreen = lazy(
   () => import('../screens/subscription/SubscriptionScreen'),

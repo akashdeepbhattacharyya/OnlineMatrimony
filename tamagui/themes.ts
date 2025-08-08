@@ -8,6 +8,7 @@ export type BaseTheme = {
   buttonTitle: string | Variable<any>;
   title: string | Variable<any>;
   subtitle: string | Variable<any>;
+  description: string | Variable<any>;
 } & TamaguiBaseTheme &
   SwitchTheme;
 
@@ -155,6 +156,12 @@ const themes: {
     thumbOff: tokens.color.gray_lighter,
     borderColorOn: tokens.color.white,
     borderColorOff: tokens.color.gray_dark,
+  },
+  dark_hide_delete_profile_item: {
+    title: tokens.color.gray_lighter,
+    subtitle: tokens.color.white,
+    description: tokens.color.gray_lighter,
+    buttonTitle: tokens.color.button_bg_red,
   },
 };
 
