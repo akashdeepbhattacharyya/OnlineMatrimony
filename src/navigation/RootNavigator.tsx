@@ -53,7 +53,7 @@ const NotificationSettingsScreen = lazy(
   () => import('../screens/settings/notificationSettings/NotificationSettingsScreen'),
 );
 const AccountSettingsScreen = lazy(
-  () => import('../screens/accountSettings/AccountSettingsScreen'),
+  () => import('../screens/settings/accountSettings/AccountSettingsScreen'),
 );
 const ContactFiltersScreen = lazy(
   () => import('../screens/contactFilters/ContactFiltersScreen'),

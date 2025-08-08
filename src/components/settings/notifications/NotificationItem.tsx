@@ -20,13 +20,12 @@ export const NotificationItem = ({
         alignItems="center"
         paddingVertical={'$3'}
       >
-        <Text font="heading" size="small" color={'$title'}>
+        <Text font="heading" size="normal" color={'$title'}>
           {title}
         </Text>
         <Switch
           size={'$1.5'}
           backgroundColor={checked ? '$backgroundOn' : '$backgroundOff'}
-          // borderBlockStyle="unset"
           checked={checked}
           borderColor={checked ? '$borderColorOn' : '$borderColorOff'}
           onCheckedChange={onCheckedChange}
