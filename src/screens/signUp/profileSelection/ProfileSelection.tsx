@@ -1,7 +1,7 @@
 import { TouchableOpacity } from 'react-native';
 import React from 'react';
 import { RouteProp } from '@react-navigation/core';
-import { RootStackParamList } from '../../navigation/RootNavigator';
+import { RootStackParamList } from '../../../navigation/RootNavigator';
 import { NoSafeAreaScreen as Screen } from '@/src/components/layouts/NoSafeAreaScreen';
 import { TitleAndSubtitle } from '@/src/components/common/TitleAndSubtitle';
 import { Text } from '@/src/components/common/Text';

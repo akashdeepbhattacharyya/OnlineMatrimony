@@ -42,7 +42,7 @@ const OtpValidationScreen = lazy(
 );
 const Onboarding = lazy(() => import('../screens/onBoarding/Onboarding'));
 const ProfileSelection = lazy(
-  () => import('../screens/profileSelection/ProfileSelection'),
+  () => import('../screens/signUp/profileSelection/ProfileSelection'),
 );
 const SettingsScreen = lazy(() => import('../screens/settings/Settings'));
 const SearchScreen = lazy(() => import('../screens/search/SearchScreen'));
@@ -50,19 +50,28 @@ const PartnerPreferenceScreen = lazy(
   () => import('../screens/settings/partnerPreference/PartnerPreferenceScreen'),
 );
 const NotificationSettingsScreen = lazy(
-  () => import('../screens/settings/notificationSettings/NotificationSettingsScreen'),
+  () =>
+    import(
+      '../screens/settings/notificationSettings/NotificationSettingsScreen'
+    ),
 );
 const AccountSettingsScreen = lazy(
   () => import('../screens/settings/accountSettings/AccountSettingsScreen'),
 );
 const ContactFiltersScreen = lazy(
-  () => import('../screens/contactFilters/ContactFiltersScreen'),
+  () =>
+    import(
+      '../screens/settings/accountSettings/contactFilters/ContactFiltersScreen'
+    ),
 );
 const HideDeleteProfileScreen = lazy(
-  () => import('../screens/settings/accountSettings/hideDeleteProfile/HideDeleteProfileScreen'),
+  () =>
+    import(
+      '../screens/settings/accountSettings/hideDeleteProfile/HideDeleteProfileScreen'
+    ),
 );
 const SubscriptionScreen = lazy(
-  () => import('../screens/subscription/SubscriptionScreen'),
+  () => import('../screens/settings/subscription/SubscriptionScreen'),
 );
 const Profile = lazy(() => import('@/src/screens/profile/Profile'));
 const UpdateProfile = lazy(() => import('@/src/screens/profile/UpdateProfile'));
