@@ -1,4 +1,3 @@
-import { StyleSheet } from 'react-native';
 import { useAuth } from '@/src/context/AuthContext';
 import { NavigationProp, useNavigation } from '@react-navigation/core';
 import { RootStackParamList } from '../../../navigation/RootNavigator';
@@ -13,9 +12,6 @@ export default function AccountSettingsScreen() {
 
   const handelOnPress = (label: string) => {
     switch (label) {
-      case 'Contact Filters':
-        navigation.navigate('ContactFilters');
-        break;
       case 'Hide / Delete Profile':
         navigation.navigate('HideDeleteProfile');
         break;
@@ -34,10 +30,6 @@ export default function AccountSettingsScreen() {
     <Screen>
       <ScreenHeader headerText="Account Settings" />
       <YStack padding="$4">
-        <AccountSettingsItem
-          title="Contact Filters"
-          onPress={() => handelOnPress('Contact Filters')}
-        />
         <AccountSettingsItem
           title="Hide / Delete Profile"
           onPress={() => handelOnPress('Hide / Delete Profile')}
