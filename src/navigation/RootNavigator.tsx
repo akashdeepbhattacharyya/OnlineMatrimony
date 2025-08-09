@@ -58,12 +58,6 @@ const NotificationSettingsScreen = lazy(
 const AccountSettingsScreen = lazy(
   () => import('../screens/settings/accountSettings/AccountSettingsScreen'),
 );
-const ContactFiltersScreen = lazy(
-  () =>
-    import(
-      '../screens/settings/accountSettings/contactFilters/ContactFiltersScreen'
-    ),
-);
 const HideDeleteProfileScreen = lazy(
   () =>
     import(
@@ -124,7 +118,6 @@ const HomeStack = () => {
         component={NotificationSettingsScreen}
       />
       <Stack.Screen name="AccountSettings" component={AccountSettingsScreen} />
-      <Stack.Screen name="ContactFilters" component={ContactFiltersScreen} />
       <Stack.Screen
         name="HideDeleteProfile"
         component={HideDeleteProfileScreen}

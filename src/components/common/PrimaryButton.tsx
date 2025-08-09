@@ -1,16 +1,24 @@
 import { TouchableOpacity } from 'react-native';
-import { Button as TamaButton, View, ViewProps, XStack } from 'tamagui';
+import {
+  getToken,
+  Button as TamaButton,
+  View,
+  ViewProps,
+  XStack,
+} from 'tamagui';
 import ArrowRight from '../../../assets/images/arrow-right.svg';
 import { Text } from './Text';
 
 type Props = {
   title: string;
+  theme?: 'primary_button' | 'secondary_button';
   onPress: () => void;
   showArrow?: boolean;
 } & ViewProps;
 
 export const PrimaryButton = ({
   title,
+  theme = 'primary_button',
   disabled,
   onPress,
   showArrow = true,
@@ -19,12 +27,12 @@ export const PrimaryButton = ({
   return (
     <View
       width="100%"
-      theme="primary_button"
+      theme={theme}
       backgroundColor="$background"
       paddingHorizontal="$6"
       paddingVertical="$4.5"
       borderRadius="$10"
-      borderWidth={"$1"}
+      borderWidth={'$1'}
       borderColor={'$borderColor'}
       opacity={disabled ? 0.6 : 1}
       disabled={disabled}
@@ -40,7 +48,17 @@ export const PrimaryButton = ({
           >
             {title}
           </Text>
-          {showArrow && <ArrowRight width={19} height={15} />}
+          {showArrow && (
+            <ArrowRight
+              width={19}
+              height={15}
+              color={
+                theme === 'primary_button'
+                  ? getToken('$color.white')
+                  : getToken('$color.button_bg_red')
+              }
+            />
+          )}
         </XStack>
       </TouchableOpacity>
     </View>

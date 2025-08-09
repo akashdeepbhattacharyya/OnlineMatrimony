@@ -35,8 +35,8 @@ const themes: {
     color: tokens.color.black,
   },
   dark_secondary_button: {
-    background: tokens.color.transparent,
-    color: tokens.color.white,
+    background: tokens.color.white,
+    color: tokens.color.button_bg_red,
     borderColor: tokens.color.white,
   },
   dark_primary_button: {
@@ -162,6 +162,18 @@ const themes: {
     subtitle: tokens.color.white,
     description: tokens.color.gray_lighter,
     buttonTitle: tokens.color.button_bg_red,
+  },
+  dark_subscription_banner_savings: {
+    background: tokens.color.white,
+    color: tokens.color.button_bg_red,
+  },
+  dark_subscription_current_plan: {
+    background: tokens.color.button_bg_red,
+    color: tokens.color.white,
+  },
+  dark_subscription_next_plan: {
+    background: tokens.color.white,
+    color: tokens.color.black,
   },
 };
 

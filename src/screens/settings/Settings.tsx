@@ -39,11 +39,11 @@ export default function Settings() {
           title="Help & Support"
           onPress={() => console.log('Help & Support pressed')}
         />
-        {/* <SettingsItem
-          title="Upgrade Subscription & Membership"
-          onPress={() => console.log('Upgrade pressed')}
-        />
         <SettingsItem
+          title="Upgrade Subscription & Membership"
+          onPress={() => navigation.navigate('Subscription')}
+        />
+        {/* <SettingsItem
           title="Language"
           value={selectedLanguage}
           onPress={() => console.log('Language pressed')}
