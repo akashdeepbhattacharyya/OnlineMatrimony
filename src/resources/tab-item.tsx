@@ -19,7 +19,7 @@ export const tabItems: TabItem[] = [
     icon: <AiMatchesIcon />,
     route: 'AiMatches',
   },
-  { key: 'Chat', label: 'Chat', icon: <ChatIcon />, route: 'Home' },
+  { key: 'Chat', label: 'Chat', icon: <ChatIcon />, route: 'Chat' },
   { key: 'Search', label: 'Search', icon: <SearchIcon />, route: 'Search' },
   {
     key: 'Settings',

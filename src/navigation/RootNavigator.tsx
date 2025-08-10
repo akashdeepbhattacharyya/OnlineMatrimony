@@ -9,6 +9,7 @@ import {
   User,
 } from '../models/User';
 import { tabItems } from '../resources/tab-item';
+import { Chat } from '../models/Chat';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -30,6 +31,8 @@ export type RootStackParamList = {
     data: { userData: User; purpose: 'ONBOARDING' | 'UPDATE' };
   };
   AiMatches: undefined;
+  Chat: undefined;
+  Message: { data: { chat: Chat } };
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -72,6 +75,8 @@ const UpdateProfile = lazy(() => import('@/src/screens/profile/UpdateProfile'));
 const AiMatchesScreen = lazy(
   () => import('@/src/screens/aiMatches/AiMatchesScreen'),
 );
+const ChatScreen = lazy(() => import('@/src/screens/chat/ChatScreen'));
+const MessageScreen = lazy(() => import('@/src/screens/chat/MessageScreen'));
 
 const Loading = () => (
   <View style={styles.loadingContainer}>
@@ -113,6 +118,7 @@ const HomeStack = () => {
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Settings" component={SettingsScreen} />
       <Stack.Screen name="Search" component={SearchScreen} />
+      <Stack.Screen name="Chat" component={ChatScreen} />
       <Stack.Screen
         name="NotificationSettings"
         component={NotificationSettingsScreen}
@@ -130,6 +136,7 @@ const HomeStack = () => {
         name="PartnerPreference"
         component={PartnerPreferenceScreen}
       />
+      <Stack.Screen name="Message" component={MessageScreen} />
     </>
   );
 };
