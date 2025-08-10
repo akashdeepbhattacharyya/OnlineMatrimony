@@ -175,6 +175,41 @@ const themes: {
     background: tokens.color.white,
     color: tokens.color.black,
   },
+  dark_chat_filter_active: {
+    background: tokens.color.button_bg_red,
+    color: tokens.color.white,
+    borderColor: tokens.color.button_bg_red,
+  },
+  dark_chat_filter_inactive: {
+    background: tokens.color.transparent,
+    color: tokens.color.gray_lighter,
+    borderColor: tokens.color.gray_lighter,
+  },
+  dark_chat: {
+    background: tokens.color.black,
+    color: tokens.color.white,
+  },
+  dark_chat_unread: {
+    background: tokens.color.button_bg_red,
+    color: tokens.color.white,
+  },
+  dark_chat_message_banner: {
+    background: tokens.color.button_bg_red,
+    color: tokens.color.white,
+  },
+  dark_chat_message_input: {
+    background: tokens.color.white,
+    color: tokens.color.black,
+    placeholder: tokens.color.gray_lighter,
+  },
+  dark_chat_message_outgoing: {
+    background: tokens.color.red_lighter,
+    color: tokens.color.black,
+  },
+  dark_chat_message_incoming: {
+    background: tokens.color.gray_30,
+    color: tokens.color.black,
+  },
 };
 
 export default themes;

@@ -11,7 +11,7 @@ interface Props extends ViewProps {
 
 export function NoSafeAreaScreen({
   children,
-  theme = 'light',
+  theme = 'dark',
   ...props
 }: Props) {
   const backgroundColor = {

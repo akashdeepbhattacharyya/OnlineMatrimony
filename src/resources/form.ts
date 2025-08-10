@@ -202,3 +202,9 @@ export const toPartnerPreferencesRequest = (
     gender: form.gender || '',
   };
 };
+
+export type MessageFormType = {
+  text: string;
+  senderId: string;
+  chatId: string;
+};
