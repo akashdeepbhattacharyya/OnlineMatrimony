@@ -7,12 +7,8 @@ import { RouteProp } from '@react-navigation/native';
 import { Text } from '@/src/components/common/Text';
 import OnlineIcon from '@/assets/images/online.svg';
 import SendIcon from '@/assets/images/send.svg';
-import SmileyIcon from '@/assets/images/smiley.svg';
 import { TextArea } from '@/src/components/common/TextArea';
-import { Animated, Dimensions, Keyboard, TouchableOpacity } from 'react-native';
-import { Formik } from 'formik';
-import { MessageFormType } from '@/src/resources/form';
-import { messageValidationSchema } from '@/src/resources/validations/message';
+import { Keyboard, TouchableOpacity } from 'react-native';
 import { Message } from '@/src/models/Chat';
 import { MessageTextItem } from '@/src/components/chat/MessageTextItem';
 
@@ -60,12 +56,7 @@ export default function ChatDetailsScreen({
 }: Props) {
   const [keyboardVisible, setKeyboardVisible] = useState(false);
   const scrollViewRef = useRef<ScrollView>(null);
-
-  const initialValues: MessageFormType = {
-    text: '',
-    senderId: '<USER_ID>',
-    chatId: chat.id,
-  };
+  const [message, setMessage] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -88,16 +79,19 @@ export default function ChatDetailsScreen({
     };
   }, []);
 
-  const onSend = (values: MessageFormType) => {
+  const onSend = () => {
     // Handle sending the message
-    console.log('Message sent:', values);
-    messages.push({
-      id: String(messages.length + 1),
-      text: values.text,
-      time: new Date().toLocaleTimeString(),
-      sender: 'me',
-      avatar: 'https://randomuser.me/api/portraits/women/1.jpg',
-    });
+    console.log('Message sent:', message);
+    if (message && message.trim().length > 0) {
+      messages.push({
+        id: String(messages.length + 1),
+        text: message.trim(),
+        time: new Date().toLocaleTimeString(),
+        sender: 'me',
+        avatar: 'https://randomuser.me/api/portraits/women/1.jpg',
+      });
+    }
+    setMessage(undefined); // Clear the message input
   };
 
   const scrollToBottom = () => {
@@ -150,43 +144,35 @@ export default function ChatDetailsScreen({
         </ScrollView>
 
         {/* MESSAGE INPUT */}
-        <Formik<MessageFormType>
-          initialValues={initialValues}
-          validationSchema={messageValidationSchema}
-          onSubmit={onSend}
+        <XStack
+          theme={'chat_message_input'}
+          paddingTop={'$3'}
+          paddingHorizontal={'$3'}
+          alignItems="center"
+          backgroundColor="$background"
+          gap={'$4'}
+          borderTopRightRadius={'$8'}
+          borderTopLeftRadius={'$8'}
+          paddingBottom={!keyboardVisible ? '$8' : '$3'}
         >
-          {({ values, handleSubmit, setFieldValue }) => (
-            <XStack
-              theme={'chat_message_input'}
-              paddingTop={'$3'}
-              paddingHorizontal={'$3'}
-              alignItems="center"
-              backgroundColor="$background"
-              gap={'$4'}
-              borderTopRightRadius={'$8'}
-              borderTopLeftRadius={'$8'}
-              paddingBottom={!keyboardVisible ? '$8' : '$3'}
-            >
-              <TextArea
-                flex={1}
-                font="heading"
-                placeholder="Type a message"
-                borderRadius={'$8'}
-                value={values.text}
-                onChangeText={text => setFieldValue('text', text)}
-              />
-              <TouchableOpacity
-                onPress={() => {
-                  Keyboard.dismiss();
-                  handleSubmit();
-                  scrollToBottom();
-                }}
-              >
-                <SendIcon width={24} height={24} />
-              </TouchableOpacity>
-            </XStack>
-          )}
-        </Formik>
+          <TextArea
+            flex={1}
+            font="heading"
+            placeholder="Type a message"
+            borderRadius={'$8'}
+            value={message}
+            onChangeText={setMessage}
+          />
+          <TouchableOpacity
+            onPress={() => {
+              Keyboard.dismiss();
+              onSend();
+              scrollToBottom();
+            }}
+          >
+            <SendIcon width={24} height={24} />
+          </TouchableOpacity>
+        </XStack>
       </YStack>
     </Screen>
   );
