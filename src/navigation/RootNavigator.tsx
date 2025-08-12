@@ -30,7 +30,7 @@ export type RootStackParamList = {
   UpdateProfile: {
     data: { userData: User; purpose: 'ONBOARDING' | 'UPDATE' };
   };
-  AiMatches: undefined;
+  Matches: undefined;
   Chat: undefined;
   Message: { data: { chat: Chat } };
 };
@@ -72,7 +72,7 @@ const SubscriptionScreen = lazy(
 );
 const Profile = lazy(() => import('@/src/screens/profile/Profile'));
 const UpdateProfile = lazy(() => import('@/src/screens/profile/UpdateProfile'));
-const AiMatchesScreen = lazy(
+const MatchesScreen = lazy(
   () => import('@/src/screens/aiMatches/AiMatchesScreen'),
 );
 const ChatScreen = lazy(() => import('@/src/screens/chat/ChatScreen'));
@@ -130,7 +130,7 @@ const HomeStack = () => {
       />
       <Stack.Screen name="Subscription" component={SubscriptionScreen} />
       <Stack.Screen name="Profile" component={Profile} />
-      <Stack.Screen name="AiMatches" component={AiMatchesScreen} />
+      <Stack.Screen name="Matches" component={MatchesScreen} />
       <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
       <Stack.Screen
         name="PartnerPreference"

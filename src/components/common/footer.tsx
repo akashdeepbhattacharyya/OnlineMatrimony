@@ -9,12 +9,17 @@ import { Text } from './Text';
 import Svg, { Path } from 'react-native-svg';
 import { useNavigation, NavigationProp } from '@react-navigation/core';
 import { RootStackParamList } from '../../navigation/RootNavigator';
-import { View, YStack } from 'tamagui';
+import { getToken, View, YStack } from 'tamagui';
 import { tabItems } from '@/src/resources/tab-item';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ManageMatch } from '../navigation/ManageMatch';
 import { useAppSelector } from '@/src/services/store/hook';
 import { emitFooterEvent } from '@/src/hooks/useFooterEvent';
+import MatchesIcon from '@/assets/images/tab-icon-matches.svg'; //'../assets/images/tab-icon-ai-matches.svg';
+import HomeIcon from '@/assets/images/tab-icon-home.svg';
+import SearchIcon from '@/assets/images/tab-icon-search.svg';
+import SettingsIcon from '@/assets/images/tab-icon-settings.svg';
+import ChatIcon from '@/assets/images/tab-icon-chat.svg';
 
 const { width } = Dimensions.get('window');
 const tabWidth = width / 5;
@@ -85,7 +90,7 @@ const FooterNavigator = ({ currentRoute }: RootNavigatorProps) => {
       />
 
       {/* Floating ManageMatch Component */}
-      {activeIndex === 1 && pendingMatches.length > 0 && (
+      {/* {activeIndex === 1 && pendingMatches.length > 0 && (
         <ManageMatch
           onAccept={() => {
             emitFooterEvent('ACCEPT_MATCH');
@@ -94,20 +99,33 @@ const FooterNavigator = ({ currentRoute }: RootNavigatorProps) => {
             emitFooterEvent('REJECT_MATCH');
           }}
         />
-      )}
+      )} */}
 
       {/* Dynamic Curved Background */}
-      <Svg
+      {/* <Svg
         width={width}
         height={80}
         viewBox={`0 0 ${width} 80`}
         style={[StyleSheet.absoluteFill, {}, { top: 102 }]}
       >
         <Path d={getPathWithDip(activeIndex)} fill="#696969" />
-      </Svg>
+      </Svg> */}
+      <View
+        style={{
+          position: 'absolute',
+          top: 100,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          height: 82,
+          backgroundColor: getToken('$color.primary'),
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
+        }}
+      />
 
       {/* Floating Icon */}
-      <Animated.View
+      {/* <Animated.View
         style={[styles.indicator, { transform: [{ translateX }] }]}
       >
         <View style={styles.circleIcon}>
@@ -115,7 +133,7 @@ const FooterNavigator = ({ currentRoute }: RootNavigatorProps) => {
             {tabItems[activeIndex]?.icon}
           </Svg>
         </View>
-      </Animated.View>
+      </Animated.View> */}
 
       {/* Tabs */}
       <View style={styles.tabRow}>
@@ -128,25 +146,63 @@ const FooterNavigator = ({ currentRoute }: RootNavigatorProps) => {
               style={styles.tabItem}
               activeOpacity={0.8}
             >
-              <YStack gap={'$1.5'} marginBottom={5} alignItems="center">
-                {isActive ? null : (
-                  <Svg
-                    opacity={0.6}
-                    style={{
-                      height: 20,
-                      width: 20,
-                      scaleX: 0.6,
-                      scaleY: 0.6,
-                    }}
-                  >
-                    {item.icon}
-                  </Svg>
+              <YStack gap={'$1.5'} marginBottom={15} alignItems="center">
+                {item.key === 'Home' && (
+                  <HomeIcon
+                    color={
+                      isActive
+                        ? getToken('$color.button_bg_red')
+                        : getToken('$color.gray_lighter')
+                    }
+                  />
                 )}
-                {!isActive && (
-                  <Text font="heading" size="extra_small" color="#A9A9A9">
-                    {item.label}
-                  </Text>
+                {item.key === 'Matches' && (
+                  <MatchesIcon
+                    color={
+                      isActive
+                        ? getToken('$color.button_bg_red')
+                        : getToken('$color.gray_lighter')
+                    }
+                  />
                 )}
+                {item.key === 'Chat' && (
+                  <ChatIcon
+                    color={
+                      isActive
+                        ? getToken('$color.button_bg_red')
+                        : getToken('$color.gray_lighter')
+                    }
+                  />
+                )}
+                {item.key === 'Search' && (
+                  <SearchIcon
+                    color={
+                      isActive
+                        ? getToken('$color.button_bg_red')
+                        : getToken('$color.gray_lighter')
+                    }
+                  />
+                )}
+                {item.key === 'Settings' && (
+                  <SettingsIcon
+                    color={
+                      isActive
+                        ? getToken('$color.button_bg_red')
+                        : getToken('$color.gray_lighter')
+                    }
+                  />
+                )}
+                <Text
+                  font="heading"
+                  size="extra_small"
+                  color={
+                    isActive
+                      ? getToken('$color.button_bg_red')
+                      : getToken('$color.gray_lighter')
+                  }
+                >
+                  {item.label}
+                </Text>
               </YStack>
             </TouchableOpacity>
           );
