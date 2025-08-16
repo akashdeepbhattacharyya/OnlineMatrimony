@@ -15,7 +15,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { ManageMatch } from '../navigation/ManageMatch';
 import { useAppSelector } from '@/src/services/store/hook';
 import { emitFooterEvent } from '@/src/hooks/useFooterEvent';
-import MatchesIcon from '@/assets/images/tab-icon-matches.svg'; //'../assets/images/tab-icon-ai-matches.svg';
+import MatchesIcon from '@/assets/images/tab-icon-matches.svg';
 import HomeIcon from '@/assets/images/tab-icon-home.svg';
 import SearchIcon from '@/assets/images/tab-icon-search.svg';
 import SettingsIcon from '@/assets/images/tab-icon-settings.svg';

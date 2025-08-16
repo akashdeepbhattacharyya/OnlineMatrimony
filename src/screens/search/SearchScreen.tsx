@@ -1,21 +1,27 @@
-import {
-  FlatList,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import React, { useState } from 'react';
-import ProfileCard from '../../components/search/ProfileCard';
-import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-import { MaterialIcons } from '@expo/vector-icons';
-
-import { styles } from './style';
+import { SafeAreaScreen as Screen } from '@/src/components/layouts/SafeAreaScreen';
+import SearchIcon from '@/assets/images/search.svg';
+import FilterIcon from '@/assets/images/filter.svg';
 import { TabHeader } from '@/src/components/common/TabHeader';
+import { ScrollView, XStack, YStack, Image } from 'tamagui';
+import { Input } from '@/src/components/common/Input';
+import { Text } from '@/src/components/common/Text';
+import VerifiedIcon from '@/assets/images/verified.svg';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import { RootStackParamList } from '@/src/navigation/RootNavigator';
 
 export default function SearchScreen() {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(0);
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const [searchQuery, setSearchQuery] = useState<string>('');
+
+  const onFilterPress = () => {
+    navigation.navigate('PartnerPreference', {
+      data: { purpose: 'UPDATE' },
+    });
+  };
+
   const users = [
     {
       id: '1',
@@ -40,149 +46,90 @@ export default function SearchScreen() {
       isVerified: true,
       religionLabel: 'Indian, Christian',
     },
-    {
-      id: '3',
-      name: 'Sania M',
-      age: 40,
-      height: '5’2″',
-      religion: 'Islam',
-      location: 'New York, USA',
-      photo: require('../../../assets/images/image4.png'),
-      isVerified: true,
-      religionLabel: 'Indian, Islam',
-    },
-    {
-      id: '4',
-      name: 'Sania M',
-      age: 40,
-      height: '5’2″',
-      religion: 'Islam',
-      location: 'New York, USA',
-      photo: require('../../../assets/images/image4.png'),
-      isVerified: true,
-      religionLabel: 'Indian, Islam',
-    },
-    {
-      id: '5',
-      name: 'Sania M',
-      age: 40,
-      height: '5’2″',
-      religion: 'Islam',
-      location: 'New York, USA',
-      photo: require('../../../assets/images/image4.png'),
-      isVerified: true,
-      religionLabel: 'Indian, Islam',
-    },
-    {
-      id: '6',
-      name: 'Sania M',
-      age: 40,
-      height: '5’2″',
-      religion: 'Islam',
-      location: 'New York, USA',
-      photo: require('../../../assets/images/image4.png'),
-      isVerified: true,
-      religionLabel: 'Indian, Islam',
-    },
-    {
-      id: '7',
-      name: 'Sania M',
-      age: 40,
-      height: '5’2″',
-      religion: 'Islam',
-      location: 'New York, USA',
-      photo: require('../../../assets/images/image4.png'),
-      isVerified: true,
-      religionLabel: 'Indian, Islam',
-    },
-    {
-      id: '8',
-      name: 'Sania M',
-      age: 40,
-      height: '5’2″',
-      religion: 'Islam',
-      location: 'New York, USA',
-      photo: require('../../../assets/images/image4.png'),
-      isVerified: true,
-      religionLabel: 'Indian, Islam',
-    },
-    {
-      id: '9',
-      name: 'Sania M',
-      age: 40,
-      height: '5’2″',
-      religion: 'Islam',
-      location: 'New York, USA',
-      photo: require('../../../assets/images/image4.png'),
-      isVerified: true,
-      religionLabel: 'Indian, Islam',
-    },
-    {
-      id: '10',
-      name: 'Sania M',
-      age: 40,
-      height: '5’2″',
-      religion: 'Islam',
-      location: 'New York, USA',
-      photo: require('../../../assets/images/image4.png'),
-      isVerified: true,
-      religionLabel: 'Indian, Islam',
-    },
   ];
   return (
-    <SafeAreaProvider>
-      <SafeAreaView shouldRasterizeIOS={true} style={styles.container}>
-        <StatusBar
-          animated={true}
-          backgroundColor="#2B2B2B"
-          barStyle="default"
-          showHideTransition="fade"
-        />
-        <TabHeader headerText="Search" />
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            marginHorizontal: 20,
-            marginVertical: 20,
-          }}
+    <Screen>
+      <TabHeader headerText="Matches" />
+      <XStack alignItems="center" gap={'$4'} padding={'$4'}>
+        <XStack
+          alignItems="center"
+          paddingHorizontal={'$4'}
+          backgroundColor={'$color.gray_darker'}
+          borderRadius={'$10'}
+          paddingVertical={'$0'}
+          flex={1}
         >
-          <View style={{ flex: 1, position: 'relative', width: '100%' }}>
-            <MaterialIcons
-              name="search"
-              size={20}
-              color="white"
-              style={{
-                position: 'absolute',
-                left: 10,
-                top: '50%',
-                transform: [{ translateY: -10 }],
-                zIndex: 1,
-              }}
-            />
-            <TextInput
-              placeholder="Search"
-              placeholderTextColor="#999"
-              style={styles.searchInput}
-            />
-          </View>
-          <MaterialIcons name="tune" size={30} color="red" />
-        </View>
-
-        <FlatList
-          data={users}
-          style={{ marginBottom: 90 }}
-          keyExtractor={item => item.id}
-          renderItem={({ item, index }) => (
-            <ProfileCard
-              user={item}
-              index={index}
-              isSelected={index === selectedIndex}
-              onSelect={() => setSelectedIndex(index)}
-            />
-          )}
-        />
-      </SafeAreaView>
-    </SafeAreaProvider>
+          <SearchIcon />
+          <Input
+            placeholder="Search"
+            placeholderTextColor={'$color.gray_lighter'}
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+          />
+        </XStack>
+        <TouchableOpacity onPress={onFilterPress}>
+          <FilterIcon />
+        </TouchableOpacity>
+      </XStack>
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+          justifyContent: 'space-between',
+        }}
+        showsVerticalScrollIndicator={false}
+      >
+        <YStack
+          flex={1}
+          marginBottom={'$19'}
+          gap={'$3'}
+          paddingHorizontal={'$4'}
+        >
+          {users.map(user => (
+            <XStack
+              key={user.id}
+              alignItems="center"
+              padding={'$1.5'}
+              backgroundColor={'$color.black'}
+              borderRadius={'$8'}
+              gap={'$2'}
+            >
+              <Image
+                source={user.photo}
+                width={'$13'}
+                height={'$13'}
+                padding={'$2'}
+                borderTopLeftRadius={'$6'}
+                borderTopRightRadius={'$6'}
+                borderBottomLeftRadius={'$6'}
+                borderBottomRightRadius={'$6'}
+              />
+              <YStack gap={'$2'}>
+                <Text font="heading" color={'$text'} size={'medium'}>
+                  {user.name}
+                </Text>
+                <Text
+                  font="heading"
+                  color={'$text'}
+                  size={'extra_small'}
+                  marginTop={'$3'}
+                >{`${user.age} Yrs Old, Height - ${user.height}`}</Text>
+                <Text font="heading" color={'$text'} size={'extra_small'}>
+                  {`${user.religionLabel}`}
+                </Text>
+                <Text font="heading" color={'$text'} size={'extra_small'}>
+                  {user.location}
+                </Text>
+                <XStack alignItems="center" gap="$2">
+                  <Text font="heading" color={'$text'} size={'extra_small'}>
+                    {`Verified`}
+                  </Text>
+                  <VerifiedIcon />
+                </XStack>
+              </YStack>
+            </XStack>
+          ))}
+        </YStack>
+      </ScrollView>
+    </Screen>
   );
 }
