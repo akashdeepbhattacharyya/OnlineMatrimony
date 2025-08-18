@@ -15,6 +15,7 @@ import {
 } from '@react-navigation/native';
 import { ScreenHeader } from '@/src/components/common/ScreenHeader';
 import { ManageMatch } from '@/src/components/navigation/ManageMatch';
+import { MatchCommonBetween } from '@/src/components/matches/match-details/MatchCommonBetween';
 
 type Props = {
   route: RouteProp<RootStackParamList, 'MatchDetails'>;
@@ -79,6 +80,10 @@ export default function MatchDetailsScreen({
               />
               <MatchPreferences
                 match={match}
+                currentUserProfile={userData.profile}
+              />
+              <MatchCommonBetween
+                matchedUserProfile={match.profileResponse}
                 currentUserProfile={userData.profile}
               />
             </YStack>

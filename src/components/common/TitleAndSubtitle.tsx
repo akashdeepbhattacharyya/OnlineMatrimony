@@ -1,21 +1,29 @@
-import { TextProps, VariantLabels, View, ViewProps, YStack } from 'tamagui';
+import {
+  Image,
+  ImageProps,
+  TextProps,
+  VariantLabels,
+  View,
+  ViewProps,
+  YStack,
+} from 'tamagui';
 import { Text } from './Text';
 
 type Props = {
   title?: string;
   subtitle?: string;
   secondarySubtitle?: string;
-  titleProps?: TextProps;
+  imageProps?: ImageProps;
   subtitleProps?: TextProps;
   secondarySubtitleProps?: TextProps;
-  subtitleFontSize?: "normal" | "small" | "largest";
+  subtitleFontSize?: 'normal' | 'small' | 'largest';
 } & ViewProps;
 
 export const TitleAndSubtitle = ({
   title = 'LOGO',
   subtitle = 'BRINGING HEARTS TOGETHER',
   secondarySubtitle,
-  titleProps,
+  imageProps,
   subtitleProps,
   secondarySubtitleProps,
   subtitleFontSize = 'normal',
@@ -23,9 +31,12 @@ export const TitleAndSubtitle = ({
 }: Props) => {
   return (
     <YStack alignItems="center" {...props}>
-      <Text font="bodyBold" size="largest" {...titleProps}>
-        {title}
-      </Text>
+      <Image
+        src={require('@/assets/images/logo.png')}
+        width={100}
+        height={100}
+        {...imageProps}
+      />
       <Text font="heading" size={subtitleFontSize} {...subtitleProps}>
         {subtitle}
       </Text>
