@@ -15,14 +15,14 @@ export const FemaleIcon = ({ selected, enabled, ...props }: Props) => {
           strokeWidth={2}
           strokeLinecap="round"
           strokeLinejoin="round"
-          stroke={selected ? '#F85F5F' : enabled ? '#FFFFFF' : '#A9A9A9'}
+          stroke={selected ? '#F15B6A' : enabled ? '#FFFFFF' : '#A9A9A9'}
         />
         <Path
           d="M11.501 22.653V33.653M16.001 28.7641H7.00098"
           strokeWidth={2}
           strokeLinecap="round"
           strokeLinejoin="round"
-          stroke={selected ? '#F85F5F' : enabled ? '#FFFFFF' : '#A9A9A9'}
+          stroke={selected ? '#F15B6A' : enabled ? '#FFFFFF' : '#A9A9A9'}
         />
       </Svg>
     </View>

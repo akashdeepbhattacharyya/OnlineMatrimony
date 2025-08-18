@@ -34,7 +34,7 @@ export const styles = StyleSheet.create({
     slider: {
         height: 25,
         width: 25,
-        backgroundColor: '#F85F5F',
+        backgroundColor: '#F15B6A',
         borderWidth: 2,
         borderColor: '#ffffff',
         paddingLeft: 20,

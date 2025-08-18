@@ -81,10 +81,10 @@ const PartnerPreferenceForm: React.FC<PartnerPreferenceFormProps> = ({
         min={25}
         max={50}
         step={1}
-        selectedStyle={{ backgroundColor: '#F85F5F' }}
+        selectedStyle={{ backgroundColor: '#F15B6A' }}
         unselectedStyle={{ backgroundColor: 'lightgrey' }}
         markerStyle={styles.slider}
-        pressedMarkerStyle={{ backgroundColor: '#F85F5F' }}
+        pressedMarkerStyle={{ backgroundColor: '#F15B6A' }}
       />
 
       {/* Height Slider */}
@@ -107,10 +107,10 @@ const PartnerPreferenceForm: React.FC<PartnerPreferenceFormProps> = ({
         min={4.5}
         max={7.0}
         step={0.5}
-        selectedStyle={{ backgroundColor: '#F85F5F' }}
+        selectedStyle={{ backgroundColor: '#F15B6A' }}
         unselectedStyle={{ backgroundColor: 'lightgrey' }}
         markerStyle={styles.slider}
-        pressedMarkerStyle={{ backgroundColor: '#F85F5F' }}
+        pressedMarkerStyle={{ backgroundColor: '#F15B6A' }}
       />
 
       {/* Marital Status */}
@@ -132,7 +132,7 @@ const PartnerPreferenceForm: React.FC<PartnerPreferenceFormProps> = ({
               iconType="material-community"
               checkedIcon="checkbox-marked"
               uncheckedIcon="checkbox-blank-outline"
-              checkedColor="#F85F5F"
+              checkedColor="#F15B6A"
               uncheckedColor="#fff"
               title={status}
               textStyle={accordionStyles.optionText}
@@ -161,7 +161,7 @@ const PartnerPreferenceForm: React.FC<PartnerPreferenceFormProps> = ({
               iconType="material-community"
               checkedIcon="checkbox-marked"
               uncheckedIcon="checkbox-blank-outline"
-              checkedColor="#F85F5F"
+              checkedColor="#F15B6A"
               uncheckedColor="#fff"
               title={option}
               textStyle={accordionStyles.optionText}

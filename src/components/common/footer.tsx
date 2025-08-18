@@ -252,7 +252,7 @@ const styles = StyleSheet.create({
   circleIcon: {
     width: 70,
     height: 70,
-    backgroundColor: '#F85F5F',
+    backgroundColor: '#F15B6A',
     borderRadius: 35,
     alignItems: 'center',
     justifyContent: 'center',

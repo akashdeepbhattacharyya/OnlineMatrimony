@@ -52,7 +52,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   discountText: {
-    color: '#F85F5F',
+    color: '#F15B6A',
     fontSize: 10,
     textAlign: 'center',
     fontWeight: 'bold',
@@ -77,7 +77,7 @@ export const styles = StyleSheet.create({
     marginTop: 4,
   },
   planCard: {
-    backgroundColor: '#F85F5F',
+    backgroundColor: '#F15B6A',
     borderRadius: 16,
     padding: 20,
     width: width - 80,
@@ -118,7 +118,7 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   startBtnText: {
-    color: '#F85F5F',
+    color: '#F15B6A',
     fontWeight: 'bold',
   },
 });

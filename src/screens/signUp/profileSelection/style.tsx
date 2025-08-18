@@ -99,7 +99,7 @@ export const styles = StyleSheet.create({
         right: 5
     },
     activeColor: {
-        backgroundColor: '#F85F5F',
+        backgroundColor: '#F15B6A',
     },
     deActiveColor: {
         backgroundColor: '#4F4F4F',

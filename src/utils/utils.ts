@@ -54,7 +54,7 @@ export const toUri = (
   fullName: string,
   primaryPhotoUrl?: string,
   background = '4F4F4F',
-  color = 'F85F5F',
+  color = 'F15B6A',
   size = 512,
 ): string => {
   if (primaryPhotoUrl) {

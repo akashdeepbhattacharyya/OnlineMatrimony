@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto',
   },
   seeAll: {
-    color: '#F85F5F',
+    color: '#F15B6A',
     fontSize: 14,
     fontWeight: '400',
     fontFamily: 'Roboto',
