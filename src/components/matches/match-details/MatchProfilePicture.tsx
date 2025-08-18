@@ -1,5 +1,5 @@
 import { MatchedUserProfile } from '@/src/models/Match';
-import { Text } from '../common/Text';
+import { Text } from '../../common/Text';
 import { Button, getToken, Image, View, XStack, YStack } from 'tamagui';
 import CameraBlob from '@/assets/images/camera.svg';
 import MenuBlob from '@/assets/images/menu.svg';

@@ -1,6 +1,6 @@
 import { Button, ViewProps, XStack } from 'tamagui';
-import RejectIcon from '@/assets/images/match-reject.svg';
-import AcceptIcon from '@/assets/images/match-accept.svg';
+import RejectIcon from '@/assets/images/match-dislike.svg';
+import AcceptIcon from '@/assets/images/match-like.svg';
 
 type Props = {
   onAccept: () => void;

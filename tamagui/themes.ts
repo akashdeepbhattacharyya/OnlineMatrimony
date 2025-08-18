@@ -210,6 +210,10 @@ const themes: {
     background: tokens.color.gray_30,
     color: tokens.color.black,
   },
+  dark_match_item: {
+    background: tokens.color.white,
+    color: tokens.color.black,
+  },
 };
 
 export default themes;

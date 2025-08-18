@@ -2,21 +2,21 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Match } from '@/src/models/Match';
 
 type MatchState = {
-  pendingMatches: Match[];
+  bestMatches: Match[];
 };
 
 const initialState: MatchState = {
-  pendingMatches: [],
+  bestMatches: [],
 };
 
-export const fetchPendingMatches = createAsyncThunk(
-  `match/fetchPendingMatches`,
+export const fetchBestMatches = createAsyncThunk(
+  `match/fetchBestMatches`,
   async (
-    { getPendingMatches }: { getPendingMatches: () => Promise<Match[]> },
+    { getBestMatches }: { getBestMatches: () => Promise<Match[]> },
     thunkAPI,
   ) => {
     try {
-      const response = await getPendingMatches();
+      const response = await getBestMatches();
       return response;
     } catch (e) {
       console.error(e);
@@ -29,16 +29,16 @@ const matchSlice = createSlice({
   name: 'match',
   initialState,
   reducers: {
-    setMatches(state, action: PayloadAction<MatchState>) {
-      state.pendingMatches = action.payload.pendingMatches;
+    setBestMatches(state, action: PayloadAction<MatchState>) {
+      state.bestMatches = action.payload.bestMatches;
     },
   },
   extraReducers: builder => {
-    builder.addCase(fetchPendingMatches.fulfilled, (state, action) => {
-      state.pendingMatches = action.payload;
+    builder.addCase(fetchBestMatches.fulfilled, (state, action) => {
+      state.bestMatches = action.payload;
     });
   },
 });
 
-export const { setMatches } = matchSlice.actions;
+export const { setBestMatches } = matchSlice.actions;
 export default matchSlice.reducer;

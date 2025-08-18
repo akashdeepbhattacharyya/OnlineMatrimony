@@ -31,7 +31,7 @@ const FooterNavigator = ({ currentRoute }: RootNavigatorProps) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const translateX = useRef(new Animated.Value(0)).current;
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
-  const { pendingMatches } = useAppSelector(state => state.match);
+  const { bestMatches: pendingMatches } = useAppSelector(state => state.match);
 
   useEffect(() => {
     Animated.spring(translateX, {

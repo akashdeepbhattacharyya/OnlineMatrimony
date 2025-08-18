@@ -8,14 +8,8 @@ export function useMatchRepository() {
   const { token, saveToken } = useAuth();
   const client = useHttpClient({}, token, saveToken);
 
-  const getMatches = async (
-    page: number,
-    size: number,
-    status: 'PENDING' | 'ACCEPTED' | 'REJECTED' | 'MUTUAL',
-  ): Promise<PagedResponse<Match>> => {
-    return handleApiResponse(
-      client.get(`/matches?page=${page}&size=${size}&status=${status}`),
-    );
+  const getBestMatches = async (): Promise<Match[]> => {
+    return handleApiResponse(client.get(`/matches/findBestMatches`));
   };
 
   const acceptMatch = async (matchId: number): Promise<string> => {
@@ -31,7 +25,7 @@ export function useMatchRepository() {
   };
 
   return {
-    getMatches,
+    getBestMatches,
     acceptMatch,
     rejectMatch,
   };

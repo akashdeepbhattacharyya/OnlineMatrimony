@@ -2,16 +2,10 @@ import { UserProfile } from './User';
 
 export type Match = {
   id: number;
-  userId: number;
-  matchedUserId: number;
-  status: string;
   matchScore: number;
-  matchedAt: string;
-  matchedUserProfile: MatchedUserProfile;
-  canChat: boolean;
+  profileResponse: MatchedUserProfile;
 };
 
 export type MatchedUserProfile = {
-  email: string;
-  phone: string;
+  id: number;
 } & UserProfile;

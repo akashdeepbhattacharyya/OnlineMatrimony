@@ -8,15 +8,15 @@ export const useUserMatch = () => {
   const [data, setData] = useState<Match[] | string | undefined>(undefined);
   const matchRepository = useMatchRepository();
 
-  const getPendingMatches = async (page: number, size: number = 1) => {
+  const getBestMatches = async () => {
     setLoading(true);
     setError(undefined);
     setData([]);
 
     try {
-      const response = await matchRepository.getMatches(page, size, 'PENDING');
-      setData(response.content);
-      return response.content;
+      const response = await matchRepository.getBestMatches();
+      setData(response);
+      return response;
     } catch (err: any) {
       console.error('Get pending matches error:', err);
       setError(err.message || 'Failed to fetch pending matches');
@@ -64,7 +64,7 @@ export const useUserMatch = () => {
     loading,
     error,
     data,
-    getPendingMatches,
+    getBestMatches,
     acceptMatch,
     rejectMatch,
   };

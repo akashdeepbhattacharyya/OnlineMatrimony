@@ -10,6 +10,7 @@ import {
 } from '../models/User';
 import { tabItems } from '../resources/tab-item';
 import { Chat } from '../models/Chat';
+import { Match } from '../models/Match';
 
 export type RootStackParamList = {
   Home: undefined;
@@ -31,6 +32,9 @@ export type RootStackParamList = {
     data: { userData: User; purpose: 'ONBOARDING' | 'UPDATE' };
   };
   Matches: undefined;
+  MatchDetails: {
+    data: { match: Match };
+  };
   Chat: undefined;
   Message: { data: { chat: Chat } };
 };
@@ -72,8 +76,9 @@ const SubscriptionScreen = lazy(
 );
 const Profile = lazy(() => import('@/src/screens/profile/Profile'));
 const UpdateProfile = lazy(() => import('@/src/screens/profile/UpdateProfile'));
-const MatchesScreen = lazy(
-  () => import('@/src/screens/aiMatches/AiMatchesScreen'),
+const MatchesScreen = lazy(() => import('@/src/screens/matches/MatchesScreen'));
+const MatchDetailsScreen = lazy(
+  () => import('@/src/screens/matches/MatchDetailsScreen'),
 );
 const ChatScreen = lazy(() => import('@/src/screens/chat/ChatScreen'));
 const MessageScreen = lazy(() => import('@/src/screens/chat/MessageScreen'));
@@ -131,6 +136,7 @@ const HomeStack = () => {
       <Stack.Screen name="Subscription" component={SubscriptionScreen} />
       <Stack.Screen name="Profile" component={Profile} />
       <Stack.Screen name="Matches" component={MatchesScreen} />
+      <Stack.Screen name="MatchDetails" component={MatchDetailsScreen} />
       <Stack.Screen name="UpdateProfile" component={UpdateProfile} />
       <Stack.Screen
         name="PartnerPreference"
