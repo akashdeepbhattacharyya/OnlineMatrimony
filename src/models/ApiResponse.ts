@@ -2,6 +2,7 @@ export type ApiSuccess<T> = {
   statusCode: number;
   status: true;
   data: T;
+  content?: T[];
 };
 
 export type ApiError = {
@@ -9,6 +10,8 @@ export type ApiError = {
   message: string;
   statusCode: number;
   status: false;
+  data?: undefined;
+  content?: undefined;
 };
 
 export type ApiResponse<T> = ApiSuccess<T> | ApiError;

@@ -7,6 +7,7 @@ import { MotherTongue } from '../resources/mother-tongue';
 import { Occupation } from '../resources/occupation';
 import { Religion } from '../resources/religion';
 import { Diet } from '../resources/diet';
+import { ImageSourcePropType } from 'react-native';
 
 /**
  * Represents the personal information of a user.
@@ -292,3 +293,49 @@ export const isPartnerPreferencesComplete = (
     partnerPreferences.gender !== null;
   return isComplete;
 };
+
+export interface SearchUser {
+  id: number;
+  fullName: string;
+  dateOfBirth: string;
+  age: number;
+  gender: string;
+  height: number;
+  weight: number;
+  maritalStatus: string;
+  religion: string;
+  caste: string;
+  motherTongue: string;
+  education: string;
+  occupation: string;
+  annualIncome: number;
+  aboutMe: string;
+  familyType: string;
+  city: string;
+  state: string;
+  country: string;
+  pincode: string;
+  photoUrls: ImageSourcePropType[] | undefined[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface SearchUserPreferences {
+  city: string;
+  state: string;
+  religion: string;
+  caste: string;
+  subCaste: string;
+  minHeight: number;
+  maxHeight: number;
+  minWeight: number;
+  maxWeight: number;
+  maritalStatus: 'SINGLE' | 'MARRIED' | 'DIVORCED' | 'WIDOWED';
+  education: 'Masters' | 'Bachelors' | 'PhD';
+  occupation: 'Software Engineer' | 'Doctor' | 'Teacher';
+  minIncome: number;
+  maxIncome: number;
+  diet: 'VEGETARIAN' | 'NON_VEGETARIAN' | 'VEGAN';
+  minAge: number;
+  maxAge: number;
+}

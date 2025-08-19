@@ -21,6 +21,7 @@ export const useUserAuth = () => {
     setData(undefined);
 
     try {
+      console.log(payload)
       const response = await authRepository.register(payload);
 
       const contact = payload.email || payload.phone || '';

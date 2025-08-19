@@ -1,18 +1,30 @@
 import { TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaScreen as Screen } from '@/src/components/layouts/SafeAreaScreen';
 import SearchIcon from '@/assets/images/search.svg';
 import FilterIcon from '@/assets/images/filter.svg';
 import { TabHeader } from '@/src/components/common/TabHeader';
+import { fetchSearchUser } from '@/src/services/slices/search-slice';
+import { useAppDispatch, useAppSelector } from '@/src/services/store/hook';
+import { useLoader } from '@/src/context/LoaderContext';
+import { useSearchUserRepository } from '@/src/api/repositories/useSearchRepository';
 import { ScrollView, XStack, YStack, Image } from 'tamagui';
 import { Input } from '@/src/components/common/Input';
 import { Text } from '@/src/components/common/Text';
 import VerifiedIcon from '@/assets/images/verified.svg';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '@/src/navigation/RootNavigator';
+import { useAuth } from '@/src/context/AuthContext';
+import { SearchUser } from '@/src/models/User';
 
 export default function SearchScreen() {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(0);
+  const { userSearchData } = useAppSelector(
+    state => state.searchSlice,
+  );
+  const [filteredData, setFilteredData] = useState<SearchUser[]>(userSearchData);
+  const { user } = useAuth();
+
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [searchQuery, setSearchQuery] = useState<string>('');
 
@@ -22,31 +34,29 @@ export default function SearchScreen() {
     });
   };
 
-  const users = [
-    {
-      id: '1',
-      name: 'Kakali M',
-      age: 40,
-      height: '5’2″',
-      religion: 'Hindu',
-      location: 'New York, USA',
-      photo: require('../../../assets/images/image.png'), // Replace with local or remote image
-      isVerified: true,
-      religionLabel: 'Indian, Hindu',
-      isHighlighted: true,
-    },
-    {
-      id: '2',
-      name: 'Mohmec D',
-      age: 44,
-      height: '5’7″',
-      religion: 'Christian',
-      location: 'Kolkata, India',
-      photo: require('../../../assets/images/image2.png'),
-      isVerified: true,
-      religionLabel: 'Indian, Christian',
-    },
-  ];
+  const { showLoader, hideLoader } = useLoader();
+  const dispatch = useAppDispatch();
+  const userRepository = useSearchUserRepository();
+  useEffect(() => {
+    showLoader();
+    dispatch(
+      fetchSearchUser({
+        getSearchUser: userRepository.getSearchUser,
+        data: user?.preference || {},
+      }),
+    );
+    hideLoader();
+  }, []);
+  const handelSearchQueryChange = (text: string) => {
+    setSearchQuery(text);
+    const data = userSearchData.filter(user => {
+      return user.fullName.toLowerCase().includes(text.toLowerCase());
+    });
+    setFilteredData(data);
+  };
+
+  // const storedToken = await getItem('TOKEN');
+  // console.log(storedToken)
   return (
     <Screen>
       <TabHeader headerText="Matches" />
@@ -64,7 +74,7 @@ export default function SearchScreen() {
             placeholder="Search"
             placeholderTextColor={'$color.gray_lighter'}
             value={searchQuery}
-            onChangeText={setSearchQuery}
+            onChangeText={handelSearchQueryChange}
           />
         </XStack>
         <TouchableOpacity onPress={onFilterPress}>
@@ -84,7 +94,7 @@ export default function SearchScreen() {
           gap={'$3'}
           paddingHorizontal={'$4'}
         >
-          {users.map(user => (
+          {filteredData.map(user => (
             <XStack
               key={user.id}
               alignItems="center"
@@ -94,7 +104,7 @@ export default function SearchScreen() {
               gap={'$2'}
             >
               <Image
-                source={user.photo}
+                source={user.photoUrls.length > 0 ? user.photoUrls[0] : require('../../../assets/images/logo.png')}
                 width={'$13'}
                 height={'$13'}
                 padding={'$2'}
@@ -105,19 +115,19 @@ export default function SearchScreen() {
               />
               <YStack gap={'$2'}>
                 <Text font="heading" color={'$text'} size={'medium'}>
-                  {user.name}
+                  {user.fullName}
                 </Text>
                 <Text
                   font="heading"
                   color={'$text'}
                   size={'extra_small'}
                   marginTop={'$3'}
-                >{`${user.age} Yrs Old, Height - ${user.height}`}</Text>
+                >{`${user.age || 0} Yrs Old, Height - ${user.height || 0}`}</Text>
                 <Text font="heading" color={'$text'} size={'extra_small'}>
-                  {`${user.religionLabel}`}
+                  {`${user.religion || ''}`}
                 </Text>
                 <Text font="heading" color={'$text'} size={'extra_small'}>
-                  {user.location}
+                  {`${user.city ? user.city + ', ' : ''}${user.state ? user.state + ', ' : ''}${user.country ? user.country : ''}`}
                 </Text>
                 <XStack alignItems="center" gap="$2">
                   <Text font="heading" color={'$text'} size={'extra_small'}>
