@@ -1,20 +1,27 @@
 import { TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaScreen as Screen } from '@/src/components/layouts/SafeAreaScreen';
 import SearchIcon from '@/assets/images/search.svg';
 import FilterIcon from '@/assets/images/filter.svg';
 import { TabHeader } from '@/src/components/common/TabHeader';
-import { ScrollView, XStack, YStack, Image } from 'tamagui';
+import { fetchSearchUser } from '@/src/services/slices/search-slice';
+import { useAppDispatch, useAppSelector } from '@/src/services/store/hook';
+import { useSearchUserRepository } from '@/src/api/repositories/useSearchRepository';
+import { ScrollView, XStack, YStack } from 'tamagui';
 import { Input } from '@/src/components/common/Input';
-import { Text } from '@/src/components/common/Text';
-import VerifiedIcon from '@/assets/images/verified.svg';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '@/src/navigation/RootNavigator';
+import { SearchItem } from '@/src/components/search/SearchItem';
+import { Text } from '@/src/components/common/Text';
 
 export default function SearchScreen() {
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(0);
+  const { userSearchData } = useAppSelector(
+    state => state.searchSlice,
+  );
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const dispatch = useAppDispatch();
+  const searchUserRepository = useSearchUserRepository();
 
   const onFilterPress = () => {
     navigation.navigate('PartnerPreference', {
@@ -22,31 +29,17 @@ export default function SearchScreen() {
     });
   };
 
-  const users = [
-    {
-      id: '1',
-      name: 'Kakali M',
-      age: 40,
-      height: '5’2″',
-      religion: 'Hindu',
-      location: 'New York, USA',
-      photo: require('../../../assets/images/image.png'), // Replace with local or remote image
-      isVerified: true,
-      religionLabel: 'Indian, Hindu',
-      isHighlighted: true,
-    },
-    {
-      id: '2',
-      name: 'Mohmec D',
-      age: 44,
-      height: '5’7″',
-      religion: 'Christian',
-      location: 'Kolkata, India',
-      photo: require('../../../assets/images/image2.png'),
-      isVerified: true,
-      religionLabel: 'Indian, Christian',
-    },
-  ];
+  useEffect(() => {
+    if (searchQuery.length > 0) {
+      dispatch(
+        fetchSearchUser({
+          getSearchUser: searchUserRepository.getSearchUser,
+          data: searchQuery,
+        }),
+      );
+    }
+  }, [searchQuery]);
+
   return (
     <Screen>
       <TabHeader headerText="Matches" />
@@ -65,6 +58,7 @@ export default function SearchScreen() {
             placeholderTextColor={'$color.gray_lighter'}
             value={searchQuery}
             onChangeText={setSearchQuery}
+            color={"$color.white"}
           />
         </XStack>
         <TouchableOpacity onPress={onFilterPress}>
@@ -84,49 +78,26 @@ export default function SearchScreen() {
           gap={'$3'}
           paddingHorizontal={'$4'}
         >
-          {users.map(user => (
+          {userSearchData.length === 0 && (
             <XStack
-              key={user.id}
+              justifyContent="center"
               alignItems="center"
-              padding={'$1.5'}
-              backgroundColor={'$color.black'}
-              borderRadius={'$8'}
-              gap={'$2'}
+              width={'100%'}
+              height={'100%'}
             >
-              <Image
-                source={user.photo}
-                width={'$13'}
-                height={'$13'}
-                padding={'$2'}
-                borderTopLeftRadius={'$6'}
-                borderTopRightRadius={'$6'}
-                borderBottomLeftRadius={'$6'}
-                borderBottomRightRadius={'$6'}
-              />
-              <YStack gap={'$2'}>
-                <Text font="heading" color={'$text'} size={'medium'}>
-                  {user.name}
-                </Text>
-                <Text
-                  font="heading"
-                  color={'$text'}
-                  size={'extra_small'}
-                  marginTop={'$3'}
-                >{`${user.age} Yrs Old, Height - ${user.height}`}</Text>
-                <Text font="heading" color={'$text'} size={'extra_small'}>
-                  {`${user.religionLabel}`}
-                </Text>
-                <Text font="heading" color={'$text'} size={'extra_small'}>
-                  {user.location}
-                </Text>
-                <XStack alignItems="center" gap="$2">
-                  <Text font="heading" color={'$text'} size={'extra_small'}>
-                    {`Verified`}
-                  </Text>
-                  <VerifiedIcon />
-                </XStack>
-              </YStack>
+              <Text
+                font="heading"
+                size="large"
+                color="$text"
+                textAlign="center"
+                padding={'$4'}
+              >
+                {`No users found. \nPlease try a different search query.`}
+              </Text>
             </XStack>
+          )}
+          {userSearchData.map(user => (
+            <SearchItem key={user.id} user={user} />
           ))}
         </YStack>
       </ScrollView>

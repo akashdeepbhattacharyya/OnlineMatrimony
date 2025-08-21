@@ -166,16 +166,16 @@ export const toPartnerPreferenceFormType = (
     minHeight: preferences.minHeight,
     maxIncome: preferences.maxIncome,
     minIncome: preferences.minIncome,
-    maritalStatuses: preferences.maritalStatuses.split(',') as MaritalStatus[],
+    maritalStatuses: preferences.maritalStatuses?.split(',') as MaritalStatus[],
     gender: preferences.gender as Gender,
-    cities: preferences.cities.split(',') as City[],
-    states: preferences.states.split(',') as State[],
+    cities: preferences?.cities.split(',') as City[],
+    states: preferences?.states.split(',') as State[],
     diet: preferences.diet as Diet,
-    religions: preferences.religions.split(',') as Religion[],
+    religions: preferences.religions?.split(',') as Religion[],
     motherTongue: preferences.motherTongue as MotherTongue,
-    castes: preferences.castes.split(',') as Caste[],
-    educations: preferences.educations.split(',') as Education[],
-    occupations: preferences.occupations.split(',') as Occupation[],
+    castes: preferences.castes?.split(',') as Caste[],
+    educations: preferences.educations?.split(',') as Education[],
+    occupations: preferences.occupations?.split(',') as Occupation[],
   };
 };
 

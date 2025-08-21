@@ -61,6 +61,7 @@ export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
     };
 
     const loadPartnerPreferences = async () => {
+      console.log('PARTNER_PREFERENCES')
       try {
         const storedPreferences = await getItem('PARTNER_PREFERENCES');
         setPartnerPreferences(storedPreferences);
@@ -103,6 +104,7 @@ export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const savePartnerPreferences = async (preferences?: PartnerPreferences) => {
+    console.log(preferences,'preferences')
     try {
       setPartnerPreferences(preferences);
       dispatch(

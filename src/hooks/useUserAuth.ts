@@ -21,13 +21,11 @@ export const useUserAuth = () => {
     setData(undefined);
 
     try {
-      const response = await authRepository.register(payload);
-
+      await authRepository.register(payload);
       const contact = payload.email || payload.phone || '';
       setData(contact);
       return contact;
     } catch (err: any) {
-      console.error('Registration error:', err);
       setError(err.message || 'Registration failed');
       return null;
     } finally {
@@ -48,7 +46,6 @@ export const useUserAuth = () => {
       setData(response);
       return response;
     } catch (err: any) {
-      console.error('Resend OTP error:', err);
       setError(err.message || 'Resend OTP failed');
       return null;
     } finally {
@@ -69,7 +66,6 @@ export const useUserAuth = () => {
       setData(response);
       return response;
     } catch (err: any) {
-      console.error('Submit OTP error:', err);
       setError(err.message || 'OTP verification failed');
       return null;
     } finally {
@@ -90,7 +86,6 @@ export const useUserAuth = () => {
       setData(response);
       return response;
     } catch (err: any) {
-      console.error('Login error:', err);
       setError(err.message || 'Login failed');
       return null;
     } finally {

@@ -292,3 +292,7 @@ export const isPartnerPreferencesComplete = (
     partnerPreferences.gender !== null;
   return isComplete;
 };
+
+export type SearchUser = {
+  id: number;
+} & UserProfile;

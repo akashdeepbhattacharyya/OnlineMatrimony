@@ -57,7 +57,7 @@ const Header = ({ headerText, screenType = 'default', ...props }: Props) => {
           <TouchableOpacity onPress={onProfilePress}>
             <ProfilePicture
               uri={
-                userData.profile.primaryPhotoUrl ||
+                userData.profile?.primaryPhotoUrl ||
                 `https://ui-avatars.com/api/?name=${userData.profile.fullName}&size=512`
               }
               outerCircleSize={38}
