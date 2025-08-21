@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { SearchUser, SearchUserPreferences } from '@/src/models/User';
-import { ApiResponse, ApiSuccess } from '@/src/models/ApiResponse';
+import { SearchUser } from '@/src/models/User';
 
 type SearchUserState = {
   userSearchData: SearchUser[];
@@ -16,15 +15,15 @@ export const fetchSearchUser = createAsyncThunk(
     {
       getSearchUser,
       data,
-    }: { 
-      getSearchUser: (data: SearchUserPreferences | {}) => Promise<ApiResponse<SearchUser>>; 
-      data: SearchUserPreferences | {};
+    }: {
+      getSearchUser: (data: string) => Promise<SearchUser[]>;
+      data: string;
     },
     thunkAPI,
   ) => {
     try {
       const response = await getSearchUser(data);
-      
+
 
       if (!response) {
         return thunkAPI.rejectWithValue({
@@ -54,7 +53,7 @@ const searchSlice = createSlice({
   reducers: {},
   extraReducers: builder => {
     builder.addCase(fetchSearchUser.fulfilled, (state, action) => {
-      state.userSearchData = action.payload.content || [];
+      state.userSearchData = action.payload || [];
     });
   },
 });
