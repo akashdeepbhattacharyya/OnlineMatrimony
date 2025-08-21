@@ -7,7 +7,6 @@ import { MotherTongue } from '../resources/mother-tongue';
 import { Occupation } from '../resources/occupation';
 import { Religion } from '../resources/religion';
 import { Diet } from '../resources/diet';
-import { ImageSourcePropType } from 'react-native';
 
 /**
  * Represents the personal information of a user.
