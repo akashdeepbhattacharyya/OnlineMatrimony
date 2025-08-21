@@ -18,7 +18,6 @@ export const fetchPartnerPreferences = createAsyncThunk(
   ) => {
     try {
       const response = await getPartnerPreferences();
-      console.log(response)
       if (!response || !response.preference) {
         return thunkAPI.rejectWithValue({
           status: false,
@@ -30,7 +29,6 @@ export const fetchPartnerPreferences = createAsyncThunk(
       setItem('PARTNER_PREFERENCES', response.preference);
       return response.preference;
     } catch (e) {
-      console.error(e);
       return thunkAPI.rejectWithValue({
         status: false,
         data: undefined,
