@@ -8,6 +8,7 @@ import {
   YStack,
 } from 'tamagui';
 import { Text } from './Text';
+import Logo from '@/assets/images/logo.svg';
 
 type Props = {
   title?: string;
@@ -16,7 +17,8 @@ type Props = {
   imageProps?: ImageProps;
   subtitleProps?: TextProps;
   secondarySubtitleProps?: TextProps;
-  subtitleFontSize?: 'normal' | 'small' | 'largest';
+  subtitleFontSize?: 'normal' | 'small' | 'medium';
+  logoSize?: { width: number; height: number };
 } & ViewProps;
 
 export const TitleAndSubtitle = ({
@@ -26,18 +28,14 @@ export const TitleAndSubtitle = ({
   imageProps,
   subtitleProps,
   secondarySubtitleProps,
-  subtitleFontSize = 'normal',
+  subtitleFontSize = 'medium',
+  logoSize = { width: 187, height: 64 },
   ...props
 }: Props) => {
   return (
     <YStack alignItems="center" {...props}>
-      <Image
-        src={require('@/assets/images/logo.png')}
-        width={100}
-        height={100}
-        {...imageProps}
-      />
-      <Text font="heading" size={subtitleFontSize} {...subtitleProps}>
+      <Logo width={logoSize.width} height={logoSize.height} />
+      <Text marginTop={"$5"} font="heading" size={subtitleFontSize} {...subtitleProps}>
         {subtitle}
       </Text>
       {secondarySubtitle && (

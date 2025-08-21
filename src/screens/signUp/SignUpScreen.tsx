@@ -31,6 +31,8 @@ import {
 } from '@/src/utils/dateFormatter';
 import DOBIcon from '@/assets/images/icon-dob.svg';
 import { DateTimePicker } from '@/src/components/common/DateTimePicker';
+import { NoSafeAreaScreen as Screen } from '@/src/components/layouts/NoSafeAreaScreen';
+import { Background } from '@/src/components/common/Background';
 
 export default function SignUpScreen() {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -89,11 +91,8 @@ export default function SignUpScreen() {
   };
 
   return (
-    <ImageBackground
-      source={require('@/assets/images/splashScreen.png')}
-      style={styles.imgContainer}
-      resizeMode="cover"
-    >
+    <Screen>
+      <Background endLocation={0.3} />
       <ScrollView
         contentContainerStyle={{
           flexGrow: 1,
@@ -313,7 +312,7 @@ export default function SignUpScreen() {
                   marginTop="$2"
                 />
 
-                <SocialMediaButtons onGoogle={() => {}} onFacebook={() => {}} />
+                <SocialMediaButtons onGoogle={() => { }} onFacebook={() => { }} />
                 <XStack
                   theme={'sign_up_button'}
                   justifyContent="center"
@@ -337,6 +336,6 @@ export default function SignUpScreen() {
           </Formik>
         </YStack>
       </ScrollView>
-    </ImageBackground>
+    </Screen>
   );
 }

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { ImageBackground, TextInput } from 'react-native';
+import { TextInput } from 'react-native';
 import {
   NavigationProp,
   RouteProp,
@@ -14,7 +14,8 @@ import { TitleAndSubtitle } from '@/src/components/common/TitleAndSubtitle';
 import { Text } from '@/src/components/common/Text';
 import { useUserAuth } from '@/src/hooks/useUserAuth';
 import { useLoader } from '@/src/context/LoaderContext';
-import { isEmailOrPhone } from '@/src/utils/utils';
+import { NoSafeAreaScreen as Screen } from '@/src/components/layouts/NoSafeAreaScreen';
+import { Background } from '@/src/components/common/Background';
 
 type OtpValidationScreenProps = {
   route: RouteProp<RootStackParamList, 'Otp'>;
@@ -89,11 +90,8 @@ export default function OtpValidationScreen({
   };
 
   return (
-    <ImageBackground
-      source={require('@/assets/images/splashScreen.png')}
-      style={styles.imgContainer}
-      resizeMode="cover"
-    >
+    <Screen>
+      <Background endLocation={0.3} />
       <YStack
         theme="dark"
         flex={1}
@@ -103,12 +101,12 @@ export default function OtpValidationScreen({
       >
         <Spacer size="$20" />
         <TitleAndSubtitle marginBottom="$11" />
-        <Text font="heading" size="extra_large">
+        <Text font="headingBold" size="extra_large">
           OTP Verification
         </Text>
         <Text
           font="heading"
-          size="normal"
+          size="small"
           alignItems="center"
           marginTop="$2"
           textAlign="center"
@@ -156,7 +154,7 @@ export default function OtpValidationScreen({
           gap="$2"
         >
           <Text size="small" font="heading" color="$color">
-            Do Not Send OTP?
+            Did Not Receive OTP?
           </Text>
           <Text
             size="normal"
@@ -175,6 +173,6 @@ export default function OtpValidationScreen({
           marginTop="$6"
         />
       </YStack>
-    </ImageBackground>
+    </Screen>
   );
 }

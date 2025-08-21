@@ -38,11 +38,12 @@ export default function HomeScreen() {
               height={'100%'}
               justifyContent="center"
               bottom={'$3'}
+              logoSize={{ width: 100, height: 70 }}
             />
           </ImageBackground>
-          <TipsAndTestimonial onRightButton={() => {}} />
+          <TipsAndTestimonial onRightButton={() => { }} />
           <TestimonialCarousel />
-          <FAQCard onRightButton={() => {}} />
+          <FAQCard onRightButton={() => { }} />
         </YStack>
       </ScrollView>
     </Screen>

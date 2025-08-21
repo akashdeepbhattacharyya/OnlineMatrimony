@@ -1,11 +1,12 @@
-import { ImageBackground, Animated } from 'react-native';
+import { Animated } from 'react-native';
 import React, { useEffect, useRef } from 'react';
 import { NavigationProp, useNavigation } from '@react-navigation/core';
-import { styles } from './style';
 import { RootStackParamList } from '../../navigation/RootNavigator';
 import { YStack } from 'tamagui';
 import { TitleAndSubtitle } from '@/src/components/common/TitleAndSubtitle';
 import { PrimaryButton } from '@/src/components/common/PrimaryButton';
+import { Background } from '@/src/components/common/Background';
+import { NoSafeAreaScreen as Screen } from '@/src/components/layouts/NoSafeAreaScreen';
 
 export default function Onboarding() {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
@@ -23,11 +24,8 @@ export default function Onboarding() {
   }, []);
 
   return (
-    <ImageBackground
-      source={require('@/assets/images/splashScreen.png')}
-      style={styles.imgContainer}
-      resizeMode="cover"
-    >
+    <Screen>
+      <Background />
       <YStack
         theme="dark"
         flex={1}
@@ -46,6 +44,6 @@ export default function Onboarding() {
           />
         </Animated.View>
       </YStack>
-    </ImageBackground>
+    </Screen>
   );
 }
