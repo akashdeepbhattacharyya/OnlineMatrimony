@@ -1,3 +1,6 @@
+import { number } from "yup";
+import { SubscriptionFeatures } from "../models/SubscriptionPlan";
+
 export const isValidPhone = (value: string) => {
   const phoneRegex = /^[0-9]{10}$/; // You can customize this
   return phoneRegex.test(value);
@@ -73,5 +76,20 @@ export function formatAnnualIncome(value: number) {
   } else {
     const crores = Math.floor(value / 10000000);
     return `${crores} ${crores === 1 ? 'Crore' : 'Crores'}`;
+  }
+}
+
+export function formatSubscriptionPlanFeature(key: keyof SubscriptionFeatures, value: number | boolean) {
+  switch (key) {
+    case 'activeChat':
+      return `Active Chat limit: ${value} accounts`;
+    case 'manualSearch':
+      return 'Manual Search';
+    case 'matchesPerWeek':
+      return `${value} matches per week`;
+    case 'sendInterestOption':
+      return 'Send Interest Option';
+    default:
+      return '';
   }
 }

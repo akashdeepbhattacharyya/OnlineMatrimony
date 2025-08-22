@@ -60,6 +60,10 @@ module.exports = {
       },
       keys: {
         API_BASE_URL: process.env.API_BASE_URL,
+        RAZORPAY_KEY: IS_DEVELOPMENT
+          ? process.env.DEV_RAZORPAY_KEY
+          : process.env.PROD_RAZORPAY_KEY,
+        // Uncomment and configure the below if you want to use different base URLs for different environments
         // local: {
         //   apiBaseUrl: process.env.LOCAL_BASE_URL,
         // },
