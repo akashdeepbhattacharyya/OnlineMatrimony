@@ -1,9 +1,9 @@
-import PrimaryCheckIcon from '@/assets/images/check-primary.svg';
 import { SubscriptionPlan } from '@/src/models/SubscriptionPlan';
-import { View, XStack, YStack } from 'tamagui';
+import { View, YStack } from 'tamagui';
 import { Text } from '@/src/components/common/Text';
 import { PrimaryButton } from '../../common/PrimaryButton';
 import { Dimensions } from 'react-native';
+import { Features } from './Features';
 
 type Props = {
   subscriptionPlan: SubscriptionPlan;
@@ -28,7 +28,7 @@ export const NextPlan = ({ subscriptionPlan, onStartPlan }: Props) => {
         <YStack justifyContent="space-between" gap={'$6'}>
           <YStack alignItems="center" justifyContent="space-between" gap={'$4'}>
             <Text font="heading" size="extra_large">
-              {subscriptionPlan.title}
+              {subscriptionPlan.name}
             </Text>
             <YStack alignItems="center">
               <Text
@@ -36,21 +36,14 @@ export const NextPlan = ({ subscriptionPlan, onStartPlan }: Props) => {
                 size="double_extra_large"
                 justifyContent="space-between"
               >
-                {subscriptionPlan.price}
+                {`₹${subscriptionPlan.price}`}
               </Text>
               <Text font="heading" size="small">
-                {subscriptionPlan.time} Weeks
+                {subscriptionPlan.durationMonths} weeks
               </Text>
             </YStack>
           </YStack>
-          <YStack gap={'$2'}>
-            {subscriptionPlan.features.map((feature, idx) => (
-              <XStack key={idx} alignItems="center" gap={'$3'}>
-                <PrimaryCheckIcon color={'$background'} />
-                <Text font="heading">{feature}</Text>
-              </XStack>
-            ))}
-          </YStack>
+          <Features features={subscriptionPlan.features} plan="next" />
         </YStack>
         <PrimaryButton
           title="Start Plan"

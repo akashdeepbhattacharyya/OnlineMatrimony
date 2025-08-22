@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ScrollView, FlatList, Dimensions } from 'react-native';
 import { YStack, View } from 'tamagui';
 import { SafeAreaScreen as Screen } from '@/src/components/layouts/SafeAreaScreen';
@@ -8,39 +8,66 @@ import { SubscriptionPlan } from '@/src/models/SubscriptionPlan';
 import { CurrentPlan } from '@/src/components/settings/subscription/CurrentPlan';
 import { NextPlan } from '@/src/components/settings/subscription/NextPlan';
 import { SubscriptionBanner } from '@/src/components/settings/subscription/SubscriptionBanner';
-
-const subscriptionData: SubscriptionPlan[] = [
-  {
-    id: '1',
-    title: 'Regular Plan',
-    price: '₹1100',
-    time: '11',
-    features: [
-      'Viewing extended match lists',
-      'Unlocking regular profiles information',
-      'Active chat limit: 6 accounts',
-      '4 matches per week',
-    ],
-  },
-  {
-    id: '2',
-    title: 'Pro Plan',
-    price: '₹5100',
-    time: '52',
-    features: [
-      'Viewing extended match lists',
-      'Enhanced profile visibility to get more attention',
-      'Active chat limit: 10 accounts',
-      '6 matches per week',
-      'Search and Send Interest options',
-    ],
-  },
-];
+import { usePayment } from '@/src/hooks/usePayment';
+import { useAppSelector } from '@/src/services/store/hook';
+import { useSubscriptionRepository } from '@/src/api/repositories/useSubscriptionRepository';
 
 const SubscriptionScreen = () => {
   const flatListRef = useRef<FlatList<SubscriptionPlan>>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const { width } = Dimensions.get('window');
+  const { initiatePayment, paymentSuccess, paymentFailure } = usePayment();
+  const { userData } = useAppSelector(state => state.user);
+  const [subscriptionData, setSubscriptionData] = useState<SubscriptionPlan[]>([]);
+  const { getSubscriptionPlans, subscribeToPlan } = useSubscriptionRepository();
+  const [selectedPlan, setSelectedPlan] = useState<SubscriptionPlan | undefined>(undefined);
+
+  useEffect(() => {
+    const fetchSubscriptionPlans = async () => {
+      const plans = await getSubscriptionPlans();
+      setSubscriptionData(plans);
+    };
+
+    fetchSubscriptionPlans();
+  }, []);
+
+  useEffect(() => {
+    const handlePaymentSuccess = async () => {
+      if (paymentSuccess) {
+        // Handle post-payment success actions here
+        console.log('Payment Successful with ID:', paymentSuccess.id);
+        if (selectedPlan) {
+          await subscribeToPlan(selectedPlan.id, paymentSuccess.id);
+        }
+      }
+    };
+    handlePaymentSuccess();
+  }, [paymentSuccess]);
+
+  useEffect(() => {
+    if (paymentFailure) {
+      // Handle payment failure actions here
+      console.error('Payment Failed:', paymentFailure.description);
+    }
+  }, [paymentFailure]);
+
+  const onStartPlan = async (plan: SubscriptionPlan) => {
+    setSelectedPlan(plan);
+    const contact = userData.phone;
+    const email = userData.email;
+    const name = userData.profile.fullName;
+
+    await initiatePayment({
+      description: plan.name,
+      amount: plan.price,
+      prefill: {
+        email,
+        contact,
+        name,
+      },
+    });
+  };
+
 
   return (
     <Screen>
@@ -71,13 +98,13 @@ const SubscriptionScreen = () => {
                       index === 0
                         ? 'first'
                         : index === subscriptionData.length - 1
-                        ? 'last'
-                        : 'middle'
+                          ? 'last'
+                          : 'middle'
                     }
-                    onStartPlan={() => {}}
+                    onStartPlan={() => onStartPlan(item)}
                   />
                 ) : (
-                  <NextPlan subscriptionPlan={item} onStartPlan={() => {}} />
+                  <NextPlan subscriptionPlan={item} onStartPlan={() => onStartPlan(item)} />
                 );
               }}
               keyExtractor={item => item.id}

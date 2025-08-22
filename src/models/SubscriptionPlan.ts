@@ -1,7 +1,15 @@
 export type SubscriptionPlan = {
   id: string;
-  title: string;
-  price: string;
-  time: string;
-  features: string[];
+  name: string;
+  description: string;
+  price: number;
+  durationMonths: number;
+  features: SubscriptionFeatures;
+};
+
+export type SubscriptionFeatures = {
+  matchesPerWeek: number;
+  activeChat: number;
+  manualSearch: boolean;
+  sendInterestOption: boolean;
 };

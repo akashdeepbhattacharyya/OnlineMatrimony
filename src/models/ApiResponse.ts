@@ -1,3 +1,5 @@
+import { SubscriptionFeatures, SubscriptionPlan } from "./SubscriptionPlan";
+
 export type ApiSuccess<T> = {
   statusCode: number;
   status: true;
@@ -23,3 +25,28 @@ export type PagedResponse<T> = {
   last: boolean;
   empty: boolean;
 };
+
+export type SubscriptionPlanResponse = {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  durationMonths: number;
+  features: string;
+};
+
+export type FeatureResponse = {
+  active_chat: number;
+  manual_search: boolean;
+  matches_per_week: number;
+  send_interest_option: boolean;
+};
+
+export function mapFeatureResponseToFeature(feature: FeatureResponse): SubscriptionFeatures {
+  return {
+    activeChat: feature.active_chat,
+    manualSearch: feature.manual_search,
+    matchesPerWeek: feature.matches_per_week,
+    sendInterestOption: feature.send_interest_option,
+  };
+}
