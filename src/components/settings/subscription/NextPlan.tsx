@@ -1,10 +1,8 @@
-import PrimaryCheckIcon from '@/assets/images/check-primary.svg';
 import { SubscriptionPlan } from '@/src/models/SubscriptionPlan';
-import { View, XStack, YStack } from 'tamagui';
+import { View, YStack } from 'tamagui';
 import { Text } from '@/src/components/common/Text';
 import { PrimaryButton } from '../../common/PrimaryButton';
 import { Dimensions } from 'react-native';
-import { formatSubscriptionPlanFeature } from '@/src/utils/utils';
 import { Features } from './Features';
 
 type Props = {

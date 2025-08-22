@@ -1,10 +1,8 @@
-import { XStack, YStack } from 'tamagui';
+import { YStack } from 'tamagui';
 import { Text } from '../../common/Text';
 import { Dimensions } from 'react-native';
 import { PrimaryButton } from '../../common/PrimaryButton';
-import WhiteCheckIcon from '@/assets/images/check-white.svg';
 import { SubscriptionPlan } from '@/src/models/SubscriptionPlan';
-import { formatSubscriptionPlanFeature } from '@/src/utils/utils';
 import { Features } from './Features';
 
 type Props = {
