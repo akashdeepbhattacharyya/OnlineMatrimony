@@ -48,14 +48,6 @@ export const CurrentPlan = ({
           </YStack>
         </YStack>
         <Features features={subscriptionPlan.features} plan="current" />
-        {/* <YStack gap={'$2'}>
-          {subscriptionPlan.features.filter(Boolean).map((feature, idx) => (
-            <XStack key={idx} alignItems="center" gap={'$3'}>
-              <WhiteCheckIcon color={'$background'} />
-              <Text font="heading">{formatSubscriptionPlanFeature(feature)}</Text>
-            </XStack>
-          ))}
-        </YStack> */}
       </YStack>
       <PrimaryButton
         title="Start Plan"

@@ -46,14 +46,6 @@ export const NextPlan = ({ subscriptionPlan, onStartPlan }: Props) => {
             </YStack>
           </YStack>
           <Features features={subscriptionPlan.features} plan="next" />
-          {/* <YStack gap={'$2'}>
-            {subscriptionPlan.features.map((feature, idx) => (
-              <XStack key={idx} alignItems="center" gap={'$3'}>
-                <PrimaryCheckIcon color={'$background'} />
-                <Text font="heading">{formatSubscriptionPlanFeature(feature)}</Text>
-              </XStack>
-            ))}
-          </YStack> */}
         </YStack>
         <PrimaryButton
           title="Start Plan"
