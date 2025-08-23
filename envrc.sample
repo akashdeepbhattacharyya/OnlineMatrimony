@@ -1,4 +1,0 @@
-export DEV_BASE_URL=
-export PROD_BASE_URL=
-export LOCAL_BASE_URL=
-export APP_VARIANT=

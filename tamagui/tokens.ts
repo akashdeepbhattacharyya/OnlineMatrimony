@@ -45,8 +45,8 @@ export const tokens = createTokens({
     headingBold: 'Roboto-Bold',
     headingSemiBold: 'Roboto-SemiBold',
     headingExtraBold: 'Roboto-ExtraBold',
-    body: 'Oswald-Regular',
-    bodyBold: 'Oswald-Bold',
-    bodySemiBold: 'Oswald-SemiBold',
+    body: 'Roboto-Regular',
+    bodyBold: 'Roboto-Bold',
+    bodySemiBold: 'Roboto-SemiBold',
   },
 });

@@ -1,0 +1,110 @@
+import React, { useEffect } from 'react';
+import { Formik } from 'formik';
+import { ScrollView } from 'react-native-gesture-handler';
+import { SafeAreaScreen as Screen } from '@/components/layouts/SafeAreaScreen';
+import { ScreenHeader } from '@/components/common/ScreenHeader';
+import { YStack } from 'tamagui';
+import { PersonalPreferences } from '@/components/settings/partner-preference/PersonalPreferences';
+import {
+  PartnerPreferenceFormType,
+  toPartnerPreferenceFormType,
+  toPartnerPreferencesRequest,
+} from '@/resources/form';
+import { PrimaryButton } from '@/components/common/PrimaryButton';
+import { OtherPreferences } from '@/components/settings/partner-preference/OtherPreferences';
+import { ProfessionalPreferences } from '@/components/settings/partner-preference/ProfessionalPreferences';
+import { useUserRepository } from '@/services/api/repositories/useUserRepository';
+import { useLoader } from '@/context/LoaderContext';
+import { useAppSelector, useAppDispatch } from '@/services/store/hook';
+import { fetchPartnerPreferences } from '@/services/slices/partner-preferences';
+import { useAuth } from '@/context/AuthContext';
+import { router, useLocalSearchParams } from 'expo-router';
+
+export default function PartnerPreferences() {
+  const { partnerPreferences } = useAppSelector(
+    state => state.partnerPreferences,
+  );
+  const { showLoader, hideLoader } = useLoader();
+  const dispatch = useAppDispatch();
+  const userRepository = useUserRepository();
+  const { saveUser } = useAuth();
+  const { purpose } = useLocalSearchParams<{
+    purpose: string;
+  }>();
+
+  useEffect(() => {
+    showLoader();
+    dispatch(
+      fetchPartnerPreferences({
+        getPartnerPreferences: userRepository.getPartnerPreferences,
+      }),
+    );
+    hideLoader();
+  }, []);
+
+  const initialValues: PartnerPreferenceFormType =
+    toPartnerPreferenceFormType(partnerPreferences);
+
+  console.log('Initial values for form:', initialValues);
+
+  const onConfirm = async (values: PartnerPreferenceFormType) => {
+    console.log('Updated values:', values);
+    const request = toPartnerPreferencesRequest(values);
+    console.log('Request to update partner preferences:', request);
+    showLoader();
+    try {
+      const response = await userRepository.updatePartnerPreferences(request);
+      console.log('Partner preferences updated successfully:', response);
+      saveUser(response);
+      hideLoader();
+      if (purpose === 'UPDATE') {
+        router.back();
+      }
+    } catch (error) {
+      console.error('Error updating partner preferences:', error);
+      hideLoader();
+    }
+  };
+
+  return (
+    <Screen>
+      <ScreenHeader
+        headerText="Partner Preferences"
+        screenType={purpose === 'ONBOARDING' ? 'onboarding' : 'default'}
+      />
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ flexGrow: 1 }}
+      >
+        <Formik<PartnerPreferenceFormType>
+          initialValues={initialValues}
+          // validationSchema={partnerPreferenceSchema}
+          onSubmit={onConfirm}
+        >
+          {({ handleSubmit, isSubmitting, isValid }) => (
+            <YStack
+              marginTop={'$2'}
+              paddingHorizontal={'$4'}
+              paddingVertical={'$2'}
+              justifyContent="space-between"
+              marginBottom={'$6'}
+            >
+              <YStack gap={'$4'}>
+                <PersonalPreferences />
+                <OtherPreferences />
+                <ProfessionalPreferences />
+              </YStack>
+              <PrimaryButton
+                title="Confirm"
+                onPress={() => handleSubmit()}
+                marginTop="$9"
+                disabled={isSubmitting || !isValid}
+                showArrow={false}
+              />
+            </YStack>
+          )}
+        </Formik>
+      </ScrollView>
+    </Screen>
+  );
+}
