@@ -44,14 +44,14 @@ export const MatchProfilePicture = ({ matchedUserProfile }: Props) => {
         height={'100%'}
       >
         <XStack justifyContent="flex-end">
-          <YStack alignItems="flex-end" gap={'$2'}>
+          {/* <YStack alignItems="flex-end" gap={'$2'}>
             <Button width={'$5'} height={'$3'} borderRadius={'$7'}>
               <CameraBlob />
             </Button>
             <Button width={'$3'} height={'$3'} borderRadius={'$7'}>
               <MenuBlob />
             </Button>
-          </YStack>
+          </YStack> */}
         </XStack>
         <YStack
           shadowColor={getToken('$color.black')}
@@ -66,10 +66,10 @@ export const MatchProfilePicture = ({ matchedUserProfile }: Props) => {
           </XStack>
           <Text font="heading" size="normal">
             {[
-              [toAge(matchedUserProfile.dateOfBirth), 'yrs'].join(' '),
+              [matchedUserProfile.age, 'yrs'].join(' '),
               toFeetAndInches(matchedUserProfile.height),
               occupations[
-                matchedUserProfile.occupation as keyof typeof occupations
+              matchedUserProfile.occupation as keyof typeof occupations
               ],
             ].join('  ')}
           </Text>

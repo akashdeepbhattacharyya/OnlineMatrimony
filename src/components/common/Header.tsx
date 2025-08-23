@@ -36,7 +36,7 @@ const Header = ({ headerText, screenType = 'default', ...props }: Props) => {
     <XStack
       justifyContent={screenType === 'onboarding' ? 'center' : 'space-between'}
       alignItems="center"
-      paddingVertical={'$2'}
+      paddingVertical={'$3'}
       paddingHorizontal={'$4'}
       {...props}
     >
@@ -66,9 +66,9 @@ const Header = ({ headerText, screenType = 'default', ...props }: Props) => {
             />
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={onNotificationPress}>
+          {/* <TouchableOpacity onPress={onNotificationPress}>
             <NotificationIcon width={38} height={38} />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </XStack>
       )}
       {screenType === 'default' && <GhostView width={20} height={20} />}

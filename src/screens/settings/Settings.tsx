@@ -27,10 +27,10 @@ export default function Settings() {
             })
           }
         />
-        <SettingsItem
+        {/* <SettingsItem
           title="Notifications"
           onPress={() => navigation.navigate('NotificationSettings')}
-        />
+        /> */}
         <SettingsItem
           title="Account Settings"
           onPress={() => navigation.navigate('AccountSettings')}
