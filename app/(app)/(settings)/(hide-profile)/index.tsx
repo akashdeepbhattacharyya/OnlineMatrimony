@@ -7,7 +7,7 @@ import { DottedDivider } from '@/components/common/DottedDivider';
 const HideDeleteProfileScreen = () => {
   return (
     <Screen>
-      <ScreenHeader headerText="Hide / Delete Profile" />
+      <ScreenHeader headerText="Hide Profile" />
       <YStack padding="$4" gap="$8">
         <HideDeleteProfileItem
           title="Hide Profile"
@@ -17,13 +17,13 @@ const HideDeleteProfileScreen = () => {
           onPress={() => { }}
         />
         <DottedDivider />
-        <HideDeleteProfileItem
+        {/* <HideDeleteProfileItem
           title="Delete Profile"
           subTitle="Delete Your Profile"
           description="You will permanently lose all profile information, match information and paid memberships"
           buttonTitle="Delete"
           onPress={() => { }}
-        />
+        /> */}
       </YStack>
     </Screen>
   );

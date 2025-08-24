@@ -8,19 +8,17 @@ import { router } from 'expo-router';
 export default function AccountSettings() {
   const { clearSession } = useAuth();
 
-  const handelOnPress = (label: string) => {
+  const handelOnPress = (label: 'hide_delete_profile' | 'subscription_renewal' | 'logout') => {
     switch (label) {
-      case 'Hide / Delete Profile':
+      case 'hide_delete_profile':
         router.push('/(app)/(settings)/(hide-profile)');
         break;
-      case 'Subscription Renewal':
+      case 'subscription_renewal':
         router.push('/(app)/(settings)/(subscription)');
         break;
-      case 'Logout':
+      case 'logout':
         clearSession();
         break;
-      default:
-        console.log(`${label} pressed`);
     }
   };
 
@@ -30,16 +28,16 @@ export default function AccountSettings() {
       <YStack padding="$4">
         <AccountSettingsItem
           title="Hide / Delete Profile"
-          onPress={() => handelOnPress('Hide / Delete Profile')}
+          onPress={() => handelOnPress('hide_delete_profile')}
         />
         <AccountSettingsItem
           title="Subscription Renewal"
-          onPress={() => handelOnPress('Subscription Renewal')}
+          onPress={() => handelOnPress('subscription_renewal')}
         />
         <AccountSettingsItem
           title="Logout"
           showChevron={false}
-          onPress={() => handelOnPress('Logout')}
+          onPress={() => handelOnPress('logout')}
         />
       </YStack>
     </Screen>
