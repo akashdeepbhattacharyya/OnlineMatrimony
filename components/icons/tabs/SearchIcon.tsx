@@ -8,7 +8,7 @@ type Props = {
 
 export const SearchIcon = ({ focused, ...props }: Props) => {
   return (
-    <View top="$6" alignItems="center">
+    <View top="$4" alignItems="center">
       <Svg width={26} height={26} fill="none" viewBox="0 0 24 22" {...props}>
         <Path
           d="M10.9554 17.6112C15.1283 17.6112 18.511 14.2284 18.511 10.0556C18.511 5.88279 15.1283 2.50006 10.9554 2.50006C6.78263 2.50006 3.3999 5.88279 3.3999 10.0556C3.3999 14.2284 6.78263 17.6112 10.9554 17.6112Z"

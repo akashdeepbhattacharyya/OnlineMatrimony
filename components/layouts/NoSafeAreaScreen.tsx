@@ -16,7 +16,6 @@ export function NoSafeAreaScreen({
 }: Props) {
   const backgroundColor = {
     light: getToken('$color.white') as string,
-    neutral: getToken('$color.gray') as string,
     dark: getToken('$color.primary') as string,
   };
 

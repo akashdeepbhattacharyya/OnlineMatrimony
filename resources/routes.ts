@@ -34,6 +34,13 @@ export const ROUTES = {
     account_settings: "account-settings",
     notification_settings: "notification-settings",
     partner_preferences: "partner-preferences",
-    subscription: "subscription",
+    hide_profile: {
+      root: "(hide-profile)",
+      page: "index",
+    },
+    subscription: {
+      root: "(subscription)",
+      page: "index",
+    },
   },
 };

@@ -27977,8 +27977,8 @@
           "stiffness": 100
         }
       },
-      "View": "Function",
-      "Text": "Function",
+      "View": "Component",
+      "Text": "Component",
       "useAnimatedNumber": "Function",
       "useAnimatedNumberReaction": "Function",
       "useAnimatedNumberStyle": "Function",

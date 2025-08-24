@@ -11,10 +11,10 @@ export default function AccountSettings() {
   const handelOnPress = (label: string) => {
     switch (label) {
       case 'Hide / Delete Profile':
-        router.push('HideDeleteProfile');
+        router.push('/(app)/(settings)/(hide-profile)');
         break;
       case 'Subscription Renewal':
-        router.push('Subscription');
+        router.push('/(app)/(settings)/(subscription)');
         break;
       case 'Logout':
         clearSession();

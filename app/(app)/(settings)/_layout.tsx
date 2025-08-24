@@ -17,8 +17,12 @@ export default function RootLayout() {
         options={{ title: "Partner Preferences", headerShown: false }}
       />
       <Stack.Screen
-        name={ROUTES.settings.subscription}
+        name={ROUTES.settings.subscription.root}
         options={{ title: "Subscription", headerShown: false }}
+      />
+      <Stack.Screen
+        name={ROUTES.settings.hide_profile.root}
+        options={{ title: "Hide / Delete Profile", headerShown: false }}
       />
     </Stack>
   );

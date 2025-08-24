@@ -13,7 +13,6 @@ interface Props extends ViewProps {
 export function SafeAreaScreen({ children, theme = 'dark', ...props }: Props) {
   const backgroundColor = {
     light: getToken('$color.white') as string,
-    neutral: getToken('$color.gray') as string,
     dark: getToken('$color.primary') as string,
   };
 

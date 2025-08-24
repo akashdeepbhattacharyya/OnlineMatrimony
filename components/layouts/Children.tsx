@@ -11,13 +11,11 @@ interface Props extends ViewProps {
 export const Children = ({ children, theme = 'dark', ...props }: Props) => {
   const color: { [key: string]: 'dark-content' | 'light-content' } = {
     light: 'dark-content',
-    neutral: 'dark-content',
     dark: 'light-content',
   };
 
   const backgroundColor = {
     light: getToken('$color.white') as string,
-    neutral: getToken('$color.gray') as string,
     dark: getToken('$color.primary') as string,
   };
 

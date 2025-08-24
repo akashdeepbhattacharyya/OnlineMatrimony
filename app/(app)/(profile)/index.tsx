@@ -10,7 +10,6 @@ import { ProfessionalInformation } from '@/components/profile/ProfessionalInform
 import { AboutYourSelf } from '@/components/profile/AboutYourSelf';
 import BackIcon from '@/assets/images/icon-back.svg';
 import EditIcon from '@/assets/images/icon-edit.svg';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { NameAndEmail } from '@/components/profile/NameAndEmail';
 import { ProfileBackground } from '@/components/profile/ProfileBackground';
 import { useLoader } from '@/context/LoaderContext';
@@ -41,7 +40,7 @@ export default function Profile() {
 
   const onEditPress = () => {
     router.push({
-      pathname: 'UpdateProfile',
+      pathname: '/(app)/(profile)/(update)',
       params: {
         purpose: 'UPDATE',
       },

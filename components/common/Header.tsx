@@ -22,7 +22,7 @@ const Header = ({ headerText, screenType = 'default', ...props }: Props) => {
   };
 
   const onProfilePress = () => {
-    router.push({ pathname: '/(auth)/(profile)' });
+    router.push({ pathname: '/(app)/(profile)' });
   };
 
   const onNotificationPress = () => {
