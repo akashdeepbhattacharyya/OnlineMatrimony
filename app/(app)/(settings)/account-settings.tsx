@@ -1,12 +1,18 @@
-import { useAuth } from '@/context/AuthContext';
 import { YStack } from 'tamagui';
 import { SafeAreaScreen as Screen } from '@/components/layouts/SafeAreaScreen';
 import { ScreenHeader } from '@/components/common/ScreenHeader';
 import { AccountSettingsItem } from '@/components/settings/account-settings/AccountSettingsItem';
 import { router } from 'expo-router';
+import { wipeOutUserData } from '@/services/slices/user-slice';
+import * as Storage from "@/services/local-storage";
 
 export default function AccountSettings() {
-  const { clearSession } = useAuth();
+
+  const onLogout = async () => {
+    wipeOutUserData();
+    await Storage.clear();
+    router.replace('/get-started');
+  };
 
   const handelOnPress = (label: 'hide_delete_profile' | 'subscription_renewal' | 'logout') => {
     switch (label) {
@@ -17,7 +23,7 @@ export default function AccountSettings() {
         router.push('/(app)/(settings)/(subscription)');
         break;
       case 'logout':
-        clearSession();
+        onLogout();
         break;
     }
   };

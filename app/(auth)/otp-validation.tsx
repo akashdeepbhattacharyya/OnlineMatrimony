@@ -4,7 +4,7 @@ import { YStack, Spacer, XStack, View } from 'tamagui';
 import { PrimaryButton } from '@/components/common/PrimaryButton';
 import { TitleAndSubtitle } from '@/components/common/TitleAndSubtitle';
 import { Text } from '@/components/common/Text';
-import { useUserAuth } from '@/hooks/useUserAuth';
+import { useUserAuth } from '@/services/hooks/useUserAuth';
 import { useLoader } from '@/context/LoaderContext';
 import { NoSafeAreaScreen as Screen } from '@/components/layouts/NoSafeAreaScreen';
 import { Background } from '@/components/common/Background';

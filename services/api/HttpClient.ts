@@ -1,14 +1,15 @@
 import { ApiResponse } from '@/models/ApiResponse';
 import { LoginResponse, Token } from '@/models/Authentication';
 import { IHttpClient, RequestConfig } from './IHttpClient';
+import * as Storage from "@/services/local-storage";
+import { Platform } from 'react-native';
+import Constants from 'expo-constants';
 
 export class HttpClient implements IHttpClient {
   constructor(
     private baseUrl: string,
     private defaultHeaders: Record<string, string> = {},
-    private token?: Token,
-    private saveToken?: (token: Token) => void,
-  ) {}
+  ) { }
 
   private makeUrl(url: string, params?: Record<string, any>) {
     if (!params) return `${this.baseUrl}${url}`;
@@ -21,12 +22,12 @@ export class HttpClient implements IHttpClient {
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
     };
-    if (this.token) {
-      headers['Authorization'] = `Bearer ${this.token.accessToken}`;
+    const refreshToken: string | null = await Storage.getItem("REFRESH_TOKEN");
+    if (refreshToken) {
       const rest = await fetch(this.makeUrl('/auth/refresh-token'), {
         method: 'POST',
         headers,
-        body: JSON.stringify({ refreshToken: this.token.refreshToken }),
+        body: JSON.stringify({ refreshToken }),
       });
       if (!rest.ok) {
         const errorText = await rest.text().catch(() => '');
@@ -40,29 +41,12 @@ export class HttpClient implements IHttpClient {
           tokenType: data.data.tokenType,
           expiresIn: data.data.expiresIn,
         };
-        // this.token = newToken;
-        // // Save the new token using injected saveToken function
-        if (this.saveToken) this.saveToken(newToken);
+        await Storage.setToken(newToken);
         return newToken;
       }
     } else {
       throw new Error('No token available for refresh');
     }
-
-    // if (!this.refreshAuthToken) {
-    //   throw new Error('No refreshAuthToken function provided');
-    // }
-    // try {
-    //   const newToken = await this.refreshAuthToken();
-    //   if (this.saveToken) {
-    //     this.saveToken({ accessToken: newToken });
-    //   }
-    //   this.authToken = newToken;
-    //   return newToken;
-    // } catch (error) {
-    //   console.error('Error refreshing auth token:', error);
-    //   throw error;
-    // }
   }
 
   private async request<T>(
@@ -78,8 +62,10 @@ export class HttpClient implements IHttpClient {
       ...this.defaultHeaders,
       ...config.headers,
     };
-    if (this.token) {
-      headers['Authorization'] = `Bearer ${this.token.accessToken}`;
+    const accessToken: string | null = await Storage.getItem("ACCESS_TOKEN");
+    console.log('Using access token:', accessToken);
+    if (accessToken) {
+      headers['Authorization'] = `Bearer ${accessToken}`;
     }
 
     // Only set JSON content-type if it's NOT FormData and not already provided
@@ -103,8 +89,6 @@ export class HttpClient implements IHttpClient {
       try {
         const newToken = await this.handleRefreshAuthToken();
         console.log('New token obtained:', newToken);
-        // Update the token in the client
-        this.token = newToken;
         // Retry the request with the new token
         return this.request<T>(method, endpoint, body, config);
       } catch (error) {
@@ -147,3 +131,18 @@ export class HttpClient implements IHttpClient {
     return this.request<T>('DELETE', url, undefined, config);
   }
 }
+
+var apiBaseUrl = Constants.expoConfig?.extra?.keys.API_BASE_URL;
+
+if (Platform.OS === 'android') {
+  // For Android, use the local IP address if running on an emulator
+  if (apiBaseUrl?.includes('localhost')) {
+    apiBaseUrl = apiBaseUrl.replace('localhost', '10.0.2.2');
+  }
+}
+
+console.log('API_BASE_URL:', apiBaseUrl);
+
+export const apiClient = new HttpClient(apiBaseUrl || '', {
+  'Content-Type': 'application/json',
+});

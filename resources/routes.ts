@@ -1,11 +1,11 @@
 export const ROUTES = {
-  onboarding: "onboarding",
+  get_started: "get-started",
   auth: "(auth)",
   login: "login",
   otp_validation: "otp-validation",
   profile_selection: "profile-selection",
   signup: "signup",
-  subscription: "subscription",
+  purchase_subscription: "purchase-subscription",
   app: "(app)",
   tabs: "(tabs)",
   home: "index",

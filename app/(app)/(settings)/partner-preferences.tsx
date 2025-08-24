@@ -16,31 +16,30 @@ import { ProfessionalPreferences } from '@/components/settings/partner-preferenc
 import { useUserRepository } from '@/services/api/repositories/useUserRepository';
 import { useLoader } from '@/context/LoaderContext';
 import { useAppSelector, useAppDispatch } from '@/services/store/hook';
-import { fetchPartnerPreferences } from '@/services/slices/partner-preferences';
-import { useAuth } from '@/context/AuthContext';
 import { router, useLocalSearchParams } from 'expo-router';
+import { useStoreUser } from '@/hooks/useStoreUser';
 
 export default function PartnerPreferences() {
   const { partnerPreferences } = useAppSelector(
-    state => state.partnerPreferences,
+    state => state.user,
   );
   const { showLoader, hideLoader } = useLoader();
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
   const userRepository = useUserRepository();
-  const { saveUser } = useAuth();
   const { purpose } = useLocalSearchParams<{
-    purpose: string;
+    purpose: 'ONBOARDING' | 'UPDATE';
   }>();
+  const { storePartnerPreferences } = useStoreUser();
 
-  useEffect(() => {
-    showLoader();
-    dispatch(
-      fetchPartnerPreferences({
-        getPartnerPreferences: userRepository.getPartnerPreferences,
-      }),
-    );
-    hideLoader();
-  }, []);
+  // useEffect(() => {
+  //   showLoader();
+  //   dispatch(
+  //     fetchPartnerPreferences({
+  //       getPartnerPreferences: userRepository.getPartnerPreferences,
+  //     }),
+  //   );
+  //   hideLoader();
+  // }, []);
 
   const initialValues: PartnerPreferenceFormType =
     toPartnerPreferenceFormType(partnerPreferences);
@@ -55,10 +54,16 @@ export default function PartnerPreferences() {
     try {
       const response = await userRepository.updatePartnerPreferences(request);
       console.log('Partner preferences updated successfully:', response);
-      saveUser(response);
+      if (response.preference) {
+        storePartnerPreferences(response.preference);
+      }
       hideLoader();
       if (purpose === 'UPDATE') {
         router.back();
+      } else {
+        router.push({
+          pathname: '/(auth)/purchase-subscription',
+        });
       }
     } catch (error) {
       console.error('Error updating partner preferences:', error);

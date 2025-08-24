@@ -4,13 +4,9 @@ import {
   UpdateUserProfileRequest,
   User,
 } from '@/models/User';
-import { useHttpClient } from '../useHttpClient';
-import { useAuth } from '@/context/AuthContext';
+import { apiClient } from '../HttpClient';
 
 export function useUserRepository() {
-  const { token, saveToken } = useAuth();
-  const client = useHttpClient({}, token, saveToken);
-
   const updateProfilePicture = async (data: string): Promise<string> => {
     const name = data.split('/').pop() || 'profile.jpg';
     const type = 'image/jpeg';
@@ -22,7 +18,7 @@ export function useUserRepository() {
       type,
     } as any);
     formData.append('isPrimary', 'true');
-    return handleApiResponse(client.post('/users/photos', formData));
+    return handleApiResponse(apiClient.post('/users/photos', formData));
   };
   /*
 {
@@ -49,21 +45,21 @@ export function useUserRepository() {
   const updateProfile = async (
     data: UpdateUserProfileRequest,
   ): Promise<User> => {
-    return handleApiResponse(client.put('/users/editProfile', data));
+    return handleApiResponse(apiClient.put('/users/editProfile', data));
   };
 
   const getProfile = async (): Promise<User> => {
-    return handleApiResponse(client.get('/users/profile'));
+    return handleApiResponse(apiClient.get('/users/profile'));
   };
 
   const updatePartnerPreferences = async (
     data: UpdatePartnerPreferencesRequest,
   ): Promise<User> => {
-    return handleApiResponse(client.put('/users/editPreferences', data));
+    return handleApiResponse(apiClient.put('/users/editPreferences', data));
   };
 
   const getPartnerPreferences = async (): Promise<User> => {
-    return handleApiResponse(client.get('/users/getPreferences'));
+    return handleApiResponse(apiClient.get('/users/getPreferences'));
   };
 
   return {

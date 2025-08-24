@@ -1,7 +1,7 @@
 import { ScrollView, View, YStack } from 'tamagui';
 import { Text } from '@/components/common/Text';
 import { SafeAreaScreen as Screen } from '@/components/layouts/SafeAreaScreen';
-import { useUserMatch } from '@/hooks/useUserMatch';
+import { useUserMatch } from '@/services/hooks/useUserMatch';
 import { useEffect } from 'react';
 import { useLoader } from '@/context/LoaderContext';
 import { useAppDispatch, useAppSelector } from '@/services/store/hook';
@@ -9,13 +9,11 @@ import { fetchBestMatches } from '@/services/slices/match-slice';
 import { TabHeader } from '@/components/common/TabHeader';
 import { MatchItem } from '@/components/matches/MatchItem';
 import { Match } from '@/models/Match';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { router } from 'expo-router';
 
 export default function Matches() {
   const { getBestMatches } = useUserMatch();
   const { showLoader, hideLoader } = useLoader();
-  const { userData } = useAppSelector(state => state.user);
   const { bestMatches } = useAppSelector(state => state.match);
   const dispatch = useAppDispatch();
 

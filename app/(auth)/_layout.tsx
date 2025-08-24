@@ -21,8 +21,8 @@ export default function RootLayout() {
         options={{ title: "Sign Up", headerShown: false }}
       />
       <Stack.Screen
-        name={ROUTES.subscription}
-        options={{ title: "Subscription", headerShown: false }}
+        name={ROUTES.purchase_subscription}
+        options={{ title: "Purchase Subscription", headerShown: false }}
       />
     </Stack>
   );

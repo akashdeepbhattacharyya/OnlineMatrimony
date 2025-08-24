@@ -33,7 +33,7 @@ export const ChatIcon = ({ focused, ...props }: Props) => {
           strokeLinecap="round"
         />
       </Svg>
-      <TabLabel focused={focused}>{`Search`}</TabLabel>
+      <TabLabel focused={focused}>{`Chat`}</TabLabel>
     </View>
   );
 };

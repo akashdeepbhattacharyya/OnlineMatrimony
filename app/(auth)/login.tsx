@@ -9,17 +9,18 @@ import { SocialMediaButtons } from '@/components/common/SocialMediaButtons';
 import { LabelledDivider } from '@/components/common/LabelledDivider';
 import { Formik } from 'formik';
 import { loginSchema } from '@/resources/validations/login';
-import { useUserAuth } from '@/hooks/useUserAuth';
+import { useUserAuth } from '@/services/hooks/useUserAuth';
 import { useLoader } from '@/context/LoaderContext';
-import { useAuth } from '@/context/AuthContext';
 import { LoginFormType } from '@/resources/form';
 import { MaterialIcons } from '@expo/vector-icons';
 import { NoSafeAreaScreen as Screen } from '@/components/layouts/NoSafeAreaScreen';
 import { Background } from '@/components/common/Background';
 import { router } from 'expo-router';
+import { useStoreUser } from '@/hooks/useStoreUser';
+import * as Storage from "@/services/local-storage";
 
 const LoginScreen = () => {
-  const { saveUser, saveToken, savePartnerPreferences } = useAuth();
+  const { storeUser, storePartnerPreferences, storeUserProfile } = useStoreUser();
 
   const initialValues = {
     emailOrPhone: __DEV__ ? "9874757879" : '',
@@ -38,14 +39,20 @@ const LoginScreen = () => {
       rememberMe: true,
     });
     if (response) {
-      saveToken({
-        accessToken: response.accessToken,
-        refreshToken: response.refreshToken,
-        tokenType: response.tokenType,
-        expiresIn: response.expiresIn,
-      });
-      saveUser(response.user);
-      savePartnerPreferences(response.user.preference);
+      storeUser(
+        response.user,
+        {
+          accessToken: response.accessToken,
+          refreshToken: response.refreshToken,
+          tokenType: response.tokenType,
+          expiresIn: response.expiresIn,
+        }
+      );
+
+      if (response.user.preference) {
+        storePartnerPreferences(response.user.preference);
+      }
+      storeUserProfile(response.user.profile);
       console.log('Login successful:', response);
       router.replace('/(app)/(tabs)');
     } else {

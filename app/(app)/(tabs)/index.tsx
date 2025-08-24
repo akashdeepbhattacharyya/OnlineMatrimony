@@ -10,11 +10,11 @@ import { YStack } from 'tamagui';
 import { useAppSelector } from '@/services/store/hook';
 
 export default function App() {
-  const { userData } = useAppSelector(state => state.user);
+  const { userProfile } = useAppSelector(state => state.user);
 
   return (
     <Screen>
-      <TabHeader headerText={`Hi, ${userData?.profile?.fullName}`} />
+      <TabHeader headerText={`Hi, ${userProfile.fullName}`} />
       <ScrollView
         contentContainerStyle={{ flexGrow: 1 }}
         showsVerticalScrollIndicator={false}

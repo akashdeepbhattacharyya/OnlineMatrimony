@@ -1,7 +1,7 @@
 import { ScrollView, View, YStack } from 'tamagui';
 import { Text } from '@/components/common/Text';
 import { SafeAreaScreen as Screen } from '@/components/layouts/SafeAreaScreen';
-import { useUserMatch } from '@/hooks/useUserMatch';
+import { useUserMatch } from '@/services/hooks/useUserMatch';
 import { MatchProfilePicture } from '@/components/matches/match-details/MatchProfilePicture';
 import { MatchAboutSelf } from '@/components/matches/match-details/MatchAboutSelf';
 import { MatchPersonalInformation } from '@/components/matches/match-details/MatchPersonalInformation';
@@ -14,7 +14,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 
 export default function MatchDetails() {
   const { acceptMatch, rejectMatch } = useUserMatch();
-  const { userData } = useAppSelector(state => state.user);
+  const { userProfile } = useAppSelector(state => state.user);
   const { bestMatches } = useAppSelector(state => state.match);
   const { matchId } = useLocalSearchParams<{
     matchId: string;
@@ -70,11 +70,11 @@ export default function MatchDetails() {
               />
               <MatchPreferences
                 match={match}
-                currentUserProfile={userData.profile}
+                currentUserProfile={userProfile}
               />
               <MatchCommonBetween
                 matchedUserProfile={match.profileResponse}
-                currentUserProfile={userData.profile}
+                currentUserProfile={userProfile}
               />
             </YStack>
           ) : (

@@ -1,15 +1,12 @@
 import { mapFeatureResponseToFeature, SubscriptionPlanResponse } from '@/models/ApiResponse';
 import { handleApiResponse } from '@/utils/handleApiResponse';
-import { useHttpClient } from '../useHttpClient';
-import { useAuth } from '@/context/AuthContext';
 import { SubscriptionPlan } from '@/models/SubscriptionPlan';
+import { apiClient } from '../HttpClient';
+import { Subscription } from '@/models/Subscription';
 
 export function useSubscriptionRepository() {
-  const { token, saveToken } = useAuth();
-  const client = useHttpClient({}, token, saveToken);
-
   const getSubscriptionPlans = async (): Promise<SubscriptionPlan[]> => {
-    const response: SubscriptionPlanResponse[] = await handleApiResponse(client.get('/subscriptions/plans'));
+    const response: SubscriptionPlanResponse[] = await handleApiResponse(apiClient.get('/subscriptions/plans'));
     return response.map(plan => ({
       id: plan.id,
       name: plan.name,
@@ -20,12 +17,17 @@ export function useSubscriptionRepository() {
     }));
   };
 
-  const subscribeToPlan = async (planId: string, paymentId: string): Promise<void> => {
-    await handleApiResponse(client.post(`/subscriptions/subscribe`, { planId, paymentId }));
+  const subscribeToPlan = async (planId: string, paymentId: string): Promise<Subscription> => {
+    return await handleApiResponse(apiClient.post(`/subscriptions/subscribe`, { planId, paymentId }));
+  };
+
+  const getMySubscription = async (): Promise<Subscription> => {
+    return await handleApiResponse(apiClient.get('/subscriptions/my-subscription'));
   };
 
   return {
     getSubscriptionPlans,
     subscribeToPlan,
+    getMySubscription,
   };
 }

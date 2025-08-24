@@ -3,17 +3,18 @@ import { User } from '@/models/User';
 import { Text } from '@/components/common/Text';
 
 type Props = {
-  userData: User;
+  fullName?: string;
+  email?: string;
 } & ViewProps;
 
-export const NameAndEmail = ({ userData, ...props }: Props) => {
+export const NameAndEmail = ({ fullName, email, ...props }: Props) => {
   return (
     <YStack alignItems="center" {...props}>
       <Text font="heading" size="large" marginTop="$3">
-        {userData.profile.fullName}
+        {fullName}
       </Text>
       <Text font="headingLight" size="small" marginTop="$1">
-        {userData.email}
+        {email}
       </Text>
     </YStack>
   );

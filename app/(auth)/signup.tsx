@@ -19,7 +19,7 @@ import { Gender, genderOptionsWithIcons } from '@/resources/gender';
 import { Option, UserRegistrationFormType } from '@/resources/form';
 import { SocialMediaButtons } from '@/components/common/SocialMediaButtons';
 import { LabelledDivider } from '@/components/common/LabelledDivider';
-import { useUserAuth } from '@/hooks/useUserAuth';
+import { useUserAuth } from '@/services/hooks/useUserAuth';
 import { userRegistrationSchema } from '@/resources/validations/user-registration';
 import { UserRegistrationRequest } from '@/models/Authentication';
 import {

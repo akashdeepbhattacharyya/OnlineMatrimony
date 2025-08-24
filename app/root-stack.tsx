@@ -16,7 +16,7 @@ const App = () => {
         }}
       >
         <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name={ROUTES.onboarding} options={{ headerShown: false }} />
+        <Stack.Screen name={ROUTES.get_started} options={{ headerShown: false }} />
         <Stack.Screen name={ROUTES.auth} options={{ headerShown: false }} />
         <Stack.Screen name={ROUTES.app} options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />

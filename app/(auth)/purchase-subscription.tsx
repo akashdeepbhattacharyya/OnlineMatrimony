@@ -11,16 +11,21 @@ import { SubscriptionBanner } from '@/components/settings/subscription/Subscript
 import { usePayment } from '@/hooks/usePayment';
 import { useAppSelector } from '@/services/store/hook';
 import { useSubscriptionRepository } from '@/services/api/repositories/useSubscriptionRepository';
+import { useStoreUser } from '@/hooks/useStoreUser';
+import { router } from 'expo-router';
+import { useToastController } from '@tamagui/toast';
 
-const SubscriptionScreen = () => {
+export default function PurchaseSubscription() {
   const flatListRef = useRef<FlatList<SubscriptionPlan>>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const { width } = Dimensions.get('window');
   const { initiatePayment, paymentSuccess, paymentFailure } = usePayment();
-  const { userData } = useAppSelector(state => state.user);
+  const { phone, email, userProfile } = useAppSelector(state => state.user);
   const [subscriptionData, setSubscriptionData] = useState<SubscriptionPlan[]>([]);
   const { getSubscriptionPlans, subscribeToPlan } = useSubscriptionRepository();
   const [selectedPlan, setSelectedPlan] = useState<SubscriptionPlan | undefined>(undefined);
+  const { storeSubscription } = useStoreUser();
+  const toast = useToastController();
 
   useEffect(() => {
     const fetchSubscriptionPlans = async () => {
@@ -37,7 +42,16 @@ const SubscriptionScreen = () => {
         // Handle post-payment success actions here
         console.log('Payment Successful with ID:', paymentSuccess.id);
         if (selectedPlan) {
-          await subscribeToPlan(selectedPlan.id, paymentSuccess.id);
+          try {
+            const subscription = await subscribeToPlan(selectedPlan.id, paymentSuccess.id);
+            storeSubscription(subscription);
+            console.log('Subscription to plan successful:', subscription);
+            router.replace({
+              pathname: '/(app)/(tabs)',
+            });
+          } catch (error) {
+            console.error('Error subscribing to plan:', error);
+          }
         }
       }
     };
@@ -48,14 +62,19 @@ const SubscriptionScreen = () => {
     if (paymentFailure) {
       // Handle payment failure actions here
       console.error('Payment Failed:', paymentFailure.description);
+      // toast.show("Payment failed", {
+      //   description: paymentFailure.description,
+      //   burntOptions: {
+      //     preset: 'error',
+      //   }
+      // });
     }
   }, [paymentFailure]);
 
   const onStartPlan = async (plan: SubscriptionPlan) => {
     setSelectedPlan(plan);
-    const contact = userData.phone;
-    const email = userData.email;
-    const name = userData.profile.fullName;
+    const contact = phone;
+    const name = userProfile.fullName;
 
     await initiatePayment({
       description: plan.name,
@@ -71,7 +90,7 @@ const SubscriptionScreen = () => {
 
   return (
     <Screen>
-      <ScreenHeader headerText="Subscription & Membership" />
+      <ScreenHeader headerText="Subscription & Membership" screenType='onboarding' />
       <ScrollView>
         <YStack padding="$4" marginBottom={'$4'}>
           <SubscriptionBanner />
@@ -84,6 +103,22 @@ const SubscriptionScreen = () => {
               No Commitment. Cancel Anytime.
             </Text>
           </YStack>
+
+          {paymentFailure && (
+            <Text
+              font="body"
+              size='medium'
+              color="$color.button_bg_red"
+              marginTop="$4"
+              textAlign='center'
+              padding={'$2.5'}
+              borderWidth={2}
+              borderColor="$color.button_bg_red"
+              borderRadius={"$4"}
+            >
+              {paymentFailure.description}
+            </Text>
+          )}
 
           <View marginTop={'$7'}>
             <FlatList
@@ -124,5 +159,3 @@ const SubscriptionScreen = () => {
     </Screen>
   );
 };
-
-export default SubscriptionScreen;

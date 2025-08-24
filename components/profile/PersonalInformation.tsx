@@ -1,4 +1,4 @@
-import { User } from '@/models/User';
+import { User, UserProfile } from '@/models/User';
 import { YStack, ViewProps } from 'tamagui';
 import { ProfileItem } from './ProfileItem';
 import { TileHeader } from '../common/TileHeader';
@@ -6,10 +6,11 @@ import { genders } from '@/resources/gender';
 import { cities, states } from '@/resources/city-state';
 
 type Props = {
-  userData: User;
+  userProfile: UserProfile;
+  phone: string;
 } & ViewProps;
 
-export const PersonalInformation = ({ userData, ...props }: Props) => {
+export const PersonalInformation = ({ userProfile, phone, ...props }: Props) => {
   return (
     <YStack
       theme={'profile_tile'}
@@ -21,31 +22,31 @@ export const PersonalInformation = ({ userData, ...props }: Props) => {
       {...props}
     >
       <TileHeader title="Personal Information" />
-      <ProfileItem title="Full Name" subtitle={userData.profile.fullName} />
+      <ProfileItem title="Full Name" subtitle={userProfile.fullName} />
       <ProfileItem
         title="Age"
         subtitle={
-          userData.profile.age ? `${userData.profile.age} years` : 'N/A'
+          userProfile.age ? `${userProfile.age} years` : 'N/A'
         }
       />
       <ProfileItem
         title="Gender"
-        subtitle={genders[userData.profile.gender as keyof typeof genders]}
+        subtitle={genders[userProfile.gender as keyof typeof genders]}
       />
       <ProfileItem
         title="Address"
         subtitle={
           [
-            cities[userData.profile.city as keyof typeof cities],
-            states[userData.profile.state as keyof typeof states],
+            cities[userProfile.city as keyof typeof cities],
+            states[userProfile.state as keyof typeof states],
             `India`,
           ]
             .filter(Boolean)
             .join(', ') +
-          (userData.profile.pincode ? ` - ${userData.profile.pincode}` : '')
+          (userProfile.pincode ? ` - ${userProfile.pincode}` : '')
         }
       />
-      <ProfileItem title="Phone" subtitle={userData.phone || 'N/A'} />
+      <ProfileItem title="Phone" subtitle={phone || 'N/A'} />
     </YStack>
   );
 };

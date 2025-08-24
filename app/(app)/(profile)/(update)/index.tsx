@@ -19,39 +19,39 @@ import { useEffect, useState } from 'react';
 import { ImagePicker } from '@/components/common/ImagePicker';
 import { useLoader } from '@/context/LoaderContext';
 import { useUserRepository } from '@/services/api/repositories/useUserRepository';
-import { useAuth } from '@/context/AuthContext';
 import { UpdateOtherInformation } from '@/components/profile/update/UpdateOtherInformation';
 import { UpdateProfessionalInformation } from '@/components/profile/update/UpdateProfessionalInformation';
 import { useAppSelector } from '@/services/store/hook';
 import { router, useLocalSearchParams } from 'expo-router';
+import { useStoreUser } from '@/hooks/useStoreUser';
 
 export default function UpdateProfile() {
   const [openImagePicker, setOpenImagePicker] = useState(false);
   const [photoUri, setPhotoUri] = useState<string | undefined>(undefined);
   const { showLoader, hideLoader } = useLoader();
   const userRepository = useUserRepository();
-  const { saveUser } = useAuth();
-  const { userData } = useAppSelector(state => state.user);
+  const { userProfile, email } = useAppSelector(state => state.user);
   const { purpose } = useLocalSearchParams<{
     purpose: string;
   }>();
+  const { storeUserProfile } = useStoreUser();
 
   useEffect(() => {
-    if (userData.profile.primaryPhotoUrl) {
-      setPhotoUri(userData.profile.primaryPhotoUrl);
+    if (userProfile.primaryPhotoUrl) {
+      setPhotoUri(userProfile.primaryPhotoUrl);
     } else {
       setPhotoUri(
-        `https://ui-avatars.com/api/?name=${userData.profile.fullName}&size=512`,
+        `https://ui-avatars.com/api/?name=${userProfile.fullName}&size=512`,
       );
     }
-  }, [userData.profile.primaryPhotoUrl, userData.profile.fullName]);
+  }, [userProfile.primaryPhotoUrl, userProfile.fullName]);
 
   const onBackPress = () => {
     router.back();
   };
 
   const initialValues: UpdateUserProfileFormType = toUpdateUserProfileFormType(
-    userData.profile,
+    userProfile,
   );
 
   const onUpdate = async (values: UpdateUserProfileFormType) => {
@@ -62,9 +62,16 @@ export default function UpdateProfile() {
         toUpdateUserProfileRequest(values),
       );
       console.log('Profile updated successfully:', response);
-      saveUser(response);
+      if (response.profile) {
+        storeUserProfile(response.profile);
+      }
       if (purpose === 'UPDATE') {
         router.back();
+      } else {
+        router.push({
+          pathname: '/(settings)/partner-preferences',
+          params: { purpose: 'ONBOARDING' },
+        });
       }
     } catch (error) {
       console.error('Failed to update profile:', error);
@@ -79,13 +86,12 @@ export default function UpdateProfile() {
     try {
       const response = await userRepository.updateProfilePicture(uri);
       console.log('Profile picture updated successfully:', response);
-      saveUser({
-        ...userData,
-        profile: {
-          ...userData.profile,
+      if (userProfile) {
+        storeUserProfile({
+          ...userProfile,
           primaryPhotoUrl: response,
-        },
-      });
+        });
+      }
     } catch (error) {
       console.error('Upload error:', error);
     }
@@ -120,7 +126,7 @@ export default function UpdateProfile() {
             setOpenImagePicker(true);
           }}
         />
-        <NameAndEmail userData={userData} marginTop={'$1'} />
+        <NameAndEmail fullName={userProfile.fullName} email={email} marginTop={'$1'} />
         <Formik<UpdateUserProfileFormType>
           initialValues={initialValues}
           validationSchema={updateUserProfileSchema}

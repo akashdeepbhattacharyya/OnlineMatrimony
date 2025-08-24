@@ -6,9 +6,9 @@ type PaymentOptions = {
   description: string;
   amount: number;
   prefill: {
-    email: string;
-    contact: string;
-    name: string;
+    email?: string;
+    contact?: string;
+    name?: string;
   };
 };
 

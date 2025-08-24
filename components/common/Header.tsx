@@ -3,7 +3,6 @@ import Back from '@/assets/images/back.svg';
 import { ViewProps, XStack } from 'tamagui';
 import { Text } from './Text';
 import NotificationIcon from '@/assets/images/icon_notification.svg';
-import { accountStateItem } from '@/services/slices/userSlice';
 import { useAppSelector } from '@/services/store/hook';
 import { ProfilePicture } from '../profile/ProfilePicture';
 import GhostView from './GhostView';
@@ -15,7 +14,7 @@ type Props = {
 } & ViewProps;
 
 const Header = ({ headerText, screenType = 'default', ...props }: Props) => {
-  const { userData } = useAppSelector(accountStateItem);
+  const { userProfile } = useAppSelector(state => state.user);
 
   const handelBack = () => {
     router.back();
@@ -55,8 +54,8 @@ const Header = ({ headerText, screenType = 'default', ...props }: Props) => {
           <TouchableOpacity onPress={onProfilePress}>
             <ProfilePicture
               uri={
-                userData.profile?.primaryPhotoUrl ||
-                `https://ui-avatars.com/api/?name=${userData.profile.fullName}&size=512`
+                userProfile.primaryPhotoUrl ||
+                `https://ui-avatars.com/api/?name=${userProfile.fullName}&size=512`
               }
               outerCircleSize={38}
               innerCircleSize={32}

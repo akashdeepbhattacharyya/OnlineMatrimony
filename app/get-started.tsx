@@ -7,14 +7,14 @@ import { Background } from '@/components/common/Background';
 import { NoSafeAreaScreen as Screen } from '@/components/layouts/NoSafeAreaScreen';
 import { router } from 'expo-router';
 
-export default function Onboarding() {
+export default function GetStarted() {
   const handleGetStarted = () => {
     router.replace('/(auth)/login');
   };
-  const slideAnim = useRef(new Animated.Value(1000)).current; // Start 100px below
+  const slideAnimation = useRef(new Animated.Value(1000)).current; // Start 100px below
 
   useEffect(() => {
-    Animated.timing(slideAnim, {
+    Animated.timing(slideAnimation, {
       toValue: 0,
       duration: 600,
       useNativeDriver: true,
@@ -33,7 +33,7 @@ export default function Onboarding() {
       >
         <TitleAndSubtitle marginTop="$20" />
         <Animated.View
-          style={[{ width: '100%', transform: [{ translateY: slideAnim }] }]}
+          style={[{ width: '100%', transform: [{ translateY: slideAnimation }] }]}
         >
           <PrimaryButton
             title="Get Started"

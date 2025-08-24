@@ -1,21 +1,22 @@
 import { Toast, useToastState } from '@tamagui/toast'
-import { YStack, isWeb } from 'tamagui'
+import { YStack } from 'tamagui'
 
 export function CurrentToast() {
   const currentToast = useToastState()
 
-  if (!currentToast || currentToast.isHandledNatively) return null
+  if (!currentToast) return null
 
   return (
     <Toast
       key={currentToast.id}
-      duration={currentToast.duration}
+      duration={3000}
       viewportName={currentToast.viewportName}
       enterStyle={{ opacity: 0, scale: 0.5, y: -25 }}
       exitStyle={{ opacity: 0, scale: 1, y: -20 }}
-      y={isWeb ? '$12' : 0}
+      // y={isWeb ? '$12' : 0}
       theme="accent"
-      borderRadius="$6"
+      marginTop="$4"
+      borderRadius="$4"
       animation="quick"
     >
       <YStack alignItems="center" padding="$2" gap="$2">

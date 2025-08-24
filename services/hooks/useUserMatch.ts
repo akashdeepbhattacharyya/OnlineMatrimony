@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Match } from '../models/Match';
+import { Match } from '../../models/Match';
 import { useMatchRepository } from '@/services/api/repositories/useMatchRepository';
 
 export const useUserMatch = () => {
