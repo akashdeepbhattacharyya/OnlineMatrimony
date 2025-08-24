@@ -27977,8 +27977,8 @@
           "stiffness": 100
         }
       },
-      "View": "Function",
-      "Text": "Function",
+      "View": "Component",
+      "Text": "Component",
       "useAnimatedNumber": "Function",
       "useAnimatedNumberReaction": "Function",
       "useAnimatedNumberStyle": "Function",
@@ -36771,21 +36771,21 @@
           "isVar": true,
           "key": "$body",
           "name": "t-font-body",
-          "val": "Oswald-Regular",
+          "val": "Roboto-Regular",
           "variable": ""
         },
         "bodyBold": {
           "isVar": true,
           "key": "$bodyBold",
           "name": "t-font-bodyBold",
-          "val": "Oswald-Bold",
+          "val": "Roboto-Bold",
           "variable": ""
         },
         "bodySemiBold": {
           "isVar": true,
           "key": "$bodySemiBold",
           "name": "t-font-bodySemiBold",
-          "val": "Oswald-SemiBold",
+          "val": "Roboto-SemiBold",
           "variable": ""
         }
       }
@@ -39391,21 +39391,21 @@
         "isVar": true,
         "key": "$body",
         "name": "t-font-body",
-        "val": "Oswald-Regular",
+        "val": "Roboto-Regular",
         "variable": ""
       },
       "$font.bodyBold": {
         "isVar": true,
         "key": "$bodyBold",
         "name": "t-font-bodyBold",
-        "val": "Oswald-Bold",
+        "val": "Roboto-Bold",
         "variable": ""
       },
       "$font.bodySemiBold": {
         "isVar": true,
         "key": "$bodySemiBold",
         "name": "t-font-bodySemiBold",
-        "val": "Oswald-SemiBold",
+        "val": "Roboto-SemiBold",
         "variable": ""
       }
     },

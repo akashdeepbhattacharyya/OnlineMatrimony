@@ -1,27 +1,27 @@
-const { getDefaultConfig } = require('expo/metro-config');
+// Learn more https://docs.expo.io/guides/customizing-metro
+/**
+ * @type {import('expo/metro-config').MetroConfig}
+ */
+const { getDefaultConfig } = require("expo/metro-config");
+const { withTamagui } = require("@tamagui/metro-plugin");
 
 const config = getDefaultConfig(__dirname);
+const { transformer, resolver } = config;
 
-// Add SVG support
-config.transformer.babelTransformerPath = require.resolve('react-native-svg-transformer');
-config.resolver.assetExts = config.resolver.assetExts.filter(ext => ext !== 'svg');
-config.resolver.sourceExts = [...config.resolver.sourceExts, 'svg'];
+config.transformer = {
+  ...transformer,
+  babelTransformerPath: require.resolve("react-native-svg-transformer"),
+};
 
-// Fix for TurboModuleRegistry issues
-config.resolver.resolverMainFields = ['react-native', 'browser', 'main'];
+config.resolver = {
+  ...resolver,
+  assetExts: resolver.assetExts.filter((ext) => ext !== "svg"),
+  sourceExts: [...resolver.sourceExts, "svg"],
+};
 
-// Fix transformer issues
-config.transformer.getTransformOptions = async () => ({
-  transform: {
-    experimentalImportSupport: false,
-    inlineRequires: false,
-  },
+config.resolver.sourceExts.push("mjs");
+
+module.exports = withTamagui(config, {
+  components: ["tamagui"],
+  config: "./tamagui/tamagui.config.ts",
 });
-
-// Fix for Hermes engine issues
-config.transformer.hermesParser = false;
-
-// Reset cache aggressively
-config.resetCache = true;
-
-module.exports = config;
