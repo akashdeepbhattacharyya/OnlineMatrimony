@@ -25,7 +25,7 @@ export const ManageMatch = ({ match, onAccept, onReject, ...props }: Props) => {
         </Button>
       )}
       {(match?.matchStatus === 'PENDING' || match?.matchStatus === 'REJECTED') && (
-        <Button width={66} height={66} borderRadius={33} disabled>
+        <Button onPress={onAccept} width={66} height={66} borderRadius={33}>
           <AcceptIcon />
         </Button>
       )}
