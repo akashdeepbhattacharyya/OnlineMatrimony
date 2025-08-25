@@ -1,11 +1,10 @@
 import { ViewProps, YStack } from 'tamagui';
 import { PreferenceItem } from './PreferenceItem';
 import { PartnerPreferenceFormType } from '@/resources/form';
-import { PreferenceSelect } from './PreferenceSelect';
 import { useFormikContext } from 'formik';
 import { Text } from '../../common/Text';
 import { dietOptions, diets } from '@/resources/diet';
-import { casteOptions, castes } from '@/resources/caste';
+import { castes, hinduCasteOptions } from '@/resources/caste';
 import {
   motherTongueOptions,
   motherTongues,
@@ -72,7 +71,7 @@ export const OtherPreferences = ({ ...props }: ViewProps) => {
           <MultiSelectButton
             title={'Select Castes'}
             value={values.castes?.map(item => castes[item]).join(', ')}
-            options={casteOptions}
+            options={hinduCasteOptions}
             onChange={selected => {
               setFieldValue('castes', selected);
             }}

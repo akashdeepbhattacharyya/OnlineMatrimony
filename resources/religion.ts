@@ -7,6 +7,7 @@ export const religions = {
   SIKH: 'Sikh',
   BUDDHIST: 'Buddhist',
   JAIN: 'Jain',
+  PARSI: 'Parsi',
   OTHER: 'Other',
 };
 export type Religion = keyof typeof religions;

@@ -10,7 +10,7 @@ import { ProfileItem } from '../../profile/ProfileItem';
 import { diets } from '@/resources/diet';
 import { religions } from '@/resources/religion';
 import { motherTongues } from '@/resources/mother-tongue';
-import { castes } from '@/resources/caste';
+import { castes, subCastes } from '@/resources/caste';
 import { educations } from '@/resources/education';
 import { occupations } from '@/resources/occupation';
 import { cities } from '@/resources/city-state';
@@ -26,7 +26,7 @@ export const MatchPreferences = ({
   ...props
 }: Props) => {
   const { partnerPreferences } = useAppSelector(
-    state => state.partnerPreferences,
+    state => state.user,
   );
 
   return (
@@ -47,9 +47,8 @@ export const MatchPreferences = ({
       >
         <YStack gap={'$2'} alignItems="center">
           <Text font="headingBold" size="normal">
-            {`You And ${
-              match.profileResponse.gender === 'FEMALE' ? 'Her' : 'Him'
-            }`}
+            {`You And ${match.profileResponse.gender === 'FEMALE' ? 'Her' : 'Him'
+              }`}
           </Text>
           <View alignItems="center" justifyContent="center" height={94}>
             <XStack gap={'$4'} position="absolute">
@@ -77,9 +76,8 @@ export const MatchPreferences = ({
         </YStack>
       </View>
       <TileHeader
-        title={`You Match ${match.matchScore / 10}/10 Of ${
-          match.profileResponse.gender === 'FEMALE' ? 'Her' : 'Him'
-        } Preferences`}
+        title={`You Match ${match.matchScore / 10}/10 Of ${match.profileResponse.gender === 'FEMALE' ? 'Her' : 'Him'
+          } Preferences`}
       />
       <YStack gap={'$2.5'}>
         <ProfileItem
@@ -106,7 +104,7 @@ export const MatchPreferences = ({
           title="Religion"
           subtitle={
             religions[
-              match.profileResponse.religion as keyof typeof religions
+            match.profileResponse.religion as keyof typeof religions
             ] || 'N/A'
           }
         />
@@ -117,10 +115,16 @@ export const MatchPreferences = ({
           }
         />
         <ProfileItem
+          title="Sub Caste"
+          subtitle={
+            subCastes[match.profileResponse.subCaste as keyof typeof subCastes] || 'N/A'
+          }
+        />
+        <ProfileItem
           title="Mother Tongue"
           subtitle={
             motherTongues[
-              match.profileResponse.motherTongue as keyof typeof motherTongues
+            match.profileResponse.motherTongue as keyof typeof motherTongues
             ] || 'N/A'
           }
         />
@@ -128,7 +132,7 @@ export const MatchPreferences = ({
           title="Highest Education"
           subtitle={
             educations[
-              match.profileResponse.education as keyof typeof educations
+            match.profileResponse.education as keyof typeof educations
             ] || 'N/A'
           }
         />
@@ -136,7 +140,7 @@ export const MatchPreferences = ({
           title="Occupation"
           subtitle={
             occupations[
-              match.profileResponse.occupation as keyof typeof occupations
+            match.profileResponse.occupation as keyof typeof occupations
             ] || 'N/A'
           }
         />

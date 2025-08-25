@@ -1,6 +1,6 @@
 import { Gender } from '../resources/gender';
 import { City, State } from '../resources/city-state';
-import { Caste } from '../resources/caste';
+import { Caste, SubCaste } from '../resources/caste';
 import { Education } from '../resources/education';
 import { MaritalStatus } from '../resources/marital-status';
 import { MotherTongue } from '../resources/mother-tongue';
@@ -37,6 +37,7 @@ export type PersonalInformation = {
  * @property weight - The user's weight in kilograms.
  * @property religion - The user's religion.
  * @property caste - The user's caste.
+ * @property subCaste - The user's sub-caste.
  * @property motherTongue - The user's mother tongue.
  * @property maritalStatus - The user's marital status.
  * @property education - The user's highest education level.
@@ -48,6 +49,7 @@ export type OtherInformation = {
   weight?: number;
   religion?: Religion;
   caste?: Caste;
+  subCaste?: SubCaste;
   motherTongue?: MotherTongue;
   maritalStatus?: MaritalStatus;
   education?: Education;
@@ -163,6 +165,7 @@ export type PartnerPreferences = {
  * @property weight - The user's weight in kilograms.
  * @property religion - The user's religion.
  * @property caste - The user's caste.
+ * @property subCaste - The user's sub-caste.
  * @property motherTongue - The user's mother tongue.
  * @property maritalStatus - The user's marital status.
  * @property education - The user's highest educational qualification.
@@ -182,6 +185,7 @@ export type UpdateUserProfileRequest = {
   weight?: number;
   religion?: string;
   caste?: string;
+  subCaste?: string;
   motherTongue?: string;
   maritalStatus?: string;
   education?: string;

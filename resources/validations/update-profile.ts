@@ -4,7 +4,7 @@ import { cities, stateCityMapping, states } from '../city-state';
 import { UpdateUserProfileFormType } from '../form';
 import { maritalStatuses } from '../marital-status';
 import { religions } from '../religion';
-import { castes } from '../caste';
+import { castes, subCastes } from '../caste';
 import { diets } from '../diet';
 import { educations } from '../education';
 import { motherTongues } from '../mother-tongue';
@@ -53,7 +53,18 @@ export const updateUserProfileSchema = Yup.object<UpdateUserProfileFormType>({
   religion: Yup.string()
     .oneOf(Object.keys(religions))
     .required('Religion is required'),
-  caste: Yup.string().oneOf(Object.keys(castes)).required('Caste is required'),
+  caste: Yup.string()
+    .when('religion', {
+      is: (religion: string) => !!religion && religion !== 'OTHER',
+      then: schema => schema.oneOf(Object.keys(castes)).required('Caste is required'),
+      otherwise: schema => schema,
+    }),
+  subCaste: Yup.string()
+    .when('caste', {
+      is: (caste: string) => !!caste && caste !== 'OTHER',
+      then: schema => schema.oneOf(Object.keys(subCastes)).required('Sub-Caste is required'),
+      otherwise: schema => schema,
+    }),
   motherTongue: Yup.string()
     .oneOf(Object.keys(motherTongues))
     .required('Mother Tongue is required'),

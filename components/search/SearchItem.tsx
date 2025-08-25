@@ -2,7 +2,7 @@ import { XStack, Image, YStack } from "tamagui"
 import { Text } from "../common/Text"
 import VerifiedIcon from '@/assets/images/verified.svg';
 import { SearchUser } from "@/models/User";
-import { castes } from "@/resources/caste";
+import { castes, subCastes } from "@/resources/caste";
 import { religions } from "@/resources/religion";
 import { cities, states } from "@/resources/city-state";
 import { toFeetAndInches, toUri } from "@/utils/utils";
@@ -10,6 +10,7 @@ import { toFeetAndInches, toUri } from "@/utils/utils";
 export const SearchItem = ({ user }: { user: SearchUser }) => {
   const casteAndReligion = [
     castes[user.caste as keyof typeof castes],
+    subCastes[user.subCaste as keyof typeof subCastes],
     religions[user.religion as keyof typeof religions],
   ]
     .filter(Boolean)

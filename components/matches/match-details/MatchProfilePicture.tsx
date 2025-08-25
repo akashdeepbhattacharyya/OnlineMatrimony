@@ -9,7 +9,7 @@ import { cities, states } from '@/resources/city-state';
 import { Dimensions } from 'react-native';
 import { Occupation, occupations } from '@/resources/occupation';
 import { religions } from '@/resources/religion';
-import { castes } from '@/resources/caste';
+import { castes, subCastes } from '@/resources/caste';
 
 type Props = {
   matchedUserProfile: MatchedUserProfile;
@@ -77,6 +77,7 @@ export const MatchProfilePicture = ({ matchedUserProfile }: Props) => {
             {[
               religions[matchedUserProfile.religion as keyof typeof religions],
               castes[matchedUserProfile.caste as keyof typeof castes],
+              subCastes[matchedUserProfile.subCaste as keyof typeof subCastes],
               cities[matchedUserProfile.city as keyof typeof cities],
               states[matchedUserProfile.state as keyof typeof states],
             ]

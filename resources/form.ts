@@ -1,6 +1,6 @@
 import { Gender } from './gender';
 import { City, State } from './city-state';
-import { Caste } from './caste';
+import { Caste, SubCaste } from './caste';
 import { MaritalStatus } from './marital-status';
 import { MotherTongue } from './mother-tongue';
 import { Diet } from './diet';
@@ -51,6 +51,7 @@ export type UpdateUserProfileFormType = {
   country?: string;
   diet?: Diet;
   caste?: Caste;
+  subCaste?: SubCaste;
   motherTongue?: MotherTongue;
   religion?: Religion;
   education?: Education;
@@ -113,6 +114,7 @@ export const toUpdateUserProfileFormType = (
     pincode: userProfile.pincode,
     diet: userProfile.diet,
     caste: userProfile.caste,
+    subCaste: userProfile.subCaste,
     motherTongue: userProfile.motherTongue,
     religion: userProfile.religion,
     education: userProfile.education,
@@ -137,6 +139,7 @@ export const toUpdateUserProfileRequest = (
     pincode: form.pincode,
     diet: form.diet,
     caste: form.caste,
+    subCaste: form.subCaste,
     motherTongue: form.motherTongue,
     religion: form.religion,
     education: form.education,
