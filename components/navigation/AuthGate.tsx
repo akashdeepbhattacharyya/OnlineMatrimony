@@ -1,6 +1,6 @@
 import { useFetchUserByUserId } from "@/hooks/useFetchUserByUserId";
 import { useUser } from "@/hooks/useUser";
-import { SplashScreen, useNavigationContainerRef, useRouter } from "expo-router";
+import { SplashScreen, useRouter } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
 
 interface AuthGateProps {
@@ -17,7 +17,7 @@ const AuthGate: React.FC<AuthGateProps> = ({ children }) => {
 
   const onLoaded = useCallback(() => {
     setIsAuthenticating(false);
-    router.replace("/(app)/(tabs)");
+    router.replace("/(app)/(onboarding)");
   }, [router]);
 
   useEffect(() => {
@@ -76,21 +76,6 @@ const AuthGate: React.FC<AuthGateProps> = ({ children }) => {
       }
     }
   }, [dataLoading, dataLoadingError, isAuthenticating, isBooting, isSignedIn, onLoaded, router, userData]);
-
-  /*const navigationRef = useNavigationContainerRef();
-  const [isReady, setIsReady] = useState(false);
-
-  useEffect(() => {
-    const timeout = setTimeout(() => setIsReady(true), 0);
-    return () => clearTimeout(timeout);
-  }, []);
-
-  useEffect(() => {
-    if (isReady && navigationRef.isReady()) {
-      console.log("Navigating to onboarding screen");
-      router.replace("/onboarding");
-    }
-  }, [isReady, navigationRef, router]);*/
 
   return <>{children}</>;
 };

@@ -7,7 +7,6 @@ import { Text } from '@/components/common/Text';
 import { SubscriptionPlan } from '@/models/SubscriptionPlan';
 import { CurrentPlan } from '@/components/settings/subscription/CurrentPlan';
 import { NextPlan } from '@/components/settings/subscription/NextPlan';
-import { SubscriptionBanner } from '@/components/settings/subscription/SubscriptionBanner';
 import { usePayment } from '@/hooks/usePayment';
 import { useAppSelector } from '@/services/store/hook';
 import { useSubscriptionRepository } from '@/services/api/repositories/useSubscriptionRepository';
@@ -17,19 +16,23 @@ const SubscriptionScreen = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const { width } = Dimensions.get('window');
   const { initiatePayment, paymentSuccess, paymentFailure } = usePayment();
-  const { userData } = useAppSelector(state => state.user);
-  const [subscriptionData, setSubscriptionData] = useState<SubscriptionPlan[]>([]);
-  const { getSubscriptionPlans, subscribeToPlan } = useSubscriptionRepository();
+  const { userProfile, email, phone, subscription } = useAppSelector(state => state.user);
+  const { subscriptionPlans } = useAppSelector(state => state.subscriptionPlans);
+  const { subscribeToPlan } = useSubscriptionRepository();
   const [selectedPlan, setSelectedPlan] = useState<SubscriptionPlan | undefined>(undefined);
+  const [filteredPlans, setFilteredPlans] = useState<SubscriptionPlan[] | undefined>(undefined);
 
   useEffect(() => {
-    const fetchSubscriptionPlans = async () => {
-      const plans = await getSubscriptionPlans();
-      setSubscriptionData(plans);
+    const filterPlans = () => {
+      if (!subscriptionPlans) return;
+      const filtered = subscriptionPlans.filter(plan => {
+        return plan.price >= (subscription?.amountPaid ?? 0);
+      });
+      setFilteredPlans(filtered);
     };
 
-    fetchSubscriptionPlans();
-  }, []);
+    filterPlans();
+  }, [subscription?.amountPaid, subscriptionPlans]);
 
   useEffect(() => {
     const handlePaymentSuccess = async () => {
@@ -42,7 +45,7 @@ const SubscriptionScreen = () => {
       }
     };
     handlePaymentSuccess();
-  }, [paymentSuccess]);
+  }, [paymentSuccess, selectedPlan, subscribeToPlan]);
 
   useEffect(() => {
     if (paymentFailure) {
@@ -53,9 +56,8 @@ const SubscriptionScreen = () => {
 
   const onStartPlan = async (plan: SubscriptionPlan) => {
     setSelectedPlan(plan);
-    const contact = userData.phone;
-    const email = userData.email;
-    const name = userData.profile.fullName;
+    const contact = phone;
+    const name = userProfile?.fullName;
 
     await initiatePayment({
       description: plan.name,
@@ -74,30 +76,28 @@ const SubscriptionScreen = () => {
       <ScreenHeader headerText="Subscription & Membership" />
       <ScrollView>
         <YStack padding="$4" marginBottom={'$4'}>
-          <SubscriptionBanner />
 
-          <YStack marginTop={'$7'} alignItems="center" gap={'$1.5'}>
+          <YStack marginTop={'$2'} gap={'$1.5'}>
             <Text font="headingBold" size="extra_large" color={'$color'}>
-              Go Premium
-            </Text>
-            <Text font="headingLight" size="small" color={'$subtitle'}>
-              No Commitment. Cancel Anytime.
+              Current Plan
             </Text>
           </YStack>
 
           <View marginTop={'$7'}>
             <FlatList
               ref={flatListRef}
-              data={subscriptionData}
+              data={filteredPlans}
               renderItem={({ item, index }) => {
                 const isActive = index === currentIndex;
                 return isActive ? (
                   <CurrentPlan
                     subscriptionPlan={item}
+                    subscription={subscription}
+                    planCount={filteredPlans?.length}
                     index={
                       index === 0
                         ? 'first'
-                        : index === subscriptionData.length - 1
+                        : index === subscriptionPlans.length - 1
                           ? 'last'
                           : 'middle'
                     }

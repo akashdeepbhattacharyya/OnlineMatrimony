@@ -20,9 +20,14 @@ export function useMatchRepository() {
     );
   };
 
+  const getMutualMatches = async (): Promise<Match[]> => {
+    return handleApiResponse(apiClient.get(`/matches/mutual`));
+  };
+
   return {
     getBestMatches,
     acceptMatch,
     rejectMatch,
+    getMutualMatches,
   };
 }

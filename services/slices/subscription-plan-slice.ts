@@ -14,7 +14,6 @@ const subscriptionPlanSlice = createSlice({
   initialState,
   reducers: {
     setSubscriptionPlans(state, action: PayloadAction<SubscriptionPlan[]>) {
-      console.log("Setting subscription plans:", action.payload);
       state.subscriptionPlans = action.payload;
     },
   },

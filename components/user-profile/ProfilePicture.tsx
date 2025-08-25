@@ -1,8 +1,5 @@
-import { MatchedUserProfile } from '@/models/Match';
 import { Text } from '../common/Text';
-import { Button, getToken, Image, View, XStack, YStack } from 'tamagui';
-import CameraBlob from '@/assets/images/camera.svg';
-import MenuBlob from '@/assets/images/menu.svg';
+import { getToken, Image, View, XStack, YStack } from 'tamagui';
 import VerifiedBlob from '@/assets/images/verified.svg';
 import { toFeetAndInches, toUri } from '@/utils/utils';
 import { cities, states } from '@/resources/city-state';
