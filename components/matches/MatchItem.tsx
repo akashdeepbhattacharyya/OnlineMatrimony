@@ -1,5 +1,5 @@
 import { Match } from '@/models/Match';
-import { castes } from '@/resources/caste';
+import { castes, subCastes } from '@/resources/caste';
 import { cities, states } from '@/resources/city-state';
 import { occupations } from '@/resources/occupation';
 import { religions } from '@/resources/religion';
@@ -59,6 +59,7 @@ export const MatchItem = ({ match, onPress }: Props) => {
           {[
             religions[match.profileResponse.religion as keyof typeof religions],
             castes[match.profileResponse.caste as keyof typeof castes],
+            subCastes[match.profileResponse.subCaste as keyof typeof subCastes],
             cities[match.profileResponse.city as keyof typeof cities],
             states[match.profileResponse.state as keyof typeof states],
           ]

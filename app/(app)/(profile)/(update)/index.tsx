@@ -68,10 +68,7 @@ export default function UpdateProfile() {
       if (purpose === 'UPDATE') {
         router.back();
       } else {
-        router.push({
-          pathname: '/(settings)/partner-preferences',
-          params: { purpose: 'ONBOARDING' },
-        });
+        router.replace('/(app)/(onboarding)');
       }
     } catch (error) {
       console.error('Failed to update profile:', error);

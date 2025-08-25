@@ -1,5 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '../store/store';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { PartnerPreferences, User, UserProfile } from '../../models/User';
 import { Subscription } from '@/models/Subscription';
 
@@ -21,20 +20,6 @@ const initialState: UserState = {
   },
   subscription: undefined,
 };
-
-// export const fetchUserProfile = createAsyncThunk(
-//   `user/userProfile`,
-//   async ({ getProfile }: { getProfile: () => Promise<User> }, thunkAPI) => {
-//     try {
-//       const response = await getProfile();
-//       console.log('fetchUserProfile response:', response);
-//       return response;
-//     } catch (e) {
-//       console.error(e);
-//       return thunkAPI.rejectWithValue({ status: false, data: undefined });
-//     }
-//   },
-// );
 
 const userSlice = createSlice({
   name: 'user',

@@ -23,6 +23,7 @@ export class HttpClient implements IHttpClient {
       'Content-Type': 'application/json',
     };
     const refreshToken: string | null = await Storage.getItem("REFRESH_TOKEN");
+    console.log('Using refresh token:', refreshToken);
     if (refreshToken) {
       const rest = await fetch(this.makeUrl('/auth/refresh-token'), {
         method: 'POST',
@@ -64,6 +65,7 @@ export class HttpClient implements IHttpClient {
     };
     const accessToken: string | null = await Storage.getItem("ACCESS_TOKEN");
     console.log('Using access token:', accessToken);
+    console.log('Requesting:', method, endpoint);
     if (accessToken) {
       headers['Authorization'] = `Bearer ${accessToken}`;
     }
@@ -132,7 +134,7 @@ export class HttpClient implements IHttpClient {
   }
 }
 
-var apiBaseUrl = Constants.expoConfig?.extra?.keys.API_BASE_URL;
+let apiBaseUrl = Constants.expoConfig?.extra?.keys.API_BASE_URL;
 
 if (Platform.OS === 'android') {
   // For Android, use the local IP address if running on an emulator

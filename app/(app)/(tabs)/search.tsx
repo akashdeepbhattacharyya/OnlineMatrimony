@@ -9,14 +9,13 @@ import { useAppDispatch, useAppSelector } from '@/services/store/hook';
 import { useSearchUserRepository } from '@/services/api/repositories/useSearchRepository';
 import { ScrollView, XStack, YStack } from 'tamagui';
 import { Input } from '@/components/common/Input';
-import { NavigationProp, useNavigation } from '@react-navigation/native';
 import { SearchItem } from '@/components/search/SearchItem';
 import { Text } from '@/components/common/Text';
 import { router } from 'expo-router';
 
 export default function Search() {
   const { userSearchData } = useAppSelector(
-    state => state.searchSlice,
+    state => state.search,
   );
   const [searchQuery, setSearchQuery] = useState<string>('');
   const dispatch = useAppDispatch();
@@ -38,6 +37,7 @@ export default function Search() {
         }),
       );
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchQuery]);
 
   return (
@@ -97,7 +97,16 @@ export default function Search() {
             </XStack>
           )}
           {userSearchData.map(user => (
-            <SearchItem key={user.id} user={user} />
+            <SearchItem
+              key={user.id}
+              user={user}
+              onPress={() => {
+                router.push({
+                  pathname: "/(app)/(search)/profile-details",
+                  params: { userId: user.id },
+                });
+              }}
+            />
           ))}
         </YStack>
       </ScrollView>

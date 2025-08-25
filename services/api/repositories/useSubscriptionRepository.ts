@@ -6,7 +6,7 @@ import { Subscription } from '@/models/Subscription';
 
 export function useSubscriptionRepository() {
   const getSubscriptionPlans = async (): Promise<SubscriptionPlan[]> => {
-    const response: SubscriptionPlanResponse[] = await handleApiResponse(apiClient.get('/subscriptions/plans'));
+    const response: SubscriptionPlanResponse[] = await handleApiResponse(apiClient.get('/subscriptions/getPlans'));
     return response.map(plan => ({
       id: plan.id,
       name: plan.name,
@@ -22,7 +22,7 @@ export function useSubscriptionRepository() {
   };
 
   const getMySubscription = async (): Promise<Subscription> => {
-    return await handleApiResponse(apiClient.get('/subscriptions/my-subscription'));
+    return await handleApiResponse(apiClient.get('/subscriptions/mySubscription'));
   };
 
   return {

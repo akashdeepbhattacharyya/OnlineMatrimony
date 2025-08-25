@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { TextInput } from 'react-native';
+import { Alert, TextInput } from 'react-native';
 import { YStack, Spacer, XStack, View } from 'tamagui';
 import { PrimaryButton } from '@/components/common/PrimaryButton';
 import { TitleAndSubtitle } from '@/components/common/TitleAndSubtitle';
@@ -15,7 +15,7 @@ export default function OtpValidation() {
   const [timer, setTimer] = useState(30);
   const [resendDisabled, setResendDisabled] = useState(true);
   const { showLoader, hideLoader } = useLoader();
-  const { resendOtp, error, submitOtp } = useUserAuth();
+  const { resendOtp, error: otpError, submitOtp } = useUserAuth();
   const { email, password } = useLocalSearchParams<{
     email: string;
     password: string;
@@ -33,7 +33,14 @@ export default function OtpValidation() {
 
     return () => clearInterval(countdown);
   }, [timer]);
+  // eslint-disable-next-line @typescript-eslint/array-type
   const inputRefs = useRef<Array<TextInput | null>>([]);
+
+  useEffect(() => {
+    if (otpError) {
+      Alert.alert('OTP Error', otpError);
+    }
+  }, [otpError]);
 
   const handleSubmitOtp = async () => {
     showLoader();
@@ -50,8 +57,6 @@ export default function OtpValidation() {
         pathname: '/(auth)/profile-selection',
         params: { email, password },
       });
-    } else {
-      console.log('OTP submission failed:', error);
     }
   };
 
@@ -142,11 +147,6 @@ export default function OtpValidation() {
             />
           ))}
         </View>
-        {error && (
-          <Text size="large" theme={'error_message'} textAlign="center">
-            {error}
-          </Text>
-        )}
         <Text font="heading" size="normal">
           {`00:${timer < 10 ? `0${timer}` : timer}`}
         </Text>

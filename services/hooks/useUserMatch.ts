@@ -26,7 +26,7 @@ export const useUserMatch = () => {
     }
   };
 
-  const acceptMatch = async (matchId: number) => {
+  const acceptMatch = async (matchId: string) => {
     setLoading(true);
     setError(undefined);
     setData(undefined);
@@ -43,7 +43,7 @@ export const useUserMatch = () => {
     }
   };
 
-  const rejectMatch = async (matchId: number) => {
+  const rejectMatch = async (matchId: string) => {
     setLoading(true);
     setError(undefined);
     setData(undefined);

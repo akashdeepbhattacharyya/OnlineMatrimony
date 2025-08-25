@@ -9,7 +9,7 @@ export type SubscriptionPlan = {
 
 export type SubscriptionFeatures = {
   matchesPerWeek: number;
-  activeChat: number;
+  chatLimit: number;
   manualSearch: boolean;
   sendInterestOption: boolean;
 };

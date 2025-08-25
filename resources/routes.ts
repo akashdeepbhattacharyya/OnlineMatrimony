@@ -9,7 +9,10 @@ export const ROUTES = {
   app: "(app)",
   tabs: "(tabs)",
   home: "index",
-  search: "search",
+  onboarding: {
+    root: "(onboarding)",
+    page: "index",
+  },
   chat: {
     root: "(chat)",
     page: "chat",
@@ -27,6 +30,11 @@ export const ROUTES = {
       root: "(update)",
       page: "index",
     }
+  },
+  search: {
+    root: "(search)",
+    page: "search",
+    profile_details: "profile-details",
   },
   settings: {
     root: "(settings)",

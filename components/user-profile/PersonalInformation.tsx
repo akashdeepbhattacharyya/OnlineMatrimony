@@ -1,17 +1,17 @@
 import { YStack, ViewProps } from 'tamagui';
-import { ProfileItem } from '../../profile/ProfileItem';
-import { TileHeader } from '../../common/TileHeader';
+import { ProfileItem } from '../profile/ProfileItem';
+import { TileHeader } from '../common/TileHeader';
 import { genders } from '@/resources/gender';
 import { cities, states } from '@/resources/city-state';
 import { formatDateString } from '@/utils/dateFormatter';
-import { MatchedUserProfile } from '@/models/Match';
+import { UserProfile } from '@/models/User';
 
 type Props = {
-  matchedUserProfile: MatchedUserProfile;
+  userProfile: UserProfile;
 } & ViewProps;
 
-export const MatchPersonalInformation = ({
-  matchedUserProfile,
+export const PersonalInformation = ({
+  userProfile,
   ...props
 }: Props) => {
   return (
@@ -29,7 +29,7 @@ export const MatchPersonalInformation = ({
         title="Date of Birth"
         subtitle={
           formatDateString(
-            matchedUserProfile.dateOfBirth,
+            userProfile.dateOfBirth,
             'yyyy-MM-dd',
             'MMMM d, yyyy',
           ) || 'N/A'
@@ -37,23 +37,23 @@ export const MatchPersonalInformation = ({
       />
       <ProfileItem
         title="Gender"
-        subtitle={genders[matchedUserProfile.gender as keyof typeof genders]}
+        subtitle={genders[userProfile.gender as keyof typeof genders]}
       />
       <ProfileItem
         title="Address"
         subtitle={
           [
-            matchedUserProfile.city
-              ? cities[matchedUserProfile.city as keyof typeof cities]
+            userProfile.city
+              ? cities[userProfile.city as keyof typeof cities]
               : undefined,
-            matchedUserProfile.state
-              ? states[matchedUserProfile.state as keyof typeof states]
+            userProfile.state
+              ? states[userProfile.state as keyof typeof states]
               : undefined,
             `India`,
           ]
             .filter(Boolean)
             .join(', ') +
-          (matchedUserProfile.pincode ? ` - ${matchedUserProfile.pincode}` : '')
+          (userProfile.pincode ? ` - ${userProfile.pincode}` : '')
         }
       />
     </YStack>

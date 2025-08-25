@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 import { genders } from '../gender';
-import { cities, citiesByStates, State, states } from '../city-state';
+import { cities, states } from '../city-state';
 import { PartnerPreferenceFormType } from '../form';
 import { maritalStatuses } from '../marital-status';
 import { castes } from '../caste';

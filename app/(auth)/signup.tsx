@@ -1,7 +1,6 @@
-import { useState } from 'react';
-import { ScrollView, ImageBackground } from 'react-native';
+import { useEffect, useState } from 'react';
+import { ScrollView, Alert } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import { NavigationProp, useNavigation } from '@react-navigation/core';
 import { Formik } from 'formik';
 import { useLoader } from '../../context/LoaderContext';
 import { CheckBoxButton } from '@/components/common/CheckBoxButton';
@@ -55,6 +54,12 @@ export default function SignUp() {
 
   const { showLoader, hideLoader } = useLoader();
 
+  useEffect(() => {
+    if (userRegistrationError) {
+      Alert.alert('Registration Error', userRegistrationError);
+    }
+  }, [userRegistrationError]);
+
   const handleSignUp = async (values: UserRegistrationFormType) => {
     showLoader();
     const payload: UserRegistrationRequest = {
@@ -78,8 +83,6 @@ export default function SignUp() {
           password: values.password,
         },
       });
-    } else {
-      console.log('Signup failed:', userRegistrationError);
     }
   };
 

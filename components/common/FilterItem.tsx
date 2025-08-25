@@ -1,15 +1,16 @@
 import { TouchableOpacity } from 'react-native';
-import { Text } from '../common/Text';
-import { Filter } from '@/resources/filter';
+import { Text } from './Text';
 
-export const FilterItem = ({
+export const FilterItem = <T,>({
   filter,
+  filterLabel,
   isActive,
   onPress,
 }: {
-  filter: Filter;
+  filter: T;
+  filterLabel: string;
   isActive: boolean;
-  onPress: (filter: Filter) => void;
+  onPress: (filter: T) => void;
 }) => {
   return (
     <TouchableOpacity onPress={() => onPress(filter)}>
@@ -24,7 +25,7 @@ export const FilterItem = ({
         borderColor={'$borderColor'}
         borderRadius={'$6'}
       >
-        {filter}
+        {filterLabel}
       </Text>
     </TouchableOpacity>
   );

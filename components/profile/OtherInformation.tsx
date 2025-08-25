@@ -2,7 +2,7 @@ import { UserProfile } from '@/models/User';
 import { YStack, ViewProps } from 'tamagui';
 import { ProfileItem } from './ProfileItem';
 import { TileHeader } from '../common/TileHeader';
-import { castes } from '@/resources/caste';
+import { castes, subCastes } from '@/resources/caste';
 import { diets } from '@/resources/diet';
 import { maritalStatuses } from '@/resources/marital-status';
 import { motherTongues } from '@/resources/mother-tongue';
@@ -43,6 +43,10 @@ export const OtherInformation = ({ userProfile, ...props }: Props) => {
         subtitle={castes[userProfile.caste as keyof typeof castes] || 'N/A'}
       />
       <ProfileItem
+        title="Sub Caste"
+        subtitle={subCastes[userProfile.subCaste as keyof typeof subCastes] || 'N/A'}
+      />
+      <ProfileItem
         title="Mother Tongue"
         subtitle={
           motherTongues[userProfile.motherTongue as keyof typeof motherTongues] || 'N/A'
@@ -52,7 +56,7 @@ export const OtherInformation = ({ userProfile, ...props }: Props) => {
         title="Marital Status"
         subtitle={
           maritalStatuses[
-            userProfile.maritalStatus as keyof typeof maritalStatuses
+          userProfile.maritalStatus as keyof typeof maritalStatuses
           ] || 'N/A'
         }
       />

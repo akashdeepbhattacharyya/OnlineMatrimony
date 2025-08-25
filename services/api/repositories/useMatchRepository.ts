@@ -8,13 +8,13 @@ export function useMatchRepository() {
     return handleApiResponse(apiClient.get(`/matches/findBestMatches`));
   };
 
-  const acceptMatch = async (matchId: number): Promise<string> => {
+  const acceptMatch = async (matchId: string): Promise<string> => {
     return handleApiResponse(
       apiClient.post(`/matches/action`, { matchId, action: 'ACCEPT' }),
     );
   };
 
-  const rejectMatch = async (matchId: number): Promise<string> => {
+  const rejectMatch = async (matchId: string): Promise<string> => {
     return handleApiResponse(
       apiClient.post(`/matches/action`, { matchId, action: 'REJECT' }),
     );
