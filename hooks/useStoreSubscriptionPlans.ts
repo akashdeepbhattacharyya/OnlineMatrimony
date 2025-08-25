@@ -8,7 +8,6 @@ export const useStoreSubscriptionPlans = () => {
 
   const storeSubscriptionPlans = useCallback(
     async (subscriptionPlans: SubscriptionPlan[]) => {
-      console.log("Storing subscription plans:", subscriptionPlans);
       dispatch(setSubscriptionPlans(subscriptionPlans));
     },
     [dispatch],

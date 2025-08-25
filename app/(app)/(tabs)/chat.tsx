@@ -1,58 +1,36 @@
 import { SafeAreaScreen as Screen } from '@/components/layouts/SafeAreaScreen';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { XStack, YStack } from 'tamagui';
 import { TabHeader } from '@/components/common/TabHeader';
 import { FilterItem } from '@/components/common/FilterItem';
-import { Chat } from '@/models/Chat';
-import { ChatItem } from '@/components/chat/ChatItem';
+import { MatchItem } from '@/components/chat/MatchItem';
 import { chatFilter, ChatFilter } from '@/resources/filter';
 import { router } from 'expo-router';
-
-const chats: Chat[] = [
-  {
-    id: '1',
-    name: 'Kakali M',
-    msg: 'Hello, How are you...',
-    time: '23 min',
-    unread: 3,
-    image: 'https://i.pravatar.cc/150?img=6',
-  },
-  {
-    id: '2',
-    name: 'Kakali M',
-    msg: 'Hello, How are you...',
-    time: '30 min',
-    unread: 3,
-    image: 'https://i.pravatar.cc/150?img=7',
-  },
-  {
-    id: '3',
-    name: 'Kakali M',
-    msg: 'Hello, How are you...',
-    time: '1 hours',
-    unread: 3,
-    image: 'https://i.pravatar.cc/150?img=8',
-  },
-  {
-    id: '4',
-    name: 'Kakali M',
-    msg: 'Hello, How are you...',
-    time: '1 hours',
-    unread: 3,
-    image: 'https://i.pravatar.cc/150?img=9',
-  },
-  {
-    id: '5',
-    name: 'Kakali M',
-    msg: 'Hello, How are you...',
-    time: '1 hours',
-    unread: 3,
-    image: 'https://i.pravatar.cc/150?img=10',
-  },
-];
+import { useUserMatch } from '@/services/hooks/useUserMatch';
+import { useAppDispatch, useAppSelector } from '@/services/store/hook';
+import { useLoader } from '@/context/LoaderContext';
+import { fetchMutualMatches } from '@/services/slices/match-slice';
 
 export default function Chats() {
   const [currentFilter, setCurrentFilter] = useState<ChatFilter>('ALL');
+  const { getMutualMatches } = useUserMatch();
+  const { showLoader, hideLoader } = useLoader();
+  const { mutualMatches } = useAppSelector(state => state.match);
+  // const { subscription } = useAppSelector(state => state.user);
+  // const { subscriptionPlans } = useAppSelector(state => state.subscriptionPlans);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    showLoader();
+    dispatch(
+      fetchMutualMatches({
+        getMutualMatches: () => getMutualMatches(),
+      }),
+    );
+    hideLoader();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
 
   return (
     <Screen>
@@ -83,14 +61,14 @@ export default function Chats() {
           borderRadius={'$6'}
           gap="$6"
         >
-          {chats.map(chat => (
-            <ChatItem
-              key={chat.id}
-              chat={chat}
+          {mutualMatches.map(match => (
+            <MatchItem
+              key={match.matchId}
+              match={match}
               onPress={() => {
                 router.push({
                   pathname: "/(app)/(chat)/chat-details",
-                  params: { chatId: chat.id }
+                  params: { chatId: match.matchId }
                 })
               }}
             />

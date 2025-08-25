@@ -26,6 +26,24 @@ export const useUserMatch = () => {
     }
   };
 
+  const getMutualMatches = async () => {
+    setLoading(true);
+    setError(undefined);
+    setData(undefined);
+
+    try {
+      const response = await matchRepository.getMutualMatches();
+      setData(response);
+      return response;
+    } catch (err: any) {
+      console.error('Get mutual matches error:', err);
+      setError(err.message || 'Failed to fetch mutual matches');
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const acceptMatch = async (matchId: string) => {
     setLoading(true);
     setError(undefined);
@@ -65,6 +83,7 @@ export const useUserMatch = () => {
     error,
     data,
     getBestMatches,
+    getMutualMatches,
     acceptMatch,
     rejectMatch,
   };
