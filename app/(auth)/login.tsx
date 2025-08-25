@@ -17,7 +17,8 @@ import { NoSafeAreaScreen as Screen } from '@/components/layouts/NoSafeAreaScree
 import { Background } from '@/components/common/Background';
 import { router } from 'expo-router';
 import { useStoreUser } from '@/hooks/useStoreUser';
-import * as Storage from "@/services/local-storage";
+import { useEffect } from 'react';
+import { Alert } from 'react-native';
 
 const LoginScreen = () => {
   const { storeUser, storePartnerPreferences, storeUserProfile } = useStoreUser();
@@ -30,8 +31,13 @@ const LoginScreen = () => {
   const { login: loginUser, error: loginError } = useUserAuth();
   const { showLoader, hideLoader } = useLoader();
 
+  useEffect(() => {
+    if (loginError) {
+      Alert.alert('Login Error', loginError);
+    }
+  }, [loginError]);
+
   const handleLogin = async (values: LoginFormType) => {
-    console.log('Login values:', values);
     showLoader();
     const response = await loginUser({
       emailOrPhone: values.emailOrPhone,
@@ -55,8 +61,6 @@ const LoginScreen = () => {
       storeUserProfile(response.user.profile);
       console.log('Login successful:', response);
       router.replace('/(app)/(tabs)');
-    } else {
-      console.log('Login failed:', loginError);
     }
     hideLoader();
   };
@@ -156,7 +160,7 @@ const LoginScreen = () => {
               gap="$2"
             >
               <Text size="small" font="heading" color="$color">
-                Don't have An Account?
+                {`Don't have An Account?`}
               </Text>
               <Text
                 size="normal"

@@ -10,6 +10,10 @@ export const ROUTES = {
   tabs: "(tabs)",
   home: "index",
   search: "search",
+  onboarding: {
+    root: "(onboarding)",
+    page: "index",
+  },
   chat: {
     root: "(chat)",
     page: "chat",

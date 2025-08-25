@@ -25,12 +25,13 @@ export default function Matches() {
       }),
     );
     hideLoader();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleMatchPress = (match: Match) => {
     router.push({
       pathname: "/(app)/(matches)/match-details",
-      params: { matchId: match.id }
+      params: { matchId: match.matchId }
     });
   };
 

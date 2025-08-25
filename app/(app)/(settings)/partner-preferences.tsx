@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Formik } from 'formik';
 import { ScrollView } from 'react-native-gesture-handler';
 import { SafeAreaScreen as Screen } from '@/components/layouts/SafeAreaScreen';
@@ -15,7 +15,7 @@ import { OtherPreferences } from '@/components/settings/partner-preference/Other
 import { ProfessionalPreferences } from '@/components/settings/partner-preference/ProfessionalPreferences';
 import { useUserRepository } from '@/services/api/repositories/useUserRepository';
 import { useLoader } from '@/context/LoaderContext';
-import { useAppSelector, useAppDispatch } from '@/services/store/hook';
+import { useAppSelector } from '@/services/store/hook';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useStoreUser } from '@/hooks/useStoreUser';
 
@@ -24,22 +24,11 @@ export default function PartnerPreferences() {
     state => state.user,
   );
   const { showLoader, hideLoader } = useLoader();
-  // const dispatch = useAppDispatch();
   const userRepository = useUserRepository();
   const { purpose } = useLocalSearchParams<{
     purpose: 'ONBOARDING' | 'UPDATE';
   }>();
   const { storePartnerPreferences } = useStoreUser();
-
-  // useEffect(() => {
-  //   showLoader();
-  //   dispatch(
-  //     fetchPartnerPreferences({
-  //       getPartnerPreferences: userRepository.getPartnerPreferences,
-  //     }),
-  //   );
-  //   hideLoader();
-  // }, []);
 
   const initialValues: PartnerPreferenceFormType =
     toPartnerPreferenceFormType(partnerPreferences);

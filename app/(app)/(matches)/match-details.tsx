@@ -20,12 +20,12 @@ export default function MatchDetails() {
     matchId: string;
   }>();
 
-  const match = bestMatches.find(item => String(item.id) === matchId);
+  const match = bestMatches.find(item => item.matchId === matchId);
 
   const handleAcceptMatch = async () => {
     if (match) {
-      console.log('Accepting match:', match.id);
-      await acceptMatch(match.id);
+      console.log('Accepting match:', match.matchId);
+      await acceptMatch(match.matchId);
       // Refresh best matches after accepting
       router.back();
     } else {
@@ -35,8 +35,8 @@ export default function MatchDetails() {
 
   const handleRejectMatch = async () => {
     if (match) {
-      console.log('Rejecting match:', match.id);
-      await rejectMatch(match.id);
+      console.log('Rejecting match:', match.matchId);
+      await rejectMatch(match.matchId);
       // Refresh best matches after rejecting
       router.back();
     } else {

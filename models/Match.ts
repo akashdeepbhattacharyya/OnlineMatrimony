@@ -1,8 +1,10 @@
 import { UserProfile } from './User';
 
 export type Match = {
-  id: number;
+  matchId: string;
+  userId: number;
   matchScore: number;
+  matchStatus: string;
   profileResponse: MatchedUserProfile;
 };
 

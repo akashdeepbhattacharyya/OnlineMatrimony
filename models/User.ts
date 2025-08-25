@@ -236,7 +236,7 @@ export type UpdatePartnerPreferencesRequest = {
  * @param userProfile - The user profile to check for completeness.
  * @returns `true` if all required fields are present and not `null`, otherwise `false`.
  */
-export const isProfileComplete = (userProfile?: UserProfile): boolean => {
+export const isUserProfileUpdated = (userProfile?: UserProfile): boolean => {
   if (!userProfile) return false;
   const isComplete =
     userProfile.fullName !== null &&
@@ -266,7 +266,7 @@ export const isProfileComplete = (userProfile?: UserProfile): boolean => {
  * @param partnerPreferences - The partner preferences object to validate.
  * @returns `true` if all required fields are present and not null, otherwise `false`.
  */
-export const isPartnerPreferencesComplete = (
+export const isPartnerPreferencesUpdated = (
   partnerPreferences?: PartnerPreferences,
 ): boolean => {
   if (!partnerPreferences) return false;
