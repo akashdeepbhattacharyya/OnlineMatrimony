@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { SafeAreaScreen as Screen } from '@/components/layouts/SafeAreaScreen';
 import { SettingsItem } from '@/components/settings/SettingsItems';
 import { SettingsItemsSection } from '@/components/settings/SettingsItemsSection';
@@ -7,8 +7,6 @@ import { TabHeader } from '@/components/common/TabHeader';
 import { router } from 'expo-router';
 
 export default function Settings() {
-  const [selectedLanguage, setSelectedLanguage] = useState('English');
-
   return (
     <Screen>
       <TabHeader headerText="Settings" />
@@ -45,7 +43,7 @@ export default function Settings() {
         <SettingsItem
           title="Upgrade Subscription & Membership"
           onPress={() => router.push({
-            pathname: "/(app)/(settings)/subscription",
+            pathname: "/(app)/(settings)/(subscription)",
           })}
         />
         {/* <SettingsItem

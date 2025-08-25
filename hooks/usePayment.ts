@@ -12,7 +12,7 @@ type PaymentOptions = {
   };
 };
 
-var key = Constants.expoConfig?.extra?.keys.RAZORPAY_KEY;
+const key = Constants.expoConfig?.extra?.keys.RAZORPAY_KEY;
 
 type PaymentFailure = {
   description: string;

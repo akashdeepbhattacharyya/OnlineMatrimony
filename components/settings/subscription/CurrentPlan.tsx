@@ -4,15 +4,21 @@ import { Dimensions } from 'react-native';
 import { PrimaryButton } from '../../common/PrimaryButton';
 import { SubscriptionPlan } from '@/models/SubscriptionPlan';
 import { Features } from './Features';
+import { Subscription } from '@/models/Subscription';
+import { calculateExpiryDateInWeeks } from '@/utils/utils';
 
 type Props = {
   subscriptionPlan: SubscriptionPlan;
+  subscription?: Subscription;
+  planCount?: number;
   index: 'last' | 'first' | 'middle';
   onStartPlan: () => void;
 };
 
 export const CurrentPlan = ({
   subscriptionPlan,
+  subscription,
+  planCount,
   index,
   onStartPlan,
 }: Props) => {
@@ -22,7 +28,7 @@ export const CurrentPlan = ({
     <YStack
       theme={'subscription_current_plan'}
       backgroundColor={'$background'}
-      width={width - 100}
+      width={planCount && planCount > 1 ? width - 100 : width - 36}
       marginRight={index === 'first' ? '$6' : index === 'last' ? 0 : '$3'}
       marginLeft={index === 'last' ? '$6' : index === 'first' ? 0 : '$3'}
       borderRadius={'$8'}
@@ -48,10 +54,12 @@ export const CurrentPlan = ({
         <Features features={subscriptionPlan.features} plan="current" />
       </YStack>
       <PrimaryButton
-        title="Start Plan"
+        title={Number(subscriptionPlan.id) === subscription?.planId ? `Expiring in ${calculateExpiryDateInWeeks("2025-08-02", 2)}` : "Start Plan"}
         theme="secondary_button"
         onPress={onStartPlan}
         marginBottom={'$4'}
+        disabled={Number(subscriptionPlan.id) === subscription?.planId}
+        showArrow={Number(subscriptionPlan.id) !== subscription?.planId}
       />
     </YStack>
   );

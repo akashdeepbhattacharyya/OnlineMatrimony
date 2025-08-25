@@ -39,7 +39,7 @@ export const PrimaryButton = ({
         borderRadius="$10"
         borderWidth={'$1'}
         borderColor={'$borderColor'}
-        opacity={disabled ? 0.6 : 1}
+        // opacity={disabled ? 0.6 : 1}
         disabled={disabled}
         {...props}
       >

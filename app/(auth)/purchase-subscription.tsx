@@ -13,7 +13,6 @@ import { useAppSelector } from '@/services/store/hook';
 import { useSubscriptionRepository } from '@/services/api/repositories/useSubscriptionRepository';
 import { useStoreUser } from '@/hooks/useStoreUser';
 import { router } from 'expo-router';
-import { useToastController } from '@tamagui/toast';
 
 export default function PurchaseSubscription() {
   const flatListRef = useRef<FlatList<SubscriptionPlan>>(null);
@@ -25,7 +24,6 @@ export default function PurchaseSubscription() {
   const { getSubscriptionPlans, subscribeToPlan } = useSubscriptionRepository();
   const [selectedPlan, setSelectedPlan] = useState<SubscriptionPlan | undefined>(undefined);
   const { storeSubscription } = useStoreUser();
-  const toast = useToastController();
 
   useEffect(() => {
     const fetchSubscriptionPlans = async () => {
@@ -34,7 +32,7 @@ export default function PurchaseSubscription() {
     };
 
     fetchSubscriptionPlans();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -99,9 +97,6 @@ export default function PurchaseSubscription() {
           <YStack marginTop={'$7'} alignItems="center" gap={'$1.5'}>
             <Text font="headingBold" size="extra_large" color={'$color'}>
               Go Premium
-            </Text>
-            <Text font="headingLight" size="small" color={'$subtitle'}>
-              No Commitment. Cancel Anytime.
             </Text>
           </YStack>
 
