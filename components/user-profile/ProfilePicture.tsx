@@ -1,29 +1,30 @@
 import { MatchedUserProfile } from '@/models/Match';
-import { Text } from '../../common/Text';
+import { Text } from '../common/Text';
 import { Button, getToken, Image, View, XStack, YStack } from 'tamagui';
 import CameraBlob from '@/assets/images/camera.svg';
 import MenuBlob from '@/assets/images/menu.svg';
 import VerifiedBlob from '@/assets/images/verified.svg';
-import { toAge, toFeetAndInches, toUri } from '@/utils/utils';
+import { toFeetAndInches, toUri } from '@/utils/utils';
 import { cities, states } from '@/resources/city-state';
 import { Dimensions } from 'react-native';
-import { Occupation, occupations } from '@/resources/occupation';
+import { occupations } from '@/resources/occupation';
 import { religions } from '@/resources/religion';
 import { castes, subCastes } from '@/resources/caste';
+import { UserProfile } from '@/models/User';
 
 type Props = {
-  matchedUserProfile: MatchedUserProfile;
+  userProfile: UserProfile;
 };
 
-export const MatchProfilePicture = ({ matchedUserProfile }: Props) => {
+export const ProfilePicture = ({ userProfile }: Props) => {
   const { height } = Dimensions.get('window');
   return (
     <View height={height * 0.55}>
       <Image
         source={{
           uri: toUri(
-            matchedUserProfile.fullName,
-            matchedUserProfile.primaryPhotoUrl,
+            userProfile.fullName,
+            userProfile.primaryPhotoUrl,
           ),
         }}
         width={'100%'}
@@ -60,26 +61,26 @@ export const MatchProfilePicture = ({ matchedUserProfile }: Props) => {
         >
           <XStack alignItems="center" gap={'$2'}>
             <Text font="headingBold" size="extra_large">
-              {matchedUserProfile.fullName}
+              {userProfile.fullName}
             </Text>
             <VerifiedBlob />
           </XStack>
           <Text font="heading" size="normal">
             {[
-              [matchedUserProfile.age, 'yrs'].join(' '),
-              toFeetAndInches(matchedUserProfile.height),
+              [userProfile.age, 'yrs'].join(' '),
+              toFeetAndInches(userProfile.height),
               occupations[
-              matchedUserProfile.occupation as keyof typeof occupations
+              userProfile.occupation as keyof typeof occupations
               ],
             ].join('  ')}
           </Text>
           <Text font="heading" size="small">
             {[
-              religions[matchedUserProfile.religion as keyof typeof religions],
-              castes[matchedUserProfile.caste as keyof typeof castes],
-              subCastes[matchedUserProfile.subCaste as keyof typeof subCastes],
-              cities[matchedUserProfile.city as keyof typeof cities],
-              states[matchedUserProfile.state as keyof typeof states],
+              religions[userProfile.religion as keyof typeof religions],
+              castes[userProfile.caste as keyof typeof castes],
+              subCastes[userProfile.subCaste as keyof typeof subCastes],
+              cities[userProfile.city as keyof typeof cities],
+              states[userProfile.state as keyof typeof states],
             ]
               .filter(Boolean)
               .join(', ')}

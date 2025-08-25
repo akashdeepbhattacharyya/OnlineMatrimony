@@ -1,10 +1,9 @@
-import { ScrollView, View, YStack } from 'tamagui';
-import { Text } from '@/components/common/Text';
+import { ScrollView, YStack } from 'tamagui';
 import { SafeAreaScreen as Screen } from '@/components/layouts/SafeAreaScreen';
 import { useUserMatch } from '@/services/hooks/useUserMatch';
-import { MatchProfilePicture } from '@/components/matches/match-details/MatchProfilePicture';
-import { MatchAboutSelf } from '@/components/matches/match-details/MatchAboutSelf';
-import { MatchPersonalInformation } from '@/components/matches/match-details/MatchPersonalInformation';
+import { ProfilePicture } from '@/components/user-profile/ProfilePicture';
+import { AboutSelf } from '@/components/user-profile/AboutSelf';
+import { PersonalInformation } from '@/components/user-profile/PersonalInformation';
 import { MatchPreferences } from '@/components/matches/match-details/MatchPreferences';
 import { useAppDispatch, useAppSelector } from '@/services/store/hook';
 import { ScreenHeader } from '@/components/common/ScreenHeader';
@@ -63,6 +62,7 @@ export default function MatchDetails() {
     <Screen>
       <ScreenHeader headerText={match?.profileResponse.fullName} />
       <ManageMatch
+        match={match}
         onAccept={handleAcceptMatch}
         onReject={handleRejectMatch}
         position="absolute"
@@ -76,12 +76,12 @@ export default function MatchDetails() {
         showsVerticalScrollIndicator={false}
       >
         <YStack flex={1} marginBottom={'$11'} paddingHorizontal={'$4'}>
-          {match ? (
+          {match && (
             <YStack key={0} gap={'$4'}>
-              <MatchProfilePicture matchedUserProfile={match.profileResponse} />
-              <MatchAboutSelf matchedUserProfile={match.profileResponse} />
-              <MatchPersonalInformation
-                matchedUserProfile={match.profileResponse}
+              <ProfilePicture userProfile={match.profileResponse} />
+              <AboutSelf userProfile={match.profileResponse} />
+              <PersonalInformation
+                userProfile={match.profileResponse}
               />
               <MatchPreferences
                 match={match}
@@ -92,23 +92,6 @@ export default function MatchDetails() {
                 currentUserProfile={userProfile}
               />
             </YStack>
-          ) : (
-            <View
-              justifyContent="center"
-              alignItems="center"
-              width={'100%'}
-              height={'100%'}
-            >
-              <Text
-                font="heading"
-                size="large"
-                color="$text"
-                textAlign="center"
-                padding={'$4'}
-              >
-                {`No matches found. \nPlease update your profile and partner preferences.`}
-              </Text>
-            </View>
           )}
         </YStack>
       </ScrollView>

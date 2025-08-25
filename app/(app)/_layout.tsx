@@ -21,6 +21,10 @@ export default function RootLayout() {
         options={{ title: "Profile", headerShown: false }}
       />
       <Stack.Screen
+        name={ROUTES.search.root}
+        options={{ title: "Search", headerShown: false }}
+      />
+      <Stack.Screen
         name={ROUTES.settings.root}
         options={{ title: "Settings", headerShown: false }}
       />

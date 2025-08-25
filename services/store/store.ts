@@ -2,12 +2,14 @@ import { configureStore } from '@reduxjs/toolkit';
 import userReducer from '../slices/user-slice';
 import matchReducer from '../slices/match-slice';
 import searchSliceReducer from '../slices/search-slice';
+import subscriptionPlanReducer from '@/services/slices/subscription-plan-slice';
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
     match: matchReducer,
-    searchSlice: searchSliceReducer,
+    subscriptionPlans: subscriptionPlanReducer,
+    search: searchSliceReducer,
   },
 });
 

@@ -18,7 +18,8 @@ export default function Matches() {
   const { getBestMatches } = useUserMatch();
   const { showLoader, hideLoader } = useLoader();
   const { bestMatches } = useAppSelector(state => state.match);
-  const { subscription } = useAppSelector(state => state.user);
+  // const { subscription } = useAppSelector(state => state.user);
+  // const { subscriptionPlans } = useAppSelector(state => state.subscriptionPlans);
   const dispatch = useAppDispatch();
   const [matches, setMatches] = useState<Match[] | undefined>(undefined);
   const [currentFilter, setCurrentFilter] = useState<MatchFilter>('PENDING');
