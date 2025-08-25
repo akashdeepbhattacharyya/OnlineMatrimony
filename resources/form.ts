@@ -95,6 +95,7 @@ export type PartnerPreferenceFormType = {
   religions?: Religion[];
   motherTongue?: MotherTongue;
   castes?: Caste[];
+  subCastes?: SubCaste[];
   educations?: Education[];
   occupations?: Occupation[];
 };
@@ -173,6 +174,7 @@ export const toPartnerPreferenceFormType = (
     gender: preferences.gender as Gender,
     cities: preferences?.cities.split(',') as City[],
     states: preferences?.states.split(',') as State[],
+    subCastes: preferences?.subCastes?.split(',') as SubCaste[],
     diet: preferences.diet as Diet,
     religions: preferences.religions?.split(',') as Religion[],
     motherTongue: preferences.motherTongue as MotherTongue,

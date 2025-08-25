@@ -50,9 +50,7 @@ export default function PartnerPreferences() {
       if (purpose === 'UPDATE') {
         router.back();
       } else {
-        router.push({
-          pathname: '/(auth)/purchase-subscription',
-        });
+        router.replace('/(app)/(onboarding)');
       }
     } catch (error) {
       console.error('Error updating partner preferences:', error);

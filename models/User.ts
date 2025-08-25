@@ -119,6 +119,7 @@ export type User = {
  * @property maritalStatuses - The preferred marital statuses of the partner.
  * @property religions - The preferred religions of the partner.
  * @property castes - The preferred castes of the partner.
+ * @property subCastes - The preferred sub-castes of the partner.
  * @property motherTongue - The preferred mother tongue of the partner.
  * @property diet - The preferred dietary habit of the partner.
  * @property educations - The preferred education levels of the partner.
@@ -138,6 +139,7 @@ export type PartnerPreferences = {
   maritalStatuses: string;
   religions: string;
   castes: string;
+  subCastes?: string;
   motherTongue: string;
   diet: string;
   educations: string;
@@ -285,7 +287,7 @@ export const isPartnerPreferencesUpdated = (
     partnerPreferences.religions !== null &&
     partnerPreferences.castes !== null &&
     partnerPreferences.motherTongue !== null &&
-    partnerPreferences.diet !== null &&
+    // partnerPreferences.diet !== null &&
     partnerPreferences.educations !== null &&
     partnerPreferences.occupations !== null &&
     partnerPreferences.minIncome !== null &&

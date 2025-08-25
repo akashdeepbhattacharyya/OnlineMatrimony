@@ -19,42 +19,28 @@ export const useStoreUser = () => {
       dispatch(setEmail(user.email));
       dispatch(setPhone(user.phone));
     },
-    [
-      dispatch,
-      setEmail,
-      setPhone,
-      setUserId,
-    ],
+    [dispatch],
   );
 
   const storePartnerPreferences = useCallback(
     async (partnerPreferences: PartnerPreferences) => {
       dispatch(setPartnerPreferences(partnerPreferences));
     },
-    [
-      dispatch,
-      setPartnerPreferences,
-    ],
+    [dispatch],
   );
 
   const storeUserProfile = useCallback(
     async (userProfile: UserProfile) => {
       dispatch(setUserProfile(userProfile));
     },
-    [
-      dispatch,
-      setUserProfile,
-    ],
+    [dispatch],
   );
 
   const storeSubscription = useCallback(
     async (subscription: Subscription) => {
       dispatch(setSubscription(subscription));
     },
-    [
-      dispatch,
-      setSubscription,
-    ],
+    [dispatch],
   );
 
   return { storeUser, storePartnerPreferences, storeUserProfile, storeSubscription };

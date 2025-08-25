@@ -6,11 +6,13 @@ import { MatchProfilePicture } from '@/components/matches/match-details/MatchPro
 import { MatchAboutSelf } from '@/components/matches/match-details/MatchAboutSelf';
 import { MatchPersonalInformation } from '@/components/matches/match-details/MatchPersonalInformation';
 import { MatchPreferences } from '@/components/matches/match-details/MatchPreferences';
-import { useAppSelector } from '@/services/store/hook';
+import { useAppDispatch, useAppSelector } from '@/services/store/hook';
 import { ScreenHeader } from '@/components/common/ScreenHeader';
 import { ManageMatch } from '@/components/matches/ManageMatch';
 import { MatchCommonBetween } from '@/components/matches/match-details/MatchCommonBetween';
 import { router, useLocalSearchParams } from 'expo-router';
+import { setBestMatches } from '@/services/slices/match-slice';
+import { Match } from '@/models/Match';
 
 export default function MatchDetails() {
   const { acceptMatch, rejectMatch } = useUserMatch();
@@ -19,6 +21,7 @@ export default function MatchDetails() {
   const { matchId } = useLocalSearchParams<{
     matchId: string;
   }>();
+  const dispatch = useAppDispatch();
 
   const match = bestMatches.find(item => item.matchId === matchId);
 
@@ -27,6 +30,12 @@ export default function MatchDetails() {
       console.log('Accepting match:', match.matchId);
       await acceptMatch(match.matchId);
       // Refresh best matches after accepting
+      const acceptedMatch: Match = { ...match, matchStatus: 'ACCEPTED' };
+      const matches = [
+        ...bestMatches.filter(item => item.matchId !== match.matchId),
+        acceptedMatch
+      ]
+      dispatch(setBestMatches(matches));
       router.back();
     } else {
       console.log('No match to accept');
@@ -38,6 +47,12 @@ export default function MatchDetails() {
       console.log('Rejecting match:', match.matchId);
       await rejectMatch(match.matchId);
       // Refresh best matches after rejecting
+      const rejectedMatch: Match = { ...match, matchStatus: 'REJECTED' };
+      const matches = [
+        ...bestMatches.filter(item => item.matchId !== match.matchId),
+        rejectedMatch
+      ]
+      dispatch(setBestMatches(matches));
       router.back();
     } else {
       console.log('No match to reject');

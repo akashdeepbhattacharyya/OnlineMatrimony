@@ -83,14 +83,14 @@ export const fontConfig = {
   },
   body: {
     ...defaultFontConfig,
-    family: 'Oswald-Regular',
+    family: 'Roboto-Regular',
   },
   bodyBold: {
     ...defaultFontConfig,
-    family: 'Oswald-Bold',
+    family: 'Roboto-Bold',
   },
   bodySemiBold: {
     ...defaultFontConfig,
-    family: 'Oswald-SemiBold',
+    family: 'Roboto-SemiBold',
   },
 };

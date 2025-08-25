@@ -21,6 +21,7 @@ const Onboarding = () => {
     showTabs: false,
   });
 
+  console.log("subscription:", subscription);
   const userProfileUpdated: boolean = isUserProfileUpdated(userProfile);
   const partnerPreferencesUpdated: boolean = isPartnerPreferencesUpdated(partnerPreferences);
   const hasSubscription: boolean = !!subscription;
@@ -38,17 +39,17 @@ const Onboarding = () => {
     });
   }, [setOnboardingState, userProfileUpdated, partnerPreferencesUpdated, hasSubscription]);
 
-  if (!onboardingState.showUserProfile) {
+  if (onboardingState.showUserProfile) {
     return (
       <Redirect
         href={{
-          pathname: '/(profile)/(update)',
+          pathname: '/(app)/(profile)/(update)',
           params: { purpose: 'ONBOARDING' },
 
         }}
       />
     );
-  } else if (!onboardingState.showPartnerPreferences) {
+  } else if (onboardingState.showPartnerPreferences) {
     return (
       <Redirect
         href={{
@@ -59,7 +60,7 @@ const Onboarding = () => {
         }}
       />
     );
-  } else if (!onboardingState.showSubscription) {
+  } else if (onboardingState.showSubscription) {
     return (
       <Redirect
         href={{

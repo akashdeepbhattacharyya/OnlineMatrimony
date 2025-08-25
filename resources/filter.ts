@@ -1,2 +1,14 @@
-export const filters = ['All', 'Unread', 'Active', 'Calls'] as const;
-export type Filter = (typeof filters)[number];
+export const chatFilter = {
+  ALL: 'All',
+  UNREAD: 'Unread',
+};
+
+export type ChatFilter = keyof typeof chatFilter;
+
+export const matchFilter = {
+  PENDING: 'Pending',
+  ACCEPTED: 'Liked',
+  REJECTED: 'Disliked',
+};
+
+export type MatchFilter = keyof typeof matchFilter;

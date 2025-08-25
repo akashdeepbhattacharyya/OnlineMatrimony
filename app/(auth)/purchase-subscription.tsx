@@ -34,6 +34,7 @@ export default function PurchaseSubscription() {
     };
 
     fetchSubscriptionPlans();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -56,7 +57,7 @@ export default function PurchaseSubscription() {
       }
     };
     handlePaymentSuccess();
-  }, [paymentSuccess]);
+  }, [paymentSuccess, selectedPlan, storeSubscription, subscribeToPlan]);
 
   useEffect(() => {
     if (paymentFailure) {

@@ -135,7 +135,7 @@ const themes: {
   dark_tile_header: {
     color: tokens.color.white,
   },
-  dark_tile_header_right_button: {
+  dark_redTextButton: {
     color: tokens.color.button_bg_red,
   },
   dark_select_light_mode: {

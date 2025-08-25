@@ -18,8 +18,7 @@ export const fetchBestMatches = createAsyncThunk(
     try {
       const response = await getBestMatches();
       return response;
-    } catch (e) {
-      console.error(e);
+    } catch {
       return thunkAPI.rejectWithValue({ status: false, data: undefined });
     }
   },
@@ -29,8 +28,8 @@ const matchSlice = createSlice({
   name: 'match',
   initialState,
   reducers: {
-    setBestMatches(state, action: PayloadAction<MatchState>) {
-      state.bestMatches = action.payload.bestMatches;
+    setBestMatches(state, action: PayloadAction<Match[]>) {
+      state.bestMatches = action.payload;
     },
   },
   extraReducers: builder => {

@@ -138,6 +138,19 @@ export const subCastes = {
   ...generalSubCastes,
 };
 
+export const casteOptions = (religions: Religion[]): Option<Caste>[] => {
+  return religions.flatMap(religion => getCasteOptions(religion))
+    .sort((a, b) => {
+      if (a.value === 'OTHER') return 1; // Move 'OTHER' to the end
+      if (b.value === 'OTHER') return -1; // Move 'OTHER' to the end
+      return a.label.localeCompare(b.label); // Sort alphabetically
+    });
+};
+
+export const subCasteOptions = (castes: Caste[]): Option<SubCaste>[] => {
+  return castes.flatMap(caste => getSubCasteOptions(caste));
+};
+
 export type Caste = HinduCaste | MuslimCaste | ChristianCaste | SikhCaste | BuddhistCaste | JainCaste | ParsiCaste;
 
 export type SubCaste = GeneralSubCaste;

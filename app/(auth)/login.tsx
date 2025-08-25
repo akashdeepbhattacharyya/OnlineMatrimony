@@ -60,7 +60,7 @@ const LoginScreen = () => {
       }
       storeUserProfile(response.user.profile);
       console.log('Login successful:', response);
-      router.replace('/(app)/(tabs)');
+      router.replace('/(app)/(onboarding)');
     }
     hideLoader();
   };

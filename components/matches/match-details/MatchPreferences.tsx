@@ -76,7 +76,7 @@ export const MatchPreferences = ({
         </YStack>
       </View>
       <TileHeader
-        title={`You Match ${match.matchScore / 10}/10 Of ${match.profileResponse.gender === 'FEMALE' ? 'Her' : 'Him'
+        title={`You Match ${(match.matchScore / 10).toFixed(0)}/10 Of ${match.profileResponse.gender === 'FEMALE' ? 'Her' : 'Him'
           } Preferences`}
       />
       <YStack gap={'$2.5'}>
