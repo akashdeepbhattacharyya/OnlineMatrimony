@@ -1,13 +1,13 @@
 import { YStack, ViewProps } from 'tamagui';
 import { Text } from '@/components/common/Text';
-import { TileHeader } from '../../common/TileHeader';
-import { MatchedUserProfile } from '@/models/Match';
+import { TileHeader } from '../common/TileHeader';
+import { UserProfile } from '@/models/User';
 
 type Props = {
-  matchedUserProfile: MatchedUserProfile;
+  userProfile: UserProfile;
 } & ViewProps;
 
-export const MatchAboutSelf = ({ matchedUserProfile, ...props }: Props) => {
+export const AboutSelf = ({ userProfile, ...props }: Props) => {
   return (
     <YStack
       theme={'profile_tile'}
@@ -18,9 +18,9 @@ export const MatchAboutSelf = ({ matchedUserProfile, ...props }: Props) => {
       borderRadius="$8"
       {...props}
     >
-      <TileHeader title={`About ${matchedUserProfile.fullName}`} />
+      <TileHeader title={`About ${userProfile.fullName}`} />
       <Text font="heading" size="normal">
-        {matchedUserProfile.aboutMe || 'No information provided.'}
+        {userProfile.aboutMe || 'No information provided.'}
       </Text>
     </YStack>
   );

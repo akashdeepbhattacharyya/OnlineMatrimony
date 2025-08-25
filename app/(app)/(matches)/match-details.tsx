@@ -1,16 +1,17 @@
-import { ScrollView, View, YStack } from 'tamagui';
-import { Text } from '@/components/common/Text';
+import { ScrollView, YStack } from 'tamagui';
 import { SafeAreaScreen as Screen } from '@/components/layouts/SafeAreaScreen';
 import { useUserMatch } from '@/services/hooks/useUserMatch';
-import { MatchProfilePicture } from '@/components/matches/match-details/MatchProfilePicture';
-import { MatchAboutSelf } from '@/components/matches/match-details/MatchAboutSelf';
-import { MatchPersonalInformation } from '@/components/matches/match-details/MatchPersonalInformation';
+import { ProfilePicture } from '@/components/user-profile/ProfilePicture';
+import { AboutSelf } from '@/components/user-profile/AboutSelf';
+import { PersonalInformation } from '@/components/user-profile/PersonalInformation';
 import { MatchPreferences } from '@/components/matches/match-details/MatchPreferences';
-import { useAppSelector } from '@/services/store/hook';
+import { useAppDispatch, useAppSelector } from '@/services/store/hook';
 import { ScreenHeader } from '@/components/common/ScreenHeader';
 import { ManageMatch } from '@/components/matches/ManageMatch';
 import { MatchCommonBetween } from '@/components/matches/match-details/MatchCommonBetween';
 import { router, useLocalSearchParams } from 'expo-router';
+import { setBestMatches } from '@/services/slices/match-slice';
+import { Match } from '@/models/Match';
 
 export default function MatchDetails() {
   const { acceptMatch, rejectMatch } = useUserMatch();
@@ -19,14 +20,21 @@ export default function MatchDetails() {
   const { matchId } = useLocalSearchParams<{
     matchId: string;
   }>();
+  const dispatch = useAppDispatch();
 
-  const match = bestMatches.find(item => String(item.id) === matchId);
+  const match = bestMatches.find(item => item.matchId === matchId);
 
   const handleAcceptMatch = async () => {
     if (match) {
-      console.log('Accepting match:', match.id);
-      await acceptMatch(match.id);
+      console.log('Accepting match:', match.matchId);
+      await acceptMatch(match.matchId);
       // Refresh best matches after accepting
+      const acceptedMatch: Match = { ...match, matchStatus: 'ACCEPTED' };
+      const matches = [
+        ...bestMatches.filter(item => item.matchId !== match.matchId),
+        acceptedMatch
+      ]
+      dispatch(setBestMatches(matches));
       router.back();
     } else {
       console.log('No match to accept');
@@ -35,9 +43,15 @@ export default function MatchDetails() {
 
   const handleRejectMatch = async () => {
     if (match) {
-      console.log('Rejecting match:', match.id);
-      await rejectMatch(match.id);
+      console.log('Rejecting match:', match.matchId);
+      await rejectMatch(match.matchId);
       // Refresh best matches after rejecting
+      const rejectedMatch: Match = { ...match, matchStatus: 'REJECTED' };
+      const matches = [
+        ...bestMatches.filter(item => item.matchId !== match.matchId),
+        rejectedMatch
+      ]
+      dispatch(setBestMatches(matches));
       router.back();
     } else {
       console.log('No match to reject');
@@ -48,6 +62,7 @@ export default function MatchDetails() {
     <Screen>
       <ScreenHeader headerText={match?.profileResponse.fullName} />
       <ManageMatch
+        match={match}
         onAccept={handleAcceptMatch}
         onReject={handleRejectMatch}
         position="absolute"
@@ -61,12 +76,12 @@ export default function MatchDetails() {
         showsVerticalScrollIndicator={false}
       >
         <YStack flex={1} marginBottom={'$11'} paddingHorizontal={'$4'}>
-          {match ? (
+          {match && (
             <YStack key={0} gap={'$4'}>
-              <MatchProfilePicture matchedUserProfile={match.profileResponse} />
-              <MatchAboutSelf matchedUserProfile={match.profileResponse} />
-              <MatchPersonalInformation
-                matchedUserProfile={match.profileResponse}
+              <ProfilePicture userProfile={match.profileResponse} />
+              <AboutSelf userProfile={match.profileResponse} />
+              <PersonalInformation
+                userProfile={match.profileResponse}
               />
               <MatchPreferences
                 match={match}
@@ -77,23 +92,6 @@ export default function MatchDetails() {
                 currentUserProfile={userProfile}
               />
             </YStack>
-          ) : (
-            <View
-              justifyContent="center"
-              alignItems="center"
-              width={'100%'}
-              height={'100%'}
-            >
-              <Text
-                font="heading"
-                size="large"
-                color="$text"
-                textAlign="center"
-                padding={'$4'}
-              >
-                {`No matches found. \nPlease update your profile and partner preferences.`}
-              </Text>
-            </View>
           )}
         </YStack>
       </ScrollView>

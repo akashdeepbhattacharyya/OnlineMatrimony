@@ -1,7 +1,7 @@
 import { ViewProps, XStack, YStack } from 'tamagui';
 import { Text } from '@/components/common/Text';
 import { DottedDivider } from './DottedDivider';
-import { TouchableOpacity } from 'react-native';
+import { RedTextButton } from './RedTextButton';
 
 type Props = {
   title: string;
@@ -22,16 +22,7 @@ export const TileHeader = ({
           {title}
         </Text>
         {rightButtonTitle && (
-          <TouchableOpacity onPress={onRightButton}>
-            <Text
-              theme={'right_button'}
-              font="heading"
-              size="normal"
-              color={'$color'}
-            >
-              {rightButtonTitle}
-            </Text>
-          </TouchableOpacity>
+          <RedTextButton onPress={onRightButton} title={rightButtonTitle} />
         )}
       </XStack>
       <DottedDivider />

@@ -1,4 +1,3 @@
-import { number } from "yup";
 import { SubscriptionFeatures } from "../models/SubscriptionPlan";
 
 export const isValidPhone = (value: string) => {
@@ -81,7 +80,7 @@ export function formatAnnualIncome(value: number) {
 
 export function formatSubscriptionPlanFeature(key: keyof SubscriptionFeatures, value: number | boolean) {
   switch (key) {
-    case 'activeChat':
+    case 'chatLimit':
       return `Active Chat limit: ${value} accounts`;
     case 'manualSearch':
       return 'Manual Search';

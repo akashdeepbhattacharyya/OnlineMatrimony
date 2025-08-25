@@ -122,6 +122,7 @@ export const UpdatePersonalInformation = ({ ...props }: ViewProps) => {
               setFieldValue('pincode', '');
             }}
             options={stateOptions}
+            selected={values.state}
             icon={<StateIcon />}
           />
 
@@ -137,11 +138,13 @@ export const UpdatePersonalInformation = ({ ...props }: ViewProps) => {
             title="Select City"
             value={cities[values.city as City]}
             onChange={value => {
-              setFieldValue('city', value), setFieldValue('pincode', '');
+              setFieldValue('city', value);
+              setFieldValue('pincode', '');
             }}
             options={cityOptions(values.state as State)}
-            icon={<CityIcon />}
+            selected={values.city}
             disabled={!values.state} // Disable if state is not selected
+            icon={<CityIcon />}
           />
 
           {touched.city && errors.city && (

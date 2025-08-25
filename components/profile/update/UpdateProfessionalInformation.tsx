@@ -33,6 +33,7 @@ export const UpdateProfessionalInformation = ({ ...props }: ViewProps) => {
             value={values.education ? educations[values.education] : undefined}
             onChange={value => setFieldValue('education', value)}
             options={educationOptions}
+            selected={values.education}
             icon={<PersonIcon />}
           />
           {touched.education && errors.education && (
@@ -50,6 +51,7 @@ export const UpdateProfessionalInformation = ({ ...props }: ViewProps) => {
             }
             onChange={value => setFieldValue('occupation', value)}
             options={occupationOptions}
+            selected={values.occupation}
             icon={<PersonIcon />}
           />
           {touched.occupation && errors.occupation && (
@@ -57,7 +59,7 @@ export const UpdateProfessionalInformation = ({ ...props }: ViewProps) => {
           )}
         </YStack>
 
-        {/* Height */}
+        {/* Annual Income */}
         <YStack gap={'$2'}>
           <LabelledTextField
             label="Annual Income"

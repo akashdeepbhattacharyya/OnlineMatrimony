@@ -1,11 +1,10 @@
 import { ViewProps, YStack } from 'tamagui';
 import { PreferenceItem } from './PreferenceItem';
 import { PartnerPreferenceFormType } from '@/resources/form';
-import { PreferenceSelect } from './PreferenceSelect';
 import { useFormikContext } from 'formik';
 import { Text } from '../../common/Text';
 import { dietOptions, diets } from '@/resources/diet';
-import { casteOptions, castes } from '@/resources/caste';
+import { casteOptions, castes, subCasteOptions, subCastes } from '@/resources/caste';
 import {
   motherTongueOptions,
   motherTongues,
@@ -55,7 +54,10 @@ export const OtherPreferences = ({ ...props }: ViewProps) => {
           <MultiSelectButton
             title={'Select Religions'}
             value={values.religions?.map(item => religions[item]).join(', ')}
-            options={religionOptions}
+            options={religionOptions
+              .filter(
+                option => option.value !== 'OTHER',
+              )} // Exclude 'OTHER' from options
             onChange={selected => {
               setFieldValue('religions', selected);
             }}
@@ -72,7 +74,10 @@ export const OtherPreferences = ({ ...props }: ViewProps) => {
           <MultiSelectButton
             title={'Select Castes'}
             value={values.castes?.map(item => castes[item]).join(', ')}
-            options={casteOptions}
+            options={casteOptions(values.religions || [])
+              .filter(
+                option => option.value !== 'OTHER',
+              )} // Exclude 'OTHER' from options
             onChange={selected => {
               setFieldValue('castes', selected);
             }}
@@ -83,6 +88,25 @@ export const OtherPreferences = ({ ...props }: ViewProps) => {
           <Text theme={'error_message'}>{errors.castes}</Text>
         )}
       </YStack>
+
+      {values.castes && values.castes.includes("GENERAL") && (
+        <YStack gap={'$2'}>
+          <PreferenceItem title="General Sub-Caste">
+            <MultiSelectButton
+              title={'Select General Sub-Caste'}
+              value={values.subCastes?.map(item => subCastes[item]).join(', ')}
+              options={subCasteOptions(values.castes || [])}
+              onChange={selected => {
+                setFieldValue('subCastes', selected);
+              }}
+              selected={values.subCastes}
+            />
+          </PreferenceItem>
+          {touched.subCastes && errors.subCastes && (
+            <Text theme={'error_message'}>{errors.subCastes}</Text>
+          )}
+        </YStack>
+      )}
 
       <YStack gap={'$2'}>
         <PreferenceItem title="Mother Tongue">

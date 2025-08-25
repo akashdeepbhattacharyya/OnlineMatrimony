@@ -2,11 +2,10 @@ import { SafeAreaScreen as Screen } from '@/components/layouts/SafeAreaScreen';
 import React, { useState } from 'react';
 import { XStack, YStack } from 'tamagui';
 import { TabHeader } from '@/components/common/TabHeader';
-import { FilterItem } from '@/components/chat/FilterItem';
+import { FilterItem } from '@/components/common/FilterItem';
 import { Chat } from '@/models/Chat';
 import { ChatItem } from '@/components/chat/ChatItem';
-import { Filter, filters } from '@/resources/filter';
-import { useNavigation, NavigationProp } from '@react-navigation/native';
+import { chatFilter, ChatFilter } from '@/resources/filter';
 import { router } from 'expo-router';
 
 const chats: Chat[] = [
@@ -53,7 +52,7 @@ const chats: Chat[] = [
 ];
 
 export default function Chats() {
-  const [currentFilter, setCurrentFilter] = useState<Filter>('All');
+  const [currentFilter, setCurrentFilter] = useState<ChatFilter>('ALL');
 
   return (
     <Screen>
@@ -61,12 +60,13 @@ export default function Chats() {
       <YStack padding="$4">
         {/* FILTER BUTTONS */}
         <XStack gap="$3.5">
-          {filters.map((filter, i) => {
+          {Object.keys(chatFilter).map((filter, i) => {
             const isActive = currentFilter === filter;
             return (
               <FilterItem
                 key={i}
-                filter={filter}
+                filter={filter as ChatFilter}
+                filterLabel={chatFilter[filter as ChatFilter]}
                 isActive={isActive}
                 onPress={setCurrentFilter}
               />

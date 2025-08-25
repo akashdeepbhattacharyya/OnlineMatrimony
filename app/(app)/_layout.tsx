@@ -13,8 +13,16 @@ export default function RootLayout() {
         options={{ title: "Matches", headerShown: false }}
       />
       <Stack.Screen
+        name={ROUTES.onboarding.root}
+        options={{ title: "Onboarding", headerShown: false }}
+      />
+      <Stack.Screen
         name={ROUTES.profile.root}
         options={{ title: "Profile", headerShown: false }}
+      />
+      <Stack.Screen
+        name={ROUTES.search.root}
+        options={{ title: "Search", headerShown: false }}
       />
       <Stack.Screen
         name={ROUTES.settings.root}

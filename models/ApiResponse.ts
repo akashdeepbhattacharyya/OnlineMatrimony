@@ -1,4 +1,4 @@
-import { SubscriptionFeatures, SubscriptionPlan } from "./SubscriptionPlan";
+import { SubscriptionFeatures } from "./SubscriptionPlan";
 
 export type ApiSuccess<T> = {
   statusCode: number;
@@ -36,7 +36,7 @@ export type SubscriptionPlanResponse = {
 };
 
 export type FeatureResponse = {
-  active_chat: number;
+  chat_limit: number;
   manual_search: boolean;
   matches_per_week: number;
   send_interest_option: boolean;
@@ -44,7 +44,7 @@ export type FeatureResponse = {
 
 export function mapFeatureResponseToFeature(feature: FeatureResponse): SubscriptionFeatures {
   return {
-    activeChat: feature.active_chat,
+    chatLimit: feature.chat_limit,
     manualSearch: feature.manual_search,
     matchesPerWeek: feature.matches_per_week,
     sendInterestOption: feature.send_interest_option,

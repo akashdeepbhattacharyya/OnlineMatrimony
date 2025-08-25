@@ -45,7 +45,7 @@ export default function TabLayout() {
           }}
         />
         <Tabs.Screen
-          name={ROUTES.search}
+          name={ROUTES.search.page}
           options={{
             title: "",
             tabBarIcon: subscription && subscription.planId !== 1 ? ({ focused }) => <SearchIcon focused={focused} /> : undefined,
