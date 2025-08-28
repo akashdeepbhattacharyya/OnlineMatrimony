@@ -21,7 +21,7 @@ export default function PurchaseSubscription() {
   const { initiatePayment, paymentSuccess, paymentFailure } = usePayment();
   const { phone, email, userProfile } = useAppSelector(state => state.user);
   const [subscriptionData, setSubscriptionData] = useState<SubscriptionPlan[]>([]);
-  const { getSubscriptionPlans, subscribeToPlan } = useSubscriptionRepository();
+  const { getSubscriptionPlans, subscribeToPlan, createOrder } = useSubscriptionRepository();
   const [selectedPlan, setSelectedPlan] = useState<SubscriptionPlan | undefined>(undefined);
   const { storeSubscription } = useStoreUser();
 
@@ -39,10 +39,10 @@ export default function PurchaseSubscription() {
     const handlePaymentSuccess = async () => {
       if (paymentSuccess) {
         // Handle post-payment success actions here
-        console.log('Payment Successful with ID:', paymentSuccess.id);
+        console.log('Payment Successful with ID:', paymentSuccess.orderId);
         if (selectedPlan) {
           try {
-            const subscription = await subscribeToPlan(selectedPlan.id, paymentSuccess.id);
+            const subscription = await subscribeToPlan(selectedPlan.id, paymentSuccess.orderId, paymentSuccess.paymentId, paymentSuccess.signature);
             storeSubscription(subscription);
             console.log('Subscription to plan successful:', subscription);
             router.replace({
@@ -72,18 +72,24 @@ export default function PurchaseSubscription() {
 
   const onStartPlan = async (plan: SubscriptionPlan) => {
     setSelectedPlan(plan);
-    const contact = phone;
-    const name = userProfile.fullName;
+    try {
+      const order = await createOrder(plan.id);
+      const contact = phone;
+      const name = userProfile.fullName;
 
-    await initiatePayment({
-      description: plan.name,
-      amount: plan.price,
-      prefill: {
-        email,
-        contact,
-        name,
-      },
-    });
+      await initiatePayment({
+        description: plan.name,
+        amount: plan.price,
+        prefill: {
+          email,
+          contact,
+          name,
+        },
+        orderId: order.id,
+      });
+    } catch (error) {
+      console.error('Error creating order:', error);
+    }
   };
 
 
