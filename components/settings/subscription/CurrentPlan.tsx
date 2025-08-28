@@ -18,7 +18,6 @@ type Props = {
 export const CurrentPlan = ({
   subscriptionPlan,
   subscription,
-  planCount,
   index,
   onStartPlan,
 }: Props) => {
@@ -28,7 +27,7 @@ export const CurrentPlan = ({
     <YStack
       theme={'subscription_current_plan'}
       backgroundColor={'$background'}
-      width={planCount && planCount > 1 ? width - 100 : width - 36}
+      width={width - 100}
       marginRight={index === 'first' ? '$6' : index === 'last' ? 0 : '$3'}
       marginLeft={index === 'last' ? '$6' : index === 'first' ? 0 : '$3'}
       borderRadius={'$8'}
