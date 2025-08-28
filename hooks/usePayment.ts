@@ -10,6 +10,7 @@ type PaymentOptions = {
     contact?: string;
     name?: string;
   };
+  orderId: string;
 };
 
 const key = Constants.expoConfig?.extra?.keys.RAZORPAY_KEY;
@@ -19,7 +20,9 @@ type PaymentFailure = {
 };
 
 type PaymentSuccess = {
-  id: string;
+  paymentId: string;
+  orderId: string;
+  signature: string;
 };
 
 export const usePayment = () => {
@@ -33,6 +36,7 @@ export const usePayment = () => {
       key: key,
       amount: paymentOptions.amount * 100, // Convert to paise
       name: 'Dhol',
+      order_id: paymentOptions.orderId,
       prefill: {
         email: paymentOptions.prefill.email,
         contact: paymentOptions.prefill.contact,
@@ -45,7 +49,7 @@ export const usePayment = () => {
 
     RazorpayCheckout.open(options)
       .then((data: any) => {
-        setPaymentSuccess({ id: data.razorpay_payment_id });
+        setPaymentSuccess({ orderId: data.razorpay_order_id, paymentId: data.razorpay_payment_id, signature: data.razorpay_signature });
       })
       .catch((error: any) => {
         setPaymentFailure({ description: error.description });

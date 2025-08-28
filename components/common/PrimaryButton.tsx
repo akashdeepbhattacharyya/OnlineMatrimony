@@ -29,6 +29,7 @@ export const PrimaryButton = ({
       style={{
         width: '100%',
       }}
+      disabled={disabled}
     >
       <View
         width="100%"
