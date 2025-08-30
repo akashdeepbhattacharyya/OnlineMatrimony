@@ -2,11 +2,11 @@ import { useColorScheme } from 'react-native'
 import { TamaguiProvider, type TamaguiProviderProps } from 'tamagui'
 import { ToastProvider, ToastViewport } from '@tamagui/toast'
 import { CurrentToast } from './CurrentToast'
-import { LoaderProvider } from '@/context/LoaderContext';
+import { LoaderProvider } from '@/components/loader/LoaderContext';
 import tamaguiConfig from '@/tamagui/tamagui.config';
 import { Provider as ReduxProvider } from 'react-redux';
 import { store } from '@/services/store/store';
-import { LoaderOverlay } from './LoaderOverlay';
+import { LoaderOverlay } from './loader/LoaderOverlay';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { ErrorDialogProvider } from './error';
 

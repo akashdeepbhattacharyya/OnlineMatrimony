@@ -5,7 +5,7 @@ import { TitleAndSubtitle } from '@/components/common/TitleAndSubtitle';
 import { Text } from '@/components/common/Text';
 import BrideGroomBlob from '@/assets/images/bride-groom.svg';
 import { YStack } from 'tamagui';
-import { useLoader } from '@/context/LoaderContext';
+import { useLoader } from '@/components/loader/LoaderContext';
 import { useUserAuth } from '@/services/hooks/useUserAuth';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useStoreUser } from '@/hooks/useStoreUser';

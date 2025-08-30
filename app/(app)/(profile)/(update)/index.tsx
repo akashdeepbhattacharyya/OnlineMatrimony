@@ -17,7 +17,7 @@ import { UpdateAboutYourSelf } from '@/components/profile/update/UpdateAboutSelf
 import { ProfileBackground } from '@/components/profile/ProfileBackground';
 import { useEffect, useState } from 'react';
 import { ImagePicker } from '@/components/common/ImagePicker';
-import { useLoader } from '@/context/LoaderContext';
+import { useLoader } from '@/components/loader/LoaderContext';
 import { useUserRepository } from '@/services/api/repositories/useUserRepository';
 import { UpdateOtherInformation } from '@/components/profile/update/UpdateOtherInformation';
 import { UpdateProfessionalInformation } from '@/components/profile/update/UpdateProfessionalInformation';

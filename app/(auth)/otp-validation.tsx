@@ -5,7 +5,7 @@ import { PrimaryButton } from '@/components/common/PrimaryButton';
 import { TitleAndSubtitle } from '@/components/common/TitleAndSubtitle';
 import { Text } from '@/components/common/Text';
 import { useUserAuth } from '@/services/hooks/useUserAuth';
-import { useLoader } from '@/context/LoaderContext';
+import { useLoader } from '@/components/loader/LoaderContext';
 import { NoSafeAreaScreen as Screen } from '@/components/layouts/NoSafeAreaScreen';
 import { Background } from '@/components/common/Background';
 import { router, useLocalSearchParams } from 'expo-router';

@@ -10,7 +10,7 @@ import { LabelledDivider } from '@/components/common/LabelledDivider';
 import { Formik } from 'formik';
 import { loginSchema } from '@/resources/validations/login';
 import { useUserAuth } from '@/services/hooks/useUserAuth';
-import { useLoader } from '@/context/LoaderContext';
+import { useLoader } from '@/components/loader/LoaderContext';
 import { LoginFormType } from '@/resources/form';
 import { MaterialIcons } from '@expo/vector-icons';
 import { NoSafeAreaScreen as Screen } from '@/components/layouts/NoSafeAreaScreen';

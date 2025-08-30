@@ -3,7 +3,7 @@ import { Text } from '@/components/common/Text';
 import { SafeAreaScreen as Screen } from '@/components/layouts/SafeAreaScreen';
 import { useUserMatch } from '@/services/hooks/useUserMatch';
 import { useEffect, useState } from 'react';
-import { useLoader } from '@/context/LoaderContext';
+import { useLoader } from '@/components/loader/LoaderContext';
 import { useAppDispatch, useAppSelector } from '@/services/store/hook';
 import { fetchBestMatches, fetchReceivedMatches, fetchSentMatches } from '@/services/slices/match-slice';
 import { TabHeader } from '@/components/common/TabHeader';

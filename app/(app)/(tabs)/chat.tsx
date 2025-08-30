@@ -8,7 +8,7 @@ import { chatFilter, ChatFilter } from '@/resources/filter';
 import { router } from 'expo-router';
 import { useUserMatch } from '@/services/hooks/useUserMatch';
 import { useAppDispatch, useAppSelector } from '@/services/store/hook';
-import { useLoader } from '@/context/LoaderContext';
+import { useLoader } from '@/components/loader/LoaderContext';
 import { fetchMutualMatches } from '@/services/slices/match-slice';
 
 export default function Chats() {

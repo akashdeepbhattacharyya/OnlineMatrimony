@@ -14,7 +14,7 @@ import { PrimaryButton } from '@/components/common/PrimaryButton';
 import { OtherPreferences } from '@/components/settings/partner-preference/OtherPreferences';
 import { ProfessionalPreferences } from '@/components/settings/partner-preference/ProfessionalPreferences';
 import { useUserRepository } from '@/services/api/repositories/useUserRepository';
-import { useLoader } from '@/context/LoaderContext';
+import { useLoader } from '@/components/loader/LoaderContext';
 import { useAppSelector } from '@/services/store/hook';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useStoreUser } from '@/hooks/useStoreUser';

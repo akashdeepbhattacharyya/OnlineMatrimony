@@ -1,5 +1,5 @@
 import { ActivityIndicator, View, StyleSheet } from 'react-native';
-import { useLoader } from '@/context/LoaderContext';
+import { useLoader } from '@/components/loader/LoaderContext';
 
 export const LoaderOverlay = () => {
   const { isLoading } = useLoader();

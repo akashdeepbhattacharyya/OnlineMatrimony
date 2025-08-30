@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { ScrollView, Alert } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Formik } from 'formik';
-import { useLoader } from '../../context/LoaderContext';
+import { useLoader } from '../../components/loader/LoaderContext';
 import { CheckBoxButton } from '@/components/common/CheckBoxButton';
 import { PrimaryButton } from '@/components/common/PrimaryButton';
 import { TitleAndSubtitle } from '@/components/common/TitleAndSubtitle';
