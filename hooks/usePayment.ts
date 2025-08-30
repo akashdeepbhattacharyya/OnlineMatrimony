@@ -1,6 +1,6 @@
 import RazorpayCheckout from 'react-native-razorpay';
 import Constants from 'expo-constants';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 type PaymentOptions = {
   description: string;
@@ -29,7 +29,10 @@ export const usePayment = () => {
   const [paymentSuccess, setPaymentSuccess] = useState<PaymentSuccess | undefined>(undefined);
   const [paymentFailure, setPaymentFailure] = useState<PaymentFailure | undefined>(undefined);
 
-  const initiatePayment = async (paymentOptions: PaymentOptions) => {
+  const initiatePayment = useCallback(async (paymentOptions: PaymentOptions) => {
+    setPaymentSuccess(undefined);
+    setPaymentFailure(undefined);
+    
     const options = {
       description: paymentOptions.description,
       currency: 'INR',
@@ -54,7 +57,7 @@ export const usePayment = () => {
       .catch((error: any) => {
         setPaymentFailure({ description: error.description });
       });
-  };
+  }, []);
 
   return { initiatePayment, paymentSuccess, paymentFailure };
 };

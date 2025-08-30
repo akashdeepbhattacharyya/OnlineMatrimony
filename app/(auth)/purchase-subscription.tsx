@@ -26,7 +26,7 @@ export default function PurchaseSubscription() {
   const [selectedPlan, setSelectedPlan] = useState<SubscriptionPlan | undefined>(undefined);
   const { storeSubscription } = useStoreUser();
   const { showError } = useError();
-  
+
   useEffect(() => {
     if (paymentFailure) {
       showError({ description: paymentFailure.description });
@@ -63,12 +63,14 @@ export default function PurchaseSubscription() {
       }
     };
     handlePaymentSuccess();
-  }, [paymentSuccess, selectedPlan, showError, storeSubscription, subscribeToPlan]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [paymentSuccess, selectedPlan, showError, storeSubscription]);
 
   const onStartPlan = async (plan: SubscriptionPlan) => {
     setSelectedPlan(plan);
     try {
       const order = await createOrder(plan.id);
+      // const order = { id: "order_RBX7KTLw226BHF" }; // Mock order for testing
       const contact = phone;
       const name = userProfile.fullName;
 
@@ -100,22 +102,6 @@ export default function PurchaseSubscription() {
               Go Premium
             </Text>
           </YStack>
-
-          {paymentFailure && (
-            <Text
-              font="body"
-              size='medium'
-              color="$color.button_bg_red"
-              marginTop="$4"
-              textAlign='center'
-              padding={'$2.5'}
-              borderWidth={2}
-              borderColor="$color.button_bg_red"
-              borderRadius={"$4"}
-            >
-              {paymentFailure.description}
-            </Text>
-          )}
 
           <View marginTop={'$7'}>
             <FlatList
