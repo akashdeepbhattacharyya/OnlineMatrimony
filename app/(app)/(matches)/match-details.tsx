@@ -11,7 +11,6 @@ import { ManageMatch } from '@/components/matches/ManageMatch';
 import { MatchCommonBetween } from '@/components/matches/match-details/MatchCommonBetween';
 import { router, useLocalSearchParams } from 'expo-router';
 import { setSentMatches, setBestMatches } from '@/services/slices/match-slice';
-import { Match, SentMatch } from '@/models/Match';
 
 export default function MatchDetails() {
   const { rejectMatch, sendRequest } = useUserMatch();
@@ -29,7 +28,7 @@ export default function MatchDetails() {
       console.log('Sending match:', match.profileResponse.userId);
       await sendRequest(match.profileResponse.userId);
       // Refresh sent matches after sending
-      const sentMatch: SentMatch = { matchId: match.matchId, profile: match.profileResponse };
+      const sentMatch = { matchId: match.matchId, profile: match.profileResponse };
       const matches = [
         ...sentMatches,
         sentMatch
@@ -37,7 +36,7 @@ export default function MatchDetails() {
       dispatch(setSentMatches(matches));
 
       // Remove from best matches
-      const filteredMatches = bestMatches.filter(item => item.matchId !== matchId);
+      const filteredMatches = bestMatches.filter(item => item.matchId !== match.matchId);
       dispatch(setBestMatches(filteredMatches));
       router.back();
     } else {
@@ -49,14 +48,11 @@ export default function MatchDetails() {
     if (match) {
       console.log('Rejecting match:', match.matchId);
       await rejectMatch(match.matchId);
-      // Refresh best matches after rejecting
-      const rejectedMatch: Match = { ...match, matchStatus: 'REJECTED' };
-      const matches = [
-        ...bestMatches.filter(item => item.matchId !== match.matchId),
-        rejectedMatch
-      ]
-      // dispatch(setBestMatches(matches));
-      // router.back();
+
+      // Remove from best matches
+      const filteredMatches = bestMatches.filter(item => item.matchId !== match.matchId);
+      dispatch(setBestMatches(filteredMatches));
+      router.back();
     } else {
       console.log('No match to reject');
     }

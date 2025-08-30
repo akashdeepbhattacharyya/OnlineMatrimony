@@ -17,17 +17,22 @@ import { NoSafeAreaScreen as Screen } from '@/components/layouts/NoSafeAreaScree
 import { Background } from '@/components/common/Background';
 import { router } from 'expo-router';
 import { useStoreUser } from '@/hooks/useStoreUser';
+import { setSubscription } from '@/services/slices/user-slice';
+import { useSubscriptionRepository } from '@/services/api/repositories/useSubscriptionRepository';
+import { useError } from '@/components/error/useError';
 
 const LoginScreen = () => {
   const { storeUser, storePartnerPreferences, storeUserProfile } = useStoreUser();
 
   const initialValues = {
-    emailOrPhone: __DEV__ ? "9874757870" : '',
+    emailOrPhone: __DEV__ ? "9874757879" : '',
     password: __DEV__ ? 'Boxer@1998' : '',
     terms: __DEV__ ? true : false,
   };
   const { login: loginUser } = useUserAuth();
   const { showLoader, hideLoader } = useLoader();
+  const { getMySubscription } = useSubscriptionRepository();
+  const { showError } = useError();
 
   const handleLogin = async (values: LoginFormType) => {
     showLoader();
@@ -52,6 +57,14 @@ const LoginScreen = () => {
       }
       storeUserProfile(response.user.profile);
       console.log('Login successful:', response);
+      try {
+        const subscription = await getMySubscription();
+        setSubscription(subscription);
+      } catch (error: any) {
+        showError({ title: "Login Error", description: error.message || "Error fetching subscription" });
+        console.error("Error fetching subscription:", error);
+      }
+
       router.replace('/(app)/(onboarding)');
     }
     hideLoader();
