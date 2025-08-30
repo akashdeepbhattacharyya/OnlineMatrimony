@@ -5,7 +5,7 @@ export default function RootLayout() {
   return (
     <Stack>
       <Stack.Screen
-        name={ROUTES.search.profile_details}
+        name={ROUTES.search.searched_profile_details}
         options={{ title: "Chat Details", headerShown: false }}
       />
     </Stack>
