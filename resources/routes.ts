@@ -36,7 +36,7 @@ export const ROUTES = {
   search: {
     root: "(search)",
     page: "search",
-    profile_details: "profile-details",
+    searched_profile_details: "searched-profile-details",
   },
   settings: {
     root: "(settings)",

@@ -98,12 +98,12 @@ export default function Search() {
           )}
           {userSearchData.map(user => (
             <SearchItem
-              key={user.id}
+              key={user.userId}
               user={user}
               onPress={() => {
                 router.push({
-                  pathname: "/(app)/(search)/profile-details",
-                  params: { userId: user.id },
+                  pathname: "/(app)/(search)/searched-profile-details",
+                  params: { userId: user.userId },
                 });
               }}
             />

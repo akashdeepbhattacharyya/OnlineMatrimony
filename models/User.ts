@@ -300,5 +300,5 @@ export const isPartnerPreferencesUpdated = (
 };
 
 export type SearchUser = {
-  id: number;
+  userId: number;
 } & UserProfile;

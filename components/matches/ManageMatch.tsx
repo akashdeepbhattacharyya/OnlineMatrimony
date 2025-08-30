@@ -3,8 +3,8 @@ import RejectIcon from '@/assets/images/match-dislike.svg';
 import AcceptIcon from '@/assets/images/match-like.svg';
 
 type Props = {
-  onAccept: () => void;
-  onReject: () => void;
+  onAccept?: () => void;
+  onReject?: () => void;
   hideAcceptButton?: boolean;
   hideRejectButton?: boolean;
 } & ViewProps;
