@@ -6,9 +6,9 @@ export const chatFilter = {
 export type ChatFilter = keyof typeof chatFilter;
 
 export const matchFilter = {
-  PENDING: 'Pending',
-  ACCEPTED: 'Liked',
-  REJECTED: 'Disliked',
+  MATCH: 'My Matches',
+  SENT: 'Sent',
+  RECEIVED: 'Received',
 };
 
 export type MatchFilter = keyof typeof matchFilter;

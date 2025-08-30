@@ -1,4 +1,3 @@
-import { Match } from '@/models/Match';
 import { castes, subCastes } from '@/resources/caste';
 import { cities, states } from '@/resources/city-state';
 import { occupations } from '@/resources/occupation';
@@ -8,13 +7,14 @@ import React from 'react';
 import { XStack, Image, YStack } from 'tamagui';
 import { Text } from '../common/Text';
 import VerifiedIcon from '@/assets/images/verified.svg';
+import { UserProfile } from '@/models/User';
 
 type Props = {
-  match: Match;
+  userProfile: UserProfile;
   onPress?: () => void;
 };
 
-export const MatchItem = ({ match, onPress }: Props) => {
+export const MatchItem = ({ userProfile, onPress }: Props) => {
   return (
     <XStack
       theme={'match_item'}
@@ -27,8 +27,8 @@ export const MatchItem = ({ match, onPress }: Props) => {
       <Image
         source={{
           uri: toUri(
-            match.profileResponse.fullName,
-            match.profileResponse.primaryPhotoUrl,
+            userProfile.fullName,
+            userProfile.primaryPhotoUrl,
           ),
         }}
         width={'$7'}
@@ -42,26 +42,26 @@ export const MatchItem = ({ match, onPress }: Props) => {
       <YStack paddingVertical={'$4'} gap={'$2'}>
         <XStack gap={'$2'} alignItems="center">
           <Text font="headingBold" size="medium" color="$text">
-            {match.profileResponse.fullName}
+            {userProfile.fullName}
           </Text>
           <VerifiedIcon />
         </XStack>
         <Text font="heading" size="small">
           {[
-            [toAge(match.profileResponse.dateOfBirth), 'yrs'].join(' '),
-            toFeetAndInches(match.profileResponse.height),
+            [toAge(userProfile.dateOfBirth), 'yrs'].join(' '),
+            toFeetAndInches(userProfile.height),
             occupations[
-              match.profileResponse.occupation as keyof typeof occupations
+            userProfile.occupation as keyof typeof occupations
             ],
           ].join('  ')}
         </Text>
         <Text font="heading" size="extra_small">
           {[
-            religions[match.profileResponse.religion as keyof typeof religions],
-            castes[match.profileResponse.caste as keyof typeof castes],
-            subCastes[match.profileResponse.subCaste as keyof typeof subCastes],
-            cities[match.profileResponse.city as keyof typeof cities],
-            states[match.profileResponse.state as keyof typeof states],
+            religions[userProfile.religion as keyof typeof religions],
+            castes[userProfile.caste as keyof typeof castes],
+            subCastes[userProfile.subCaste as keyof typeof subCastes],
+            cities[userProfile.city as keyof typeof cities],
+            states[userProfile.state as keyof typeof states],
           ]
             .filter(Boolean)
             .join(', ')}

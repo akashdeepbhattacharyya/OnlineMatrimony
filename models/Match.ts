@@ -9,5 +9,14 @@ export type Match = {
 };
 
 export type MatchedUserProfile = {
-  id: number;
+  userId: number;
 } & UserProfile;
+
+export type SentMatch = {
+  matchId: string;
+  profile: MatchedUserProfile;
+};
+
+export type ReceivedMatch = SentMatch;
+
+export type MutualMatch = MatchedUserProfile;

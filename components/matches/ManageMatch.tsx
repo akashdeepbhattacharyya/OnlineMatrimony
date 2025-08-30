@@ -1,15 +1,15 @@
 import { Button, ViewProps, XStack } from 'tamagui';
 import RejectIcon from '@/assets/images/match-dislike.svg';
 import AcceptIcon from '@/assets/images/match-like.svg';
-import { Match } from '@/models/Match';
 
 type Props = {
-  match?: Match;
   onAccept: () => void;
   onReject: () => void;
+  hideAcceptButton?: boolean;
+  hideRejectButton?: boolean;
 } & ViewProps;
 
-export const ManageMatch = ({ match, onAccept, onReject, ...props }: Props) => {
+export const ManageMatch = ({ onAccept, onReject, hideAcceptButton = false, hideRejectButton = false, ...props }: Props) => {
   return (
     <XStack
       {...props}
@@ -19,16 +19,16 @@ export const ManageMatch = ({ match, onAccept, onReject, ...props }: Props) => {
       width={'100%'}
       zIndex={1}
     >
-      {(match?.matchStatus === 'PENDING' || match?.matchStatus === 'ACCEPTED') && (
+      {(!hideRejectButton && (
         <Button onPress={onReject} width={66} height={66} borderRadius={33}>
           <RejectIcon />
         </Button>
-      )}
-      {(match?.matchStatus === 'PENDING' || match?.matchStatus === 'REJECTED') && (
+      ))}
+      {(!hideAcceptButton && (
         <Button onPress={onAccept} width={66} height={66} borderRadius={33}>
           <AcceptIcon />
         </Button>
-      )}
+      ))}
     </XStack>
   );
 };

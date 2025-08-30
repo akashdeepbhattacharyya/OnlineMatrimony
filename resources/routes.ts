@@ -22,6 +22,8 @@ export const ROUTES = {
     root: "(matches)",
     page: "matches",
     match_details: "match-details",
+    sent_match_details: "sent-match-details",
+    received_match_details: "received-match-details",
   },
   profile: {
     root: "(profile)",
