@@ -65,20 +65,10 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       projectId: '0cfad855-470b-4db1-8914-69e70917f01f',
     },
     keys: {
-      API_BASE_URL: process.env.API_BASE_URL,
-      RAZORPAY_KEY: IS_DEVELOPMENT
+      API_BASE_URL: IS_LOCAL ? process.env.LOCAL_BASE_URL : IS_DEVELOPMENT ? process.env.DEV_BASE_URL : process.env.PROD_BASE_URL,
+      RAZORPAY_KEY: IS_DEVELOPMENT || IS_LOCAL
         ? process.env.DEV_RAZORPAY_KEY
         : process.env.PROD_RAZORPAY_KEY,
-      // Uncomment and configure the below if you want to use different base URLs for different environments
-      // local: {
-      //   apiBaseUrl: process.env.LOCAL_BASE_URL,
-      // },
-      // dev: {
-      //   apiBaseUrl: process.env.DEV_BASE_URL,
-      // },
-      // prod: {
-      //   apiBaseUrl: process.env.PROD_BASE_URL,
-      // },
     },
   },
   owner: 'onlinematrimony',

@@ -26,7 +26,6 @@ export default function SearchedProfileDetails() {
 
   const handleSendRequest = async () => {
     if (userDetails) {
-      console.log('Sending match:', userDetails.userId);
       await sendRequest(userDetails.userId);
       // Refresh sent matches after sending
       const sentMatch: SentMatch = { matchId: "", profile: userDetails };
@@ -42,7 +41,7 @@ export default function SearchedProfileDetails() {
 
       router.back();
     } else {
-      console.log('No match to accept');
+      console.error('No match to accept');
     }
   };
 

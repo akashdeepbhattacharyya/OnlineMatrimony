@@ -23,7 +23,6 @@ export class HttpClient implements IHttpClient {
       'Content-Type': 'application/json',
     };
     const refreshToken: string | null = await Storage.getItem("REFRESH_TOKEN");
-    console.log('Using refresh token:', refreshToken);
     if (refreshToken) {
       const rest = await fetch(this.makeUrl('/auth/refresh-token'), {
         method: 'POST',
@@ -64,7 +63,6 @@ export class HttpClient implements IHttpClient {
       ...config.headers,
     };
     const accessToken: string | null = await Storage.getItem("ACCESS_TOKEN");
-    console.log('Using access token:', accessToken);
     console.log('Requesting:', method, endpoint);
     if (accessToken) {
       headers['Authorization'] = `Bearer ${accessToken}`;
@@ -86,11 +84,9 @@ export class HttpClient implements IHttpClient {
     });
 
     if (res.status === 401) {
-      console.log('Unauthorized access - attempting token refresh');
       // Handle unauthorized access, possibly refresh token
       try {
-        const newToken = await this.handleRefreshAuthToken();
-        console.log('New token obtained:', newToken);
+        await this.handleRefreshAuthToken();
         // Retry the request with the new token
         return this.request<T>(method, endpoint, body, config);
       } catch (error) {
@@ -134,17 +130,18 @@ export class HttpClient implements IHttpClient {
   }
 }
 
-let apiBaseUrl = Constants.expoConfig?.extra?.keys.API_BASE_URL;
+const baseUrl = () => {
+  let apiBaseUrl = Constants.expoConfig?.extra?.keys.API_BASE_URL;
 
-if (Platform.OS === 'android') {
-  // For Android, use the local IP address if running on an emulator
-  if (apiBaseUrl?.includes('localhost')) {
-    apiBaseUrl = apiBaseUrl.replace('localhost', '10.0.2.2');
+  if (Platform.OS === 'android') {
+    // For Android, use the local IP address if running on an emulator
+    if (apiBaseUrl?.includes('localhost')) {
+      apiBaseUrl = apiBaseUrl.replace('localhost', '10.0.2.2');
+    }
   }
+  return apiBaseUrl;
 }
 
-console.log('API_BASE_URL:', apiBaseUrl);
-
-export const apiClient = new HttpClient(apiBaseUrl || '', {
+export const apiClient = new HttpClient(baseUrl() || '', {
   'Content-Type': 'application/json',
 });

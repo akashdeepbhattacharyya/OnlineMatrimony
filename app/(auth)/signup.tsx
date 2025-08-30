@@ -70,12 +70,10 @@ export default function SignUp() {
       gender: values.gender,
       password: values.password,
     };
-    console.log('Payload: ', payload);
     const val = await register(payload);
     hideLoader();
 
     if (val) {
-      console.log('Signup success:', val);
       router.push({
         pathname: '/(auth)/otp-validation',
         params: {

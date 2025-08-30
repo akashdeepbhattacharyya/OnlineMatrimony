@@ -21,14 +21,9 @@ const Onboarding = () => {
     showTabs: false,
   });
 
-  console.log("subscription:", subscription);
   const userProfileUpdated: boolean = isUserProfileUpdated(userProfile);
   const partnerPreferencesUpdated: boolean = isPartnerPreferencesUpdated(partnerPreferences);
   const hasSubscription: boolean = !!subscription;
-
-  console.log('userProfileUpdated:', userProfileUpdated);
-  console.log('partnerPreferencesUpdated:', partnerPreferencesUpdated);
-  console.log('hasSubscription:', hasSubscription);
 
   useEffect(() => {
     setOnboardingState({

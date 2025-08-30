@@ -44,7 +44,6 @@ export default function OtpValidation() {
 
   const handleSubmitOtp = async () => {
     showLoader();
-    console.log(email, input.join(''));
 
     const value = await submitOtp({
       email,

@@ -57,13 +57,12 @@ export default function UpdateProfile() {
   );
 
   const onUpdate = async (values: UpdateUserProfileFormType) => {
-    console.log('Updated values:', values);
     showLoader();
     try {
       const response = await userRepository.updateProfile(
         toUpdateUserProfileRequest(values),
       );
-      console.log('Profile updated successfully:', response);
+
       if (response.profile) {
         storeUserProfile(response.profile);
       }

@@ -18,15 +18,9 @@ export const setUserIdAndToken = async (id: string, token?: Token) => {
       [KEYS.TOKEN_TYPE]: token.tokenType,
       [KEYS.EXPIRES_IN]: token.expiresIn,
     };
-    console.log("Setting token data for user:", id);
-    console.log("tokenData:", tokenData);
     await AsyncStorage.setItem(id, JSON.stringify(tokenData));
   }
 };
-
-// export const setUserId = async (id: string) => {
-//   await AsyncStorage.setItem(KEYS.USER_ID, id);
-// };
 
 export const getUserId = async () => {
   return await AsyncStorage.getItem(KEYS.USER_ID) || null;

@@ -56,7 +56,7 @@ const LoginScreen = () => {
         storePartnerPreferences(response.user.preference);
       }
       storeUserProfile(response.user.profile);
-      console.log('Login successful:', response);
+      
       try {
         const subscription = await getMySubscription();
         setSubscription(subscription);

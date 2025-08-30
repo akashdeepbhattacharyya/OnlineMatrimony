@@ -20,7 +20,6 @@ export default function ProfileSelection() {
   const { storeUser, storePartnerPreferences, storeUserProfile } = useStoreUser();
 
   const handleLogin = async () => {
-    console.log('Login values:', { email, password });
     showLoader();
     const response = await loginUser({
       emailOrPhone: email,
@@ -42,13 +41,12 @@ export default function ProfileSelection() {
         storePartnerPreferences(response.user.preference);
       }
       storeUserProfile(response.user.profile);
-      console.log('Login after signup successful:', response);
       router.push({
         pathname: '/(profile)/(update)',
         params: { purpose: 'ONBOARDING' },
       });
     } else {
-      console.log('Login failed:', loginError);
+      console.error('Login failed:', loginError);
     }
     hideLoader();
   };

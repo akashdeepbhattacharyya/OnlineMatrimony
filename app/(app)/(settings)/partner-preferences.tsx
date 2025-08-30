@@ -35,16 +35,11 @@ export default function PartnerPreferences() {
   const initialValues: PartnerPreferenceFormType =
     toPartnerPreferenceFormType(partnerPreferences);
 
-  console.log('Initial values for form:', initialValues);
-
   const onConfirm = async (values: PartnerPreferenceFormType) => {
-    console.log('Updated values:', values);
     const request = toPartnerPreferencesRequest(values);
-    console.log('Request to update partner preferences:', request);
     showLoader();
     try {
       const response = await userRepository.updatePartnerPreferences(request);
-      console.log('Partner preferences updated successfully:', response);
       if (response.preference) {
         storePartnerPreferences(response.preference);
       }

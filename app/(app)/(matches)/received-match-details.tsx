@@ -23,7 +23,6 @@ export default function ReceivedMatchDetails() {
 
   const handleAcceptMatch = async () => {
     if (match) {
-      console.log('Accepting match:', match.matchId);
       await acceptMatch(match.matchId);
       // Refresh received matches after accepting
       const filteredMatches = receivedMatches.filter(item => item.matchId !== matchId);
@@ -36,20 +35,19 @@ export default function ReceivedMatchDetails() {
       dispatch(setMutualMatches(newMutualMatches));
       router.back();
     } else {
-      console.log('No match to accept');
+      console.error('No match to accept');
     }
   };
 
   const handleRejectMatch = async () => {
     if (match) {
-      console.log('Rejecting match:', match.matchId);
       await rejectMatch(match.matchId);
       // Refresh received matches after rejecting
       const filteredMatches = receivedMatches.filter(item => item.matchId !== matchId);
       dispatch(setReceivedMatches(filteredMatches));
       router.back();
     } else {
-      console.log('No match to reject');
+      console.error('No match to reject');
     }
   };
 

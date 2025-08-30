@@ -97,11 +97,7 @@ export function calculateExpiryDateInWeeks(startDate: string, durationMonths: nu
   if (!startDate || durationMonths <= 0) return undefined;
 
   const start = new Date(startDate);
-  console.log('Start Date:', start);
   const expiry = new Date(start.setMonth(start.getMonth() + durationMonths));
-  console.log('Expiry Date:', expiry);
   const weeks = Math.ceil((expiry.getTime() - start.getTime()) / (1000 * 60 * 60 * 24 * 7));
-  console.log("Expiry time:", expiry.getTime(), start.getTime());
-  console.log('Duration in Weeks:', weeks);
   return `${weeks} Weeks`;
 }

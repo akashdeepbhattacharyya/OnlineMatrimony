@@ -25,7 +25,6 @@ export default function MatchDetails() {
 
   const handleSendRequest = async () => {
     if (match) {
-      console.log('Sending match:', match.profileResponse.userId);
       await sendRequest(match.profileResponse.userId);
       // Refresh sent matches after sending
       const sentMatch = { matchId: match.matchId, profile: match.profileResponse };
@@ -40,13 +39,12 @@ export default function MatchDetails() {
       dispatch(setBestMatches(filteredMatches));
       router.back();
     } else {
-      console.log('No match to accept');
+      console.error('No match to accept');
     }
   };
 
   const handleRejectMatch = async () => {
     if (match) {
-      console.log('Rejecting match:', match.matchId);
       await rejectMatch(match.matchId);
 
       // Remove from best matches
@@ -54,7 +52,7 @@ export default function MatchDetails() {
       dispatch(setBestMatches(filteredMatches));
       router.back();
     } else {
-      console.log('No match to reject');
+      console.error('No match to reject');
     }
   };
 
