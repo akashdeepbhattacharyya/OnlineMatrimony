@@ -63,12 +63,12 @@ export default function Chats() {
         >
           {mutualMatches.map(match => (
             <MatchItem
-              key={match.matchId}
+              key={match.userId}
               match={match}
               onPress={() => {
                 router.push({
                   pathname: "/(app)/(chat)/chat-details",
-                  params: { chatId: match.matchId }
+                  params: { userId: match.userId }
                 })
               }}
             />

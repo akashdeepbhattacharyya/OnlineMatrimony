@@ -1,12 +1,12 @@
 import { XStack, Avatar, YStack, Circle } from 'tamagui';
 import { Text } from '../common/Text';
 import { TouchableOpacity } from 'react-native';
-import { Match } from '@/models/Match';
+import { MutualMatch } from '@/models/Match';
 import { toUri } from '@/utils/utils';
 
 type Props = {
-  match: Match;
-  onPress: (chat: Match) => void;
+  match: MutualMatch;
+  onPress: (chat: MutualMatch) => void;
 };
 
 export const MatchItem = ({ match, onPress }: Props) => {
@@ -15,11 +15,11 @@ export const MatchItem = ({ match, onPress }: Props) => {
       <XStack gap="$4" justifyContent="space-between">
         <XStack gap="$4">
           <Avatar circular size="$6">
-            <Avatar.Image src={toUri(match.profileResponse.fullName, match.profileResponse.primaryPhotoUrl)} />
+            <Avatar.Image src={toUri(match.fullName, match.primaryPhotoUrl)} />
           </Avatar>
           <YStack gap="$3" justifyContent="center">
             <Text font="headingBold" size="normal" color="$color">
-              {match.profileResponse.fullName}
+              {match.fullName}
             </Text>
             <Text font="heading" size="normal" color="$color">
               {"Hello"}

@@ -10,13 +10,13 @@ import { ScreenHeader } from '@/components/common/ScreenHeader';
 import { ManageMatch } from '@/components/matches/ManageMatch';
 import { MatchCommonBetween } from '@/components/matches/match-details/MatchCommonBetween';
 import { router, useLocalSearchParams } from 'expo-router';
-import { setBestMatches } from '@/services/slices/match-slice';
-import { Match } from '@/models/Match';
+import { setSentMatches, setBestMatches } from '@/services/slices/match-slice';
+import { Match, SentMatch } from '@/models/Match';
 
 export default function MatchDetails() {
-  const { acceptMatch, rejectMatch } = useUserMatch();
+  const { rejectMatch, sendRequest } = useUserMatch();
   const { userProfile } = useAppSelector(state => state.user);
-  const { bestMatches } = useAppSelector(state => state.match);
+  const { bestMatches, sentMatches } = useAppSelector(state => state.match);
   const { matchId } = useLocalSearchParams<{
     matchId: string;
   }>();
@@ -24,17 +24,21 @@ export default function MatchDetails() {
 
   const match = bestMatches.find(item => item.matchId === matchId);
 
-  const handleAcceptMatch = async () => {
+  const handleSendRequest = async () => {
     if (match) {
-      console.log('Accepting match:', match.matchId);
-      await acceptMatch(match.matchId);
-      // Refresh best matches after accepting
-      const acceptedMatch: Match = { ...match, matchStatus: 'ACCEPTED' };
+      console.log('Sending match:', match.profileResponse.userId);
+      await sendRequest(match.profileResponse.userId);
+      // Refresh sent matches after sending
+      const sentMatch: SentMatch = { matchId: match.matchId, profile: match.profileResponse };
       const matches = [
-        ...bestMatches.filter(item => item.matchId !== match.matchId),
-        acceptedMatch
+        ...sentMatches,
+        sentMatch
       ]
-      dispatch(setBestMatches(matches));
+      dispatch(setSentMatches(matches));
+
+      // Remove from best matches
+      const filteredMatches = bestMatches.filter(item => item.matchId !== matchId);
+      dispatch(setBestMatches(filteredMatches));
       router.back();
     } else {
       console.log('No match to accept');
@@ -51,8 +55,8 @@ export default function MatchDetails() {
         ...bestMatches.filter(item => item.matchId !== match.matchId),
         rejectedMatch
       ]
-      dispatch(setBestMatches(matches));
-      router.back();
+      // dispatch(setBestMatches(matches));
+      // router.back();
     } else {
       console.log('No match to reject');
     }
@@ -62,8 +66,7 @@ export default function MatchDetails() {
     <Screen>
       <ScreenHeader headerText={match?.profileResponse.fullName} />
       <ManageMatch
-        match={match}
-        onAccept={handleAcceptMatch}
+        onAccept={handleSendRequest}
         onReject={handleRejectMatch}
         position="absolute"
         bottom={'$0'}
