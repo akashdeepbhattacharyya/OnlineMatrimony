@@ -6,22 +6,21 @@ import {
   VerifyOTPRequest,
 } from '@/models/Authentication';
 import { useAuthRepository } from '@/services/api/repositories/useAuthRepository';
-import { useAppDispatch } from '../store/hook';
-import { showError } from '../slices/error-slice';
+import { useError } from '@/components/error';
 
 export const useUserAuth = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | undefined>();
   const [data, setData] = useState<string | LoginResponse | undefined>();
   const authRepository = useAuthRepository();
-  const dispatch = useAppDispatch();
+  const { showError } = useError();
 
   useEffect(() => {
     if (error) {
-      dispatch(showError({ description: error }));
+      showError({ description: error });
     }
-  }, [dispatch, error]);
-  
+  }, [error, showError]);
+
   const register = async (
     payload: UserRegistrationRequest,
   ): Promise<string | null> => {

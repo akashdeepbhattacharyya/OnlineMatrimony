@@ -2,18 +2,18 @@ import { Text } from "@/components/common/Text";
 import { View, XStack, YStack } from "tamagui";
 import { Feather } from "@expo/vector-icons";
 import { useEffect } from "react";
-import { hideError } from "../../services/slices/error-slice";
-import { useAppDispatch, useAppSelector } from "@/services/store/hook";
+import { useAppSelector } from "@/services/store/hook";
+import { useError } from "./useError";
 
 const DIALOG_CLOSE_TIME_IN_MILLS = 3000;
 
 export const ErrorDialog = () => {
   const { visible, data } = useAppSelector((state) => state.error);
-  const dispatch = useAppDispatch();
-  
+  const { hideError } = useError();
+
   useEffect(() => {
     const timeId = setTimeout(() => {
-      dispatch(hideError());
+      hideError();
     }, DIALOG_CLOSE_TIME_IN_MILLS);
 
     if (!visible) {
@@ -23,7 +23,7 @@ export const ErrorDialog = () => {
     return () => {
       clearTimeout(timeId);
     };
-  }, [dispatch, visible]);
+  }, [hideError, visible]);
 
   return (
     <View width="100%" theme="error_dialog">
@@ -46,7 +46,7 @@ export const ErrorDialog = () => {
             size={16}
             color="#000000"
             onPress={() => {
-              dispatch(hideError());
+              hideError();
             }}
           />
         </XStack>

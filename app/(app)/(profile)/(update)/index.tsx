@@ -21,10 +21,10 @@ import { useLoader } from '@/context/LoaderContext';
 import { useUserRepository } from '@/services/api/repositories/useUserRepository';
 import { UpdateOtherInformation } from '@/components/profile/update/UpdateOtherInformation';
 import { UpdateProfessionalInformation } from '@/components/profile/update/UpdateProfessionalInformation';
-import { useAppDispatch, useAppSelector } from '@/services/store/hook';
+import { useAppSelector } from '@/services/store/hook';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useStoreUser } from '@/hooks/useStoreUser';
-import { showError } from '@/services/slices/error-slice';
+import { useError } from '@/components/error/useError';
 
 export default function UpdateProfile() {
   const [openImagePicker, setOpenImagePicker] = useState(false);
@@ -36,7 +36,7 @@ export default function UpdateProfile() {
     purpose: string;
   }>();
   const { storeUserProfile } = useStoreUser();
-  const dispatch = useAppDispatch();
+  const { showError } = useError();
 
   useEffect(() => {
     if (userProfile.primaryPhotoUrl) {
@@ -73,7 +73,7 @@ export default function UpdateProfile() {
         router.replace('/(app)/(onboarding)');
       }
     } catch (error: any) {
-      dispatch(showError({ description: error.message || 'Profile update failed' }));
+      showError({ description: error.message || 'Profile update failed' });
     }
     hideLoader();
   };

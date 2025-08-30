@@ -9,11 +9,11 @@ import { CurrentPlan } from '@/components/settings/subscription/CurrentPlan';
 import { NextPlan } from '@/components/settings/subscription/NextPlan';
 import { SubscriptionBanner } from '@/components/settings/subscription/SubscriptionBanner';
 import { usePayment } from '@/hooks/usePayment';
-import { useAppDispatch, useAppSelector } from '@/services/store/hook';
+import { useAppSelector } from '@/services/store/hook';
 import { useSubscriptionRepository } from '@/services/api/repositories/useSubscriptionRepository';
 import { useStoreUser } from '@/hooks/useStoreUser';
 import { router } from 'expo-router';
-import { showError } from '@/services/slices/error-slice';
+import { useError } from '@/components/error/useError';
 
 export default function PurchaseSubscription() {
   const flatListRef = useRef<FlatList<SubscriptionPlan>>(null);
@@ -25,13 +25,13 @@ export default function PurchaseSubscription() {
   const { getSubscriptionPlans, subscribeToPlan, createOrder } = useSubscriptionRepository();
   const [selectedPlan, setSelectedPlan] = useState<SubscriptionPlan | undefined>(undefined);
   const { storeSubscription } = useStoreUser();
-  const dispatch = useAppDispatch();
-
+  const { showError } = useError();
+  
   useEffect(() => {
     if (paymentFailure) {
-      dispatch(showError({ description: paymentFailure.description }));
+      showError({ description: paymentFailure.description });
     }
-  }, [dispatch, paymentFailure]);
+  }, [paymentFailure, showError]);
 
   useEffect(() => {
     const fetchSubscriptionPlans = async () => {
@@ -56,14 +56,14 @@ export default function PurchaseSubscription() {
             router.replace({
               pathname: '/(app)/(tabs)',
             });
-          } catch (error) {
-            console.error('Error subscribing to plan:', error);
+          } catch (error: any) {
+            showError({ description: error.message || 'Subscription failed' });
           }
         }
       }
     };
     handlePaymentSuccess();
-  }, [paymentSuccess, selectedPlan, storeSubscription, subscribeToPlan]);
+  }, [paymentSuccess, selectedPlan, showError, storeSubscription, subscribeToPlan]);
 
   const onStartPlan = async (plan: SubscriptionPlan) => {
     setSelectedPlan(plan);
@@ -82,8 +82,8 @@ export default function PurchaseSubscription() {
         },
         orderId: order.id,
       });
-    } catch (error) {
-      console.error('Error creating order:', error);
+    } catch (error: any) {
+      showError({ description: error.message || 'Failed to create order' });
     }
   };
 
