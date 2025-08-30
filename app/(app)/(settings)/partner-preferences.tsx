@@ -15,9 +15,10 @@ import { OtherPreferences } from '@/components/settings/partner-preference/Other
 import { ProfessionalPreferences } from '@/components/settings/partner-preference/ProfessionalPreferences';
 import { useUserRepository } from '@/services/api/repositories/useUserRepository';
 import { useLoader } from '@/context/LoaderContext';
-import { useAppSelector } from '@/services/store/hook';
+import { useAppDispatch, useAppSelector } from '@/services/store/hook';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useStoreUser } from '@/hooks/useStoreUser';
+import { showError } from '@/services/slices/error-slice';
 
 export default function PartnerPreferences() {
   const { partnerPreferences } = useAppSelector(
@@ -29,6 +30,7 @@ export default function PartnerPreferences() {
     purpose: 'ONBOARDING' | 'UPDATE';
   }>();
   const { storePartnerPreferences } = useStoreUser();
+  const dispatch = useAppDispatch();
 
   const initialValues: PartnerPreferenceFormType =
     toPartnerPreferenceFormType(partnerPreferences);
@@ -52,8 +54,8 @@ export default function PartnerPreferences() {
       } else {
         router.replace('/(app)/(onboarding)');
       }
-    } catch (error) {
-      console.error('Error updating partner preferences:', error);
+    } catch (error: any) {
+      dispatch(showError({ description: error.message || 'Failed to update partner preferences' }));
       hideLoader();
     }
   };

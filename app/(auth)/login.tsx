@@ -17,25 +17,17 @@ import { NoSafeAreaScreen as Screen } from '@/components/layouts/NoSafeAreaScree
 import { Background } from '@/components/common/Background';
 import { router } from 'expo-router';
 import { useStoreUser } from '@/hooks/useStoreUser';
-import { useEffect } from 'react';
-import { Alert } from 'react-native';
 
 const LoginScreen = () => {
   const { storeUser, storePartnerPreferences, storeUserProfile } = useStoreUser();
 
   const initialValues = {
-    emailOrPhone: __DEV__ ? "9874757879" : '',
+    emailOrPhone: __DEV__ ? "9874757870" : '',
     password: __DEV__ ? 'Boxer@1998' : '',
     terms: __DEV__ ? true : false,
   };
-  const { login: loginUser, error: loginError } = useUserAuth();
+  const { login: loginUser } = useUserAuth();
   const { showLoader, hideLoader } = useLoader();
-
-  useEffect(() => {
-    if (loginError) {
-      Alert.alert('Login Error', loginError);
-    }
-  }, [loginError]);
 
   const handleLogin = async (values: LoginFormType) => {
     showLoader();

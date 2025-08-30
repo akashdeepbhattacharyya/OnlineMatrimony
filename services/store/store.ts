@@ -3,6 +3,7 @@ import userReducer from '../slices/user-slice';
 import matchReducer from '../slices/match-slice';
 import searchSliceReducer from '../slices/search-slice';
 import subscriptionPlanReducer from '@/services/slices/subscription-plan-slice';
+import errorSliceReducer from '@/services/slices/error-slice';
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     match: matchReducer,
     subscriptionPlans: subscriptionPlanReducer,
     search: searchSliceReducer,
+    error: errorSliceReducer,
   },
 });
 

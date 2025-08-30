@@ -2,27 +2,20 @@ import { SafeAreaScreen as Screen } from '@/components/layouts/SafeAreaScreen';
 import { Platform, ScrollView, TouchableOpacity } from 'react-native';
 import { YStack, XStack } from 'tamagui';
 import { ProfilePicture } from '@/components/profile/ProfilePicture';
-import { ConnectionsInformation } from '@/components/profile/ConnectionsInformation';
 import { PersonalInformation } from '@/components/profile/PersonalInformation';
 import { OtherInformation } from '@/components/profile/OtherInformation';
-import { Documents } from '@/components/profile/Documents';
 import { ProfessionalInformation } from '@/components/profile/ProfessionalInformation';
 import { AboutYourSelf } from '@/components/profile/AboutYourSelf';
 import BackIcon from '@/assets/images/icon-back.svg';
 import EditIcon from '@/assets/images/icon-edit.svg';
 import { NameAndEmail } from '@/components/profile/NameAndEmail';
 import { ProfileBackground } from '@/components/profile/ProfileBackground';
-import { useLoader } from '@/context/LoaderContext';
-import { useAppDispatch, useAppSelector } from '@/services/store/hook';
-import { useEffect, useMemo } from 'react';
-import { useUserRepository } from '@/services/api/repositories/useUserRepository';
+import { useAppSelector } from '@/services/store/hook';
+import { useMemo } from 'react';
 import { router } from 'expo-router';
 
 export default function Profile() {
   const { email, phone, userProfile } = useAppSelector(state => state.user);
-  const { showLoader, hideLoader } = useLoader();
-  const dispatch = useAppDispatch();
-  const userRepository = useUserRepository();
 
   const profilePictureUri = useMemo(() => {
     return userProfile.primaryPhotoUrl
@@ -42,12 +35,6 @@ export default function Profile() {
       },
     });
   };
-
-  // useEffect(() => {
-  //   showLoader();
-  //   dispatch(fetchUserProfile({ getProfile: userRepository.getProfile }));
-  //   hideLoader();
-  // }, []);
 
   return (
     <Screen theme="dark">
@@ -75,10 +62,6 @@ export default function Profile() {
       >
         <ProfilePicture uri={profilePictureUri} marginTop={'$5'} />
         <NameAndEmail fullName={userProfile.fullName} email={email} marginTop={'$3'} />
-        {/* <ConnectionsInformation
-          userProfile={userProfile}
-          marginTop={'$3'}
-        /> */}
         <YStack
           gap={'$3'}
           width={'100%'}

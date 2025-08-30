@@ -9,10 +9,11 @@ import { CurrentPlan } from '@/components/settings/subscription/CurrentPlan';
 import { NextPlan } from '@/components/settings/subscription/NextPlan';
 import { SubscriptionBanner } from '@/components/settings/subscription/SubscriptionBanner';
 import { usePayment } from '@/hooks/usePayment';
-import { useAppSelector } from '@/services/store/hook';
+import { useAppDispatch, useAppSelector } from '@/services/store/hook';
 import { useSubscriptionRepository } from '@/services/api/repositories/useSubscriptionRepository';
 import { useStoreUser } from '@/hooks/useStoreUser';
 import { router } from 'expo-router';
+import { showError } from '@/services/slices/error-slice';
 
 export default function PurchaseSubscription() {
   const flatListRef = useRef<FlatList<SubscriptionPlan>>(null);
@@ -24,6 +25,13 @@ export default function PurchaseSubscription() {
   const { getSubscriptionPlans, subscribeToPlan, createOrder } = useSubscriptionRepository();
   const [selectedPlan, setSelectedPlan] = useState<SubscriptionPlan | undefined>(undefined);
   const { storeSubscription } = useStoreUser();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (paymentFailure) {
+      dispatch(showError({ description: paymentFailure.description }));
+    }
+  }, [dispatch, paymentFailure]);
 
   useEffect(() => {
     const fetchSubscriptionPlans = async () => {
@@ -56,19 +64,6 @@ export default function PurchaseSubscription() {
     };
     handlePaymentSuccess();
   }, [paymentSuccess, selectedPlan, storeSubscription, subscribeToPlan]);
-
-  useEffect(() => {
-    if (paymentFailure) {
-      // Handle payment failure actions here
-      console.error('Payment Failed:', paymentFailure.description);
-      // toast.show("Payment failed", {
-      //   description: paymentFailure.description,
-      //   burntOptions: {
-      //     preset: 'error',
-      //   }
-      // });
-    }
-  }, [paymentFailure]);
 
   const onStartPlan = async (plan: SubscriptionPlan) => {
     setSelectedPlan(plan);

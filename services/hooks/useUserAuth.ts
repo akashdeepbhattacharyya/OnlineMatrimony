@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   LoginRequest,
   LoginResponse,
@@ -6,13 +6,22 @@ import {
   VerifyOTPRequest,
 } from '@/models/Authentication';
 import { useAuthRepository } from '@/services/api/repositories/useAuthRepository';
+import { useAppDispatch } from '../store/hook';
+import { showError } from '../slices/error-slice';
 
 export const useUserAuth = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | undefined>();
   const [data, setData] = useState<string | LoginResponse | undefined>();
   const authRepository = useAuthRepository();
+  const dispatch = useAppDispatch();
 
+  useEffect(() => {
+    if (error) {
+      dispatch(showError({ description: error }));
+    }
+  }, [dispatch, error]);
+  
   const register = async (
     payload: UserRegistrationRequest,
   ): Promise<string | null> => {

@@ -214,6 +214,10 @@ const themes: {
     background: tokens.color.white,
     color: tokens.color.black,
   },
+  dark_error_dialog: {
+    background: tokens.color.white,
+    color: tokens.color.black,
+  },
 };
 
 export default themes;
