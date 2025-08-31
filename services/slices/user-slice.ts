@@ -17,6 +17,7 @@ const initialState: UserState = {
     fullName: '',
     dateOfBirth: '',
     gender: "OTHER",
+    isHidden: false,
   },
   subscription: undefined,
 };

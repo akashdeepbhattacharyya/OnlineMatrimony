@@ -1,4 +1,4 @@
-import { Button, XStack, YStack } from 'tamagui';
+import { XStack, YStack } from 'tamagui';
 import { Text } from '@/components/common/Text';
 import { TouchableOpacity } from 'react-native';
 import InfoIcon from '@/assets/images/info.svg';

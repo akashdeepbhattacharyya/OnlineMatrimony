@@ -62,11 +62,16 @@ export function useUserRepository() {
     return handleApiResponse(apiClient.get('/users/getPreferences'));
   };
 
+  const hideProfile = async (): Promise<{ profileHide: boolean }> => {
+    return handleApiResponse(apiClient.post('/profiles/hideProfile'));
+  };
+
   return {
     updateProfilePicture,
     updateProfile,
     getProfile,
     getPartnerPreferences,
     updatePartnerPreferences,
+    hideProfile,
   };
 }

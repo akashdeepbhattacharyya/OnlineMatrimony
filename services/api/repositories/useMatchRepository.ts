@@ -16,15 +16,15 @@ export function useMatchRepository() {
     return handleApiResponse(apiClient.get(`/matches/getReceiveRequests`));
   };
 
-  const acceptMatch = async (matchId: string): Promise<string> => {
+  const acceptOrRejectMatch = async (matchId: string, action: 'ACCEPT' | 'REJECT'): Promise<string> => {
     return handleApiResponse(
-      apiClient.post(`/matches/action`, { matchId, action: 'ACCEPT' }),
+      apiClient.post(`/matches/action`, { matchId, action }),
     );
   };
 
   const rejectMatch = async (matchId: string): Promise<string> => {
     return handleApiResponse(
-      apiClient.post(`/matches/action`, { matchId, action: 'REJECT' }),
+      apiClient.post(`/matches/matchReject/${matchId}`),
     );
   };
 
@@ -42,7 +42,7 @@ export function useMatchRepository() {
     getBestMatches,
     getSentMatches,
     getReceivedMatches,
-    acceptMatch,
+    acceptOrRejectMatch,
     rejectMatch,
     sendRequest,
     getMutualMatches,

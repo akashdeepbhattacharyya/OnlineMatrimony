@@ -16,14 +16,14 @@ export default function ReceivedMatchDetails() {
   const { matchId } = useLocalSearchParams<{
     matchId: string;
   }>();
-  const { rejectMatch, acceptMatch } = useUserMatch();
+  const { acceptOrRejectMatch } = useUserMatch();
   const dispatch = useAppDispatch();
 
   const match = receivedMatches.find(item => item.matchId === matchId);
 
   const handleAcceptMatch = async () => {
     if (match) {
-      await acceptMatch(match.matchId);
+      await acceptOrRejectMatch(match.matchId, 'ACCEPT');
       // Refresh received matches after accepting
       const filteredMatches = receivedMatches.filter(item => item.matchId !== matchId);
       dispatch(setReceivedMatches(filteredMatches));
@@ -41,7 +41,7 @@ export default function ReceivedMatchDetails() {
 
   const handleRejectMatch = async () => {
     if (match) {
-      await rejectMatch(match.matchId);
+      await acceptOrRejectMatch(match.matchId, 'REJECT');
       // Refresh received matches after rejecting
       const filteredMatches = receivedMatches.filter(item => item.matchId !== matchId);
       dispatch(setReceivedMatches(filteredMatches));

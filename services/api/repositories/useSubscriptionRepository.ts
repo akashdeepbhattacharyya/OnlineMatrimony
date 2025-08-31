@@ -27,7 +27,7 @@ export function useSubscriptionRepository() {
   };
 
   const createOrder = async (planId: string): Promise<Order> => {
-    return await handleApiResponse(apiClient.post('/subscriptions/createOrder', { planId }));
+    return await handleApiResponse(apiClient.post(`/subscriptions/createOrder/${planId}`));
   };
 
   return {

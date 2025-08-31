@@ -80,12 +80,12 @@ export const useUserMatch = () => {
     }
   };
 
-  const acceptMatch = async (matchId: string) => {
+  const acceptOrRejectMatch = async (matchId: string, action: 'ACCEPT' | 'REJECT') => {
     setLoading(true);
     setError(undefined);
     setData(undefined);
     try {
-      const response = await matchRepository.acceptMatch(matchId);
+      const response = await matchRepository.acceptOrRejectMatch(matchId, action);
       setData(response);
       return response;
     } catch (err: any) {
@@ -140,7 +140,7 @@ export const useUserMatch = () => {
     getSentMatches,
     getReceivedMatches,
     getMutualMatches,
-    acceptMatch,
+    acceptOrRejectMatch,
     rejectMatch,
   };
 };
