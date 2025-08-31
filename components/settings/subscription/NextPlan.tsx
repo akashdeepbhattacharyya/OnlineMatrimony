@@ -39,7 +39,7 @@ export const NextPlan = ({ subscriptionPlan, onStartPlan }: Props) => {
                 {`₹${subscriptionPlan.price}`}
               </Text>
               <Text font="heading" size="small">
-                {subscriptionPlan.durationMonths} weeks
+                {subscriptionPlan.durationWeeks} weeks
               </Text>
             </YStack>
           </YStack>

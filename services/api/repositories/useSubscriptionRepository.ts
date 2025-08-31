@@ -13,12 +13,12 @@ export function useSubscriptionRepository() {
       name: plan.name,
       description: plan.description,
       price: plan.price,
-      durationMonths: plan.durationMonths,
+      durationWeeks: plan.durationWeeks,
       features: mapFeatureResponseToFeature(JSON.parse(plan.features)),
     }));
   };
 
-  const subscribeToPlan = async (planId: string, orderId: string, paymentId: string, signature: string): Promise<Subscription> => {
+  const subscribeToPlan = async (planId: number, orderId: string, paymentId: string, signature: string): Promise<Subscription> => {
     return await handleApiResponse(apiClient.post(`/subscriptions/subscribe`, { planId, orderId, paymentId, signature }));
   };
 
@@ -26,7 +26,7 @@ export function useSubscriptionRepository() {
     return await handleApiResponse(apiClient.get('/subscriptions/mySubscription'));
   };
 
-  const createOrder = async (planId: string): Promise<Order> => {
+  const createOrder = async (planId: number): Promise<Order> => {
     return await handleApiResponse(apiClient.post(`/subscriptions/createOrder/${planId}`));
   };
 

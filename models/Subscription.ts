@@ -3,8 +3,8 @@ export type Subscription = {
   userId: number;
   planId: number;
   planName: string;
-  // startDate: string;
-  // endDate: string;
+  startDate: string;
+  endDate: string;
   status: 'ACTIVE' | 'INACTIVE';
   amountPaid: number;
 };

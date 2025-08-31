@@ -46,14 +46,14 @@ export const CurrentPlan = ({
               {`₹${subscriptionPlan.price}`}
             </Text>
             <Text font="heading" size="small">
-              {subscriptionPlan.durationMonths} weeks
+              {subscriptionPlan.durationWeeks} weeks
             </Text>
           </YStack>
         </YStack>
         <Features features={subscriptionPlan.features} plan="current" />
       </YStack>
       <PrimaryButton
-        title={Number(subscriptionPlan.id) === subscription?.planId ? `Expiring in ${calculateExpiryDateInWeeks("2025-08-02", 2)}` : "Start Plan"}
+        title={Number(subscriptionPlan.id) === subscription?.planId ? `Expiring in ${calculateExpiryDateInWeeks(subscription.endDate)}` : "Start Plan"}
         theme="secondary_button"
         onPress={onStartPlan}
         marginBottom={'$4'}

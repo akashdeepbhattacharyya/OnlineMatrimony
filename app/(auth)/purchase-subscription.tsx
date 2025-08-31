@@ -47,12 +47,10 @@ export default function PurchaseSubscription() {
     const handlePaymentSuccess = async () => {
       if (paymentSuccess) {
         // Handle post-payment success actions here
-        console.log('Payment Successful with ID:', paymentSuccess.orderId);
         if (selectedPlan) {
           try {
             const subscription = await subscribeToPlan(selectedPlan.id, paymentSuccess.orderId, paymentSuccess.paymentId, paymentSuccess.signature);
             storeSubscription(subscription);
-            console.log('Subscription to plan successful:', subscription);
             router.replace({
               pathname: '/(app)/(tabs)',
             });
@@ -63,14 +61,13 @@ export default function PurchaseSubscription() {
       }
     };
     handlePaymentSuccess();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paymentSuccess, selectedPlan, showError, storeSubscription]);
 
   const onStartPlan = async (plan: SubscriptionPlan) => {
     setSelectedPlan(plan);
     try {
       const order = await createOrder(plan.id);
-      // const order = { id: "order_RBX7KTLw226BHF" }; // Mock order for testing
       const contact = phone;
       const name = userProfile.fullName;
 
@@ -85,7 +82,7 @@ export default function PurchaseSubscription() {
         orderId: order.id,
       });
     } catch (error: any) {
-      showError({ description: error.message || 'Failed to create order' });
+      showError({ description: error.message || 'Error initiating payment' });
     }
   };
 

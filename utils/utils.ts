@@ -93,11 +93,25 @@ export function formatSubscriptionPlanFeature(key: keyof SubscriptionFeatures, v
   }
 }
 
-export function calculateExpiryDateInWeeks(startDate: string, durationMonths: number): string | undefined {
-  if (!startDate || durationMonths <= 0) return undefined;
+export function calculateExpiryDateInWeeks(endDate: string): string | undefined {
+  if (!endDate) return undefined;
 
-  const start = new Date(startDate);
-  const expiry = new Date(start.setMonth(start.getMonth() + durationMonths));
-  const weeks = Math.ceil((expiry.getTime() - start.getTime()) / (1000 * 60 * 60 * 24 * 7));
+  const end = new Date(endDate);
+  const today = new Date();
+  const utcEnd = new Date(
+    Date.UTC(
+      end.getFullYear(),
+      end.getMonth(),
+      end.getDate(),
+    ),
+  );
+  const utcToday = new Date(
+    Date.UTC(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate(),
+    ),
+  );
+  const weeks = Math.ceil((utcEnd.getTime() - utcToday.getTime()) / (1000 * 60 * 60 * 24 * 7));
   return `${weeks} Weeks`;
 }

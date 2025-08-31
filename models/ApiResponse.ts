@@ -27,11 +27,11 @@ export type PagedResponse<T> = {
 };
 
 export type SubscriptionPlanResponse = {
-  id: string;
+  id: number;
   name: string;
   description: string;
   price: number;
-  durationMonths: number;
+  durationWeeks: number;
   features: string;
 };
 

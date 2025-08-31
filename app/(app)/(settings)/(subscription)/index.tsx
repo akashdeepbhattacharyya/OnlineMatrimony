@@ -12,6 +12,7 @@ import { useAppSelector } from '@/services/store/hook';
 import { useSubscriptionRepository } from '@/services/api/repositories/useSubscriptionRepository';
 import { useStoreUser } from '@/hooks/useStoreUser';
 import { router } from 'expo-router';
+import { useError } from '@/components/error';
 
 const SubscriptionScreen = () => {
   const flatListRef = useRef<FlatList<SubscriptionPlan>>(null);
@@ -23,43 +24,43 @@ const SubscriptionScreen = () => {
   const { subscribeToPlan, createOrder } = useSubscriptionRepository();
   const [selectedPlan, setSelectedPlan] = useState<SubscriptionPlan | undefined>(undefined);
   const { storeSubscription } = useStoreUser();
+  const { showError } = useError();
+
+  useEffect(() => {
+    if (paymentFailure) {
+      showError({ description: paymentFailure.description });
+    }
+  }, [paymentFailure, showError]);
 
   useEffect(() => {
     const handlePaymentSuccess = async () => {
       if (paymentSuccess) {
         // Handle post-payment success actions here
-        console.log('Payment Successful with ID:', paymentSuccess.orderId);
         if (selectedPlan) {
           try {
             const subscription = await subscribeToPlan(selectedPlan.id, paymentSuccess.orderId, paymentSuccess.paymentId, paymentSuccess.signature);
             storeSubscription(subscription);
-            console.log('Subscription to plan successful:', subscription);
             if (router.canGoBack()) {
               router.back();
             }
-          } catch (error) {
-            console.error('Error subscribing to plan:', error);
+          } catch (error: any) {
+            showError({ description: error.message || 'Error subscribing to plan' });
           }
         }
       }
     };
     handlePaymentSuccess();
-  }, [paymentSuccess, selectedPlan, storeSubscription, subscribeToPlan]);
-
-  useEffect(() => {
-    if (paymentFailure) {
-      // Handle payment failure actions here
-      console.error('Payment Failed:', paymentFailure.description);
-      // toast.show("Payment failed", {
-      //   description: paymentFailure.description,
-      //   burntOptions: {
-      //     preset: 'error',
-      //   }
-      // });
-    }
-  }, [paymentFailure]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [paymentSuccess, selectedPlan, showError, storeSubscription]);
 
   const onStartPlan = async (plan: SubscriptionPlan) => {
+    if (subscription) {
+      const isPremium = subscriptionPlans.find(p => p.id === subscription.planId);
+      if (isPremium) {
+        showError({ description: 'You are already on a premium plan. Please contact support to change your plan.' });
+        return;
+      }
+    }
     setSelectedPlan(plan);
     try {
       const order = await createOrder(plan.id);
@@ -76,8 +77,8 @@ const SubscriptionScreen = () => {
         },
         orderId: order.id,
       });
-    } catch (error) {
-      console.error('Error creating order:', error);
+    } catch (error: any) {
+      showError({ description: error.message || 'Error initiating payment' });
     }
   };
 
@@ -119,7 +120,7 @@ const SubscriptionScreen = () => {
                   <NextPlan subscriptionPlan={item} onStartPlan={() => onStartPlan(item)} />
                 );
               }}
-              keyExtractor={item => item.id}
+              keyExtractor={item => item.id.toString()}
               horizontal
               pagingEnabled
               showsHorizontalScrollIndicator={false}

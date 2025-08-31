@@ -1,9 +1,9 @@
 export type SubscriptionPlan = {
-  id: string;
+  id: number;
   name: string;
   description: string;
   price: number;
-  durationMonths: number;
+  durationWeeks: number;
   features: SubscriptionFeatures;
 };
 
