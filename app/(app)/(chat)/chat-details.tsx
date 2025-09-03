@@ -9,6 +9,7 @@ import { TextArea } from '@/components/common/TextArea';
 import { Keyboard, TouchableOpacity } from 'react-native';
 import { Message } from '@/models/Chat';
 import { MessageTextItem } from '@/components/chat/MessageTextItem';
+import useChat from '@/services/api/repositories/useChat';
 
 const messages: Message[] = [
   {
@@ -45,6 +46,7 @@ export default function ChatDetails() {
   const [keyboardVisible, setKeyboardVisible] = useState(false);
   const scrollViewRef = useRef<ScrollView>(null);
   const [message, setMessage] = useState<string | undefined>(undefined);
+  // const { messages, typingUsers, readReceipts, sendMessage, sendTyping, markAsRead } = useChat(conversationId);
   const chat = {
     id: '1',
     name: 'Kakali M',

@@ -3,3 +3,12 @@ declare module '*.svg' {
   export default content;
 }
 declare module 'react-native-razorpay';
+
+declare module 'sockjs-client' {
+  const SockJS: any;
+  export default SockJS;
+}
+
+declare module "stompjs" {
+  export function over(socket: any): any;
+}

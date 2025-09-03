@@ -14,7 +14,7 @@ export class HttpClient implements IHttpClient {
   private makeUrl(url: string, params?: Record<string, any>) {
     if (!params) return `${this.baseUrl}${url}`;
     const qs = new URLSearchParams(params as any).toString();
-    return `${this.baseUrl}${url}?${qs}`;
+    return `${this.baseUrl}/api/v1${url}?${qs}`;
   }
 
   // Remove hook usage from class. Use injected refreshAuthToken and saveToken instead.
@@ -130,7 +130,7 @@ export class HttpClient implements IHttpClient {
   }
 }
 
-const baseUrl = () => {
+export const baseUrl = () => {
   let apiBaseUrl = Constants.expoConfig?.extra?.keys.API_BASE_URL;
 
   if (Platform.OS === 'android') {
