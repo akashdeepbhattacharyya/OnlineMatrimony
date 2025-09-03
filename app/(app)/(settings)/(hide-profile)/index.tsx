@@ -15,7 +15,7 @@ const HideDeleteProfileScreen = () => {
   const handleHideProfile = async () => {
     const response = await hideProfile();
     if (response) {
-      const updatedProfile = { ...userProfile, isHidden: !userProfile.isHidden };
+      const updatedProfile = { ...userProfile, isHide: !userProfile.isHide };
       // Dispatch an action to update the user profile in the store
       storeUserProfile(updatedProfile);
     }
@@ -26,10 +26,10 @@ const HideDeleteProfileScreen = () => {
       <ScreenHeader headerText="Hide Profile" />
       <YStack padding="$4" gap="$8">
         <HideDeleteProfileItem
-          title={userProfile.isHidden ? "Unhide Profile" : "Hide Profile"}
-          subTitle={userProfile.isHidden ? "Your Profile Is Currently Hidden" : "Your Profile Is Currently Visible"}
+          title={userProfile.isHide ? "Unhide Profile" : "Hide Profile"}
+          subTitle={userProfile.isHide ? "Your Profile Is Currently Hidden" : "Your Profile Is Currently Visible"}
           description="When you hide your profile, you will not be visible on dhol matrimony. You will neither be able to send invitations nor messages"
-          buttonTitle={userProfile.isHidden ? "Unhide" : "Hide"}
+          buttonTitle={userProfile.isHide ? "Unhide" : "Hide"}
           onPress={handleHideProfile}
         />
         <DottedDivider />

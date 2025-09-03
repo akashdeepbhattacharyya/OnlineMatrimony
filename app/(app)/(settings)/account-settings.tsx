@@ -33,7 +33,7 @@ export default function AccountSettings() {
       <ScreenHeader headerText="Account Settings" />
       <YStack padding="$4">
         <AccountSettingsItem
-          title="Hide / Delete Profile"
+          title="Hide Profile"
           onPress={() => handelOnPress('hide_delete_profile')}
         />
         <AccountSettingsItem

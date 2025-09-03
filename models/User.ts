@@ -87,7 +87,7 @@ export type UserProfile = {
   aboutMe?: string;
   photoUrls?: string[];
   primaryPhotoUrl?: string;
-  isHidden: boolean;
+  isHide: boolean;
 } & PersonalInformation &
   OtherInformation &
   ProfessionalInformation;
