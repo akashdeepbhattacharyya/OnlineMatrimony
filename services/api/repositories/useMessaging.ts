@@ -1,11 +1,10 @@
 import { useEffect, useState, useRef } from "react";
 import SockJS from "sockjs-client";
 import { over } from "stompjs";
-import axios from "axios";
 import { baseUrl } from "../HttpClient";
 import * as Storage from "@/services/local-storage";
 
-export default function useChat(conversationId: string) {
+export default function useMessaging(conversationId: string) {
   const [messages, setMessages] = useState<any[]>([]);
   const [typingUsers, setTypingUsers] = useState<Record<string, boolean>>({});
   const [readReceipts, setReadReceipts] = useState<any>({});
@@ -32,6 +31,7 @@ export default function useChat(conversationId: string) {
       // Subscribe to new messages
       stompClient.subscribe(`/topic/chat/${conversationId}`, (msg: any) => {
         const body = JSON.parse(msg.body);
+        console.log({ body });
         setMessages((prev) => [...prev, body]);
       });
 
@@ -54,17 +54,7 @@ export default function useChat(conversationId: string) {
     return () => {
       stompClient.disconnect(() => console.log("❌ Disconnected"));
     };
-  }, [accessToken, conversationId]);
-
-  // Send message via REST
-  const sendMessage = async (receiverId: string, message: string, messageType = "TEXT") => {
-    const res = await axios.post(
-      `${baseUrl()}/api/v1/chat/send`,
-      { receiverId, message, messageType },
-      { headers: { Authorization: `Bearer ${accessToken}` } }
-    );
-    return res.data;
-  };
+  }, [accessToken, conversationId]);  
 
   // Broadcast typing via WS
   const sendTyping = (isTyping: boolean) => {
@@ -76,14 +66,5 @@ export default function useChat(conversationId: string) {
     );
   };
 
-  // Mark conversation read via REST
-  const markAsRead = async () => {
-    await axios.post(
-      `${baseUrl()}/api/v1/chat/read?conversationId=${conversationId}`,
-      {},
-      { headers: { Authorization: `Bearer ${accessToken}` } }
-    );
-  };
-
-  return { messages, typingUsers, readReceipts, sendMessage, sendTyping, markAsRead };
+  return { messages, typingUsers, readReceipts, sendTyping };
 }

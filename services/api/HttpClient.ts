@@ -12,7 +12,7 @@ export class HttpClient implements IHttpClient {
   ) { }
 
   private makeUrl(url: string, params?: Record<string, any>) {
-    if (!params) return `${this.baseUrl}${url}`;
+    if (!params) return `${this.baseUrl}/api/v1${url}`;
     const qs = new URLSearchParams(params as any).toString();
     return `${this.baseUrl}/api/v1${url}?${qs}`;
   }

@@ -10,6 +10,10 @@ import { useUserMatch } from '@/services/hooks/useUserMatch';
 import { useAppDispatch, useAppSelector } from '@/services/store/hook';
 import { useLoader } from '@/components/loader/LoaderContext';
 import { fetchMutualMatches } from '@/services/slices/match-slice';
+import { useChatRepository } from '@/services/api/repositories/useChatRepository';
+import { fetchConversations, setConversationList } from '@/services/slices/conversation-slice';
+import { useError } from '@/components/error/useError';
+import { useChat } from '@/services/hooks/useChat';
 
 export default function Chats() {
   const [currentFilter, setCurrentFilter] = useState<ChatFilter>('ALL');
@@ -19,6 +23,10 @@ export default function Chats() {
   // const { subscription } = useAppSelector(state => state.user);
   // const { subscriptionPlans } = useAppSelector(state => state.subscriptionPlans);
   const dispatch = useAppDispatch();
+  const { conversationList } = useAppSelector(state => state.conversation);
+  const { getConversations } = useChat();
+  const { startChat } = useChatRepository();
+  const { showError } = useError();
 
   useEffect(() => {
     showLoader();
@@ -27,9 +35,49 @@ export default function Chats() {
         getMutualMatches: () => getMutualMatches(),
       }),
     );
+    dispatch(
+      fetchConversations({
+        getConversations: () => getConversations(),
+      })
+    );
     hideLoader();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const startConversation = async (receiverId: number) => {
+    // Check if a conversation already exists with this user
+    const existingConversation = conversationList.find(conversation =>
+      conversation.otherUserProfile.userId === receiverId
+    );
+
+    console.log({ existingConversation });
+
+    if (existingConversation) {
+      // Navigate to the existing conversation
+      router.push({
+        pathname: "/(app)/(chat)/chat-details",
+        params: {
+          conversationId: existingConversation.id.toString(),
+          receiverId: receiverId.toString()
+        }
+      });
+    } else {
+      try {
+        const newConversation = await startChat(receiverId);
+        dispatch(setConversationList([...conversationList, newConversation]));
+        router.push({
+          pathname: "/(app)/(chat)/chat-details",
+          params: {
+            conversationId: newConversation.id.toString(),
+            receiverId: receiverId.toString()
+          }
+        });
+      } catch (error) {
+        showError({ description: "Error starting chat" });
+        console.error("Error starting chat:", error);
+      }
+    }
+  };
 
 
   return (
@@ -66,10 +114,7 @@ export default function Chats() {
               key={match.userId}
               match={match}
               onPress={() => {
-                router.push({
-                  pathname: "/(app)/(chat)/chat-details",
-                  params: { userId: match.userId }
-                })
+                startConversation(match.userId);
               }}
             />
           ))}

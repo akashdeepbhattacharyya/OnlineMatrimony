@@ -9,52 +9,51 @@ import { TextArea } from '@/components/common/TextArea';
 import { Keyboard, TouchableOpacity } from 'react-native';
 import { Message } from '@/models/Chat';
 import { MessageTextItem } from '@/components/chat/MessageTextItem';
-import useChat from '@/services/api/repositories/useChat';
-
-const messages: Message[] = [
-  {
-    id: '1',
-    text: 'Hi, massa sed ultricies. Aliquam dolor urna, efficitur eu est lobortis, cursus faucibus ante.',
-    time: '5:30',
-    sender: 'them',
-    avatar: 'https://randomuser.me/api/portraits/women/1.jpg',
-  },
-  {
-    id: '2',
-    text: 'Hello...',
-    time: '5:31',
-    sender: 'me',
-    avatar: 'https://randomuser.me/api/portraits/women/1.jpg',
-  },
-  {
-    id: '3',
-    text: 'Hi, massa sed ultricies. Aliquam dolor urna, efficitur eu est lobortis, cursus faucibus ante.',
-    time: '5:32',
-    sender: 'them',
-    avatar: 'https://randomuser.me/api/portraits/men/2.jpg',
-  },
-  {
-    id: '4',
-    text: 'Massa sed ultricies. Aliquam dolor urna, efficitur eu est lobortis, cursus faucibus ante.',
-    time: '15:30',
-    sender: 'me',
-    avatar: 'https://randomuser.me/api/portraits/women/1.jpg',
-  },
-];
+import useMessaging from '@/services/api/repositories/useMessaging';
+import { useLocalSearchParams } from 'expo-router';
+import { useAppDispatch, useAppSelector } from '@/services/store/hook';
+import { toUri } from '@/utils/utils';
+import { useLoader } from '@/components/loader/LoaderContext';
+import { useChat } from '@/services/hooks/useChat';
+import { fetchChatHistory, setMessagesForConversation } from '@/services/slices/conversation-slice';
+import { useChatRepository } from '@/services/api/repositories/useChatRepository';
 
 export default function ChatDetails() {
   const [keyboardVisible, setKeyboardVisible] = useState(false);
   const scrollViewRef = useRef<ScrollView>(null);
   const [message, setMessage] = useState<string | undefined>(undefined);
-  // const { messages, typingUsers, readReceipts, sendMessage, sendTyping, markAsRead } = useChat(conversationId);
-  const chat = {
-    id: '1',
-    name: 'Kakali M',
-    msg: 'Hello, How are you...',
-    time: '23 min',
-    unread: 3,
-    image: 'https://i.pravatar.cc/150?img=6',
-  };
+  const { conversationId, receiverId } = useLocalSearchParams<{
+    conversationId: string;
+    receiverId: string;
+  }>();
+  // const { messages: chatMessages, typingUsers, readReceipts, sendTyping } = useMessaging(conversationId);
+  const { mutualMatches } = useAppSelector(state => state.match);
+  const { chatHistory } = useAppSelector(state => state.conversation);
+  const { id: senderId } = useAppSelector(state => state.user);
+  const { showLoader, hideLoader } = useLoader();
+  const dispatch = useAppDispatch();
+  const { getChatHistory } = useChat();
+  const { sendMessage } = useChatRepository();
+
+
+  const messages: Message[] = chatHistory[Number(conversationId)] || [];
+  // Find the chat user details from mutual matches using receiverId
+
+  const match = mutualMatches.find(match => match.userId.toString() === receiverId);
+
+  useEffect(() => {
+    showLoader();
+    dispatch(
+      fetchChatHistory({
+        getChatHistory: getChatHistory,
+        conversationId: Number(conversationId),
+        page: 0,
+        size: 100,
+      }),
+    );
+    hideLoader();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -77,17 +76,17 @@ export default function ChatDetails() {
     };
   }, []);
 
-  const onSend = () => {
+  const onSend = async () => {
     // Handle sending the message
     console.log('Message sent:', message);
     if (message && message.trim().length > 0) {
-      messages.push({
-        id: String(messages.length + 1),
-        text: message.trim(),
-        time: new Date().toLocaleTimeString(),
-        sender: 'me',
-        avatar: 'https://randomuser.me/api/portraits/women/1.jpg',
-      });
+      try {
+        const response = await sendMessage(receiverId, message.trim());
+        const updatedMessages = [...messages, response];
+        dispatch(setMessagesForConversation({ conversationId: Number(conversationId), messages: updatedMessages }));
+      } catch (error) {
+        console.error('Error sending message:', error);
+      }
     }
     setMessage(undefined); // Clear the message input
   };
@@ -98,7 +97,7 @@ export default function ChatDetails() {
 
   return (
     <Screen>
-      <ScreenHeader headerText={chat.name} marginTop={'$11'} />
+      <ScreenHeader headerText={match?.fullName} marginTop={'$11'} />
       <YStack flex={1} backgroundColor="$background">
         {/* HEADER */}
         <XStack
@@ -113,12 +112,12 @@ export default function ChatDetails() {
         >
           <XStack alignItems="center" gap="$3">
             <Avatar circular size="$6">
-              <Avatar.Image source={{ uri: chat.image }} />
+              <Avatar.Image src={toUri(match?.fullName || "", match?.primaryPhotoUrl)} />
               <Avatar.Fallback backgroundColor="$gray5" />
             </Avatar>
             <YStack gap="$2">
               <Text font="headingBold" size="medium">
-                {chat.name}
+                {match?.fullName}
               </Text>
               <XStack alignItems="center" gap="$2">
                 <OnlineIcon />
@@ -137,7 +136,7 @@ export default function ChatDetails() {
           ref={scrollViewRef}
         >
           {messages.map(msg => (
-            <MessageTextItem key={msg.id} message={msg} marginVertical={'$3'} />
+            <MessageTextItem key={msg.id} message={msg} senderId={senderId} receiverId={Number(receiverId)} marginVertical={'$3'} />
           ))}
         </ScrollView>
 
