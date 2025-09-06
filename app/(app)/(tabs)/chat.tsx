@@ -50,8 +50,6 @@ export default function Chats() {
       conversation.otherUserProfile.userId === receiverId
     );
 
-    console.log({ existingConversation });
-
     if (existingConversation) {
       // Navigate to the existing conversation
       router.push({
@@ -109,15 +107,20 @@ export default function Chats() {
           borderRadius={'$6'}
           gap="$6"
         >
-          {mutualMatches.map(match => (
-            <MatchItem
-              key={match.userId}
-              match={match}
-              onPress={() => {
-                startConversation(match.userId);
-              }}
-            />
-          ))}
+          {mutualMatches.map(match => {
+            const conversation = conversationList.find(conv => conv.otherUserProfile.userId === match.userId);
+            if (!conversation) return null; // Skip if no conversation found
+            return (
+              <MatchItem
+                key={match.userId}
+                match={match}
+                conversation={conversation}
+                onPress={() => {
+                  startConversation(match.userId);
+                }}
+              />
+            );
+          })}
         </YStack>
       </YStack>
     </Screen>

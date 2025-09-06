@@ -1,22 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { YStack, XStack, Avatar, ScrollView } from 'tamagui';
+import { YStack, XStack, ScrollView } from 'tamagui';
 import { NoSafeAreaScreen as Screen } from '@/components/layouts/NoSafeAreaScreen';
-import { ScreenHeader } from '@/components/common/ScreenHeader';
-import { Text } from '@/components/common/Text';
-import OnlineIcon from '@/assets/images/online.svg';
 import SendIcon from '@/assets/images/send.svg';
 import { TextArea } from '@/components/common/TextArea';
 import { Keyboard, TouchableOpacity } from 'react-native';
 import { Message } from '@/models/Chat';
 import { MessageTextItem } from '@/components/chat/MessageTextItem';
 import useMessaging from '@/services/api/repositories/useMessaging';
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useAppDispatch, useAppSelector } from '@/services/store/hook';
-import { toUri } from '@/utils/utils';
 import { useLoader } from '@/components/loader/LoaderContext';
 import { useChat } from '@/services/hooks/useChat';
 import { fetchChatHistory, setMessagesForConversation } from '@/services/slices/conversation-slice';
 import { useChatRepository } from '@/services/api/repositories/useChatRepository';
+import { ChatDetailsHeader } from '@/components/chat/ChatDetailsHeader';
 
 export default function ChatDetails() {
   const [keyboardVisible, setKeyboardVisible] = useState(false);
@@ -26,7 +23,7 @@ export default function ChatDetails() {
     conversationId: string;
     receiverId: string;
   }>();
-  // const { messages: chatMessages, typingUsers, readReceipts, sendTyping } = useMessaging(conversationId);
+  const { messages: chatMessages, typingUsers, readReceipts, sendTyping } = useMessaging(conversationId);
   const { mutualMatches } = useAppSelector(state => state.match);
   const { chatHistory } = useAppSelector(state => state.conversation);
   const { id: senderId } = useAppSelector(state => state.user);
@@ -95,40 +92,17 @@ export default function ChatDetails() {
     scrollViewRef.current?.scrollToEnd({ animated: true });
   };
 
+  if (!match) {
+    return null; // or a loading indicator
+  }
+
   return (
     <Screen>
-      <ScreenHeader headerText={match?.fullName} marginTop={'$11'} />
+      <ChatDetailsHeader userProfile={match} marginTop={'$10'} onProfilePress={() => { 
+        router.push({ pathname: "/(app)/(chat)/mutual-match-profile-details", params: { userId: receiverId } });
+      }} />
       <YStack flex={1} backgroundColor="$background">
-        {/* HEADER */}
-        <XStack
-          theme={'chat_message_banner'}
-          backgroundColor="$background"
-          paddingHorizontal="$3"
-          paddingVertical="$3.5"
-          alignItems="center"
-          justifyContent="space-between"
-          borderRadius={'$8'}
-          margin={'$4'}
-        >
-          <XStack alignItems="center" gap="$3">
-            <Avatar circular size="$6">
-              <Avatar.Image src={toUri(match?.fullName || "", match?.primaryPhotoUrl)} />
-              <Avatar.Fallback backgroundColor="$gray5" />
-            </Avatar>
-            <YStack gap="$2">
-              <Text font="headingBold" size="medium">
-                {match?.fullName}
-              </Text>
-              <XStack alignItems="center" gap="$2">
-                <OnlineIcon />
-                <Text font="heading" size="normal">
-                  Online
-                </Text>
-              </XStack>
-            </YStack>
-          </XStack>
-        </XStack>
-
+        
         {/* CHAT MESSAGES */}
         <ScrollView
           paddingHorizontal="$4"

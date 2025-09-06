@@ -3,16 +3,18 @@ import { Text } from '../common/Text';
 import { TouchableOpacity } from 'react-native';
 import { MutualMatch } from '@/models/Match';
 import { toUri } from '@/utils/utils';
+import { Conversation } from '@/models/Chat';
 
 type Props = {
   match: MutualMatch;
+  conversation: Conversation;
   onPress: (chat: MutualMatch) => void;
 };
 
-export const MatchItem = ({ match, onPress }: Props) => {
+export const MatchItem = ({ match, conversation, onPress }: Props) => {
   return (
     <TouchableOpacity onPress={() => onPress(match)}>
-      <XStack gap="$4" justifyContent="space-between">
+      <XStack gap="$4" alignItems="center" justifyContent="space-between">
         <XStack gap="$4">
           <Avatar circular size="$6">
             <Avatar.Image src={toUri(match.fullName, match.primaryPhotoUrl)} />
@@ -22,24 +24,26 @@ export const MatchItem = ({ match, onPress }: Props) => {
               {match.fullName}
             </Text>
             <Text font="heading" size="normal" color="$color">
-              {"Hello"}
+              {conversation.lastMessage?.message}
             </Text>
           </YStack>
         </XStack>
         <YStack theme={'unread'} alignItems="flex-end" gap="$2">
           <Text font="heading" size="normal" color="$color">
-            {"1:00 PM"}
+            {conversation.lastMessage?.sentAt}
           </Text>
-          <Circle
-            size={'$1'}
-            backgroundColor="$background"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <Text font="headingBold" size="small" color="$color">
-              {0}
-            </Text>
-          </Circle>
+          {conversation.unreadCount > 0 && (
+            <Circle
+              size={'$1'}
+              backgroundColor="$background"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Text font="headingBold" size="small" color="$color">
+                {conversation.unreadCount}
+              </Text>
+            </Circle>
+          )}
         </YStack>
       </XStack>
     </TouchableOpacity>

@@ -17,6 +17,7 @@ export const ROUTES = {
     root: "(chat)",
     page: "chat",
     chat_details: "chat-details",
+    mutual_match_profile_details: "mutual-match-profile-details",
   },
   matches: {
     root: "(matches)",

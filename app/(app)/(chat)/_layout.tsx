@@ -8,6 +8,10 @@ export default function RootLayout() {
         name={ROUTES.chat.chat_details}
         options={{ title: "Chat Details", headerShown: false }}
       />
+      <Stack.Screen
+        name={ROUTES.chat.mutual_match_profile_details}
+        options={{ title: "Profile Details", headerShown: false }}
+      />
     </Stack>
   );
 }
