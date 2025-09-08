@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { YStack, XStack, ScrollView } from 'tamagui';
 import { NoSafeAreaScreen as Screen } from '@/components/layouts/NoSafeAreaScreen';
 import SendIcon from '@/assets/images/send.svg';
@@ -23,20 +23,53 @@ export default function ChatDetails() {
     conversationId: string;
     receiverId: string;
   }>();
-  const { messages: chatMessages, typingUsers, readReceipts, sendTyping } = useMessaging(conversationId);
+  const { incomingMessage, typingUsers, readReceipts, sendTyping } = useMessaging(conversationId);
   const { mutualMatches } = useAppSelector(state => state.match);
   const { chatHistory } = useAppSelector(state => state.conversation);
   const { id: senderId } = useAppSelector(state => state.user);
   const { showLoader, hideLoader } = useLoader();
   const dispatch = useAppDispatch();
   const { getChatHistory } = useChat();
-  const { sendMessage } = useChatRepository();
+  const { sendMessage, markMessagesAsRead } = useChatRepository();
+
+  console.log({ incomingMessage, typingUsers, readReceipts });
 
 
-  const messages: Message[] = chatHistory[Number(conversationId)] || [];
-  // Find the chat user details from mutual matches using receiverId
+  const messages: Message[] = useMemo(() => {
+    const sortedMessages = (chatHistory[Number(conversationId)] || []).slice().sort((a, b) => new Date(a.sentAt).getTime() - new Date(b.sentAt).getTime());
+    return sortedMessages;
+  }, [chatHistory, conversationId]);
 
   const match = mutualMatches.find(match => match.userId.toString() === receiverId);
+
+  useEffect(() => {
+    if (incomingMessage) {
+      const markAsRead = async () => {
+        await markMessagesAsRead(Number(conversationId));
+      };
+      markAsRead();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [incomingMessage, conversationId]);
+
+  useEffect(() => {
+    if (incomingMessage && incomingMessage.conversationId === Number(conversationId)) {
+      // Append the new incoming message to the existing messages
+      console.log("New incoming message:", incomingMessage);
+      const updatedMessages = [...messages, incomingMessage];
+      dispatch(setMessagesForConversation({ conversationId: Number(conversationId), messages: updatedMessages }));
+      scrollToBottom();
+    }
+  }, [conversationId, dispatch, incomingMessage, messages]);
+
+  useEffect(() => {
+    if (message && message.length > 0) {
+      sendTyping(true);
+    } else {
+      sendTyping(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [message]);
 
   useEffect(() => {
     showLoader();
@@ -98,11 +131,11 @@ export default function ChatDetails() {
 
   return (
     <Screen>
-      <ChatDetailsHeader userProfile={match} marginTop={'$10'} onProfilePress={() => { 
+      <ChatDetailsHeader userProfile={match} marginTop={'$10'} onProfilePress={() => {
         router.push({ pathname: "/(app)/(chat)/mutual-match-profile-details", params: { userId: receiverId } });
       }} />
       <YStack flex={1} backgroundColor="$background">
-        
+
         {/* CHAT MESSAGES */}
         <ScrollView
           paddingHorizontal="$4"

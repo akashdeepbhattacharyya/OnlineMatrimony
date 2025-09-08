@@ -21,10 +21,15 @@ export function useChatRepository() {
     return handleApiResponse(apiClient.post(`/chat/send`, { receiverId, message, messageType }));
   };
 
+  const markMessagesAsRead = async (conversationId: number): Promise<void> => {
+    return handleApiResponse(apiClient.post(`/chat/read?conversationId=${conversationId}`));
+  };
+
   return {
     getConversations,
     getChatHistory,
     startChat,
     sendMessage,
+    markMessagesAsRead,
   };
 }

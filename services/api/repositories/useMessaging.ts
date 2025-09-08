@@ -3,9 +3,10 @@ import SockJS from "sockjs-client";
 import { Client, IMessage } from '@stomp/stompjs';
 import { baseUrl } from "../HttpClient";
 import * as Storage from "@/services/local-storage";
+import { Message } from "@/models/Chat";
 
 export default function useMessaging(conversationId: string) {
-  const [messages, setMessages] = useState<any[]>([]);
+  const [incomingMessage, setIncomingMessages] = useState<Message | undefined>(undefined);
   const [typingUsers, setTypingUsers] = useState<Record<string, boolean>>({});
   const [readReceipts, setReadReceipts] = useState<any>({});
   const stompClientRef = useRef<Client | null>(null);
@@ -26,7 +27,7 @@ export default function useMessaging(conversationId: string) {
     console.log({ accessToken });
     const stompClient = new Client({
       brokerURL: undefined, // will use webSocketFactory
-      webSocketFactory: () => new SockJS(`${baseUrl()}/ws`),
+      webSocketFactory: () => new SockJS(`${baseUrl()}/ws?token=${accessToken}`),
       connectHeaders: { Authorization: `Bearer ${accessToken}` },
       debug: (str) => console.log(str),
       reconnectDelay: 5000,
@@ -34,12 +35,15 @@ export default function useMessaging(conversationId: string) {
         console.log("✅ Connected to WS");
         // Subscribe to new messages
         stompClient.subscribe(`/topic/chat/${conversationId}`, (msg: IMessage) => {
+          console.log("Message received via WS:", msg);
           const body = JSON.parse(msg.body);
-          setMessages((prev) => [...prev, body]);
+          console.log("New message received via WS:", body);
+          setIncomingMessages(body);
         });
         // Subscribe to typing events
         stompClient.subscribe(`/topic/chat/${conversationId}/typing`, (msg: IMessage) => {
           const typing = JSON.parse(msg.body);
+          console.log("Typing event received via WS:", typing);
           setTypingUsers((prev) => ({
             ...prev,
             [typing.userId]: typing.typing,
@@ -48,6 +52,7 @@ export default function useMessaging(conversationId: string) {
         // Subscribe to read receipts
         stompClient.subscribe(`/topic/chat/${conversationId}/read`, (msg: IMessage) => {
           const receipt = JSON.parse(msg.body);
+          console.log("Read receipt received via WS:", receipt);
           setReadReceipts(receipt);
         });
       },
@@ -75,5 +80,5 @@ export default function useMessaging(conversationId: string) {
     });
   };
 
-  return { messages, typingUsers, readReceipts, sendTyping };
+  return { incomingMessage, typingUsers, readReceipts, sendTyping };
 }

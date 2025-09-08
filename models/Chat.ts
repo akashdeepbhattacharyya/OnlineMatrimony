@@ -1,5 +1,5 @@
 export type Conversation = {
-  id: number;
+  convId: number;
   user1Id: number;
   user2Id: number;
   matchId: number;

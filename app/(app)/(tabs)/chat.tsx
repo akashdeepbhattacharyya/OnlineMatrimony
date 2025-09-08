@@ -49,24 +49,27 @@ export default function Chats() {
     const existingConversation = conversationList.find(conversation =>
       conversation.otherUserProfile.userId === receiverId
     );
+    console.log("Existing conversation:", existingConversation);
 
     if (existingConversation) {
+      console.log("Navigating to existing conversation:", existingConversation.convId);
       // Navigate to the existing conversation
       router.push({
         pathname: "/(app)/(chat)/chat-details",
         params: {
-          conversationId: existingConversation.id.toString(),
+          conversationId: existingConversation.convId.toString(),
           receiverId: receiverId.toString()
         }
       });
     } else {
+      console.log("No existing conversation, starting a new one.");
       try {
         const newConversation = await startChat(receiverId);
         dispatch(setConversationList([...conversationList, newConversation]));
         router.push({
           pathname: "/(app)/(chat)/chat-details",
           params: {
-            conversationId: newConversation.id.toString(),
+            conversationId: newConversation.convId.toString(),
             receiverId: receiverId.toString()
           }
         });
