@@ -1,5 +1,5 @@
 import { SafeAreaScreen as Screen } from '@/components/layouts/SafeAreaScreen';
-import React, { use, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, XStack, YStack } from 'tamagui';
 import { TabHeader } from '@/components/common/TabHeader';
 import { FilterItem } from '@/components/common/FilterItem';
