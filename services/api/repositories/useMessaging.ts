@@ -6,7 +6,7 @@ import * as Storage from "@/services/local-storage";
 import { Message } from "@/models/Chat";
 
 export default function useMessaging(conversationId: string) {
-  const [incomingMessage, setIncomingMessages] = useState<Message | undefined>(undefined);
+  const [incomingMessage, setIncomingMessage] = useState<Message | undefined>(undefined);
   const [typingUsers, setTypingUsers] = useState<Record<string, boolean>>({});
   const [readReceipts, setReadReceipts] = useState<any>({});
   const stompClientRef = useRef<Client | null>(null);
@@ -26,7 +26,6 @@ export default function useMessaging(conversationId: string) {
     console.log({ conversationId });
     console.log({ accessToken });
     const stompClient = new Client({
-      brokerURL: undefined, // will use webSocketFactory
       webSocketFactory: () => new SockJS(`${baseUrl()}/ws?token=${accessToken}`),
       connectHeaders: { Authorization: `Bearer ${accessToken}` },
       debug: (str) => console.log(str),
@@ -38,7 +37,7 @@ export default function useMessaging(conversationId: string) {
           console.log("Message received via WS:", msg);
           const body = JSON.parse(msg.body);
           console.log("New message received via WS:", body);
-          setIncomingMessages(body);
+          setIncomingMessage(body);
         });
         // Subscribe to typing events
         stompClient.subscribe(`/topic/chat/${conversationId}/typing`, (msg: IMessage) => {
@@ -80,5 +79,5 @@ export default function useMessaging(conversationId: string) {
     });
   };
 
-  return { incomingMessage, typingUsers, readReceipts, sendTyping };
+  return { incomingMessage, setIncomingMessage, typingUsers, readReceipts, sendTyping };
 }

@@ -11,7 +11,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { useAppDispatch, useAppSelector } from '@/services/store/hook';
 import { useLoader } from '@/components/loader/LoaderContext';
 import { useChat } from '@/services/hooks/useChat';
-import { fetchChatHistory, setMessagesForConversation } from '@/services/slices/conversation-slice';
+import { fetchChatHistory, setMessagesForConversation, setConversationList } from '@/services/slices/conversation-slice';
 import { useChatRepository } from '@/services/api/repositories/useChatRepository';
 import { ChatDetailsHeader } from '@/components/chat/ChatDetailsHeader';
 import { Text } from '@/components/common/Text';
@@ -25,17 +25,15 @@ export default function ChatDetails() {
     conversationId: string;
     receiverId: string;
   }>();
-  const { incomingMessage, typingUsers, readReceipts, sendTyping } = useMessaging(conversationId);
+  const { incomingMessage, setIncomingMessage, sendTyping } = useMessaging(conversationId);
   const { mutualMatches } = useAppSelector(state => state.match);
   const { chatHistory } = useAppSelector(state => state.conversation);
   const { id: senderId } = useAppSelector(state => state.user);
   const { showLoader, hideLoader } = useLoader();
   const dispatch = useAppDispatch();
   const { getChatHistory } = useChat();
-  const { sendMessage, markMessagesAsRead } = useChatRepository();
-
-  console.log({ incomingMessage, typingUsers, readReceipts });
-
+  const { sendMessage, markMessagesAsRead } = useChatRepository();  
+  const { conversationList } = useAppSelector(state => state.conversation);
 
   // Flat messages array for logic
   const messages: Message[] = useMemo(() => {
@@ -70,13 +68,38 @@ export default function ChatDetails() {
   }, [incomingMessage, conversationId]);
 
   useEffect(() => {
+    const markAsRead = async () => {
+      if (messages.some(msg => !msg.isRead && msg.receiverId === senderId)) {
+        await markMessagesAsRead(Number(conversationId));
+        const updatedConversationList = conversationList.map(conv => {
+          if (conv.convId === Number(conversationId)) {
+            return { ...conv, unreadCount: 0 };
+          }
+          return conv;
+        });
+        dispatch(setConversationList(updatedConversationList));
+      }
+    };
+    markAsRead();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [messages]);
+
+  useEffect(() => {
     if (incomingMessage && incomingMessage.conversationId === Number(conversationId)) {
       // Append the new incoming message to the existing messages
       console.log("New incoming message:", incomingMessage);
       const updatedMessages = [...messages, incomingMessage];
       dispatch(setMessagesForConversation({ conversationId: Number(conversationId), messages: updatedMessages }));
+      const updatedConversationList = conversationList.map(conv => {
+        if (conv.convId === Number(conversationId)) {
+          return { ...conv, lastMessage: incomingMessage };
+        }
+        return conv;
+      });
+      dispatch(setConversationList(updatedConversationList));
+      setIncomingMessage(undefined); // Clear the incoming message after processing
     }
-  }, [conversationId, dispatch, incomingMessage, messages]);
+  }, [conversationId, conversationList, dispatch, incomingMessage, messages, setIncomingMessage]);
 
   useEffect(() => {
     scrollToBottom();
@@ -135,6 +158,14 @@ export default function ChatDetails() {
         const response = await sendMessage(receiverId, message.trim());
         const updatedMessages = [...messages, response];
         dispatch(setMessagesForConversation({ conversationId: Number(conversationId), messages: updatedMessages }));
+        const updatedConversationList = conversationList.map(conv => {
+          if (conv.convId === Number(conversationId)) {
+            return { ...conv, lastMessage: response };
+          }
+          return conv;
+        });
+        dispatch(setConversationList(updatedConversationList));
+        sendTyping(false);
       } catch (error) {
         console.error('Error sending message:', error);
       }

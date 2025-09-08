@@ -1,6 +1,6 @@
 import { SafeAreaScreen as Screen } from '@/components/layouts/SafeAreaScreen';
-import React, { useEffect, useState } from 'react';
-import { XStack, YStack } from 'tamagui';
+import React, { use, useEffect, useState } from 'react';
+import { View, XStack, YStack } from 'tamagui';
 import { TabHeader } from '@/components/common/TabHeader';
 import { FilterItem } from '@/components/common/FilterItem';
 import { MatchItem } from '@/components/chat/MatchItem';
@@ -14,12 +14,14 @@ import { useChatRepository } from '@/services/api/repositories/useChatRepository
 import { fetchConversations, setConversationList } from '@/services/slices/conversation-slice';
 import { useError } from '@/components/error/useError';
 import { useChat } from '@/services/hooks/useChat';
+import { Text } from '@/components/common/Text';
 
 export default function Chats() {
   const [currentFilter, setCurrentFilter] = useState<ChatFilter>('ALL');
   const { getMutualMatches } = useUserMatch();
   const { showLoader, hideLoader } = useLoader();
   const { mutualMatches } = useAppSelector(state => state.match);
+  const [filteredMatches, setFilteredMatches] = useState(mutualMatches);
   // const { subscription } = useAppSelector(state => state.user);
   // const { subscriptionPlans } = useAppSelector(state => state.subscriptionPlans);
   const dispatch = useAppDispatch();
@@ -43,6 +45,20 @@ export default function Chats() {
     hideLoader();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (currentFilter === 'ALL') {
+      setFilteredMatches(mutualMatches);
+    } else {
+      const filtered = mutualMatches.filter(match => {
+        return conversationList.some(conversation =>
+          conversation.otherUserProfile.userId === match.userId && conversation.unreadCount > 0
+        );
+      });
+      console.log("Filtered matches:", filtered);
+      setFilteredMatches(filtered);
+    }
+  }, [mutualMatches, currentFilter, conversationList]);
 
   const startConversation = async (receiverId: number) => {
     // Check if a conversation already exists with this user
@@ -102,29 +118,41 @@ export default function Chats() {
         </XStack>
 
         {/* CHAT LIST */}
-        <YStack
-          theme={'chat'}
-          backgroundColor={'$background'}
-          padding="$4"
-          marginTop={'$4'}
-          borderRadius={'$6'}
-          gap="$6"
-        >
-          {mutualMatches.map(match => {
-            const conversation = conversationList.find(conv => conv.otherUserProfile.userId === match.userId);
-            if (!conversation) return null; // Skip if no conversation found
-            return (
-              <MatchItem
-                key={match.userId}
-                match={match}
-                conversation={conversation}
-                onPress={() => {
-                  startConversation(match.userId);
-                }}
-              />
-            );
-          })}
-        </YStack>
+        {filteredMatches.length === 0 ? (
+          <View
+            justifyContent="center"
+            alignItems="center"
+            width={'100%'}
+            height={'85%'}
+          >
+            <Text font="heading" size="normal" color="$color">
+              {`No Unread Chats`}
+            </Text>
+          </View>
+        ) : (
+          <YStack
+            theme={'chat'}
+            backgroundColor={'$background'}
+            padding="$4"
+            marginTop={'$4'}
+            borderRadius={'$6'}
+            gap="$6"
+          >
+            {filteredMatches.map(match => {
+              const conversation = conversationList.find(conv => conv.otherUserProfile.userId === match.userId);
+              return (
+                <MatchItem
+                  key={match.userId}
+                  match={match}
+                  conversation={conversation}
+                  onPress={() => {
+                    startConversation(match.userId);
+                  }}
+                />
+              );
+            })}
+          </YStack>
+        )}
       </YStack>
     </Screen>
   );
