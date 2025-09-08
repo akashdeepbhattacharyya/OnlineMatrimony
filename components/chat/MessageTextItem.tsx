@@ -1,6 +1,7 @@
 import { ViewProps, XStack, YStack } from 'tamagui';
 import { Text } from '@/components/common/Text';
 import { Message } from '@/models/Chat';
+import { formatTime } from '@/utils/utils';
 
 type Props = {
   message: Message;
@@ -38,8 +39,9 @@ export const MessageTextItem = ({ message, senderId, receiverId, ...props }: Pro
             font="heading"
             color={'$color'}
             alignSelf={isReceiver ? 'flex-end' : 'flex-start'}
+            size="smallest"
           >
-            {message.sentAt}
+            {formatTime(message.sentAt)}
           </Text>
         </YStack>
       </XStack>

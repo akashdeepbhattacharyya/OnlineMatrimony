@@ -14,6 +14,8 @@ import { useChat } from '@/services/hooks/useChat';
 import { fetchChatHistory, setMessagesForConversation } from '@/services/slices/conversation-slice';
 import { useChatRepository } from '@/services/api/repositories/useChatRepository';
 import { ChatDetailsHeader } from '@/components/chat/ChatDetailsHeader';
+import { Text } from '@/components/common/Text';
+import { formatDate } from '@/utils/utils';
 
 export default function ChatDetails() {
   const [keyboardVisible, setKeyboardVisible] = useState(false);
@@ -35,10 +37,25 @@ export default function ChatDetails() {
   console.log({ incomingMessage, typingUsers, readReceipts });
 
 
+  // Flat messages array for logic
   const messages: Message[] = useMemo(() => {
-    const sortedMessages = (chatHistory[Number(conversationId)] || []).slice().sort((a, b) => new Date(a.sentAt).getTime() - new Date(b.sentAt).getTime());
-    return sortedMessages;
+    return (chatHistory[Number(conversationId)] || []).slice().sort((a, b) => new Date(a.sentAt).getTime() - new Date(b.sentAt).getTime());
   }, [chatHistory, conversationId]);
+
+  // Group messages by date for rendering
+  const groupedMessages = useMemo(() => {
+    const groups: { date: string; messages: Message[] }[] = [];
+    messages.forEach(msg => {
+      const date = formatDate(msg.sentAt);
+      const lastGroup = groups[groups.length - 1];
+      if (!lastGroup || lastGroup.date !== date) {
+        groups.push({ date, messages: [msg] });
+      } else {
+        lastGroup.messages.push(msg);
+      }
+    });
+    return groups;
+  }, [messages]);
 
   const match = mutualMatches.find(match => match.userId.toString() === receiverId);
 
@@ -142,8 +159,13 @@ export default function ChatDetails() {
           contentContainerStyle={{ flexGrow: 1 }}
           ref={scrollViewRef}
         >
-          {messages.map(msg => (
-            <MessageTextItem key={msg.id} message={msg} senderId={senderId} receiverId={Number(receiverId)} marginVertical={'$3'} />
+          {groupedMessages.map(group => (
+            <React.Fragment key={group.date}>
+              <Text textAlign='center' paddingVertical="$2">{group.date}</Text>
+              {group.messages.map(msg => (
+                <MessageTextItem key={msg.id} message={msg} senderId={senderId} receiverId={Number(receiverId)} marginVertical={'$3'} />
+              ))}
+            </React.Fragment>
           ))}
         </ScrollView>
 
