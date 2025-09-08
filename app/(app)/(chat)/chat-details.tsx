@@ -75,9 +75,13 @@ export default function ChatDetails() {
       console.log("New incoming message:", incomingMessage);
       const updatedMessages = [...messages, incomingMessage];
       dispatch(setMessagesForConversation({ conversationId: Number(conversationId), messages: updatedMessages }));
-      scrollToBottom();
     }
   }, [conversationId, dispatch, incomingMessage, messages]);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
 
   useEffect(() => {
     if (message && message.length > 0) {
