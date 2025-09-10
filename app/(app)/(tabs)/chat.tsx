@@ -55,7 +55,6 @@ export default function Chats() {
           conversation.otherUserProfile.userId === match.userId && conversation.unreadCount > 0
         );
       });
-      console.log("Filtered matches:", filtered);
       setFilteredMatches(filtered);
     }
   }, [mutualMatches, currentFilter, conversationList]);
@@ -65,10 +64,8 @@ export default function Chats() {
     const existingConversation = conversationList.find(conversation =>
       conversation.otherUserProfile.userId === receiverId
     );
-    console.log("Existing conversation:", existingConversation);
 
     if (existingConversation) {
-      console.log("Navigating to existing conversation:", existingConversation.convId);
       // Navigate to the existing conversation
       router.push({
         pathname: "/(app)/(chat)/chat-details",
@@ -78,7 +75,6 @@ export default function Chats() {
         }
       });
     } else {
-      console.log("No existing conversation, starting a new one.");
       try {
         const newConversation = await startChat(receiverId);
         dispatch(setConversationList([...conversationList, newConversation]));

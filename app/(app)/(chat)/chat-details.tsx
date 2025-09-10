@@ -87,7 +87,6 @@ export default function ChatDetails() {
   useEffect(() => {
     if (incomingMessage && incomingMessage.conversationId === Number(conversationId)) {
       // Append the new incoming message to the existing messages
-      console.log("New incoming message:", incomingMessage);
       const updatedMessages = [...messages, incomingMessage];
       dispatch(setMessagesForConversation({ conversationId: Number(conversationId), messages: updatedMessages }));
       const updatedConversationList = conversationList.map(conv => {
@@ -152,7 +151,6 @@ export default function ChatDetails() {
 
   const onSend = async () => {
     // Handle sending the message
-    console.log('Message sent:', message);
     if (message && message.trim().length > 0) {
       try {
         const response = await sendMessage(receiverId, message.trim());
