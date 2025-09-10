@@ -11,7 +11,7 @@ export const TabLabel: FC<Props> = ({ children, focused, ...props }) => {
     <Text
       allowFontScaling={false}
       position="relative"
-      marginBottom="$4"
+      marginBottom="$2"
       fontFamily={
         focused ? getToken("$font.bodySemiBold") : getToken("$font.body")
       }

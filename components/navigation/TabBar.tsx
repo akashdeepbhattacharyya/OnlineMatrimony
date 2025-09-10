@@ -3,15 +3,17 @@ import { getToken, View } from "tamagui";
 import type { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { TabLabel } from "./TabLabel";
 import LinearGradient from "react-native-linear-gradient";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export function TabBar({
   state,
   descriptors,
   navigation,
 }: BottomTabBarProps) {
+  const { bottom } = useSafeAreaInsets();
   return (
     <>
-      <View height={182} width={"100%"} position="absolute" zIndex={1} bottom={0} >
+      <View height={150} width={"100%"} position="absolute" zIndex={1} bottom={0} >
         <LinearGradient
           colors={['#2D152A00', '#000000']}
           style={{
@@ -20,7 +22,7 @@ export function TabBar({
             top: 0,
             left: 0,
             right: 0,
-            bottom: 0,
+            bottom: bottom,
           }}
         />
         <View
@@ -28,7 +30,7 @@ export function TabBar({
             flexDirection: "row",
             backgroundColor: getToken("$color.primary"),
             width: "100%",
-            bottom: 0,
+            bottom: bottom,
             paddingBottom: Platform.OS === "android" ? 0 : 7,
             position: "absolute",
             borderTopLeftRadius: 20,
