@@ -1,4 +1,4 @@
-import { XStack, Avatar, YStack, Circle } from 'tamagui';
+import { XStack, Avatar, YStack } from 'tamagui';
 import { Text } from '../common/Text';
 import { TouchableOpacity } from 'react-native';
 import { MutualMatch } from '@/models/Match';
@@ -39,16 +39,9 @@ export const MatchItem = ({ match, conversation, onPress }: Props) => {
               {formatDateTime(conversation.lastMessage?.sentAt || "")}
             </Text>
             {conversation.unreadCount > 0 && (
-              <Circle
-                size={'$1'}
-                backgroundColor="$background"
-                alignItems="center"
-                justifyContent="center"
-              >
-                <Text font="headingBold" size="small" color="$color">
-                  {conversation.unreadCount}
-                </Text>
-              </Circle>
+              <Text font="headingBold" size="small" color="$color" paddingHorizontal={'$1.5'} paddingVertical={'$1'} backgroundColor={"$background"} borderRadius={'$6'}>
+                {conversation.unreadCount}
+              </Text>
             )}
           </YStack>
         )}
