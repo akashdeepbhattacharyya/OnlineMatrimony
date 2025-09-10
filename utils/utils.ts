@@ -115,3 +115,72 @@ export function calculateExpiryDateInWeeks(endDate: string): string | undefined 
   const weeks = Math.ceil((utcEnd.getTime() - utcToday.getTime()) / (1000 * 60 * 60 * 24 * 7));
   return `${weeks} Weeks`;
 }
+
+export function formatDate(dateString: string): string {
+  const date = new Date(dateString);
+  const now = new Date();
+
+  const isToday =
+    date.getDate() === now.getDate() &&
+    date.getMonth() === now.getMonth() &&
+    date.getFullYear() === now.getFullYear();
+
+  if (isToday) {
+    return 'Today';
+  }
+
+  const isYesterday =
+    date.getDate() === now.getDate() - 1 &&
+    date.getMonth() === now.getMonth() &&
+    date.getFullYear() === now.getFullYear();
+
+  if (isYesterday) {
+    return 'Yesterday';
+  }
+
+  // For other dates, return in 'Month Day, Year' format
+  return date.toLocaleDateString(undefined, {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+}
+
+export function formatTime(dateString: string): string {
+  const date = new Date(dateString);
+  return date.toLocaleTimeString(undefined, {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+}
+
+export function formatDateTime(dateString: string): string {
+  const date = new Date(dateString);
+  const now = new Date();
+  const isToday =
+    date.getDate() === now.getDate() &&
+    date.getMonth() === now.getMonth() &&
+    date.getFullYear() === now.getFullYear();
+
+  if (isToday) {
+    return `${date.toLocaleTimeString(undefined, {
+      hour: '2-digit',
+      minute: '2-digit',
+    })}`;
+  }
+
+  const isYesterday =
+    date.getDate() === now.getDate() - 1 &&
+    date.getMonth() === now.getMonth() &&
+    date.getFullYear() === now.getFullYear();
+
+  if (isYesterday) {
+    return `Yesterday`;
+  }
+
+  return date.toLocaleString(undefined, {
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+  });
+}

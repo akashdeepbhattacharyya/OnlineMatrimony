@@ -2,17 +2,22 @@ import { XStack, Avatar, YStack, Circle } from 'tamagui';
 import { Text } from '../common/Text';
 import { TouchableOpacity } from 'react-native';
 import { MutualMatch } from '@/models/Match';
-import { toUri } from '@/utils/utils';
+import { formatDateTime, toUri } from '@/utils/utils';
+import { Conversation } from '@/models/Chat';
+import { useAppSelector } from '@/services/store/hook';
 
 type Props = {
   match: MutualMatch;
+  conversation?: Conversation;
   onPress: (chat: MutualMatch) => void;
 };
 
-export const MatchItem = ({ match, onPress }: Props) => {
+export const MatchItem = ({ match, conversation, onPress }: Props) => {
+  const { id: senderId } = useAppSelector(state => state.user);
+
   return (
     <TouchableOpacity onPress={() => onPress(match)}>
-      <XStack gap="$4" justifyContent="space-between">
+      <XStack gap="$4" alignItems="center" justifyContent="space-between">
         <XStack gap="$4">
           <Avatar circular size="$6">
             <Avatar.Image src={toUri(match.fullName, match.primaryPhotoUrl)} />
@@ -21,26 +26,32 @@ export const MatchItem = ({ match, onPress }: Props) => {
             <Text font="headingBold" size="normal" color="$color">
               {match.fullName}
             </Text>
-            <Text font="heading" size="normal" color="$color">
-              {"Hello"}
-            </Text>
+            {conversation && (
+              <Text font="heading" size="normal" color="$color" numberOfLines={2} ellipsizeMode="tail">
+                {senderId === conversation.lastMessage?.senderId ? "You: " : ""}{conversation.lastMessage?.message}
+              </Text>
+            )}
           </YStack>
         </XStack>
-        <YStack theme={'unread'} alignItems="flex-end" gap="$2">
-          <Text font="heading" size="normal" color="$color">
-            {"1:00 PM"}
-          </Text>
-          <Circle
-            size={'$1'}
-            backgroundColor="$background"
-            alignItems="center"
-            justifyContent="center"
-          >
-            <Text font="headingBold" size="small" color="$color">
-              {0}
+        {conversation && (
+          <YStack theme={'unread'} alignItems="flex-end" gap="$2">
+            <Text font="heading" size="normal" color="$color">
+              {formatDateTime(conversation.lastMessage?.sentAt || "")}
             </Text>
-          </Circle>
-        </YStack>
+            {conversation.unreadCount > 0 && (
+              <Circle
+                size={'$1'}
+                backgroundColor="$background"
+                alignItems="center"
+                justifyContent="center"
+              >
+                <Text font="headingBold" size="small" color="$color">
+                  {conversation.unreadCount}
+                </Text>
+              </Circle>
+            )}
+          </YStack>
+        )}
       </XStack>
     </TouchableOpacity>
   );

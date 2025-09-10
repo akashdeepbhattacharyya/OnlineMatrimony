@@ -4,6 +4,7 @@ import matchReducer from '../slices/match-slice';
 import searchSliceReducer from '../slices/search-slice';
 import subscriptionPlanReducer from '@/services/slices/subscription-plan-slice';
 import errorSliceReducer from '@/services/slices/error-slice';
+import conversationSliceReducer from '../slices/conversation-slice';
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     subscriptionPlans: subscriptionPlanReducer,
     search: searchSliceReducer,
     error: errorSliceReducer,
+    conversation: conversationSliceReducer,
   },
 });
 

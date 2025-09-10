@@ -1,20 +1,25 @@
 import { ViewProps, XStack, YStack } from 'tamagui';
 import { Text } from '@/components/common/Text';
 import { Message } from '@/models/Chat';
+import { formatTime } from '@/utils/utils';
 
 type Props = {
   message: Message;
+  senderId: number;
+  receiverId: number;
 } & ViewProps;
 
-export const MessageTextItem = ({ message, ...props }: Props) => {
+export const MessageTextItem = ({ message, senderId, receiverId, ...props }: Props) => {
+  const isSender = message.senderId === senderId;
+  const isReceiver = message.senderId === receiverId;
   return (
     <YStack
       theme={
-        message.sender === 'me'
+        isSender
           ? 'chat_message_outgoing'
           : 'chat_message_incoming'
       }
-      alignItems={message.sender === 'me' ? 'flex-end' : 'flex-start'}
+      alignItems={isSender ? 'flex-end' : 'flex-start'}
       {...props}
     >
       <XStack gap="$2" maxWidth={'80%'} alignItems="flex-end">
@@ -22,20 +27,21 @@ export const MessageTextItem = ({ message, ...props }: Props) => {
           backgroundColor={'$background'}
           borderTopRightRadius={'$10'}
           borderTopLeftRadius={'$10'}
-          borderBottomLeftRadius={message.sender === 'me' ? '$10' : '$0'}
-          borderBottomRightRadius={message.sender === 'me' ? '$0' : '$10'}
+          borderBottomLeftRadius={isSender ? '$10' : '$0'}
+          borderBottomRightRadius={isSender ? '$0' : '$10'}
           padding="$4"
           gap="$2"
         >
           <Text font="heading" color={'$color'}>
-            {message.text}
+            {message.message}
           </Text>
           <Text
             font="heading"
             color={'$color'}
-            alignSelf={message.sender === 'them' ? 'flex-end' : 'flex-start'}
+            alignSelf={isReceiver ? 'flex-end' : 'flex-start'}
+            size="smallest"
           >
-            {message.time}
+            {formatTime(message.sentAt)}
           </Text>
         </YStack>
       </XStack>

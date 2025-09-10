@@ -1,58 +1,134 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { YStack, XStack, Avatar, ScrollView } from 'tamagui';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { YStack, XStack, ScrollView } from 'tamagui';
 import { NoSafeAreaScreen as Screen } from '@/components/layouts/NoSafeAreaScreen';
-import { ScreenHeader } from '@/components/common/ScreenHeader';
-import { Text } from '@/components/common/Text';
-import OnlineIcon from '@/assets/images/online.svg';
 import SendIcon from '@/assets/images/send.svg';
 import { TextArea } from '@/components/common/TextArea';
 import { Keyboard, TouchableOpacity } from 'react-native';
 import { Message } from '@/models/Chat';
 import { MessageTextItem } from '@/components/chat/MessageTextItem';
-
-const messages: Message[] = [
-  {
-    id: '1',
-    text: 'Hi, massa sed ultricies. Aliquam dolor urna, efficitur eu est lobortis, cursus faucibus ante.',
-    time: '5:30',
-    sender: 'them',
-    avatar: 'https://randomuser.me/api/portraits/women/1.jpg',
-  },
-  {
-    id: '2',
-    text: 'Hello...',
-    time: '5:31',
-    sender: 'me',
-    avatar: 'https://randomuser.me/api/portraits/women/1.jpg',
-  },
-  {
-    id: '3',
-    text: 'Hi, massa sed ultricies. Aliquam dolor urna, efficitur eu est lobortis, cursus faucibus ante.',
-    time: '5:32',
-    sender: 'them',
-    avatar: 'https://randomuser.me/api/portraits/men/2.jpg',
-  },
-  {
-    id: '4',
-    text: 'Massa sed ultricies. Aliquam dolor urna, efficitur eu est lobortis, cursus faucibus ante.',
-    time: '15:30',
-    sender: 'me',
-    avatar: 'https://randomuser.me/api/portraits/women/1.jpg',
-  },
-];
+import useMessaging from '@/services/api/repositories/useMessaging';
+import { router, useLocalSearchParams } from 'expo-router';
+import { useAppDispatch, useAppSelector } from '@/services/store/hook';
+import { useLoader } from '@/components/loader/LoaderContext';
+import { useChat } from '@/services/hooks/useChat';
+import { fetchChatHistory, setMessagesForConversation, setConversationList } from '@/services/slices/conversation-slice';
+import { useChatRepository } from '@/services/api/repositories/useChatRepository';
+import { ChatDetailsHeader } from '@/components/chat/ChatDetailsHeader';
+import { Text } from '@/components/common/Text';
+import { formatDate } from '@/utils/utils';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function ChatDetails() {
   const [keyboardVisible, setKeyboardVisible] = useState(false);
   const scrollViewRef = useRef<ScrollView>(null);
   const [message, setMessage] = useState<string | undefined>(undefined);
-  const chat = {
-    id: '1',
-    name: 'Kakali M',
-    msg: 'Hello, How are you...',
-    time: '23 min',
-    unread: 3,
-    image: 'https://i.pravatar.cc/150?img=6',
-  };
+  const { conversationId, receiverId } = useLocalSearchParams<{
+    conversationId: string;
+    receiverId: string;
+  }>();
+  const { incomingMessage, setIncomingMessage, sendTyping } = useMessaging(conversationId);
+  const { mutualMatches } = useAppSelector(state => state.match);
+  const { chatHistory } = useAppSelector(state => state.conversation);
+  const { id: senderId } = useAppSelector(state => state.user);
+  const { showLoader, hideLoader } = useLoader();
+  const dispatch = useAppDispatch();
+  const { getChatHistory } = useChat();
+  const { sendMessage, markMessagesAsRead } = useChatRepository();  
+  const { conversationList } = useAppSelector(state => state.conversation);
+  const { top } = useSafeAreaInsets();
+
+  // Flat messages array for logic
+  const messages: Message[] = useMemo(() => {
+    return (chatHistory[Number(conversationId)] || []).slice().sort((a, b) => new Date(a.sentAt).getTime() - new Date(b.sentAt).getTime());
+  }, [chatHistory, conversationId]);
+
+  // Group messages by date for rendering
+  const groupedMessages = useMemo(() => {
+    const groups: { date: string; messages: Message[] }[] = [];
+    messages.forEach(msg => {
+      const date = formatDate(msg.sentAt);
+      const lastGroup = groups[groups.length - 1];
+      if (!lastGroup || lastGroup.date !== date) {
+        groups.push({ date, messages: [msg] });
+      } else {
+        lastGroup.messages.push(msg);
+      }
+    });
+    return groups;
+  }, [messages]);
+
+  const match = mutualMatches.find(match => match.userId.toString() === receiverId);
+
+  useEffect(() => {
+    if (incomingMessage) {
+      const markAsRead = async () => {
+        await markMessagesAsRead(Number(conversationId));
+      };
+      markAsRead();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [incomingMessage, conversationId]);
+
+  useEffect(() => {
+    const markAsRead = async () => {
+      if (messages.some(msg => !msg.isRead && msg.receiverId === senderId)) {
+        await markMessagesAsRead(Number(conversationId));
+        const updatedConversationList = conversationList.map(conv => {
+          if (conv.convId === Number(conversationId)) {
+            return { ...conv, unreadCount: 0 };
+          }
+          return conv;
+        });
+        dispatch(setConversationList(updatedConversationList));
+      }
+    };
+    markAsRead();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [messages]);
+
+  useEffect(() => {
+    if (incomingMessage && incomingMessage.conversationId === Number(conversationId)) {
+      // Append the new incoming message to the existing messages
+      const updatedMessages = [...messages, incomingMessage];
+      dispatch(setMessagesForConversation({ conversationId: Number(conversationId), messages: updatedMessages }));
+      const updatedConversationList = conversationList.map(conv => {
+        if (conv.convId === Number(conversationId)) {
+          return { ...conv, lastMessage: incomingMessage };
+        }
+        return conv;
+      });
+      dispatch(setConversationList(updatedConversationList));
+      setIncomingMessage(undefined); // Clear the incoming message after processing
+    }
+  }, [conversationId, conversationList, dispatch, incomingMessage, messages, setIncomingMessage]);
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+
+  useEffect(() => {
+    if (message && message.length > 0) {
+      sendTyping(true);
+    } else {
+      sendTyping(false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [message]);
+
+  useEffect(() => {
+    showLoader();
+    dispatch(
+      fetchChatHistory({
+        getChatHistory: getChatHistory,
+        conversationId: Number(conversationId),
+        page: 0,
+        size: 100,
+      }),
+    );
+    hideLoader();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -75,17 +151,24 @@ export default function ChatDetails() {
     };
   }, []);
 
-  const onSend = () => {
+  const onSend = async () => {
     // Handle sending the message
-    console.log('Message sent:', message);
     if (message && message.trim().length > 0) {
-      messages.push({
-        id: String(messages.length + 1),
-        text: message.trim(),
-        time: new Date().toLocaleTimeString(),
-        sender: 'me',
-        avatar: 'https://randomuser.me/api/portraits/women/1.jpg',
-      });
+      try {
+        const response = await sendMessage(receiverId, message.trim());
+        const updatedMessages = [...messages, response];
+        dispatch(setMessagesForConversation({ conversationId: Number(conversationId), messages: updatedMessages }));
+        const updatedConversationList = conversationList.map(conv => {
+          if (conv.convId === Number(conversationId)) {
+            return { ...conv, lastMessage: response };
+          }
+          return conv;
+        });
+        dispatch(setConversationList(updatedConversationList));
+        sendTyping(false);
+      } catch (error) {
+        console.error('Error sending message:', error);
+      }
     }
     setMessage(undefined); // Clear the message input
   };
@@ -94,39 +177,16 @@ export default function ChatDetails() {
     scrollViewRef.current?.scrollToEnd({ animated: true });
   };
 
+  if (!match) {
+    return null; // or a loading indicator
+  }
+
   return (
     <Screen>
-      <ScreenHeader headerText={chat.name} marginTop={'$11'} />
+      <ChatDetailsHeader userProfile={match} marginTop={top} onProfilePress={() => {
+        router.push({ pathname: "/(app)/(chat)/mutual-match-profile-details", params: { userId: receiverId } });
+      }} />
       <YStack flex={1} backgroundColor="$background">
-        {/* HEADER */}
-        <XStack
-          theme={'chat_message_banner'}
-          backgroundColor="$background"
-          paddingHorizontal="$3"
-          paddingVertical="$3.5"
-          alignItems="center"
-          justifyContent="space-between"
-          borderRadius={'$8'}
-          margin={'$4'}
-        >
-          <XStack alignItems="center" gap="$3">
-            <Avatar circular size="$6">
-              <Avatar.Image source={{ uri: chat.image }} />
-              <Avatar.Fallback backgroundColor="$gray5" />
-            </Avatar>
-            <YStack gap="$2">
-              <Text font="headingBold" size="medium">
-                {chat.name}
-              </Text>
-              <XStack alignItems="center" gap="$2">
-                <OnlineIcon />
-                <Text font="heading" size="normal">
-                  Online
-                </Text>
-              </XStack>
-            </YStack>
-          </XStack>
-        </XStack>
 
         {/* CHAT MESSAGES */}
         <ScrollView
@@ -134,8 +194,13 @@ export default function ChatDetails() {
           contentContainerStyle={{ flexGrow: 1 }}
           ref={scrollViewRef}
         >
-          {messages.map(msg => (
-            <MessageTextItem key={msg.id} message={msg} marginVertical={'$3'} />
+          {groupedMessages.map(group => (
+            <React.Fragment key={group.date}>
+              <Text textAlign='center' paddingVertical="$2">{group.date}</Text>
+              {group.messages.map(msg => (
+                <MessageTextItem key={msg.id} message={msg} senderId={senderId} receiverId={Number(receiverId)} marginVertical={'$3'} />
+              ))}
+            </React.Fragment>
           ))}
         </ScrollView>
 
