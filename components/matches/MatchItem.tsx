@@ -39,7 +39,7 @@ export const MatchItem = ({ userProfile, onPress }: Props) => {
         borderTopLeftRadius={'$4'}
         objectFit="cover"
       />
-      <YStack paddingVertical={'$4'} gap={'$2'}>
+      <YStack paddingVertical={'$4'} gap={'$2'} justifyContent='center'>
         <XStack gap={'$2'} alignItems="center">
           <Text font="headingBold" size="medium" color="$text">
             {userProfile.fullName}
