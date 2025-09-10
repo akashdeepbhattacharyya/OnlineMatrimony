@@ -22,27 +22,21 @@ export default function useMessaging(conversationId: string) {
 
   useEffect(() => {
     if (!accessToken) return;
-    console.log("Connecting to WebSocket...");
-    console.log({ conversationId });
-    console.log({ accessToken });
     const stompClient = new Client({
       webSocketFactory: () => new SockJS(`${baseUrl()}/ws?token=${accessToken}`),
       connectHeaders: { Authorization: `Bearer ${accessToken}` },
-      debug: (str) => console.log(str),
+      debug: (str) => { if (__DEV__) console.log(str); },
       reconnectDelay: 5000,
       onConnect: () => {
-        console.log("✅ Connected to WS");
+        if (__DEV__) console.log("✅ Connected to WS");
         // Subscribe to new messages
         stompClient.subscribe(`/topic/chat/${conversationId}`, (msg: IMessage) => {
-          console.log("Message received via WS:", msg);
           const body = JSON.parse(msg.body);
-          console.log("New message received via WS:", body);
           setIncomingMessage(body);
         });
         // Subscribe to typing events
         stompClient.subscribe(`/topic/chat/${conversationId}/typing`, (msg: IMessage) => {
           const typing = JSON.parse(msg.body);
-          console.log("Typing event received via WS:", typing);
           setTypingUsers((prev) => ({
             ...prev,
             [typing.userId]: typing.typing,
@@ -51,7 +45,6 @@ export default function useMessaging(conversationId: string) {
         // Subscribe to read receipts
         stompClient.subscribe(`/topic/chat/${conversationId}/read`, (msg: IMessage) => {
           const receipt = JSON.parse(msg.body);
-          console.log("Read receipt received via WS:", receipt);
           setReadReceipts(receipt);
         });
       },
@@ -65,7 +58,7 @@ export default function useMessaging(conversationId: string) {
 
     return () => {
       stompClient.deactivate();
-      console.log("❌ Disconnected");
+      if (__DEV__) console.log("❌ Disconnected");
     };
   }, [accessToken, conversationId]);
 
