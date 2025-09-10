@@ -16,6 +16,7 @@ import { useChatRepository } from '@/services/api/repositories/useChatRepository
 import { ChatDetailsHeader } from '@/components/chat/ChatDetailsHeader';
 import { Text } from '@/components/common/Text';
 import { formatDate } from '@/utils/utils';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function ChatDetails() {
   const [keyboardVisible, setKeyboardVisible] = useState(false);
@@ -34,6 +35,7 @@ export default function ChatDetails() {
   const { getChatHistory } = useChat();
   const { sendMessage, markMessagesAsRead } = useChatRepository();  
   const { conversationList } = useAppSelector(state => state.conversation);
+  const { top } = useSafeAreaInsets();
 
   // Flat messages array for logic
   const messages: Message[] = useMemo(() => {
@@ -181,7 +183,7 @@ export default function ChatDetails() {
 
   return (
     <Screen>
-      <ChatDetailsHeader userProfile={match} marginTop={'$10'} onProfilePress={() => {
+      <ChatDetailsHeader userProfile={match} marginTop={top} onProfilePress={() => {
         router.push({ pathname: "/(app)/(chat)/mutual-match-profile-details", params: { userId: receiverId } });
       }} />
       <YStack flex={1} backgroundColor="$background">
