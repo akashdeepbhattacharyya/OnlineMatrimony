@@ -11,6 +11,7 @@ type Props<T> = {
   enabled?: boolean;
   size?: number;
   onChange: (option: OptionWithIcon<T>) => void;
+  onLabelPress?: () => void;
 } & ViewProps;
 
 export const CheckBoxButton = <T = string,>({
@@ -20,6 +21,7 @@ export const CheckBoxButton = <T = string,>({
   enabled = true,
   size = 24,
   onChange,
+  onLabelPress,
   ...props
 }: Props<T>) => {
   const onCheckBoxPress = () => {
@@ -28,9 +30,15 @@ export const CheckBoxButton = <T = string,>({
 
   return (
     <View width={'100%'} theme="checkbox" {...props}>
-      <TouchableOpacity accessibilityRole="button" onPress={onCheckBoxPress}>
-        <XStack testID={testID} alignItems="center" height="auto" gap="$2">
+      <XStack testID={testID} alignItems="center" height="auto" gap="$2">
+        <TouchableOpacity accessibilityRole="button" onPress={onCheckBoxPress}>
           <CheckBox size={size} selected={selected} enabled={enabled} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          accessibilityRole="button"
+          onPress={onLabelPress}
+          disabled={!onLabelPress}
+        >
           <Text
             size="small"
             font="heading"
@@ -41,9 +49,9 @@ export const CheckBoxButton = <T = string,>({
           >
             {option.label}
           </Text>
-          {option.icon}
-        </XStack>
-      </TouchableOpacity>
+        </TouchableOpacity>
+        {option.icon}
+      </XStack>
     </View>
   );
 };

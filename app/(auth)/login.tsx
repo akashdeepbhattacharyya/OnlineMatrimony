@@ -20,6 +20,7 @@ import { useStoreUser } from '@/hooks/useStoreUser';
 import { setSubscription } from '@/services/slices/user-slice';
 import { useSubscriptionRepository } from '@/services/api/repositories/useSubscriptionRepository';
 import { useError } from '@/components/error/useError';
+import { Linking } from 'react-native';
 
 const LoginScreen = () => {
   const { storeUser, storePartnerPreferences, storeUserProfile } = useStoreUser();
@@ -68,6 +69,14 @@ const LoginScreen = () => {
       router.replace('/(app)/(onboarding)');
     }
     hideLoader();
+  };
+
+  const handleTermsPress = async () => {
+    if (await Linking.canOpenURL('https://dhol.ai/terms-and-policies/')) {
+      await Linking.openURL('https://dhol.ai/terms-and-policies/');
+    } else {
+      showError({ title: "Error", description: "Unable to open Terms & Conditions" });
+    }
   };
 
   return (
@@ -135,6 +144,7 @@ const LoginScreen = () => {
                 }}
                 selected={values.terms}
                 onChange={() => setFieldValue('terms', !values.terms)}
+                onLabelPress={handleTermsPress}
                 paddingHorizontal={'$8'}
               />
               {touched.terms && errors.terms && (

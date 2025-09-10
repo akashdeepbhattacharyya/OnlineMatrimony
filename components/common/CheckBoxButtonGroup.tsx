@@ -27,7 +27,7 @@ export const CheckBoxButtonGroup = <T,>({
               testID={`${'checkbox-button'}-${index + 1}`}
               option={item}
               selected={item.value === selectedOption}
-              enabled={selectedOption == undefined}
+              enabled={selectedOption === undefined}
               disabled={disabled}
               onChange={onChange}
             />
