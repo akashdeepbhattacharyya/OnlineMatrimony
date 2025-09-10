@@ -122,7 +122,7 @@ export default function Chats() {
             height={'85%'}
           >
             <Text font="heading" size="normal" color="$color">
-              {`No Unread Chats`}
+              {currentFilter === "UNREAD" ? `No Unread Chats` : `No Chats`}
             </Text>
           </View>
         ) : (
