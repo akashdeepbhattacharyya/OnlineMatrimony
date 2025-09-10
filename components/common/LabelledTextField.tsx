@@ -1,5 +1,4 @@
-import { InputProps, XStack, YStack } from 'tamagui';
-import { Input } from './Input';
+import { InputProps, YStack } from 'tamagui';
 import { TextField } from './TextField';
 import { Text } from './Text';
 

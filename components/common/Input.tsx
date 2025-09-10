@@ -9,4 +9,5 @@ export const Input = styled(TamaInput, {
   paddingHorizontal: '$3.5',
   backgroundColor: 'transparent',
   borderWidth: '$0',
+  flex: 1,
 });
