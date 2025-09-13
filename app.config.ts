@@ -1,7 +1,6 @@
 import { ConfigContext, ExpoConfig } from "expo/config";
 
 export const IS_DEVELOPMENT = process.env.APP_VARIANT === 'development';
-export const IS_LOCAL = process.env.APP_VARIANT === 'local';
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
@@ -65,8 +64,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       projectId: '0cfad855-470b-4db1-8914-69e70917f01f',
     },
     keys: {
-      API_BASE_URL: IS_LOCAL ? process.env.LOCAL_BASE_URL : IS_DEVELOPMENT ? process.env.DEV_BASE_URL : process.env.PROD_BASE_URL,
-      RAZORPAY_KEY: IS_DEVELOPMENT || IS_LOCAL
+      API_BASE_URL: IS_DEVELOPMENT ? process.env.LOCAL_BASE_URL : process.env.PROD_BASE_URL,
+      RAZORPAY_KEY: IS_DEVELOPMENT
         ? process.env.DEV_RAZORPAY_KEY
         : process.env.PROD_RAZORPAY_KEY,
     },

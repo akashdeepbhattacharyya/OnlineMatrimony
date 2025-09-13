@@ -15,6 +15,7 @@ import { fetchConversations, setConversationList } from '@/services/slices/conve
 import { useError } from '@/components/error/useError';
 import { useChat } from '@/services/hooks/useChat';
 import { Text } from '@/components/common/Text';
+import { Conversation } from '@/models/Chat';
 
 export default function Chats() {
   const [currentFilter, setCurrentFilter] = useState<ChatFilter>('ALL');
@@ -70,18 +71,33 @@ export default function Chats() {
       router.push({
         pathname: "/(app)/(chat)/chat-details",
         params: {
-          conversationId: existingConversation.convId.toString(),
+          conversationId: existingConversation.conversationId.toString(),
           receiverId: receiverId.toString()
         }
       });
     } else {
       try {
         const newConversation = await startChat(receiverId);
-        dispatch(setConversationList([...conversationList, newConversation]));
+        const date = new Date().toISOString().split('T')[0];
+        const mutualMatch = mutualMatches.find(match => match.userId === receiverId);
+        const newConversationWithDetails: Conversation = {
+          ...newConversation,
+          otherUserProfile: {
+            userId: mutualMatch!.userId,
+            fullName: mutualMatch!.fullName,
+            isHide: mutualMatch!.isHide
+          },
+          createdAt: date,
+          updatedAt: date,
+          lastMessage: undefined,
+          unreadCount: 0
+        };
+        console.log("Started new conversation:", newConversationWithDetails);
+        dispatch(setConversationList([...conversationList, newConversationWithDetails]));
         router.push({
           pathname: "/(app)/(chat)/chat-details",
           params: {
-            conversationId: newConversation.convId.toString(),
+            conversationId: newConversation.conversationId.toString(),
             receiverId: receiverId.toString()
           }
         });

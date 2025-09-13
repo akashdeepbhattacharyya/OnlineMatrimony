@@ -117,7 +117,7 @@ export function calculateExpiryDateInWeeks(endDate: string): string | undefined 
 }
 
 export function formatDate(dateString: string): string {
-  const date = new Date(dateString);
+  const date = new Date(dateString.endsWith('Z') ? dateString : dateString + 'Z');
   const now = new Date();
 
   const isToday =
@@ -147,7 +147,7 @@ export function formatDate(dateString: string): string {
 }
 
 export function formatTime(dateString: string): string {
-  const date = new Date(dateString);
+  const date = new Date(dateString.endsWith('Z') ? dateString : dateString + 'Z');
   return date.toLocaleTimeString(undefined, {
     hour: '2-digit',
     minute: '2-digit',
@@ -155,7 +155,7 @@ export function formatTime(dateString: string): string {
 }
 
 export function formatDateTime(dateString: string): string {
-  const date = new Date(dateString);
+  const date = new Date(dateString.endsWith('Z') ? dateString : dateString + 'Z');
   const now = new Date();
   const isToday =
     date.getDate() === now.getDate() &&

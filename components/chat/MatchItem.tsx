@@ -26,17 +26,17 @@ export const MatchItem = ({ match, conversation, onPress }: Props) => {
             <Text font="headingBold" size="normal" color="$color">
               {match.fullName}
             </Text>
-            {conversation && (
+            {conversation && conversation.lastMessage && (
               <Text font="heading" size="normal" color="$color" numberOfLines={2} ellipsizeMode="tail">
-                {senderId === conversation.lastMessage?.senderId ? "You: " : ""}{conversation.lastMessage?.message}
+                {senderId === conversation.lastMessage.senderId ? "You: " : ""}{conversation.lastMessage.message}
               </Text>
             )}
           </YStack>
         </XStack>
-        {conversation && (
+        {conversation && conversation.lastMessage && (
           <YStack theme={'unread'} alignItems="flex-end" gap="$2">
             <Text font="heading" size="normal" color="$color">
-              {formatDateTime(conversation.lastMessage?.sentAt || "")}
+              {formatDateTime(conversation.lastMessage.sentAt || "")}
             </Text>
             {conversation.unreadCount > 0 && (
               <Text font="headingBold" size="small" color="$color" paddingHorizontal={'$1.5'} paddingVertical={'$1'} backgroundColor={"$background"} borderRadius={'$6'}>

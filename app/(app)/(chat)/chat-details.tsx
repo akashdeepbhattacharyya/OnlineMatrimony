@@ -74,7 +74,7 @@ export default function ChatDetails() {
       if (messages.some(msg => !msg.isRead && msg.receiverId === senderId)) {
         await markMessagesAsRead(Number(conversationId));
         const updatedConversationList = conversationList.map(conv => {
-          if (conv.convId === Number(conversationId)) {
+          if (conv.conversationId === Number(conversationId)) {
             return { ...conv, unreadCount: 0 };
           }
           return conv;
@@ -92,7 +92,7 @@ export default function ChatDetails() {
       const updatedMessages = [...messages, incomingMessage];
       dispatch(setMessagesForConversation({ conversationId: Number(conversationId), messages: updatedMessages }));
       const updatedConversationList = conversationList.map(conv => {
-        if (conv.convId === Number(conversationId)) {
+        if (conv.conversationId === Number(conversationId)) {
           return { ...conv, lastMessage: incomingMessage };
         }
         return conv;
@@ -159,7 +159,7 @@ export default function ChatDetails() {
         const updatedMessages = [...messages, response];
         dispatch(setMessagesForConversation({ conversationId: Number(conversationId), messages: updatedMessages }));
         const updatedConversationList = conversationList.map(conv => {
-          if (conv.convId === Number(conversationId)) {
+          if (conv.conversationId === Number(conversationId)) {
             return { ...conv, lastMessage: response };
           }
           return conv;
@@ -214,7 +214,7 @@ export default function ChatDetails() {
           gap={'$4'}
           borderTopRightRadius={'$8'}
           borderTopLeftRadius={'$8'}
-          paddingBottom={!keyboardVisible ? '$8' : '$3'}
+          paddingBottom={!keyboardVisible ? '$10' : '$3'}
         >
           <TextArea
             flex={1}
