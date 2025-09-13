@@ -71,17 +71,21 @@ export default function Chats() {
       router.push({
         pathname: "/(app)/(chat)/chat-details",
         params: {
-          conversationId: existingConversation.conversationId.toString(),
+          conversationId: existingConversation.convId.toString(),
           receiverId: receiverId.toString()
         }
       });
     } else {
       try {
-        const newConversation = await startChat(receiverId);
+        const response = await startChat(receiverId);
         const date = new Date().toISOString().split('T')[0];
         const mutualMatch = mutualMatches.find(match => match.userId === receiverId);
-        const newConversationWithDetails: Conversation = {
-          ...newConversation,
+        const newConversation: Conversation = {
+          convId: response.conversationId,
+          user1Id: response.user1Id,
+          user2Id: response.user2Id,
+          matchId: response.matchId,
+          isActive: response.active,
           otherUserProfile: {
             userId: mutualMatch!.userId,
             fullName: mutualMatch!.fullName,
@@ -92,12 +96,11 @@ export default function Chats() {
           lastMessage: undefined,
           unreadCount: 0
         };
-        console.log("Started new conversation:", newConversationWithDetails);
-        dispatch(setConversationList([...conversationList, newConversationWithDetails]));
+        dispatch(setConversationList([...conversationList, newConversation]));
         router.push({
           pathname: "/(app)/(chat)/chat-details",
           params: {
-            conversationId: newConversation.conversationId.toString(),
+            conversationId: newConversation.convId.toString(),
             receiverId: receiverId.toString()
           }
         });

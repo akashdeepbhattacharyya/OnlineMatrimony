@@ -59,6 +59,8 @@ export default function ChatDetails() {
 
   const match = mutualMatches.find(match => match.userId.toString() === receiverId);
 
+  console.log("Rendering ChatDetails for conversationId:", conversationId, "receiverId:", receiverId);
+
   useEffect(() => {
     if (incomingMessage) {
       const markAsRead = async () => {
@@ -74,7 +76,7 @@ export default function ChatDetails() {
       if (messages.some(msg => !msg.isRead && msg.receiverId === senderId)) {
         await markMessagesAsRead(Number(conversationId));
         const updatedConversationList = conversationList.map(conv => {
-          if (conv.conversationId === Number(conversationId)) {
+          if (conv.convId === Number(conversationId)) {
             return { ...conv, unreadCount: 0 };
           }
           return conv;
@@ -92,7 +94,7 @@ export default function ChatDetails() {
       const updatedMessages = [...messages, incomingMessage];
       dispatch(setMessagesForConversation({ conversationId: Number(conversationId), messages: updatedMessages }));
       const updatedConversationList = conversationList.map(conv => {
-        if (conv.conversationId === Number(conversationId)) {
+        if (conv.convId === Number(conversationId)) {
           return { ...conv, lastMessage: incomingMessage };
         }
         return conv;
@@ -159,7 +161,7 @@ export default function ChatDetails() {
         const updatedMessages = [...messages, response];
         dispatch(setMessagesForConversation({ conversationId: Number(conversationId), messages: updatedMessages }));
         const updatedConversationList = conversationList.map(conv => {
-          if (conv.conversationId === Number(conversationId)) {
+          if (conv.convId === Number(conversationId)) {
             return { ...conv, lastMessage: response };
           }
           return conv;

@@ -1,6 +1,6 @@
 import { handleApiResponse } from '@/utils/handleApiResponse';
 import { apiClient } from '../HttpClient';
-import { Conversation, Message } from '@/models/Chat';
+import { Conversation, Message, StartChat } from '@/models/Chat';
 import { PagedResponse } from '@/models/ApiResponse';
 
 export function useChatRepository() {
@@ -13,7 +13,7 @@ export function useChatRepository() {
     return handleApiResponse(apiClient.get(`/chat/messages?conversationId=${conversationId}&page=${page}&size=${size}`));
   };
 
-  const startChat = async (receiverId: number): Promise<Conversation> => {
+  const startChat = async (receiverId: number): Promise<StartChat> => {
     return handleApiResponse(apiClient.post(`/chat/startChat/${receiverId}`));
   };
 

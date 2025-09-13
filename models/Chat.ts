@@ -1,5 +1,5 @@
 export type Conversation = {
-  conversationId: number;
+  convId: number;
   user1Id: number;
   user2Id: number;
   matchId: number;
@@ -25,4 +25,12 @@ export type Message = {
   messageType: 'TEXT';
   isRead: boolean;
   sentAt: string;
+};
+
+export type StartChat = {
+  conversationId: number;
+  user1Id: number;
+  user2Id: number;
+  matchId: number;
+  active: boolean;
 };
