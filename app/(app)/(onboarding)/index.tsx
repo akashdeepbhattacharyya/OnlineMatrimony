@@ -50,7 +50,7 @@ const Onboarding = () => {
         href={{
           pathname: "/(app)/(settings)/partner-preferences",
           params: {
-            source: "ONBOARDING",
+            purpose: "ONBOARDING",
           },
         }}
       />

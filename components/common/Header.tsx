@@ -38,7 +38,7 @@ const Header = ({ headerText, screenType = 'default', ...props }: Props) => {
       {...props}
     >
       {screenType === 'default' && (
-        <TouchableOpacity onPress={handelBack}>
+        <TouchableOpacity onPress={handelBack} style={{ width: 40, alignItems: "flex-start" }}>
           <Back width={20} height={20} />
         </TouchableOpacity>
       )}
@@ -68,7 +68,7 @@ const Header = ({ headerText, screenType = 'default', ...props }: Props) => {
           </TouchableOpacity> */}
         </XStack>
       )}
-      {screenType === 'default' && <GhostView width={20} height={20} />}
+      {screenType === 'default' && <GhostView width={40} height={20} />}
     </XStack>
   );
 };
