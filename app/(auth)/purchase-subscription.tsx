@@ -51,9 +51,7 @@ export default function PurchaseSubscription() {
           try {
             const subscription = await subscribeToPlan(selectedPlan.id, paymentSuccess.orderId, paymentSuccess.paymentId, paymentSuccess.signature);
             storeSubscription(subscription);
-            router.replace({
-              pathname: '/(app)/(tabs)',
-            });
+            router.replace('/(app)/(onboarding)');
           } catch (error: any) {
             showError({ description: error.message || 'Subscription failed' });
           }
@@ -122,7 +120,7 @@ export default function PurchaseSubscription() {
                   <NextPlan subscriptionPlan={item} onStartPlan={() => onStartPlan(item)} />
                 );
               }}
-              keyExtractor={item => item.id}
+              keyExtractor={item => item.id.toString()}
               horizontal
               pagingEnabled
               showsHorizontalScrollIndicator={false}

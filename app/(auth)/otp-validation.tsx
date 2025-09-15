@@ -9,17 +9,19 @@ import { useLoader } from '@/components/loader/LoaderContext';
 import { NoSafeAreaScreen as Screen } from '@/components/layouts/NoSafeAreaScreen';
 import { Background } from '@/components/common/Background';
 import { router, useLocalSearchParams } from 'expo-router';
+import { useStoreUser } from '@/hooks/useStoreUser';
 
 export default function OtpValidation() {
   const [input, setInput] = useState<string[]>(['', '', '', '', '', '']);
   const [timer, setTimer] = useState(30);
   const [resendDisabled, setResendDisabled] = useState(true);
   const { showLoader, hideLoader } = useLoader();
-  const { resendOtp, error: otpError, submitOtp } = useUserAuth();
+  const { resendOtp, error: otpError, submitOtp, login: loginUser, error: loginError } = useUserAuth();
   const { email, password } = useLocalSearchParams<{
     email: string;
     password: string;
-  }>();
+  }>();  
+  const { storeUser, storePartnerPreferences, storeUserProfile } = useStoreUser();
 
   useEffect(() => {
     const countdown = setInterval(() => {
@@ -52,11 +54,39 @@ export default function OtpValidation() {
     });
     hideLoader();
     if (value) {
-      router.push({
-        pathname: '/(auth)/profile-selection',
-        params: { email, password },
-      });
+      await handleLogin();
     }
+  };
+
+  const handleLogin = async () => {
+    showLoader();
+    const response = await loginUser({
+      emailOrPhone: email,
+      password: password,
+      rememberMe: true,
+    });
+    if (response) {
+      storeUser(
+        response.user,
+        {
+          accessToken: response.accessToken,
+          refreshToken: response.refreshToken,
+          tokenType: response.tokenType,
+          expiresIn: response.expiresIn,
+        }
+      );
+
+      if (response.user.preference) {
+        storePartnerPreferences(response.user.preference);
+      }
+      storeUserProfile(response.user.profile);
+      router.push({
+        pathname: '/(auth)/purchase-subscription',
+      });
+    } else {
+      console.error('Login failed:', loginError);
+    }
+    hideLoader();
   };
 
   const handleOtpChange = (value: string, index: number) => {

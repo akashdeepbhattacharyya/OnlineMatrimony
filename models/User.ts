@@ -246,24 +246,23 @@ export type UpdatePartnerPreferencesRequest = {
 export const isUserProfileUpdated = (userProfile?: UserProfile): boolean => {
   if (!userProfile) return false;
   const isComplete =
-    userProfile.fullName !== null &&
-    userProfile.dateOfBirth !== null &&
-    userProfile.gender !== null &&
-    userProfile.city !== null &&
-    userProfile.state !== null &&
-    userProfile.pincode !== null &&
-    userProfile.aboutMe !== null &&
-    userProfile.diet !== null &&
-    userProfile.height !== null &&
-    userProfile.weight !== null &&
-    userProfile.religion !== null &&
-    userProfile.caste !== null &&
-    userProfile.motherTongue !== null &&
-    userProfile.maritalStatus !== null &&
-    userProfile.education !== null &&
-    userProfile.occupation !== null &&
-    userProfile.annualIncome !== null &&
-    userProfile.primaryPhotoUrl !== null;
+    userProfile.fullName !== undefined &&
+    userProfile.dateOfBirth !== undefined &&
+    userProfile.gender !== undefined &&
+    userProfile.city !== undefined &&
+    userProfile.state !== undefined &&
+    userProfile.pincode !== undefined &&
+    userProfile.aboutMe !== undefined &&
+    userProfile.diet !== undefined &&
+    userProfile.height !== undefined &&
+    userProfile.weight !== undefined &&
+    userProfile.religion !== undefined &&
+    userProfile.caste !== undefined &&
+    userProfile.motherTongue !== undefined &&
+    userProfile.maritalStatus !== undefined &&
+    userProfile.education !== undefined &&
+    userProfile.occupation !== undefined &&
+    userProfile.annualIncome !== undefined;
   return isComplete;
 };
 
