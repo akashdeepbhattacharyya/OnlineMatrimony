@@ -1,6 +1,6 @@
 import { ConfigContext, ExpoConfig } from "expo/config";
 
-export const IS_DEVELOPMENT = process.env.APP_VARIANT === 'development';
+export const IS_STAGING = process.env.APP_VARIANT === 'staging';
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
@@ -60,14 +60,19 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     ],
   ],
   extra: {
+    env: {
+      APP_VARIANT: process.env.APP_VARIANT,
+    },
     eas: {
       projectId: '0cfad855-470b-4db1-8914-69e70917f01f',
     },
     keys: {
-      API_BASE_URL: IS_DEVELOPMENT ? process.env.LOCAL_BASE_URL : process.env.PROD_BASE_URL,
-      RAZORPAY_KEY: IS_DEVELOPMENT
-        ? process.env.DEV_RAZORPAY_KEY
-        : process.env.PROD_RAZORPAY_KEY,
+      dev: {
+        razorpayKey: process.env.DEV_RAZORPAY_KEY,
+      },
+      prod: {
+        razorpayKey: process.env.PROD_RAZORPAY_KEY,
+      },
     },
   },
   owner: 'onlinematrimony',

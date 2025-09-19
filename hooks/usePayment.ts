@@ -1,6 +1,6 @@
 import RazorpayCheckout from 'react-native-razorpay';
-import Constants from 'expo-constants';
 import { useCallback, useState } from 'react';
+import { config } from '@/api.config';
 
 type PaymentOptions = {
   description: string;
@@ -12,8 +12,6 @@ type PaymentOptions = {
   };
   orderId: string;
 };
-
-const key = Constants.expoConfig?.extra?.keys.RAZORPAY_KEY;
 
 type PaymentFailure = {
   description: string;
@@ -36,7 +34,7 @@ export const usePayment = () => {
     const options = {
       description: paymentOptions.description,
       currency: 'INR',
-      key: key,
+      key: config.razorpayKey,
       amount: paymentOptions.amount * 100, // Convert to paise
       name: 'Dhol',
       order_id: paymentOptions.orderId,

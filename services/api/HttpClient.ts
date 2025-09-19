@@ -3,7 +3,7 @@ import { LoginResponse, Token } from '@/models/Authentication';
 import { IHttpClient, RequestConfig } from './IHttpClient';
 import * as Storage from "@/services/local-storage";
 import { Platform } from 'react-native';
-import Constants from 'expo-constants';
+import { config } from '@/api.config';
 
 export class HttpClient implements IHttpClient {
   constructor(
@@ -131,7 +131,7 @@ export class HttpClient implements IHttpClient {
 }
 
 export const baseUrl = () => {
-  let apiBaseUrl = Constants.expoConfig?.extra?.keys.API_BASE_URL;
+  let apiBaseUrl = config.apiUrl;
 
   if (Platform.OS === 'android') {
     // For Android, use the local IP address if running on an emulator

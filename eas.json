@@ -7,8 +7,7 @@
     "development": {
       "android": {
         "gradleCommand": ":app:assembleRelease :app:assembleAndroidTest -DtestBuildType=release",
-        "withoutCredentials": true,
-        "buildType": "apk"
+        "withoutCredentials": true
       },
       "ios": {
         "simulator": true
@@ -17,6 +16,16 @@
       "distribution": "internal"
     },
     "preview": {
+      "distribution": "internal"
+    },
+    "staging": {
+      "env": {
+        "APP_VARIANT": "staging"
+      },
+      "android": {
+        "withoutCredentials": true,
+        "buildType": "apk"
+      },
       "distribution": "internal"
     },
     "production": {
