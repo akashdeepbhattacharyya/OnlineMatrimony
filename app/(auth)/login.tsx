@@ -21,6 +21,7 @@ import { setSubscription } from '@/services/slices/user-slice';
 import { useSubscriptionRepository } from '@/services/api/repositories/useSubscriptionRepository';
 import { useError } from '@/components/error/useError';
 import { Linking } from 'react-native';
+import { useAppDispatch } from '@/services/store/hook';
 
 const LoginScreen = () => {
   const { storeUser, storePartnerPreferences, storeUserProfile } = useStoreUser();
@@ -34,6 +35,7 @@ const LoginScreen = () => {
   const { showLoader, hideLoader } = useLoader();
   const { getMySubscription } = useSubscriptionRepository();
   const { showError } = useError();
+  const dispatch = useAppDispatch();
 
   const handleLogin = async (values: LoginFormType) => {
     showLoader();
@@ -60,7 +62,7 @@ const LoginScreen = () => {
       
       try {
         const subscription = await getMySubscription();
-        setSubscription(subscription);
+        dispatch(setSubscription(subscription));
       } catch (error: any) {
         showError({ title: "Login Error", description: error.message || "Error fetching subscription" });
         console.error("Error fetching subscription:", error);
