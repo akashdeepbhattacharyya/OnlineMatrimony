@@ -1,4 +1,4 @@
-name: EAS Dev Android Build
+name: EAS Staging Android Build
 
 on:
   push:
@@ -28,8 +28,8 @@ jobs:
       - name: 🔧 Install EAS CLI
         run: npm install -g eas-cli
 
-      - name: 🏗️ Trigger EAS Build (Android - development)
-        run: eas build --platform android --profile development --non-interactive --json > build.json
+      - name: 🏗️ Trigger EAS Build (Android - staging)
+        run: eas build --platform android --profile staging --non-interactive --json > build.json
 
       - name: 📤 Upload build metadata
         uses: actions/upload-artifact@v4
