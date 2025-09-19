@@ -207,6 +207,7 @@ export type UpdateUserProfileRequest = {
  * @property maritalStatuses - Preferred marital statuses of the partner.
  * @property religions - Preferred religions of the partner.
  * @property castes - Preferred castes of the partner.
+ * @property subCastes - Preferred sub-castes of the partner.
  * @property motherTongue - Preferred mother tongue of the partner.
  * @property diet - Preferred diet of the partner.
  * @property educations - Preferred education levels of the partner.
@@ -226,6 +227,7 @@ export type UpdatePartnerPreferencesRequest = {
   maritalStatuses: string;
   religions: string;
   castes: string;
+  subCastes?: string;
   motherTongue: string;
   diet: string;
   educations: string;

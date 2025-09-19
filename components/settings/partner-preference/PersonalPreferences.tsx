@@ -1,6 +1,5 @@
 import { ViewProps, YStack } from 'tamagui';
 import { PreferenceSlider } from './PreferenceSlider';
-import { SliderValue } from '../../common/Slider';
 import { toFeetAndInches } from '@/utils/utils';
 import { PreferenceItem } from './PreferenceItem';
 import {
@@ -10,7 +9,6 @@ import {
   states,
 } from '@/resources/city-state';
 import { PartnerPreferenceFormType } from '@/resources/form';
-import { PreferenceSelect } from './PreferenceSelect';
 import { genderOptions, genders } from '@/resources/gender';
 import { useFormikContext } from 'formik';
 import { Text } from '../../common/Text';
@@ -47,7 +45,7 @@ export const PersonalPreferences = ({ ...props }: ViewProps) => {
             min: values.minAge,
             max: values.maxAge,
           }}
-          onValuesChange={(sliderValue: SliderValue) => {
+          onValuesChange={(sliderValue) => {
             setFieldValue('maxAge', sliderValue.max);
             setFieldValue('minAge', sliderValue.min);
           }}
@@ -65,7 +63,7 @@ export const PersonalPreferences = ({ ...props }: ViewProps) => {
             min: values.minHeight,
             max: values.maxHeight,
           }}
-          onValuesChange={(sliderValue: SliderValue) => {
+          onValuesChange={(sliderValue) => {
             setFieldValue('maxHeight', sliderValue.max);
             setFieldValue('minHeight', sliderValue.min);
           }}

@@ -19,6 +19,7 @@ import { useAppSelector } from '@/services/store/hook';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useStoreUser } from '@/hooks/useStoreUser';
 import { useError } from '@/components/error/useError';
+import { partnerPreferenceSchema } from '@/resources/validations/partner-preference';
 
 export default function PartnerPreferences() {
   const { partnerPreferences } = useAppSelector(
@@ -67,7 +68,7 @@ export default function PartnerPreferences() {
       >
         <Formik<PartnerPreferenceFormType>
           initialValues={initialValues}
-          // validationSchema={partnerPreferenceSchema}
+          validationSchema={partnerPreferenceSchema}
           onSubmit={onConfirm}
         >
           {({ handleSubmit, isSubmitting, isValid }) => (

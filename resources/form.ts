@@ -195,6 +195,7 @@ export const toPartnerPreferencesRequest = (
     maritalStatuses: form.maritalStatuses?.join(',') || '',
     religions: form.religions?.join(',') || '',
     castes: form.castes?.join(',') || '',
+    subCastes: form.subCastes?.join(',') || '',
     motherTongue: form.motherTongue || '',
     diet: form.diet || '',
     educations: form.educations?.join(',') || '',

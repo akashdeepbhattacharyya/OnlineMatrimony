@@ -5,7 +5,6 @@ import { useFormikContext } from 'formik';
 import { Text } from '../../common/Text';
 import { occupationOptions, occupations } from '@/resources/occupation';
 import { educationOptions, educations } from '@/resources/education';
-import { SliderValue } from '../../common/Slider';
 import { PreferenceSlider } from './PreferenceSlider';
 import { TileHeader } from '../../common/TileHeader';
 import { MultiSelectButton } from '../../common/MultiSelectButton';
@@ -72,7 +71,7 @@ export const ProfessionalPreferences = ({ ...props }: ViewProps) => {
             min: values.minIncome,
             max: values.maxIncome,
           }}
-          onValuesChange={(sliderValue: SliderValue) => {
+          onValuesChange={(sliderValue) => {
             setFieldValue('maxIncome', sliderValue.max);
             setFieldValue('minIncome', sliderValue.min);
           }}
